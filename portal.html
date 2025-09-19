@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guahh Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #202225; --sidebar-hover-bg: #36393F; --sidebar-text: #B9BBBE;
+            --accent-primary: #5865F2; --body-bg: #36393F; --card-bg: #2F3136;
+            --font-color: #DCDDDE; --border-color: #40444B; --input-bg: #202225;
+            --success-color: #43B581; --danger-color: #F04747; --away-color: #FAA61A; --offline-color: #747F8D;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            margin: 0; background-color: var(--body-bg); color: var(--font-color); font-size: 16px;
+            overflow: hidden;
+        }
+        #app-container { display: flex; height: 100vh; }
+
+        /* --- Sidebar & Nav --- */
+        #app-sidebar {
+            width: 260px; background-color: var(--sidebar-bg); color: var(--sidebar-text);
+            display: flex; flex-direction: column; flex-shrink: 0;
+        }
+        .sidebar-header { padding: 1.5rem; text-align: center; font-size: 1.5rem; font-weight: bold; color: white; }
+        nav { flex-grow: 1; }
+        nav a { display: flex; align-items: center; gap: 1rem; color: var(--sidebar-text); text-decoration: none; padding: 0.9rem 1.5rem; margin: 0.25rem 0.5rem; border-radius: 6px; font-weight: 500; }
+        nav a .emoji { width: 24px; text-align: center; font-size: 1.2em; }
+        nav a:hover { background-color: var(--sidebar-hover-bg); color: white; }
+        nav a.active { background-color: var(--accent-primary); color: white; }
+        .sidebar-footer { padding: 1rem; border-top: 1px solid var(--sidebar-hover-bg); }
+        #auth-container form { display: flex; flex-direction: column; gap: 0.5rem; }
+        .sidebar-footer input, .sidebar-footer button, .sidebar-footer select { width: 100%; padding: 0.75rem; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--font-color); }
+        .sidebar-footer button { border: none; background-color: var(--accent-primary); color: white; cursor: pointer; font-weight: bold; }
+        #user-info { display: none; align-items: center; gap: 0.5rem; }
+        #user-display-container { flex-grow: 1; display: flex; align-items: center; gap: 0.5rem; }
+        #status-selector { font-size: 0.8em; padding: 0.25rem; margin-top: 4px; }
+        #logout-btn { background-color: var(--danger-color); flex-shrink: 0; width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .auth-toggle { font-size: 0.8em; text-align: center; margin-top: 0.75rem; }
+        .auth-toggle a { color: var(--accent-primary); text-decoration: none; cursor: pointer; }
+
+        /* --- Main Content --- */
+        #main-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .content-header { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 2rem; background-color: var(--card-bg); border-bottom: 1px solid var(--border-color); }
+        main { padding: 2rem; }
+        section { display: none; }
+        section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background-color: var(--card-bg); border-radius: 8px; padding: 2rem; border: 1px solid var(--border-color); }
+        .card h2 { margin-top: 0; display: flex; align-items: center; gap: 0.75rem; }
+        hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+        .form-input { padding: 0.8rem; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--input-bg); color: var(--font-color); width: 100%; }
+        .form-button { padding: 0.8rem 1.5rem; font-size: 1rem; border: none; background-color: var(--accent-primary); color: white; font-weight: bold; cursor: pointer; border-radius: 6px; }
+
+        /* --- NEW: Home Page Grid --- */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .home-grid-item {
+            background-color: var(--sidebar-hover-bg); border-radius: 8px; padding: 1.5rem;
+            text-decoration: none; color: var(--font-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+        .home-grid-item:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .home-grid-item h3 { margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 0.75rem; font-size: 1.25rem; }
+        .home-grid-item p { font-size: 0.9em; color: var(--sidebar-text); margin: 0; line-height: 1.5; }
+
+        /* --- Other Component Styles --- */
+        #email-form { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 1rem; height: 400px; }
+        #email-message-container { grid-column: 1 / 3; position: relative; }
+        #email-message-field { height: 100%; resize: none; }
+        #email-send-button { position: absolute; bottom: 1rem; right: 1rem; }
+        #notes-form, #log-form, #todo-form { display: flex; flex-direction: column; gap: 1rem; }
+        .status-ball { height: 12px; width: 12px; border-radius: 50%; flex-shrink: 0; }
+        .status-ball.online { background-color: var(--success-color); }
+        .status-ball.away { background-color: var(--away-color); }
+        .status-ball.offline { background-color: var(--offline-color); }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar -->
+        <aside id="app-sidebar">
+            <div class="sidebar-header">Guahh Portal</div>
+            <nav><!-- Links populated by JS --></nav>
+            <div class="sidebar-footer">
+                <div id="auth-container">
+                    <div id="login-view">
+                        <form id="login-form">
+                            <input type="text" id="user-email-input" placeholder="your_name#guahh.mail" required>
+                            <button type="submit">Sign In</button>
+                        </form>
+                        <div class="auth-toggle"> <a id="show-signup">Create an account</a> </div>
+                    </div>
+                    <div id="signup-view" style="display: none;">
+                        <form id="signup-form">
+                            <input type="text" id="signup-email-input" placeholder="your_name#guahh.mail" required>
+                            <button type="submit">Create Account</button>
+                        </form>
+                        <div class="auth-toggle"> <a id="show-login">Already have an account? Sign In</a> </div>
+                    </div>
+                </div>
+                <div id="user-info">
+                    <div id="user-display-container">
+                        <span id="sidebar-status-indicator" class="status-ball"></span>
+                        <div>
+                            <span id="user-display"></span>
+                            <select id="status-selector"><option value="Online">Online</option><option value="Away">Away</option></select>
+                        </div>
+                    </div>
+                    <button id="logout-btn" title="Sign Out"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <div id="main-content">
+             <header class="content-header">
+                <h1 id="page-title" style="margin:0; font-size: 1.75rem;">Home</h1>
+            </header>
+            <main><!-- Sections populated by JS --></main>
+        </div>
+    </div>
+
+<script>
+/********** CONFIGURATION **********/
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzy5_k6gOHK1EOTzAk4ps3l_1TFZhmnOCT1Ro_W4hO07uy7MV1GsjCL_nIYoTEkySmnAQ/exec";
+/************************************/
+
+let currentUser = null; let currentUserStatus = 'Online'; let statusInterval;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Initial DOM Population ---
+    const navEl=document.querySelector('nav'); const mainEl=document.querySelector('main');
+    const pageData=[
+        {id:'home',emoji:'🏠',title:'Home'},
+        {id:'email',emoji:'✉️',title:'Email', description:'Send internal emails to other registered employees.', content:`<h2>✉️ Send an Email</h2><form id="email-form"><input type="text" name="recipient" class="form-input" placeholder="Recipient..." required><input type="text" name="subject" class="form-input" placeholder="Subject" required><div id="email-message-container"><textarea name="message" class="form-input" style="height:100%; resize:none;" placeholder="Your message..."></textarea><button type="submit" style="position:absolute; bottom:1rem; right:1rem;" class="form-button">Send</button></div></form>`},
+        {id:'notes',emoji:'📝',title:'Notes', description:'Create and share collaborative notes with individuals or everyone.', content:`<h2>📝 Shared Notes</h2><form id="notes-form"><input type="text" id="notes-author-input" name="author" class="form-input" readonly required><input type="text" name="shareTo" class="form-input" placeholder="Share to ('everyone' or user#guahh.mail)" required><textarea name="note" class="form-input" rows="4" placeholder="Write a new note..."></textarea><button type="submit" class="form-button">Add Note</button></form><hr><h3>My Notes Feed</h3><div id="notes-container"></div>`},
+        {id:'todos',emoji:'✅',title:'To-Do List', description:'Manage your personal tasks with a private, browser-based to-do list.', content:`<h2>✅ My Private To-Do List</h2><p style="font-size: 0.9em; color: var(--sidebar-text);">Your tasks are saved in this browser and are not shared.</p><form id="todo-form"><input type="text" name="task" class="form-input" placeholder="Add a new task..."><button type="submit" class="form-button">Add Task</button></form><ul id="todo-list"></ul>`},
+        {id:'log',emoji:'🪵',title:'Activity Log', description:'Post and view a timeline of recent work and company activities.', content:`<h2>🪵 Company Activity Log</h2><form id="log-form"><textarea name="logEntry" class="form-input" rows="3" placeholder="Log your activity..."></textarea><button type="submit" class="form-button">Post Log</button></form><hr><h3>Recent Activity</h3><div id="log-container"></div>`},
+        {id:'status',emoji:'👥',title:'Team Status', description:'See the current online, away, or offline status of all team members.', content:`<h2>👥 Team Status</h2><div id="status-container"></div>`}
+    ];
+
+    // --- Dynamically Build Home Page Grid ---
+    let homeGridHTML = '<div class="home-grid">';
+    pageData.forEach(page => {
+        if (page.id !== 'home') {
+            homeGridHTML += `
+                <a href="#${page.id}" class="home-grid-item">
+                    <h3><span class="emoji">${page.emoji}</span> ${page.title}</h3>
+                    <p>${page.description}</p>
+                </a>`;
+        }
+    });
+    homeGridHTML += '</div>';
+    pageData[0].content = `<h2>🏠 Welcome to the Guahh Portal!</h2><p>Select a tool below to get started, or use the sidebar to navigate.</p>${homeGridHTML}`;
+
+    // --- Populate Nav and Main Content ---
+    pageData.forEach(page=>{
+        navEl.innerHTML+=`<a href="#${page.id}"><span class="emoji">${page.emoji}</span> ${page.title}</a>`;
+        mainEl.innerHTML+=`<section id="${page.id}" class="card">${page.content}</section>`;
+    });
+    
+    // --- All Other Logic is Unchanged ---
+    const authContainer = document.getElementById('auth-container'); const userInfo = document.getElementById('user-info'); const loginView = document.getElementById('login-view'); const signupView = document.getElementById('signup-view');
+    document.getElementById('show-signup').addEventListener('click', (e) => { e.preventDefault(); loginView.style.display = 'none'; signupView.style.display = 'block'; });
+    document.getElementById('show-login').addEventListener('click', (e) => { e.preventDefault(); signupView.style.display = 'none'; loginView.style.display = 'block'; });
+    document.getElementById('login-form').addEventListener('submit', async (e) => { e.preventDefault(); const email = document.getElementById('user-email-input').value.trim(); if (!email.includes('#guahh.mail')) return alert('Invalid email format.'); const result = await apiCall(`checkUser&email=${encodeURIComponent(email)}`); if (result.success && result.data.exists) { performLogin(email); } else { alert('Account not found. Please create an account or check your email.'); } });
+    document.getElementById('signup-form').addEventListener('submit', async (e) => { e.preventDefault(); const email = document.getElementById('signup-email-input').value.trim(); if (!email.includes('#guahh.mail')) return alert('Invalid email format.'); const result = await apiCall('signUp', 'POST', { email }); if (result.success) { alert('Account created successfully! Signing you in.'); performLogin(email); } else { alert(result.message || 'Could not create account.'); } });
+    
+    function performLogin(email) { localStorage.setItem('guahhUser', email); checkLoginState(); }
+    function checkLoginState() { const user = localStorage.getItem('guahhUser'); if (user) { currentUser = user; currentUserStatus = 'Online'; document.getElementById('user-display').textContent = currentUser; document.getElementById('status-selector').value = currentUserStatus; updateSelfStatusIndicator(currentUserStatus); authContainer.style.display = 'none'; userInfo.style.display = 'flex'; startStatusUpdates(); } else { currentUser = null; updateSelfStatusIndicator('offline'); authContainer.style.display = 'block'; userInfo.style.display = 'none'; } navigate(); }
+    document.getElementById('logout-btn').addEventListener('click', async () => { await apiCall('updateStatus', 'POST', { user: currentUser, status: 'Offline' }); stopStatusUpdates(); localStorage.removeItem('guahhUser'); window.location.hash = '#home'; checkLoginState(); });
+    document.getElementById('status-selector').addEventListener('change', (e) => { currentUserStatus = e.target.value; updateSelfStatusIndicator(currentUserStatus); apiCall('updateStatus', 'POST', { user: currentUser, status: currentUserStatus }); });
+    checkLoginState();
+    window.addEventListener('hashchange', navigate);
+    setupFormListeners();
+});
+function navigate() { const sections = document.querySelectorAll('main section'); const navLinks = document.querySelectorAll('nav a'); const pageTitle = document.getElementById('page-title'); let hash = window.location.hash || '#home'; if (!document.querySelector(hash)) { hash = '#home'; } sections.forEach(s => s.classList.remove('active')); document.querySelector(`#${hash.substring(1)}`).classList.add('active'); navLinks.forEach(link => { if (link.getAttribute('href') === hash) { link.classList.add('active'); pageTitle.textContent = link.textContent.trim(); } else { link.classList.remove('active'); } }); if (currentUser) { const pageActions = { '#notes': fetchNotes, '#todos': fetchTodos, '#log': fetchLogs, '#status': fetchStatuses, }; if (pageActions[hash]) pageActions[hash](); } else if (hash === '#todos') { document.getElementById('todo-list').innerHTML = '<p>Please sign in to use the to-do list.</p>'; } }
+function setupFormListeners(){
+    document.getElementById('email-form').addEventListener('submit', async(e)=>{e.preventDefault(); const formData=new FormData(e.target); const data=Object.fromEntries(formData.entries()); const result=await apiCall('sendEmail','POST',data); if(result.success){alert('Email sent successfully!'); e.target.reset();}else{alert('Error sending email.');}});
+    document.getElementById('notes-form').addEventListener('submit', async(e)=>{e.preventDefault(); if(!currentUser)return; document.getElementById('notes-author-input').value=currentUser; const formData=new FormData(e.target); const data=Object.fromEntries(formData.entries()); const result=await apiCall('addNote','POST',data); if(result.success){e.target.reset(); document.getElementById('notes-author-input').value=currentUser; fetchNotes();}});
+    document.getElementById('log-form').addEventListener('submit', async(e)=>{e.preventDefault(); if(!currentUser)return; const entryInput=e.target.elements.logEntry; const result=await apiCall('addLog','POST',{author:currentUser,logEntry:entryInput.value}); if(result.success){entryInput.value=''; fetchLogs();}});
+    document.getElementById('todo-form').addEventListener('submit', e=>{e.preventDefault(); const input=e.target.elements.task; if(!input.value.trim())return; const todos=getLocalTodos(); todos.push({id:Date.now(),text:input.value.trim(),completed:false}); saveLocalTodos(todos); renderTodos(todos); input.value='';});
+    document.getElementById('todo-list').addEventListener('click', e=>{const item=e.target.closest('.todo-item'); if(!item)return; const id=Number(item.dataset.id); let todos=getLocalTodos(); if(e.target.matches('input[type="checkbox"]')){const todo=todos.find(t=>t.id===id); if(todo)todo.completed=!todo.completed;}if(e.target.closest('.delete-btn')){todos=todos.filter(t=>t.id!==id);} saveLocalTodos(todos); renderTodos(todos);});
+    document.getElementById('notes-container').addEventListener('click', async(e)=>{const noteEl=e.target.closest('.note'); if(!noteEl)return; const noteId=noteEl.dataset.id; const contentDiv=noteEl.querySelector('div[style*="white-space:pre-wrap"]'); const actionsDiv=noteEl.querySelector('div[style*="text-align:right"]'); if(e.target.closest('.edit-btn')){contentDiv.innerHTML=`<textarea style="width:100%; min-height:100px; background-color:var(--input-bg); color:var(--font-color); border-radius:4px; border:1px solid var(--border-color);">${contentDiv.innerText}</textarea>`; actionsDiv.innerHTML=`<button class="save-btn" style="background:none; border:none; color:var(--accent-primary); cursor:pointer;">💾 Save</button><button class="cancel-btn" style="background:none; border:none; color:var(--sidebar-text); cursor:pointer;">❌ Cancel</button>`;} if(e.target.closest('.cancel-btn')){fetchNotes();} if(e.target.closest('.save-btn')){const newContent=contentDiv.querySelector('textarea').value; const result=await apiCall('editNote','POST',{id:noteId,note:newContent}); if(result.success){fetchNotes();}else{alert('Failed to save');}}});
+}
+function updateSelfStatusIndicator(status) { const indicator = document.getElementById('sidebar-status-indicator'); indicator.className = 'status-ball ' + status.toLowerCase(); }
+async function apiCall(action, method = 'GET', body = null) { try { const url = method === 'GET' ? `${SCRIPT_URL}?action=${action}` : SCRIPT_URL; const options = { method, mode: 'cors' }; if (method === 'POST') { const p = body || {}; p.action = action; options.body = JSON.stringify(p); } const response = await fetch(url, options); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); updateSelfStatusIndicator(currentUserStatus); return await response.json(); } catch (error) { console.error('API Call Error:', error); updateSelfStatusIndicator('offline'); return { success: false, message: error.message }; } }
+function getLocalTodos() { if (!currentUser) return []; return JSON.parse(localStorage.getItem(`guahh_todos_${currentUser}`) || '[]'); }
+function saveLocalTodos(todos) { if (!currentUser) return; localStorage.setItem(`guahh_todos_${currentUser}`, JSON.stringify(todos)); }
+function fetchTodos() { if (!currentUser) { document.getElementById('todo-list').innerHTML = '<p>Please sign in to use the to-do list.</p>'; return; } renderTodos(getLocalTodos()); }
+function renderTodos(todos) { const el = document.getElementById('todo-list'); el.innerHTML = ''; if (todos.length === 0) { el.innerHTML = '<p style="text-align:center; color: var(--sidebar-text);">No tasks yet.</p>'; return; } todos.forEach(task => { const li = document.createElement('li'); li.className = 'todo-item'; li.dataset.id = task.id; li.style = "display:flex; align-items:center; gap:1rem; padding:0.75rem; border-bottom: 1px solid var(--border-color);"; li.innerHTML = `<input type="checkbox" ${task.completed ? 'checked' : ''}><span style="flex-grow:1; ${task.completed ? 'text-decoration:line-through; color:var(--offline-color);' : ''}">${task.text}</span><button class="delete-btn" style="background:none; border:none; color:var(--danger-color);">🗑️</button>`; el.appendChild(li); }); }
+async function fetchStatuses() { const el = document.getElementById('status-container'); if(!currentUser) return; el.innerHTML = '<p>Loading...</p>'; const { success, data } = await apiCall('getStatuses'); if(!success) { el.innerHTML = '<p style="color:var(--away-color);"><span class="emoji">⚠️</span> Could not connect to server.</p>'; return; } renderStatuses(data); }
+function renderStatuses(statuses) { const el = document.getElementById('status-container'); el.innerHTML = ''; const twoMinsAgo = new Date(Date.now() - 2 * 60 * 1000); statuses.sort((a,b) => (a.UserEmail > b.UserEmail) ? 1 : -1).forEach(user => { const lastSeen = new Date(user.LastSeen); let statusClass; if (lastSeen < twoMinsAgo || user.Status === 'Offline') { statusClass = 'offline'; } else if (user.Status === 'Away') { statusClass = 'away'; } else { statusClass = 'online'; } const div = document.createElement('div'); div.className = 'status-item'; div.style = "display:flex; align-items:center; gap:1rem; padding:1rem; border-bottom: 1px solid var(--border-color);"; div.innerHTML = `<span class="status-ball ${statusClass}"></span><div><strong>${user.UserEmail}</strong></div>`; el.appendChild(div); }); }
+function startStatusUpdates() { if (statusInterval) clearInterval(statusInterval); apiCall('updateStatus', 'POST', { user: currentUser, status: currentUserStatus }); statusInterval = setInterval(() => { apiCall('updateStatus', 'POST', { user: currentUser, status: currentUserStatus }); if (window.location.hash === '#status') fetchStatuses(); }, 60 * 1000); }
+function stopStatusUpdates() { clearInterval(statusInterval); statusInterval = null; }
+window.addEventListener('beforeunload', () => { if (currentUser) { const p = JSON.stringify({ action: 'updateStatus', user: currentUser, status: 'Offline' }); navigator.sendBeacon(SCRIPT_URL, p); } });
+async function fetchNotes() { const el = document.getElementById('notes-container'); if (!currentUser) return; el.innerHTML = '<p>Loading...</p>'; const { success, data } = await apiCall('getNotes'); if (!success) { el.innerHTML = '<p>Error loading notes.</p>'; return; } const filtered = data.filter(n => n.SharedWith.toLowerCase() === 'everyone' || n.SharedWith === currentUser || n.Author === currentUser); renderNotes(filtered.reverse()); }
+function renderNotes(notes) { const el = document.getElementById('notes-container'); if (notes.length === 0) { el.innerHTML = '<p>No notes to display.</p>'; return; } el.innerHTML = ''; notes.forEach(note => { const noteEl = document.createElement('div'); noteEl.className = 'note'; noteEl.dataset.id = note.ID; noteEl.style = 'border-radius:8px; padding:1rem; border:1px solid var(--border-color);'; let actionsHtml = (currentUser === note.Author) ? `<div style="text-align:right; margin-top:1rem;"><button class="edit-btn" style="background:none; border:none; color:var(--accent-primary);">✏️ Edit</button></div>` : ''; noteEl.innerHTML = `<div style="white-space:pre-wrap;">${note.Note}</div><div style="font-size:0.8em; margin-top:1rem; padding-top:0.5rem; border-top:1px solid var(--border-color);"><b>By:</b> ${note.Author}<br><b>Shared:</b> ${note.SharedWith}</div>${actionsHtml}`; el.appendChild(noteEl); }); }
+async function fetchLogs() { const el = document.getElementById('log-container'); el.innerHTML = '<p>Loading...</p>'; const { success, data } = await apiCall('getLogs'); if (!success) { el.innerHTML = '<p>Error loading logs.</p>'; return; } renderLogs(data.reverse()); }
+function renderLogs(logs) { const el = document.getElementById('log-container'); el.innerHTML = ''; if (logs.length === 0) { el.innerHTML = '<p>No activity yet.</p>'; return; } logs.forEach(log => { const div = document.createElement('div'); div.className = 'status-item'; div.style = 'align-items: flex-start;'; div.innerHTML = `<div style="font-size: 1.5rem;">👤</div><div><p style="margin:0;"><strong>${log.Author}</strong>: ${log.LogEntry}</p><p style="color: var(--sidebar-text); font-size: 0.9em; margin:0.25rem 0 0 0;">${new Date(log.Timestamp).toLocaleString()}</p></div>`; el.appendChild(div); }); }
+</script>
+</body>
+</html>
