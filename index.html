@@ -45,18 +45,31 @@
             transition: background-image 0.5s ease-in-out;
         }
 
-        .status-bar, .app-grid { position: relative; z-index: 10; }
-        .status-bar { display: flex; justify-content: space-between; padding: calc(15px + var(--safe-area-top)) 25px 15px 25px; font-size: 16px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;}
+        .status-bar { 
+            position: relative;
+            z-index: 10;
+            height: calc(15px + var(--safe-area-top)); /* Empty status bar for spacing */
+            flex-shrink: 0;
+        }
+
         .app-grid { 
             flex-grow: 1; 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
-            gap: 5px 20px;
-            padding: 10px 40px calc(90px + var(--safe-area-bottom)) 40px;
+            gap: 5px 10px;
+            padding: 10px 20px calc(90px + var(--safe-area-bottom)) 20px;
             overflow-y: auto;
             align-content: start;
         }
-        .app-icon { display: flex; flex-direction: column; align-items: center; text-decoration: none; cursor: pointer; padding: 10px 0; }
+        .app-icon { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            text-decoration: none; 
+            cursor: pointer;
+            padding: 10px 0;
+        }
         .app-icon img { width: 70px; height: 70px; transition: transform 0.15s ease-out; }
         .app-icon.pressed img { transform: scale(0.9); }
         .app-icon span { margin-top: 10px; font-size: 14px; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
@@ -97,44 +110,14 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         
-        /* App-Specific Styles */
         #safari .app-header { padding-top: 10px; padding-bottom: 10px; gap: 10px; display:flex; justify-content: space-between; }
-        #safari .app-content { padding: 0; display: flex; flex-direction: column; }
-        .safari-nav-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #333; }
-        .safari-nav-btn:disabled { color: #ccc; pointer-events: none; }
-        #url-input-container { flex-grow: 1; position: relative; display: flex; align-items: center; }
-        #url-input { width: 100%; padding: 8px 30px 8px 15px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #000; font-size: 14px; }
-        #safari-reload { position: absolute; right: 8px; background: none; border: none; font-size: 16px; color: #888; cursor: pointer; display: block; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        #safari-reload.loading { animation: spin 1s linear infinite; }
-        #safari-iframe { flex-grow: 1; border: none; background: #fff; }
-        .blocked-view { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; padding: 20px; box-sizing: border-box; }
-        .blocked-view h2 { margin: 0; }
-        .blocked-view button { margin-top: 20px; padding: 10px 20px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .wallpaper-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .wallpaper-thumb { width: 100%; border-radius: 15px; cursor: pointer; border: 3px solid transparent; box-sizing: border-box; }
-        .wallpaper-thumb:hover { border-color: var(--accent-color); }
-        .settings-list { list-style: none; padding: 0; margin: 0 20px; background: #fff; border-radius: 10px; }
-        .settings-list li { padding: 12px 15px; border-bottom: 1px solid #e0e0e0; display:flex; justify-content: space-between; cursor: pointer; }
-        .settings-list li:last-child { border: none; }
-        .settings-detail { display: none; }
-        .settings-detail.show { display: block; }
-        .calculator { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px; height: 100%; }
-        .calculator-screen { grid-column: 1 / -1; background: #444; color: #fff; text-align: right; padding: 20px; font-size: 48px; border-radius: 10px; word-wrap: break-word; }
-        .calculator-btn { background: #e0e0e0; border: none; font-size: 28px; border-radius: 10px; cursor: pointer; color: #000; }
-        .calculator-btn.operator { background: #f9a825; color: #fff; }
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 2px; }
-        .photo-grid img { width: 100%; height: 100%; object-fit: cover; }
-        .music-player, .weather-display { text-align: center; padding: 30px; }
-        .progress-bar { width: 80%; margin: 20px auto; height: 4px; background: #ccc; border-radius: 2px; }
-        #progress { width: 0%; height: 100%; background: #000; border-radius: 2px; }
-        #play-pause-btn { font-size: 40px; cursor: pointer; }
+        /* ... other styles */
     </style>
 </head>
 <body>
     <div class="os-container" id="os-container">
         <div id="app-launch-animator"></div>
-        <div class="status-bar"><div id="time">9:41 AM</div><div>📶 5G 🔋</div></div>
+        <div class="status-bar"></div>
 
         <div class="app-grid" id="app-grid">
             <a id="icon-weather" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/7b42830afc56112a606dab79e2ecaa35_wyuc2r0Q8D.png" alt="Weather"><span>Weather</span></a>
@@ -299,6 +282,7 @@
                 const appId = icon.id.replace('icon-', '');
                 
                 const handlePressStart = (e) => {
+                    if (isEditMode) return; 
                     if (e.cancelable) e.preventDefault();
                     icon.classList.add('pressed');
                     clearTimeout(longPressTimer);
@@ -314,14 +298,17 @@
 
                 icon.addEventListener('mousedown', handlePressStart);
                 icon.addEventListener('mouseup', handlePressEnd);
-                icon.addEventListener('mouseleave', endPress);
+                icon.addEventListener('mouseleave', handlePressEnd);
                 icon.addEventListener('touchstart', handlePressStart, { passive: false });
                 icon.addEventListener('touchend', handlePressEnd);
                 icon.addEventListener('touchmove', () => clearTimeout(longPressTimer));
 
                 icon.addEventListener('click', (e) => {
-                    if (isEditMode) e.preventDefault();
-                    else openApp(appId, e);
+                    if (isEditMode) {
+                         e.preventDefault();
+                    } else {
+                        openApp(appId, e);
+                    }
                 });
             });
 
@@ -374,10 +361,7 @@
 
         // --- Core Inits ---
         function initClock() {
-            const timeElement = document.getElementById('time');
-            const updateTime = () => timeElement.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-            setInterval(updateTime, 1000);
-            updateTime();
+            // Clock functionality removed as per request
         }
 
         function initWallpaper() {
