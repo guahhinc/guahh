@@ -48,7 +48,7 @@
         .status-bar { 
             position: relative;
             z-index: 10;
-            height: calc(15px + var(--safe-area-top)); /* Empty status bar for spacing */
+            height: calc(15px + var(--safe-area-top));
             flex-shrink: 0;
         }
 
@@ -111,7 +111,36 @@
         }
         
         #safari .app-header { padding-top: 10px; padding-bottom: 10px; gap: 10px; display:flex; justify-content: space-between; }
-        /* ... other styles */
+        #safari .app-content { padding: 0; display: flex; flex-direction: column; }
+        .safari-nav-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #333; }
+        .safari-nav-btn:disabled { color: #ccc; pointer-events: none; }
+        #url-input-container { flex-grow: 1; position: relative; display: flex; align-items: center; }
+        #url-input { width: 100%; padding: 8px 30px 8px 15px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #000; font-size: 14px; }
+        #safari-reload { position: absolute; right: 8px; background: none; border: none; font-size: 16px; color: #888; cursor: pointer; display: block; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        #safari-reload.loading { animation: spin 1s linear infinite; }
+        #safari-iframe { flex-grow: 1; border: none; background: #fff; }
+        .blocked-view { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; padding: 20px; box-sizing: border-box; }
+        .blocked-view h2 { margin: 0; }
+        .blocked-view button { margin-top: 20px; padding: 10px 20px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        .wallpaper-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
+        .wallpaper-thumb { width: 100%; border-radius: 15px; cursor: pointer; border: 3px solid transparent; box-sizing: border-box; }
+        .wallpaper-thumb:hover { border-color: var(--accent-color); }
+        .settings-list { list-style: none; padding: 0; margin: 0 20px; background: #fff; border-radius: 10px; }
+        .settings-list li { padding: 12px 15px; border-bottom: 1px solid #e0e0e0; display:flex; justify-content: space-between; cursor: pointer; }
+        .settings-list li:last-child { border: none; }
+        .settings-detail { display: none; }
+        .settings-detail.show { display: block; }
+        .calculator { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px; height: 100%; }
+        .calculator-screen { grid-column: 1 / -1; background: #444; color: #fff; text-align: right; padding: 20px; font-size: 48px; border-radius: 10px; word-wrap: break-word; }
+        .calculator-btn { background: #e0e0e0; border: none; font-size: 28px; border-radius: 10px; cursor: pointer; color: #000; }
+        .calculator-btn.operator { background: #f9a825; color: #fff; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 2px; }
+        .photo-grid img { width: 100%; height: 100%; object-fit: cover; }
+        .music-player, .weather-display { text-align: center; padding: 30px; }
+        .progress-bar { width: 80%; margin: 20px auto; height: 4px; background: #ccc; border-radius: 2px; }
+        #progress { width: 0%; height: 100%; background: #000; border-radius: 2px; }
+        #play-pause-btn { font-size: 40px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -150,7 +179,6 @@
 
         // --- System Initializer ---
         document.addEventListener('DOMContentLoaded', () => {
-            initClock();
             initWallpaper();
             initHomeButton();
             initAppContent();
@@ -280,49 +308,48 @@
             
             document.querySelectorAll('.app-icon').forEach(icon => {
                 const appId = icon.id.replace('icon-', '');
+                let pressTimer;
+                let isDragging = false;
                 
                 const handlePressStart = (e) => {
-                    if (isEditMode) return; 
-                    if (e.cancelable) e.preventDefault();
+                    isDragging = false;
                     icon.classList.add('pressed');
-                    clearTimeout(longPressTimer);
-                    longPressTimer = setTimeout(() => {
+                    clearTimeout(pressTimer);
+                    pressTimer = setTimeout(() => {
                         enterEditMode();
                         startDrag(icon, e);
                     }, 500);
                 };
-                const handlePressEnd = () => {
-                    clearTimeout(longPressTimer);
+                
+                const handlePressEnd = (e) => {
+                    clearTimeout(pressTimer);
                     icon.classList.remove('pressed');
+                    if (!isEditMode && !isDragging) {
+                        openApp(appId, e);
+                    }
                 };
-
+                
                 icon.addEventListener('mousedown', handlePressStart);
                 icon.addEventListener('mouseup', handlePressEnd);
                 icon.addEventListener('mouseleave', handlePressEnd);
                 icon.addEventListener('touchstart', handlePressStart, { passive: false });
                 icon.addEventListener('touchend', handlePressEnd);
-                icon.addEventListener('touchmove', () => clearTimeout(longPressTimer));
-
-                icon.addEventListener('click', (e) => {
-                    if (isEditMode) {
-                         e.preventDefault();
-                    } else {
-                        openApp(appId, e);
-                    }
+                icon.addEventListener('touchmove', () => { 
+                    clearTimeout(pressTimer);
+                    isDragging = true;
                 });
             });
 
             function startDrag(icon, initialEvent) {
+                if (initialEvent.cancelable) initialEvent.preventDefault();
                 draggedIcon = icon;
                 draggedIcon.classList.add('dragging');
 
                 const handleDragMove = (e) => {
                     e.preventDefault();
                     if (!draggedIcon) return;
-
                     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
                     const target = document.elementFromPoint(clientX, clientY);
                     const targetIcon = target ? target.closest('.app-icon') : null;
 
@@ -330,12 +357,8 @@
                         const allIcons = [...appGrid.children];
                         const dragIndex = allIcons.indexOf(draggedIcon);
                         const targetIndex = allIcons.indexOf(targetIcon);
-
-                        if (dragIndex < targetIndex) {
-                            appGrid.insertBefore(draggedIcon, targetIcon.nextSibling);
-                        } else {
-                            appGrid.insertBefore(draggedIcon, targetIcon);
-                        }
+                        if (dragIndex < targetIndex) appGrid.insertBefore(draggedIcon, targetIcon.nextSibling);
+                        else appGrid.insertBefore(draggedIcon, targetIcon);
                     }
                 };
 
@@ -344,7 +367,6 @@
                     draggedIcon.classList.remove('dragging');
                     draggedIcon = null;
                     saveIconOrder();
-
                     document.removeEventListener('mousemove', handleDragMove);
                     document.removeEventListener('touchmove', handleDragMove);
                     document.removeEventListener('mouseup', handleDragEnd);
@@ -361,7 +383,7 @@
 
         // --- Core Inits ---
         function initClock() {
-            // Clock functionality removed as per request
+             // Removed as requested
         }
 
         function initWallpaper() {
@@ -376,21 +398,9 @@
         
         // --- App Content & Logic ---
         function initAppContent() {
-            document.getElementById('safari-header').innerHTML = `<button id="safari-back" class="safari-nav-btn">◀</button><button id="safari-forward" class="safari-nav-btn">▶</button><div id="url-input-container"><input type="text" id="url-input" placeholder="Enter URL"><button id="safari-reload">↻</button></div>`;
-            document.getElementById('safari-content').innerHTML = `<div id="safari-blocked-view" class="blocked-view"><h2>Content Cannot Be Displayed</h2><p>This website does not allow itself to be embedded.</p><button id="blocked-link-opener">Open in New Tab</button></div><iframe id="safari-iframe" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>`;
-            document.getElementById('music-content').innerHTML = `<div class="music-player"><img src="https://images.unsplash.com/photo-1708915638321-5a9682e05717?q=80&w=800" style="width:200px; height:200px; border-radius:15px;" alt="Album Art"><h2>Liquid Dreams</h2><p>Gemini AI</p><div class="progress-bar"><div id="progress"></div></div><div id="play-pause-btn">▶️</div></div>`;
-            document.getElementById('weather-content').innerHTML = `<div class="weather-display"><h2 id="weather-location">Melbourne</h2><h1 id="weather-temp" style="font-size: 80px; font-weight: 700;">19°</h1><p id="weather-condition">☀️ Sunny</p></div>`;
-            document.getElementById('notes-content').innerHTML = `<textarea id="notes-textarea" style="background:transparent; color:#000; width:100%; height:100%; border:none; resize:none; font-size:16px; padding: 15px;" placeholder="Start typing..."></textarea>`;
-            document.getElementById('calculator-content').innerHTML = `<div class="calculator"><div class="calculator-screen" id="calc-display">0</div><button class="calculator-btn" onclick="appendToDisplay('7')">7</button><button class="calculator-btn" onclick="appendToDisplay('8')">8</button><button class="calculator-btn" onclick="appendToDisplay('9')">9</button><button class="calculator-btn operator" onclick="appendToDisplay('/')">÷</button><button class="calculator-btn" onclick="appendToDisplay('4')">4</button><button class="calculator-btn" onclick="appendToDisplay('5')">5</button><button class="calculator-btn" onclick="appendToDisplay('6')">6</button><button class="calculator-btn operator" onclick="appendToDisplay('*')">×</button><button class="calculator-btn" onclick="appendToDisplay('1')">1</button><button class="calculator-btn" onclick="appendToDisplay('2')">2</button><button class="calculator-btn" onclick="appendToDisplay('3')">3</button><button class="calculator-btn operator" onclick="appendToDisplay('-')">-</button><button class="calculator-btn" onclick="appendToDisplay('0')">0</button><button class="calculator-btn" onclick="clearDisplay()">C</button><button class="calculator-btn" onclick="calculateResult()">=</button><button class="calculator-btn operator" onclick="appendToDisplay('+')">+</button></div>`;
-            document.getElementById('photos-content').innerHTML = `<div class="photo-grid"><img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=400"><img src="https://images.unsplash.com/photo-1574158622682-e40e6984100d?q=80&w=400"><img src="https://images.unsplash.com/photo-1516372583274-f2863ab37145?q=80&w=400"><img src="https://images.unsplash.com/photo-1539278383944-1602a634a8a3?q=80&w=400"><img src="https://images.unsplash.com/photo-1583083527882-3e336b52c853?q=80&w=400"><img src="https://images.unsplash.com/photo-1517423568342-3bce7b6b8084?q=80&w=400"></div>`;
-            document.getElementById('settings-content').innerHTML = `<div id="settings-main" class="settings-detail show"><ul class="settings-list"><li>Wi-Fi <span>></span></li><li>Bluetooth <span>></span></li><li onclick="showSettingsDetail('settings-wallpaper')">Wallpaper <span>></span></li><li>General <span>></span></li></ul></div><div id="settings-wallpaper" class="settings-detail"><a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a><div class="wallpaper-grid"><img class="wallpaper-thumb" src="https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/465546/465546-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466597/466597-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466598/466598-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449380/449380-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449381/449381-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196649/196649-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196664/196664-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196661/196661-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196666/196666-500.avif" onclick="setWallpaper(this.src)"></div></div>`;
-            
-            const notesTextarea = document.getElementById('notes-textarea');
-            notesTextarea.value = localStorage.getItem('notesContent') || '';
-            notesTextarea.addEventListener('keyup', () => localStorage.setItem('notesContent', notesTextarea.value));
-            document.getElementById('play-pause-btn').addEventListener('click', togglePlay);
+            document.getElementById('settings-content').innerHTML = `<div id="settings-main" class="settings-detail show"><ul class="settings-list"><li onclick="showSettingsDetail('settings-wallpaper')">Wallpaper <span>></span></li><li onclick="showSettingsDetail('settings-general')">General <span>></span></li></ul></div><div id="settings-wallpaper" class="settings-detail"><a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a><div class="wallpaper-grid"><img class="wallpaper-thumb" src="https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/465546/465546-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466597/466597-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466598/466598-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449380/449380-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449381/449381-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196649/196649-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196664/196664-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196661/196661-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196666/196666-500.avif" onclick="setWallpaper(this.src)"></div></div><div id="settings-general" class="settings-detail"><a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a><ul class="settings-list"><li>About</li><li onclick="location.reload(true)">Software Update <span>></span></li></ul></div>`;
         }
-
+        
         let safariHistory = [];
         let safariHistoryIndex = -1;
         const blockedDomains = ['tiktok.com', 'instagram.com', 'google.com', 'facebook.com', 'youtube.com'];
@@ -456,7 +466,7 @@
         function showSettingsDetail(detailId) {
             document.querySelectorAll('#settings .settings-detail').forEach(el => el.classList.remove('show'));
             document.getElementById(detailId).classList.add('show');
-            document.getElementById('settings-header').querySelector('h3').textContent = detailId === 'settings-main' ? 'Settings' : 'Wallpaper';
+            document.getElementById('settings-header').querySelector('h3').textContent = detailId.includes('wallpaper') ? 'Wallpaper' : detailId.includes('general') ? 'General' : 'Settings';
         }
         
         window.appendToDisplay = (value) => { let d = document.getElementById('calc-display'); if (d.innerText.length < 15) { d.innerText = (d.innerText === '0' || d.innerText === 'Error') ? value : d.innerText + value; } };
