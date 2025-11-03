@@ -102,8 +102,8 @@
             border-top: 1px solid rgba(255,255,255,0.2);
         }
         #home-button {
-            width: 50px;
-            height: 50px;
+            width: 60px; /* Increased size */
+            height: 60px; /* Increased size */
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.8);
             cursor: pointer;
@@ -179,6 +179,7 @@
 
         // --- System Initializer ---
         document.addEventListener('DOMContentLoaded', () => {
+            initClock();
             initWallpaper();
             initHomeButton();
             initAppContent();
@@ -310,14 +311,18 @@
                 const appId = icon.id.replace('icon-', '');
                 let pressTimer;
                 let isDragging = false;
-                
+
                 const handlePressStart = (e) => {
+                    if (isEditMode) { // If already in edit mode, start drag immediately
+                        startDrag(icon, e);
+                        return;
+                    }
+                    if (e.cancelable) e.preventDefault();
                     isDragging = false;
                     icon.classList.add('pressed');
                     clearTimeout(pressTimer);
                     pressTimer = setTimeout(() => {
                         enterEditMode();
-                        startDrag(icon, e);
                     }, 500);
                 };
                 
@@ -341,7 +346,7 @@
             });
 
             function startDrag(icon, initialEvent) {
-                if (initialEvent.cancelable) initialEvent.preventDefault();
+                if (!isEditMode) return;
                 draggedIcon = icon;
                 draggedIcon.classList.add('dragging');
 
@@ -398,9 +403,12 @@
         
         // --- App Content & Logic ---
         function initAppContent() {
-            document.getElementById('settings-content').innerHTML = `<div id="settings-main" class="settings-detail show"><ul class="settings-list"><li onclick="showSettingsDetail('settings-wallpaper')">Wallpaper <span>></span></li><li onclick="showSettingsDetail('settings-general')">General <span>></span></li></ul></div><div id="settings-wallpaper" class="settings-detail"><a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a><div class="wallpaper-grid"><img class="wallpaper-thumb" src="https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/465546/465546-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466597/466597-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466598/466598-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449380/449380-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449381/449381-640.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196649/196649-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196664/196664-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196661/196661-500.avif" onclick="setWallpaper(this.src)"><img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196666/196666-500.avif" onclick="setWallpaper(this.src)"></div></div><div id="settings-general" class="settings-detail"><a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a><ul class="settings-list"><li>About</li><li onclick="location.reload(true)">Software Update <span>></span></li></ul></div>`;
+            const notesTextarea = document.getElementById('notes-textarea');
+            notesTextarea.value = localStorage.getItem('notesContent') || '';
+            notesTextarea.addEventListener('keyup', () => localStorage.setItem('notesContent', notesTextarea.value));
+            document.getElementById('play-pause-btn').addEventListener('click', togglePlay);
         }
-        
+
         let safariHistory = [];
         let safariHistoryIndex = -1;
         const blockedDomains = ['tiktok.com', 'instagram.com', 'google.com', 'facebook.com', 'youtube.com'];
