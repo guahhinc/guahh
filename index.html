@@ -102,8 +102,8 @@
             border-top: 1px solid rgba(255,255,255,0.2);
         }
         #home-button {
-            width: 60px;
-            height: 60px;
+            width: 60px; /* Increased size */
+            height: 60px; /* Increased size */
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.8);
             cursor: pointer;
@@ -161,67 +161,13 @@
     </div>
 
     <!-- App Windows -->
-    <div id="safari" class="app-window">
-        <div class="app-header">
-             <button id="safari-back" class="safari-nav-btn">◀</button><button id="safari-forward" class="safari-nav-btn">▶</button><div id="url-input-container"><input type="text" id="url-input" placeholder="Enter URL"><button id="safari-reload">↻</button></div>
-        </div>
-        <div class="app-content">
-             <div id="safari-blocked-view" class="blocked-view"><h2>Content Cannot Be Displayed</h2><p>This website does not allow itself to be embedded.</p><button id="blocked-link-opener">Open in New Tab</button></div><iframe id="safari-iframe" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
-        </div>
-    </div>
-    <div id="music" class="app-window">
-        <div class="app-header"><h3>Music</h3></div>
-        <div class="app-content"><div class="music-player"><img src="https://images.unsplash.com/photo-1708915638321-5a9682e05717?q=80&w=800" style="width:200px; height:200px; border-radius:15px;" alt="Album Art"><h2>Liquid Dreams</h2><p>Gemini AI</p><div class="progress-bar"><div id="progress"></div></div><div id="play-pause-btn">▶️</div></div></div>
-    </div>
-    <div id="weather" class="app-window">
-        <div class="app-header"><h3>Weather</h3></div>
-        <div class="app-content"><div class="weather-display"><h2 id="weather-location">Melbourne</h2><h1 id="weather-temp" style="font-size: 80px; font-weight: 700;">19°</h1><p id="weather-condition">☀️ Sunny</p></div></div>
-    </div>
-    <div id="notes" class="app-window">
-        <div class="app-header"><h3>Notes</h3></div>
-        <div class="app-content" style="background:#fff; color:#000; padding: 15px;"><textarea id="notes-textarea" style="background:transparent; color:#000; width:100%; height:100%; border:none; resize:none; font-size:16px;" placeholder="Start typing..."></textarea></div>
-    </div>
-    <div id="calculator" class="app-window">
-        <div class="app-header"><h3>Calculator</h3></div>
-        <div class="app-content" style="padding:0;"><div class="calculator"><div class="calculator-screen" id="calc-display">0</div><button class="calculator-btn" onclick="appendToDisplay('7')">7</button><button class="calculator-btn" onclick="appendToDisplay('8')">8</button><button class="calculator-btn" onclick="appendToDisplay('9')">9</button><button class="calculator-btn operator" onclick="appendToDisplay('/')">÷</button><button class="calculator-btn" onclick="appendToDisplay('4')">4</button><button class="calculator-btn" onclick="appendToDisplay('5')">5</button><button class="calculator-btn" onclick="appendToDisplay('6')">6</button><button class="calculator-btn operator" onclick="appendToDisplay('*')">×</button><button class="calculator-btn" onclick="appendToDisplay('1')">1</button><button class="calculator-btn" onclick="appendToDisplay('2')">2</button><button class="calculator-btn" onclick="appendToDisplay('3')">3</button><button class="calculator-btn operator" onclick="appendToDisplay('-')">-</button><button class="calculator-btn" onclick="appendToDisplay('0')">0</button><button class="calculator-btn" onclick="clearDisplay()">C</button><button class="calculator-btn" onclick="calculateResult()">=</button><button class="calculator-btn operator" onclick="appendToDisplay('+')">+</button></div></div>
-    </div>
-    <div id="photos" class="app-window">
-        <div class="app-header"><h3>Photos</h3></div>
-        <div class="app-content" style="padding:0; background: #fff;"><div class="photo-grid"><img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=400"><img src="https://images.unsplash.com/photo-1574158622682-e40e6984100d?q=80&w=400"><img src="https://images.unsplash.com/photo-1516372583274-f2863ab37145?q=80&w=400"><img src="https://images.unsplash.com/photo-1539278383944-1602a634a8a3?q=80&w=400"><img src="https://images.unsplash.com/photo-1583083527882-3e336b52c853?q=80&w=400"><img src="https://images.unsplash.com/photo-1517423568342-3bce7b6b8084?q=80&w=400"></div></div>
-    </div>
-    <div id="settings" class="app-window">
-        <div class="app-header" id="settings-header"><h3>Settings</h3></div>
-        <div class="app-content">
-            <div id="settings-main" class="settings-detail show">
-                <ul class="settings-list">
-                    <li onclick="showSettingsDetail('settings-wallpaper')">Wallpaper <span>></span></li>
-                    <li onclick="showSettingsDetail('settings-general')">General <span>></span></li>
-                </ul>
-            </div>
-            <div id="settings-wallpaper" class="settings-detail">
-                <a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a>
-                <div class="wallpaper-grid">
-                    <img class="wallpaper-thumb" src="https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/465546/465546-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466597/466597-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466598/466598-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449380/449380-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449381/449381-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196649/196649-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196664/196664-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196661/196661-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196666/196666-500.avif" onclick="setWallpaper(this.src)">
-                </div>
-            </div>
-             <div id="settings-general" class="settings-detail">
-                <a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a>
-                <ul class="settings-list">
-                    <li>About</li>
-                    <li onclick="location.reload(true)">Software Update <span>></span></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <div id="safari" class="app-window"><div class="app-header" id="safari-header"></div><div class="app-content" id="safari-content"></div></div>
+    <div id="music" class="app-window"><div class="app-header"><h3>Music</h3></div><div class="app-content" id="music-content"></div></div>
+    <div id="weather" class="app-window"><div class="app-header"><h3>Weather</h3></div><div class="app-content" id="weather-content"></div></div>
+    <div id="notes" class="app-window"><div class="app-header"><h3>Notes</h3></div><div class="app-content" id="notes-content"></div></div>
+    <div id="calculator" class="app-window"><div class="app-header"><h3>Calculator</h3></div><div class="app-content" id="calculator-content" style="padding:0;"></div></div>
+    <div id="photos" class="app-window"><div class="app-header"><h3>Photos</h3></div><div class="app-content" id="photos-content" style="padding:0; background: #fff;"></div></div>
+    <div id="settings" class="app-window"><div class="app-header" id="settings-header"><h3>Settings</h3></div><div class="app-content" id="settings-content"></div></div>
     
     <script>
         // --- System State ---
@@ -233,9 +179,10 @@
 
         // --- System Initializer ---
         document.addEventListener('DOMContentLoaded', () => {
+            initClock();
             initWallpaper();
             initHomeButton();
-            initAppLogic();
+            initAppContent();
             initAppGrid();
         });
         
@@ -364,20 +311,18 @@
                 const appId = icon.id.replace('icon-', '');
                 let pressTimer;
                 let isDragging = false;
-                
+
                 const handlePressStart = (e) => {
-                    if (isEditMode) {
+                    if (isEditMode) { // If already in edit mode, start drag immediately
                         startDrag(icon, e);
                         return;
                     }
                     if (e.cancelable) e.preventDefault();
-                    isDragging = false; // Reset dragging state on new press
+                    isDragging = false;
                     icon.classList.add('pressed');
                     clearTimeout(pressTimer);
                     pressTimer = setTimeout(() => {
-                        isDragging = true; // Set dragging to true after timer to prevent click
                         enterEditMode();
-                        startDrag(icon, e);
                     }, 500);
                 };
                 
@@ -456,8 +401,8 @@
             localStorage.setItem('geminiOS_wallpaper', url);
         }
         
-        // --- App Logic ---
-        function initAppLogic() {
+        // --- App Content & Logic ---
+        function initAppContent() {
             const notesTextarea = document.getElementById('notes-textarea');
             notesTextarea.value = localStorage.getItem('notesContent') || '';
             notesTextarea.addEventListener('keyup', () => localStorage.setItem('notesContent', notesTextarea.value));
