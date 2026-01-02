@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guahh</title>
     
-    <!-- Favicon (Original White Logo) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png">
 
     <!-- Google Fonts: Inter Tight -->
@@ -14,12 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS VARIABLES & RESET - LIGHT MODE */
+        /* CSS VARIABLES - LIGHT MODE */
         :root {
             --bg-color: #ffffff;
-            --section-bg: #f5f5f7; /* Apple Light Gray */
-            --text-color: #1d1d1f; /* Apple Dark Text */
-            --accent-color: #0071e3; /* Apple Blue */
+            --section-bg: #f5f5f7;
+            --text-color: #1d1d1f;
+            --accent-color: #0071e3;
             --accent-hover: #0077ed;
             --glass-bg: rgba(255, 255, 255, 0.8);
             --gray-text: #86868b;
@@ -35,7 +35,6 @@
         }
 
         html {
-            /* Enables smooth scrolling for the whole page */
             scroll-behavior: smooth;
         }
 
@@ -108,8 +107,16 @@
             align-items: center;
             text-align: center;
             padding: 120px 20px 60px 20px;
-            animation: fadeIn 1.5s ease-out;
             background: #ffffff;
+            
+            /* ANIMATION & STABILITY FIX */
+            animation: fadeIn 0.5s ease-out forwards;
+            
+            /* These lines prevent the "jump" when animation ends by keeping the layer active in the GPU */
+            transform: translateZ(0); 
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform, opacity;
         }
 
         .hero-logo {
@@ -118,14 +125,40 @@
             filter: invert(1);
         }
 
+        /* SHARED GRADIENT STYLES */
+        .hero h1, .product-title {
+            background: linear-gradient(
+                135deg, 
+                #1d1d1f 0%,     
+                #1d1d1f 30%,    
+                
+                #ff0055 35%,    
+                #ffdd00 45%,    
+                #00ffff 55%,    
+                #bd00ff 65%,    
+                
+                #1d1d1f 70%,    
+                #1d1d1f 100%    
+            );
+            background-size: 800% 100%;
+            background-position: 100% 0; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            
+            /* Fix for vertical alignment issues with gradient text */
+            line-height: 1.1;
+            padding-bottom: 0.1em; 
+        }
+
         .hero h1 {
             font-size: 68px;
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 10px;
-            background: linear-gradient(180deg, #1d1d1f 0%, #434344 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            /* Animation triggers automatically */
+            animation: textShimmer 1.1s ease-out 0.5s 1 forwards;
         }
 
         .hero h2 {
@@ -153,12 +186,12 @@
             transform: scale(1.02);
         }
 
-        /* PRODUCT SECTION (Kangaroo) */
+        /* PRODUCT SECTION */
         .product-section {
             background-color: #ffffff;
             padding: var(--section-padding);
             text-align: center;
-            scroll-margin-top: 50px; /* Offset for sticky nav */
+            scroll-margin-top: 50px; 
         }
 
         .product-container {
@@ -171,7 +204,6 @@
             height: 120px;
             border-radius: 28px;
             margin-bottom: 30px;
-            box-shadow: none; 
             transition: transform 0.4s ease;
         }
         
@@ -184,7 +216,11 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 15px;
-            color: #1d1d1f;
+            color: #1d1d1f; 
+        }
+        
+        .product-title.animate-shimmer {
+            animation: textShimmer 1.1s ease-out 0.2s 1 forwards;
         }
 
         .product-desc {
@@ -208,11 +244,11 @@
             text-decoration: underline;
         }
 
-        /* VENTURES / PARTNERS SECTION */
+        /* VENTURES / PARTNERS */
         .ventures-section {
             background-color: var(--section-bg);
             padding: var(--section-padding);
-            scroll-margin-top: 50px; /* Offset for sticky nav */
+            scroll-margin-top: 50px; 
         }
 
         .ventures-container {
@@ -269,13 +305,13 @@
             padding-bottom: 0;
         }
 
-        /* TERMS SECTION */
+        /* TERMS */
         .terms-section {
             background-color: #f5f5f7;
             padding: 80px 20px;
             color: var(--gray-text);
             border-top: 1px solid rgba(0,0,0,0.1);
-            scroll-margin-top: 50px; /* Offset for sticky nav */
+            scroll-margin-top: 50px; 
         }
 
         .terms-container {
@@ -324,6 +360,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes textShimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: 0% 0; }
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .hero h1 { font-size: 48px; }
@@ -363,7 +404,7 @@
             <!-- Kangaroo Logo -->
             <img src="https://raw.githubusercontent.com/guahhinc/fire/main/Kangaroo.png" alt="Kangaroo App Icon" class="app-icon">
             
-            <h3 class="product-title">Kangaroo.</h3>
+            <h3 class="product-title">Kangaroo</h3>
             <p class="product-desc">
                 Your freedom from the social media ban. Connect with the world on a platform designed for speed, community, and free speech.
             </p>
@@ -427,5 +468,30 @@
             <p>Designed in Australia</p>
         </div>
     </footer>
+
+    <!-- Script to Trigger Animation on Scroll -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // Trigger when 50% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-shimmer');
+                        observer.unobserve(entry.target); // Only play once
+                    }
+                });
+            }, observerOptions);
+
+            const kangarooTitle = document.querySelector('.product-title');
+            if (kangarooTitle) {
+                observer.observe(kangarooTitle);
+            }
+        });
+    </script>
 </body>
 </html>
