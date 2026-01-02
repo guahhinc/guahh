@@ -2,564 +2,424 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Gemini OS</title>
-
-    <!-- === Add to Home Screen / PWA Meta Tags === -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Gemini OS">
-    <link rel="apple-touch-icon" href="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/97d2a929575179d968b2e9deee1a7d53_low_res_Settings.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guahh</title>
     
+    <!-- Google Fonts: Inter Tight -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
     <style>
+        /* CSS VARIABLES & RESET - LIGHT MODE */
         :root {
-            --text-primary: #fff;
-            --app-bg-color: #f1f1f1;
-            --accent-color: #007aff;
-            --animation-curve: cubic-bezier(0.2, 0.8, 0.2, 1);
-            --animation-duration: 0.35s;
-            --safe-area-top: env(safe-area-inset-top);
-            --safe-area-bottom: env(safe-area-inset-bottom);
+            --bg-color: #ffffff;
+            --section-bg: #f5f5f7; /* Apple Light Gray */
+            --text-color: #1d1d1f; /* Apple Dark Text */
+            --accent-color: #0071e3; /* Apple Blue */
+            --accent-hover: #0077ed;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --gray-text: #86868b;
+            --card-bg: #ffffff;
+            --border-color: #d2d2d7;
+            --section-padding: 120px 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            color: var(--text-primary);
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
+            /* Updated Font Family */
+            font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        .os-container {
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
             width: 100%;
-            height: 100%;
-            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
+            height: 48px;
+            background-color: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 9999;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-content {
+            max-width: 980px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-logo img {
+            height: 20px;
+            width: auto;
+            display: block;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            /* Inverts white logo to black */
+            filter: invert(1); 
+        }
+
+        .nav-logo img:hover {
+            opacity: 1;
+        }
+
+        .nav-links a {
+            color: #424245;
+            text-decoration: none;
+            font-size: 13px; /* Slightly bumped for Inter Tight */
+            font-weight: 500;
+            margin-left: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background-image 0.5s ease-in-out;
-        }
-
-        .status-bar { 
-            position: relative;
-            z-index: 10;
-            height: calc(15px + var(--safe-area-top));
-            flex-shrink: 0;
-        }
-
-        .app-grid { 
-            flex-grow: 1; 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 5px 10px;
-            padding: 10px 20px calc(90px + var(--safe-area-bottom)) 20px;
-            overflow-y: auto;
-            align-content: start;
-        }
-        .app-icon { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
             justify-content: center;
-            text-decoration: none; 
-            cursor: pointer;
-            padding: 10px 0;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px 20px;
+            animation: fadeIn 1.5s ease-out;
+            background: #ffffff;
         }
-        .app-icon img { width: 70px; height: 70px; transition: transform 0.15s ease-out; }
-        .app-icon.pressed img { transform: scale(0.9); }
-        .app-icon span { margin-top: 10px; font-size: 14px; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        
-        @keyframes jiggle { 0% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } 100% { transform: rotate(-1deg); } }
-        .edit-mode .app-icon { animation: jiggle 0.2s infinite; }
-        .app-icon.dragging { opacity: 0.5; animation: none; z-index: 1000; }
 
-        .app-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; z-index: 100; opacity: 0; pointer-events: none; }
-        .app-window.open { opacity: 1; pointer-events: auto; transition: opacity 0.2s ease-in-out 0.15s; }
-        .app-header { display: flex; align-items: center; justify-content: center; text-align: center; padding: 15px 20px; background-color: rgba(255,255,255,0.7); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; color: #000; padding-top: calc(15px + var(--safe-area-top)); }
-        .app-header h3 { margin: 0; font-weight: 600; }
-        .app-content { flex-grow: 1; overflow: auto; background: var(--app-bg-color); color: #000; }
-        #app-launch-animator { position: absolute; background-color: var(--app-bg-color); z-index: 200; pointer-events: none; opacity: 0; border-radius: 18px; transition: all var(--animation-duration) var(--animation-curve); }
+        .hero-logo {
+            width: 100px;
+            margin-bottom: 40px;
+            /* Inverts white logo to black */
+            filter: invert(1);
+        }
+
+        .hero h1 {
+            font-size: 68px; /* Slightly larger for impact */
+            font-weight: 700;
+            letter-spacing: -0.02em; /* Tighter tracking for Inter Tight */
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, #1d1d1f 0%, #434344 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--gray-text);
+            margin-bottom: 40px;
+            max-width: 600px;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        /* PRODUCT SECTION (Kangaroo) */
+        .product-section {
+            background-color: #ffffff;
+            padding: var(--section-padding);
+            text-align: center;
+        }
+
+        .product-container {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            margin-bottom: 30px;
+            /* Shadow removed as requested */
+            box-shadow: none; 
+            transition: transform 0.4s ease;
+        }
         
-        #home-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: calc(70px + var(--safe-area-bottom));
+        .app-icon:hover {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 15px;
+            color: #1d1d1f;
+        }
+
+        .product-desc {
+            font-size: 22px;
+            line-height: 1.4;
+            font-weight: 400;
+            color: var(--gray-text);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            letter-spacing: -0.01em;
+        }
+
+        .link-arrow {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .link-arrow:hover {
+            text-decoration: underline;
+        }
+
+        /* VENTURES / PARTNERS SECTION */
+        .ventures-section {
+            background-color: var(--section-bg);
+            padding: var(--section-padding);
+        }
+
+        .ventures-container {
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        
+        .ventures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .venture-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .venture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .venture-category {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-text);
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .venture-list {
+            list-style: none;
+        }
+
+        .venture-list li {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding-bottom: 15px;
+        }
+
+        .venture-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* TERMS SECTION */
+        .terms-section {
+            background-color: #f5f5f7;
+            padding: 80px 20px;
+            color: var(--gray-text);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .terms-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .terms-title {
+            color: var(--text-color);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .terms-content {
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .terms-content p {
+            margin-bottom: 15px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #f5f5f7;
+            padding: 40px 20px;
+            font-size: 12px;
+            color: #86868b;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .footer-content {
+            max-width: 980px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            z-index: 210;
-            padding-top: 10px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-top: 1px solid rgba(255,255,255,0.2);
+            justify-content: space-between;
+            align-items: center;
         }
-        #home-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        #safari .app-header { padding-top: 10px; padding-bottom: 10px; gap: 10px; display:flex; justify-content: space-between; }
-        #safari .app-content { padding: 0; display: flex; flex-direction: column; }
-        .safari-nav-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #333; }
-        .safari-nav-btn:disabled { color: #ccc; pointer-events: none; }
-        #url-input-container { flex-grow: 1; position: relative; display: flex; align-items: center; }
-        #url-input { width: 100%; padding: 8px 30px 8px 15px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #000; font-size: 14px; }
-        #safari-reload { position: absolute; right: 8px; background: none; border: none; font-size: 16px; color: #888; cursor: pointer; display: block; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        #safari-reload.loading { animation: spin 1s linear infinite; }
-        #safari-iframe { flex-grow: 1; border: none; background: #fff; }
-        .blocked-view { display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; padding: 20px; box-sizing: border-box; }
-        .blocked-view h2 { margin: 0; }
-        .blocked-view button { margin-top: 20px; padding: 10px 20px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .wallpaper-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .wallpaper-thumb { width: 100%; border-radius: 15px; cursor: pointer; border: 3px solid transparent; box-sizing: border-box; }
-        .wallpaper-thumb:hover { border-color: var(--accent-color); }
-        .settings-list { list-style: none; padding: 0; margin: 0 20px; background: #fff; border-radius: 10px; }
-        .settings-list li { padding: 12px 15px; border-bottom: 1px solid #e0e0e0; display:flex; justify-content: space-between; cursor: pointer; }
-        .settings-list li:last-child { border: none; }
-        .settings-detail { display: none; }
-        .settings-detail.show { display: block; }
-        .calculator { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px; height: 100%; }
-        .calculator-screen { grid-column: 1 / -1; background: #444; color: #fff; text-align: right; padding: 20px; font-size: 48px; border-radius: 10px; word-wrap: break-word; }
-        .calculator-btn { background: #e0e0e0; border: none; font-size: 28px; border-radius: 10px; cursor: pointer; color: #000; }
-        .calculator-btn.operator { background: #f9a825; color: #fff; }
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 2px; }
-        .photo-grid img { width: 100%; height: 100%; object-fit: cover; }
-        .music-player, .weather-display { text-align: center; padding: 30px; }
-        .progress-bar { width: 80%; margin: 20px auto; height: 4px; background: #ccc; border-radius: 2px; }
-        #progress { width: 0%; height: 100%; background: #000; border-radius: 2px; }
-        #play-pause-btn { font-size: 40px; cursor: pointer; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 48px; }
+            .hero h2 { font-size: 22px; }
+            .ventures-grid { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; gap: 10px; text-align: center;}
+        }
     </style>
 </head>
 <body>
-    <div class="os-container" id="os-container">
-        <div id="app-launch-animator"></div>
-        <div class="status-bar"></div>
 
-        <div class="app-grid" id="app-grid">
-            <a id="icon-weather" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/7b42830afc56112a606dab79e2ecaa35_wyuc2r0Q8D.png" alt="Weather"><span>Weather</span></a>
-            <a id="icon-notes" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/ddef48e60f637ea32b69a99e057a8db3_low_res_Notes.png" alt="Notes"><span>Notes</span></a>
-            <a id="icon-calculator" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/f4c0c6c2336b6433aaf11ed6353769d0_low_res_Calculator.png" alt="Calculator"><span>Calculator</span></a>
-            <a id="icon-photos" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/c0b761fc19488f0b4d2311f29b71ba01_low_res_Photos.png" alt="Photos"><span>Photos</span></a>
-            <a id="icon-settings" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/97d2a929575179d968b2e9deee1a7d53_low_res_Settings.png" alt="Settings"><span>Settings</span></a>
-            <a id="icon-safari" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/8204ffaf2c6f9f46a1a803a96c91e7d5_low_res_Safari.png" alt="Safari"><span>Safari</span></a>
-            <a id="icon-music" class="app-icon"><img src="https://parsefiles.back4app.com/JPaQcFfEEQ1ePBxbf6wvzkPMEqKYHhPYv8boI1Rc/1e2c520c80078e97af7bd1db0c5c6b8c_low_res_Music.png" alt="Music"><span>Music</span></a>
-        </div>
-        <div id="home-bar"><div id="home-button"></div></div>
-    </div>
-
-    <!-- App Windows -->
-    <div id="safari" class="app-window">
-        <div class="app-header">
-             <button id="safari-back" class="safari-nav-btn">◀</button><button id="safari-forward" class="safari-nav-btn">▶</button><div id="url-input-container"><input type="text" id="url-input" placeholder="Enter URL"><button id="safari-reload">↻</button></div>
-        </div>
-        <div class="app-content">
-             <div id="safari-blocked-view" class="blocked-view"><h2>Content Cannot Be Displayed</h2><p>This website does not allow itself to be embedded.</p><button id="blocked-link-opener">Open in New Tab</button></div><iframe id="safari-iframe" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
-        </div>
-    </div>
-    <div id="music" class="app-window">
-        <div class="app-header"><h3>Music</h3></div>
-        <div class="app-content"><div class="music-player"><img src="https://images.unsplash.com/photo-1708915638321-5a9682e05717?q=80&w=800" style="width:200px; height:200px; border-radius:15px;" alt="Album Art"><h2>Liquid Dreams</h2><p>Gemini AI</p><div class="progress-bar"><div id="progress"></div></div><div id="play-pause-btn">▶️</div></div></div>
-    </div>
-    <div id="weather" class="app-window">
-        <div class="app-header"><h3>Weather</h3></div>
-        <div class="app-content"><div class="weather-display"><h2 id="weather-location">Melbourne</h2><h1 id="weather-temp" style="font-size: 80px; font-weight: 700;">19°</h1><p id="weather-condition">☀️ Sunny</p></div></div>
-    </div>
-    <div id="notes" class="app-window">
-        <div class="app-header"><h3>Notes</h3></div>
-        <div class="app-content" style="background:#fff; color:#000; padding: 15px;"><textarea id="notes-textarea" style="background:transparent; color:#000; width:100%; height:100%; border:none; resize:none; font-size:16px;" placeholder="Start typing..."></textarea></div>
-    </div>
-    <div id="calculator" class="app-window">
-        <div class="app-header"><h3>Calculator</h3></div>
-        <div class="app-content" style="padding:0;"><div class="calculator"><div class="calculator-screen" id="calc-display">0</div><button class="calculator-btn" onclick="appendToDisplay('7')">7</button><button class="calculator-btn" onclick="appendToDisplay('8')">8</button><button class="calculator-btn" onclick="appendToDisplay('9')">9</button><button class="calculator-btn operator" onclick="appendToDisplay('/')">÷</button><button class="calculator-btn" onclick="appendToDisplay('4')">4</button><button class="calculator-btn" onclick="appendToDisplay('5')">5</button><button class="calculator-btn" onclick="appendToDisplay('6')">6</button><button class="calculator-btn operator" onclick="appendToDisplay('*')">×</button><button class="calculator-btn" onclick="appendToDisplay('1')">1</button><button class="calculator-btn" onclick="appendToDisplay('2')">2</button><button class="calculator-btn" onclick="appendToDisplay('3')">3</button><button class="calculator-btn operator" onclick="appendToDisplay('-')">-</button><button class="calculator-btn" onclick="appendToDisplay('0')">0</button><button class="calculator-btn" onclick="clearDisplay()">C</button><button class="calculator-btn" onclick="calculateResult()">=</button><button class="calculator-btn operator" onclick="appendToDisplay('+')">+</button></div></div>
-    </div>
-    <div id="photos" class="app-window">
-        <div class="app-header"><h3>Photos</h3></div>
-        <div class="app-content" style="padding:0; background: #fff;"><div class="photo-grid"><img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=400"><img src="https://images.unsplash.com/photo-1574158622682-e40e6984100d?q=80&w=400"><img src="https://images.unsplash.com/photo-1516372583274-f2863ab37145?q=80&w=400"><img src="https://images.unsplash.com/photo-1539278383944-1602a634a8a3?q=80&w=400"><img src="https://images.unsplash.com/photo-1583083527882-3e336b52c853?q=80&w=400"><img src="https://images.unsplash.com/photo-1517423568342-3bce7b6b8084?q=80&w=400"></div></div>
-    </div>
-    <div id="settings" class="app-window">
-        <div class="app-header" id="settings-header"><h3>Settings</h3></div>
-        <div class="app-content">
-            <div id="settings-main" class="settings-detail show">
-                <ul class="settings-list">
-                    <li onclick="showSettingsDetail('settings-wallpaper')">Wallpaper <span>></span></li>
-                    <li onclick="showSettingsDetail('settings-general')">General <span>></span></li>
-                </ul>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <a href="#" class="nav-logo">
+                <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
+            </a>
+            <div class="nav-links">
+                <a href="#kangaroo">Kangaroo</a>
+                <a href="#ventures">Ventures</a>
+                <a href="#terms">Terms</a>
             </div>
-            <div id="settings-wallpaper" class="settings-detail">
-                <a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a>
-                <div class="wallpaper-grid">
-                    <img class="wallpaper-thumb" src="https://media.idownloadblog.com/wp-content/uploads/2025/06/iOS-26-Wallpaper-by-iSpazio-for-iPhone.jpg" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/465546/465546-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466597/466597-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/97554/466598/466598-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449380/449380-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/93874/449381/449381-640.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196649/196649-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196664/196664-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196661/196661-500.avif" onclick="setWallpaper(this.src)">
-                    <img class="wallpaper-thumb" src="https://www.iclarified.com/images/news/43810/196666/196666-500.avif" onclick="setWallpaper(this.src)">
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" class="hero-logo">
+        <h1>Guahh</h1>
+        <h2>Australian Technology Company.</h2>
+        <a href="#kangaroo" class="cta-button">Explore</a>
+    </section>
+
+    <!-- Product Showcase (Kangaroo) -->
+    <section id="kangaroo" class="product-section">
+        <div class="product-container">
+            <!-- Kangaroo Logo (No Shadow) -->
+            <img src="https://raw.githubusercontent.com/guahhinc/fire/main/Kangaroo.png" alt="Kangaroo App Icon" class="app-icon">
+            
+            <h3 class="product-title">Kangaroo.</h3>
+            <p class="product-desc">
+                Your freedom from the social media ban. Connect with the world on a platform designed for speed, community, and zero restrictions.
+            </p>
+            <a href="https://guahhinc.github.io/kangaroo/" class="link-arrow">Open Kangaroo ></a>
+        </div>
+    </section>
+
+    <!-- Ventures Section -->
+    <section id="ventures" class="ventures-section">
+        <div class="ventures-container">
+            <div class="ventures-grid">
+                <!-- Companies Owned -->
+                <div class="venture-card">
+                    <div class="venture-category">Companies We Own</div>
+                    <ul class="venture-list">
+                        <li>Glop</li>
+                        <li>Jumble Development</li>
+                    </ul>
+                </div>
+
+                <!-- Partners -->
+                <div class="venture-card">
+                    <div class="venture-category">Trusted Partners</div>
+                    <ul class="venture-list">
+                        <li>macbooksuck</li>
+                        <li>TLS Aces</li>
+                    </ul>
                 </div>
             </div>
-             <div id="settings-general" class="settings-detail">
-                <a href="#" onclick="showSettingsDetail('settings-main')" style="text-decoration:none; color:var(--accent-color); padding:10px 20px; display:block;">&lt; Back</a>
-                <ul class="settings-list">
-                    <li>About</li>
-                    <li onclick="location.reload(true)">Software Update <span>></span></li>
-                </ul>
+        </div>
+    </section>
+
+    <!-- Terms and Services -->
+    <section id="terms" class="terms-section">
+        <div class="terms-container">
+            <h4 class="terms-title">Legal</h4>
+            <div class="terms-content">
+                <p>
+                    <strong>Terms of Service, Terms of Use and Privacy Policy</strong>
+                </p>
+                <p>
+                    Guahh (hereafter “we,” “us,” “our/ours,” “the company” and “the corporation”) can access the user’s (hereafter “you,” “your/yours,”) information provided to our services by you on our servers. We do not accept responsibility for any data breaches or any personal harm derivative of our services.
+                </p>
+                <p>
+                    Your files will not be stored by Guahh or any third party, and as such we are not responsible for any loss or miscommunication of data. Your account may be terminated without your consent or notification. We can and will use your personal information and data to improve advertising and our platform.
+                </p>
+                <p>
+                    Your status as online/offline may be collected as data used to track our website’s popularity or other metrics. Your messages will be stored as encrypted data held by Google/Alphabet. Your email or login details will not be collected and as such we are not responsible for such data.
+                </p>
+                <p>
+                    Hate speech and inflammatory content is not allowed and depending on severity your account may be terminated. By clicking “I agree” you agree and submit to all the terms listed above. These are subject to change and you will be notified.
+                </p>
             </div>
         </div>
-    </div>
-    
-    <script>
-        // --- System State ---
-        let currentOpenApp = null;
-        let safariInitialized = false;
-        let isEditMode = false;
-        let longPressTimer;
-        let draggedIcon = null;
+    </section>
 
-        // --- System Initializer ---
-        document.addEventListener('DOMContentLoaded', () => {
-            initWallpaper();
-            initHomeButton();
-            initAppLogic();
-            initAppGrid();
-        });
-        
-        // --- App Management ---
-        const animator = document.getElementById('app-launch-animator');
-        const animationDurationMS = 350;
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Copyright © 2026 Guahh Inc. All rights reserved.</p>
+            <p>Designed in Australia</p>
+        </div>
+    </footer>
 
-        function openApp(appId, event) {
-            if (isEditMode) return;
-            event.preventDefault();
-            if (currentOpenApp) return;
-            currentOpenApp = appId;
-            
-            const appWindow = document.getElementById(appId);
-            if (appId === 'weather') updateWeather();
-            if (appId === 'safari') {
-                if(!safariInitialized) {
-                    initSafari(); 
-                    safariInitialized = true;
-                }
-                resetSafari(); 
-            }
-
-            const icon = event.currentTarget.querySelector('img');
-            const iconRect = icon.getBoundingClientRect();
-            
-            animator.style.transition = 'none';
-            animator.style.top = `${iconRect.top}px`;
-            animator.style.left = `${iconRect.left}px`;
-            animator.style.width = `${iconRect.width}px`;
-            animator.style.height = `${iconRect.height}px`;
-            animator.style.borderRadius = '18px';
-            animator.style.opacity = '1';
-            
-            appWindow.dataset.originIconId = event.currentTarget.id;
-
-            requestAnimationFrame(() => {
-                animator.style.transition = `all ${animationDurationMS}ms var(--animation-curve)`;
-                animator.style.top = '0px';
-                animator.style.left = '0px';
-                animator.style.width = '100vw';
-                animator.style.height = '100vh';
-                animator.style.borderRadius = '0px';
-            });
-            
-            appWindow.classList.add('open');
-            setTimeout(() => animator.style.opacity = '0', animationDurationMS);
-        }
-
-        function closeCurrentApp() {
-            if (!currentOpenApp) return;
-            const appId = currentOpenApp;
-            const appWindow = document.getElementById(appId);
-            const icon = document.getElementById(appWindow.dataset.originIconId);
-            if (!icon) return;
-            const iconRect = icon.querySelector('img').getBoundingClientRect();
-            
-            appWindow.classList.remove('open');
-            animator.style.transition = 'none';
-            animator.style.top = '0px';
-            animator.style.left = '0px';
-            animator.style.width = '100vw';
-            animator.style.height = '100vh';
-            animator.style.borderRadius = '0px';
-            animator.style.opacity = '1';
-            
-            requestAnimationFrame(() => {
-                animator.style.transition = `all ${animationDurationMS}ms var(--animation-curve)`;
-                animator.style.top = `${iconRect.top}px`;
-                animator.style.left = `${iconRect.left}px`;
-                animator.style.width = `${iconRect.width}px`;
-                animator.style.height = `${iconRect.height}px`;
-                animator.style.borderRadius = '18px';
-            });
-
-            setTimeout(() => {
-                animator.style.opacity = '0';
-                currentOpenApp = null;
-            }, animationDurationMS);
-        }
-        
-        function initHomeButton() {
-            document.getElementById('home-button').addEventListener('click', () => {
-                if (isEditMode) {
-                    exitEditMode();
-                } else if (currentOpenApp) {
-                    closeCurrentApp();
-                }
-            });
-        }
-        
-        // --- Edit Mode & Drag Drop ---
-        function enterEditMode() {
-            if(currentOpenApp) return;
-            isEditMode = true;
-            document.getElementById('app-grid').classList.add('edit-mode');
-        }
-        
-        function exitEditMode() {
-            isEditMode = false;
-            document.getElementById('app-grid').classList.remove('edit-mode');
-        }
-
-        function saveIconOrder() {
-            const appGrid = document.getElementById('app-grid');
-            const iconOrder = Array.from(appGrid.children).map(icon => icon.id);
-            localStorage.setItem('geminiOS_iconOrder', JSON.stringify(iconOrder));
-        }
-
-        function loadIconOrder() {
-            const appGrid = document.getElementById('app-grid');
-            const savedOrder = JSON.parse(localStorage.getItem('geminiOS_iconOrder'));
-            if (savedOrder) {
-                savedOrder.forEach(iconId => {
-                    const icon = document.getElementById(iconId);
-                    if(icon) appGrid.appendChild(icon);
-                });
-            }
-        }
-
-        function initAppGrid() {
-            loadIconOrder();
-            const appGrid = document.getElementById('app-grid');
-            
-            document.querySelectorAll('.app-icon').forEach(icon => {
-                const appId = icon.id.replace('icon-', '');
-                let pressTimer;
-                let isDragging = false;
-                
-                const handlePressStart = (e) => {
-                    if (isEditMode) {
-                        startDrag(icon, e);
-                        return;
-                    }
-                    if (e.cancelable) e.preventDefault();
-                    isDragging = false; // Reset dragging state on new press
-                    icon.classList.add('pressed');
-                    clearTimeout(pressTimer);
-                    pressTimer = setTimeout(() => {
-                        isDragging = true; // Set dragging to true after timer to prevent click
-                        enterEditMode();
-                        startDrag(icon, e);
-                    }, 500);
-                };
-                
-                const handlePressEnd = (e) => {
-                    clearTimeout(pressTimer);
-                    icon.classList.remove('pressed');
-                    if (!isEditMode && !isDragging) {
-                        openApp(appId, e);
-                    }
-                };
-                
-                icon.addEventListener('mousedown', handlePressStart);
-                icon.addEventListener('mouseup', handlePressEnd);
-                icon.addEventListener('mouseleave', handlePressEnd);
-                icon.addEventListener('touchstart', handlePressStart, { passive: false });
-                icon.addEventListener('touchend', handlePressEnd);
-                icon.addEventListener('touchmove', () => { 
-                    clearTimeout(pressTimer);
-                    isDragging = true;
-                });
-            });
-
-            function startDrag(icon, initialEvent) {
-                if (!isEditMode) return;
-                draggedIcon = icon;
-                draggedIcon.classList.add('dragging');
-
-                const handleDragMove = (e) => {
-                    e.preventDefault();
-                    if (!draggedIcon) return;
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    const target = document.elementFromPoint(clientX, clientY);
-                    const targetIcon = target ? target.closest('.app-icon') : null;
-
-                    if (targetIcon && targetIcon !== draggedIcon) {
-                        const allIcons = [...appGrid.children];
-                        const dragIndex = allIcons.indexOf(draggedIcon);
-                        const targetIndex = allIcons.indexOf(targetIcon);
-                        if (dragIndex < targetIndex) appGrid.insertBefore(draggedIcon, targetIcon.nextSibling);
-                        else appGrid.insertBefore(draggedIcon, targetIcon);
-                    }
-                };
-
-                const handleDragEnd = () => {
-                    if (!draggedIcon) return;
-                    draggedIcon.classList.remove('dragging');
-                    draggedIcon = null;
-                    saveIconOrder();
-                    document.removeEventListener('mousemove', handleDragMove);
-                    document.removeEventListener('touchmove', handleDragMove);
-                    document.removeEventListener('mouseup', handleDragEnd);
-                    document.removeEventListener('touchend', handleDragEnd);
-                };
-                
-                document.addEventListener('mousemove', handleDragMove);
-                document.addEventListener('touchmove', handleDragMove, { passive: false });
-                document.addEventListener('mouseup', handleDragEnd);
-                document.addEventListener('touchend', handleDragEnd);
-            }
-        }
-
-
-        // --- Core Inits ---
-        function initClock() {
-             // Removed as requested
-        }
-
-        function initWallpaper() {
-            const savedWallpaper = localStorage.getItem('geminiOS_wallpaper');
-            if (savedWallpaper) setWallpaper(savedWallpaper);
-        }
-        function setWallpaper(url) {
-            const fullUrl = `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('${url}')`;
-            document.getElementById('os-container').style.backgroundImage = fullUrl;
-            localStorage.setItem('geminiOS_wallpaper', url);
-        }
-        
-        // --- App Logic ---
-        function initAppLogic() {
-            const notesTextarea = document.getElementById('notes-textarea');
-            notesTextarea.value = localStorage.getItem('notesContent') || '';
-            notesTextarea.addEventListener('keyup', () => localStorage.setItem('notesContent', notesTextarea.value));
-            document.getElementById('play-pause-btn').addEventListener('click', togglePlay);
-        }
-
-        let safariHistory = [];
-        let safariHistoryIndex = -1;
-        const blockedDomains = ['tiktok.com', 'instagram.com', 'google.com', 'facebook.com', 'youtube.com'];
-
-        function initSafari() {
-            const iframe = document.getElementById('safari-iframe');
-            const urlInput = document.getElementById('url-input');
-            const backBtn = document.getElementById('safari-back');
-            const forwardBtn = document.getElementById('safari-forward');
-            const reloadBtn = document.getElementById('safari-reload');
-            
-            iframe.addEventListener('load', () => reloadBtn.classList.remove('loading'));
-            backBtn.onclick = () => { if(safariHistoryIndex > 0) { safariHistoryIndex--; loadFromSafariHistory(); } };
-            forwardBtn.onclick = () => { if(safariHistoryIndex < safariHistory.length - 1) { safariHistoryIndex++; loadFromSafariHistory(); } };
-            reloadBtn.onclick = () => { if (iframe.style.display !== 'none') iframe.contentWindow.location.reload(); };
-            urlInput.onkeypress = (e) => e.key === 'Enter' && navigateToSafari(urlInput.value);
-        }
-
-        function resetSafari() {
-            safariHistory = [];
-            safariHistoryIndex = -1;
-            navigateToSafari('https://www.wikipedia.org');
-        }
-
-        function loadFromSafariHistory() {
-            const iframe = document.getElementById('safari-iframe');
-            const blockedView = document.getElementById('safari-blocked-view');
-            const blockedOpener = document.getElementById('blocked-link-opener');
-            const urlInput = document.getElementById('url-input');
-            const backBtn = document.getElementById('safari-back');
-            const forwardBtn = document.getElementById('safari-forward');
-
-            const url = safariHistory[safariHistoryIndex];
-            urlInput.value = url;
-            let domain;
-            try { domain = new URL(url).hostname.replace('www.', ''); } catch (e) { domain = ''; }
-
-            if (blockedDomains.some(b => domain.includes(b))) {
-                iframe.style.display = 'none';
-                blockedView.style.display = 'flex';
-                blockedOpener.onclick = () => window.open(url, '_blank');
-            } else {
-                iframe.style.display = 'block';
-                blockedView.style.display = 'none';
-                iframe.src = url;
-            }
-            backBtn.disabled = safariHistoryIndex <= 0;
-            forwardBtn.disabled = safariHistoryIndex >= safariHistory.length - 1;
-        }
-
-        function navigateToSafari(url) {
-            if (!url) return;
-            if (!/^(https?:\/\/)/.test(url)) url = 'https://' + url;
-            if (safariHistory[safariHistoryIndex] === url) return;
-            
-            document.getElementById('safari-reload').classList.add('loading');
-            if (safariHistoryIndex < safariHistory.length - 1) safariHistory = safariHistory.slice(0, safariHistoryIndex + 1);
-            safariHistory.push(url);
-            safariHistoryIndex++;
-            loadFromSafariHistory();
-        }
-
-        function showSettingsDetail(detailId) {
-            document.querySelectorAll('#settings .settings-detail').forEach(el => el.classList.remove('show'));
-            document.getElementById(detailId).classList.add('show');
-            document.getElementById('settings-header').querySelector('h3').textContent = detailId.includes('wallpaper') ? 'Wallpaper' : detailId.includes('general') ? 'General' : 'Settings';
-        }
-        
-        window.appendToDisplay = (value) => { let d = document.getElementById('calc-display'); if (d.innerText.length < 15) { d.innerText = (d.innerText === '0' || d.innerText === 'Error') ? value : d.innerText + value; } };
-        window.clearDisplay = () => document.getElementById('calc-display').innerText = '0';
-        window.calculateResult = () => { let d = document.getElementById('calc-display'); try { const result = eval(d.innerText.replace(/×/g, '*').replace(/÷/g, '/')); d.innerText = parseFloat(result.toFixed(5)); } catch { d.innerText = 'Error'; } };
-
-        window.isPlaying = false;
-        window.progressInterval = null;
-        function togglePlay() {
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const progress = document.getElementById('progress');
-            window.isPlaying = !window.isPlaying;
-            playPauseBtn.textContent = window.isPlaying ? '⏸️' : '▶️';
-            if (window.isPlaying) {
-                window.progressInterval = setInterval(() => {
-                    let currentWidth = parseFloat(progress.style.width) || 0;
-                    if (currentWidth >= 100) currentWidth = 0;
-                    progress.style.width = (currentWidth + 1) + '%';
-                }, 500);
-            } else {
-                clearInterval(window.progressInterval);
-            }
-        };
-
-        function updateWeather() {
-            const melbourneWeather = [ { temp: 19, condition: '☀️ Sunny' }, { temp: 14, condition: '☁️ Cloudy' }, { temp: 12, condition: '🌧️ Rainy' } ];
-            const currentWeather = melbourneWeather[Math.floor(Math.random() * melbourneWeather.length)];
-            document.getElementById('weather-temp').textContent = `${currentWeather.temp}°`;
-            document.getElementById('weather-condition').textContent = currentWeather.condition;
-        }
-    </script>
 </body>
 </html>
