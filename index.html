@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guahh</title>
     
+    <!-- Favicon (Original White Logo) -->
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png">
+
     <!-- Google Fonts: Inter Tight -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +34,11 @@
             box-sizing: border-box;
         }
 
+        html {
+            /* Enables smooth scrolling for the whole page */
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
@@ -45,7 +53,6 @@
             position: fixed;
             top: 0;
             width: 100%;
-            /* Increased height from 48px to 56px */
             height: 56px; 
             background-color: var(--glass-bg);
             backdrop-filter: saturate(180%) blur(20px);
@@ -67,7 +74,7 @@
         }
 
         .nav-logo img {
-            height: 22px; /* Slightly larger logo to match bigger nav */
+            height: 22px; 
             width: auto;
             display: block;
             opacity: 0.9;
@@ -151,6 +158,7 @@
             background-color: #ffffff;
             padding: var(--section-padding);
             text-align: center;
+            scroll-margin-top: 50px; /* Offset for sticky nav */
         }
 
         .product-container {
@@ -204,6 +212,7 @@
         .ventures-section {
             background-color: var(--section-bg);
             padding: var(--section-padding);
+            scroll-margin-top: 50px; /* Offset for sticky nav */
         }
 
         .ventures-container {
@@ -266,6 +275,7 @@
             padding: 80px 20px;
             color: var(--gray-text);
             border-top: 1px solid rgba(0,0,0,0.1);
+            scroll-margin-top: 50px; /* Offset for sticky nav */
         }
 
         .terms-container {
