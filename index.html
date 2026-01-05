@@ -555,9 +555,9 @@
             </a>
             <div class="nav-links">
                 <a href="#kangaroo">Kangaroo</a>
-                <a href="#ventures">Ventures</a>
                 <a href="#status">Status</a>
                 <a href="#blog">News</a>
+                <a href="#ventures">Ventures</a>
                 <a href="#terms">Terms</a>
             </div>
         </div>
@@ -585,31 +585,6 @@
         </div>
     </section>
 
-    <!-- Ventures Section -->
-    <section id="ventures" class="ventures-section">
-        <div class="ventures-container">
-            <div class="ventures-grid">
-                <!-- Companies Owned -->
-                <div class="venture-card">
-                    <div class="venture-category">Companies We Own</div>
-                    <ul class="venture-list">
-                        <li>Glop</li>
-                        <li>Jumble Development</li>
-                    </ul>
-                </div>
-
-                <!-- Partners -->
-                <div class="venture-card">
-                    <div class="venture-category">Trusted Partners</div>
-                    <ul class="venture-list">
-                        <li>macbooksuck</li>
-                        <li>TLS Aces</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Status Section -->
     <section id="status" class="status-section">
         <div class="status-container">
@@ -631,6 +606,31 @@
             <!-- See More Button Container -->
             <div id="see-more-container" class="see-more-container" style="display: none;">
                 <button id="see-more-btn" class="see-more-btn">See More Updates</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ventures Section -->
+    <section id="ventures" class="ventures-section">
+        <div class="ventures-container">
+            <div class="ventures-grid">
+                <!-- Companies Owned -->
+                <div class="venture-card">
+                    <div class="venture-category">Companies We Own</div>
+                    <ul class="venture-list">
+                        <li>Glop</li>
+                        <li>Jumble Development</li>
+                    </ul>
+                </div>
+
+                <!-- Partners -->
+                <div class="venture-card">
+                    <div class="venture-category">Trusted Partners</div>
+                    <ul class="venture-list">
+                        <li>macbooksuck</li>
+                        <li>TLS Aces</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -738,7 +738,6 @@
                     .catch(error => {
                         clearTimeout(timeoutId);
                         if (error.name === 'AbortError') {
-                            // Timeout specific message
                             setStatusUI('red', 'Connection timed out. Please refresh.');
                         } else {
                             console.error("Ping Failed:", error);
@@ -761,14 +760,15 @@
                     const appScriptUrl = cols[0] ? cols[0].trim() : "";
                     const customStatus = cols[1] ? cols[1].trim().toUpperCase() : "";
 
+                    // Override logic (UI updated to remove "Manual Override" text)
                     if (customStatus === 'UP') {
-                        setStatusUI('green', 'Manual Override: Operational');
+                        setStatusUI('green', 'Services are running normally.');
                     } else if (customStatus === 'DOWN') {
-                        setStatusUI('red', 'Manual Override: System Down');
+                        setStatusUI('red', 'Critical services are down.');
                     } else if (customStatus === 'DEGRADED') {
-                        setStatusUI('yellow', 'Manual Override: Degraded');
+                        setStatusUI('yellow', 'Some systems may be slow.');
                     } else {
-                        statusSub.textContent = "Pinging Dynamic URL...";
+                        statusSub.textContent = "Pinging Servers...";
                         pingServer(appScriptUrl);
                     }
                 })
