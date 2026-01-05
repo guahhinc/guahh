@@ -616,7 +616,7 @@
             <div id="status-dot" class="status-dot"></div>
             <div style="text-align: left;">
                 <div id="status-text" class="status-text">Checking System Status...</div>
-                <div id="status-sub" class="status-sub">Pinging Guahh Servers</div>
+                <div id="status-sub" class="status-sub">Initializing...</div>
             </div>
         </div>
     </section>
@@ -672,7 +672,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- 0. CONFIG ---
-            // We use the base Publish link, then append query parameters manually.
             const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5nNm_vphbxU5Fh29LtrkR7FzsqfPhtaru4gFFkz9jIclxcPOADbLuYv12jmsYY_TxqrRNSoFrZBiO/pub";
             
             // --- 1. SCROLL ANIMATIONS ---
@@ -696,7 +695,7 @@
                 observer.observe(kangarooTitle);
             }
 
-            // --- 2. ADVANCED STATUS CHECK ---
+            // --- 2. ADVANCED STATUS CHECK (TIMEOUT + DIRECT) ---
             const statusDot = document.getElementById('status-dot');
             const statusText = document.getElementById('status-text');
             const statusSub = document.getElementById('status-sub');
@@ -726,11 +725,25 @@
                     setStatusUI('red', 'Configuration Error: No URL found.');
                     return;
                 }
-                fetch(url, { mode: 'no-cors' })
-                    .then(() => setStatusUI('green'))
+                
+                // AbortController for Timeout Logic
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds
+
+                fetch(url, { mode: 'no-cors', signal: controller.signal })
+                    .then(() => {
+                        clearTimeout(timeoutId);
+                        setStatusUI('green');
+                    })
                     .catch(error => {
-                        console.error("Ping Failed:", error);
-                        setStatusUI('red');
+                        clearTimeout(timeoutId);
+                        if (error.name === 'AbortError') {
+                            // Timeout specific message
+                            setStatusUI('red', 'Connection timed out. Please refresh.');
+                        } else {
+                            console.error("Ping Failed:", error);
+                            setStatusUI('red');
+                        }
                     });
             }
 
