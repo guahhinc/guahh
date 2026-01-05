@@ -180,9 +180,13 @@
             transform: scale(1.02);
         }
 
-        /* PRODUCT SECTION */
+        /* PRODUCT SECTION (KANGAROO) */
         .product-section {
-            background-color: #ffffff;
+            /* 
+               UPDATED: Using RGBA of #BC9681 at 15% opacity fading to white. 
+               RGB(188, 150, 129)
+            */
+            background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
             padding: var(--section-padding);
             text-align: center;
             scroll-margin-top: 70px; 
@@ -196,13 +200,8 @@
         .app-icon {
             width: 120px;
             height: 120px;
-            border-radius: 28px;
+            /* Removed border-radius and hover effects */
             margin-bottom: 30px;
-            transition: transform 0.4s ease;
-        }
-        
-        .app-icon:hover {
-            transform: scale(1.05);
         }
 
         .product-title {
@@ -221,7 +220,7 @@
             font-size: 22px;
             line-height: 1.4;
             font-weight: 400;
-            color: var(--gray-text);
+            color: var(--gray-text); 
             max-width: 600px;
             margin: 0 auto 30px auto;
             letter-spacing: -0.01em;
@@ -240,7 +239,6 @@
 
         /* VENTURES / PARTNERS */
         .ventures-section {
-            /* Light Blue to White Gradient */
             background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
             padding: var(--section-padding);
             scroll-margin-top: 70px; 
@@ -381,7 +379,7 @@
             background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%);
             padding: 80px 20px;
             scroll-margin-top: 70px;
-            transition: background 1s ease; /* Smooth transition when status loads */
+            transition: background 1s ease; 
         }
 
         .blog-container {
