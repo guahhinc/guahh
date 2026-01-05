@@ -240,7 +240,8 @@
 
         /* VENTURES / PARTNERS */
         .ventures-section {
-            background-color: var(--section-bg);
+            /* Light Blue to White Gradient */
+            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
             padding: var(--section-padding);
             scroll-margin-top: 70px; 
         }
@@ -376,9 +377,11 @@
 
         /* BLOG SECTION */
         .blog-section {
-            background-color: var(--section-bg);
+            /* Default: Green Gradient -> White */
+            background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%);
             padding: 80px 20px;
             scroll-margin-top: 70px;
+            transition: background 1s ease; /* Smooth transition when status loads */
         }
 
         .blog-container {
@@ -699,24 +702,38 @@
             const statusDot = document.getElementById('status-dot');
             const statusText = document.getElementById('status-text');
             const statusSub = document.getElementById('status-sub');
+            const blogSection = document.getElementById('blog'); // Target for Gradient Update
             
             // Append GID for Server Tab (474676757)
             const serverSheetUrl = baseSheetUrl + "?gid=474676757&single=true&output=tsv";
 
             function setStatusUI(state, customMsg = null) {
                 statusDot.className = 'status-dot';
+                
+                // Define background start colors (Light versions of status colors)
+                // Green: #e3f9e5 | Red: #ffe5e5 | Yellow: #fff9e1
+                let bgStartColor = '#e3f9e5'; // Default Green
+
                 if (state === 'green') {
                     statusDot.classList.add('status-operational');
                     statusText.textContent = "All Systems Operational";
                     statusSub.textContent = customMsg || "Services are running normally.";
+                    bgStartColor = '#e3f9e5';
                 } else if (state === 'red') {
                     statusDot.classList.add('status-outage');
                     statusText.textContent = "System Outage";
                     statusSub.textContent = customMsg || "Critical services are down.";
+                    bgStartColor = '#ffe5e5';
                 } else if (state === 'yellow') {
                     statusDot.classList.add('status-degraded');
                     statusText.textContent = "Degraded Performance";
                     statusSub.textContent = customMsg || "Some systems may be slow.";
+                    bgStartColor = '#fff9e1';
+                }
+
+                // Update the Blog Section Background Gradient
+                if (blogSection) {
+                    blogSection.style.background = `linear-gradient(180deg, ${bgStartColor} 0%, #ffffff 100%)`;
                 }
             }
 
