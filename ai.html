@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI | v15 LLM CORE</title>
+    <title>Guahh AI 2.2</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +20,7 @@
             --bot-msg: #141414;
             --border: #333;
         }
+
         body {
             margin: 0;
             background: var(--bg);
@@ -41,8 +43,19 @@
             align-items: center;
             z-index: 10;
         }
-        h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.5px; }
-        .status { font-size: 12px; color: #666; font-weight: 300; }
+
+        h1 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #666;
+            font-weight: 300;
+        }
 
         /* CHAT */
         #chat-window {
@@ -64,7 +77,7 @@
             font-size: 15px;
             font-weight: 300;
         }
-        
+
         .user {
             align-self: flex-end;
             background: var(--user-msg);
@@ -78,7 +91,10 @@
             color: #ccc;
         }
 
-        .bot strong { color: #fff; font-weight: 600; }
+        .bot strong {
+            color: #fff;
+            font-weight: 600;
+        }
 
         /* INPUT */
         #input-area {
@@ -88,11 +104,11 @@
             padding: 20px;
             position: fixed;
             bottom: 0;
-            left: 0; 
+            left: 0;
             right: 0;
             background: var(--bg);
         }
-        
+
         form {
             display: flex;
             gap: 10px;
@@ -123,7 +139,11 @@
             cursor: pointer;
             font-family: 'Inter Tight', sans-serif;
         }
-        button:disabled { opacity: 0.5; cursor: wait; }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
 
         /* Cursor Animation */
         .cursor {
@@ -135,245 +155,1181 @@
             vertical-align: middle;
             animation: blink 1s infinite;
         }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>GUAHH AI v15</h1>
-    <div class="status" id="model-status">Initializing LLM Weights...</div>
-</header>
+    <header>
+        <h1>GUAHH AI 2.2</h1>
+        <div class="status" id="model-status">Loading English Dictionary...</div>
+    </header>
 
-<div id="chat-window"></div>
+    <div id="chat-window"></div>
 
-<div id="input-area">
-    <form onsubmit="event.preventDefault(); processPrompt();">
-        <input type="text" id="user-input" placeholder="Message Guahh..." autocomplete="off">
-        <button type="submit" id="send-btn">Send</button>
-    </form>
-</div>
+    <div id="input-area">
+        <form onsubmit="event.preventDefault(); processPrompt();">
+            <input type="text" id="user-input" placeholder="Message Guahh AI..." autocomplete="off">
+            <button type="submit" id="send-btn">Send</button>
+        </form>
+    </div>
 
-<script>
-/**
- * GUAHH AI V15 - LLM CORE
- * 
- * ARCHITECTURE:
- * 1. CORPUS: A massive text string containing all knowledge.
- * 2. TOKENIZER: Splits the corpus into a probabilistic map (Bigrams/Trigrams).
- * 3. INFERENCE: Generates the next word based on the previous word(s) in real-time.
- */
+    <script>
+        /**
+         * GUAHH AI V2.0 - LANGUAGE UNDERSTANDING CORE
+         * 
+         * NEW CAPABILITIES:
+         * 1. ENGLISH DICTIONARY: 400+ words with definitions and parts of speech
+         * 2. GRAMMAR ENGINE: Proper sentence construction rules
+         * 3. SEMANTIC UNDERSTANDING: AI knows what words mean
+         * 4. INTELLIGENT Q&A: Answers questions based on understanding, not random patterns
+         */
 
-// --- 1. KNOWLEDGE CORPUS (The Brain) ---
-// We treat this as one continuous stream of consciousness for the AI to learn patterns from.
-const RAW_DATA = [
-    "I am Guahh AI, a large language model running locally in your browser.",
-    "Travis Scott is an American rapper, singer, songwriter, and record producer from Houston Texas. His albums include Rodeo, Astroworld, and Utopia. He founded Cactus Jack Records.",
-    "Guahh is an Australian technology company based in Sydney. Guahh developed Kangaroo, a social media platform. Kangaroo combines features of Twitter and Instagram.",
-    "Kangaroo is a social media website known for its hop feature. It was created by the tech giant Guahh.",
-    "Biology is the study of life. Frogs are amphibians. Frogs absorb water through their skin. Sharks are marine predators with cartilage skeletons.",
-    "Space is vast. The Sun is a star. Mars is the red planet. Jupiter is a gas giant. Black holes have infinite gravity.",
-    "History records the past. World War 1 lasted from 1914 to 1918. World War 2 lasted from 1939 to 1945. The Roman Empire fell in 476 AD.",
-    "Computer Science is the study of computation. Python is a programming language. JavaScript runs the web. AI stands for Artificial Intelligence.",
-    "Math is the language of the universe. Pi is approximately 3.14. E is approximately 2.71. Gravity is 9.8 meters per second squared.",
-    "The capital of France is Paris. The capital of Japan is Tokyo. The capital of Australia is Canberra.",
-    "Music is art. Hip hop originated in New York. Jazz originated in New Orleans. Rock music uses electric guitars.",
-    "Elon Musk runs Tesla and SpaceX. Bill Gates founded Microsoft. Steve Jobs founded Apple.",
-    "Water is H2O. Oxygen is O2. Carbon is the basis of life.",
-    "The internet connects the world. Blockchain is a decentralized ledger. Bitcoin is a cryptocurrency.",
-    "Football is the most popular sport. LeBron James plays basketball. Messi plays soccer.",
-    "Zeus is the Greek god of the sky. Thor is the Norse god of thunder. Hades rules the underworld.",
-    "Supernovas are exploding stars. Neutron stars are dense. The speed of light is the universal speed limit.",
-    "Git is a version control system. Docker uses containers. Linux is an open source kernel."
-];
+        // --- 1. ENGLISH DICTIONARY DATABASE ---
+        const DICTIONARY = {
+            // NOUNS - Animals
+            "cat": { pos: "noun", def: "a small domesticated carnivorous mammal with fur, four legs, and a tail", category: "animal" },
+            "dog": { pos: "noun", def: "a domesticated carnivorous mammal that typically has a long snout and barks", category: "animal" },
+            "bird": { pos: "noun", def: "a warm-blooded egg-laying vertebrate with feathers, wings, and a beak", category: "animal" },
+            "fish": { pos: "noun", def: "an aquatic animal with gills, fins, and scales that lives in water", category: "animal" },
+            "horse": { pos: "noun", def: "a large domesticated mammal with a mane and hooves used for riding", category: "animal" },
+            "elephant": { pos: "noun", def: "a very large mammal with a trunk, tusks, and large ears", category: "animal" },
+            "lion": { pos: "noun", def: "a large tawny-colored cat that lives in Africa and is known as the king of beasts", category: "animal" },
+            "snake": { pos: "noun", def: "a long limbless reptile that slithers on its belly", category: "animal" },
+            "bear": { pos: "noun", def: "a large heavy mammal with thick fur and a very short tail", category: "animal" },
+            "wolf": { pos: "noun", def: "a wild carnivorous mammal related to the dog that typically lives in packs", category: "animal" },
+            "tiger": { pos: "noun", def: "a large carnivorous cat with orange and black stripes native to Asia", category: "animal" },
+            "zebra": { pos: "noun", def: "an African wild horse with black and white stripes", category: "animal" },
+            "giraffe": { pos: "noun", def: "a large African mammal with a very long neck and legs and distinctive spotted coat", category: "animal" },
+            "monkey": { pos: "noun", def: "a small to medium-sized primate typically having a long tail", category: "animal" },
+            "gorilla": { pos: "noun", def: "a large powerfully built great ape with black fur native to Africa", category: "animal" },
+            "chimpanzee": { pos: "noun", def: "a great ape with black hair that lives in tropical Africa", category: "animal" },
+            "kangaroo": { pos: "noun", def: "a large plant-eating marsupial with powerful hind legs for jumping, native to Australia", category: "animal" },
+            "koala": { pos: "noun", def: "a small Australian tree-dwelling marsupial with fluffy gray fur that eats eucalyptus leaves", category: "animal" },
+            "panda": { pos: "noun", def: "a large black and white bear-like mammal native to China that feeds on bamboo", category: "animal" },
+            "fox": { pos: "noun", def: "a carnivorous mammal with a pointed muzzle and bushy tail", category: "animal" },
+            "deer": { pos: "noun", def: "a hoofed grazing animal with antlers typically borne by the male", category: "animal" },
+            "rabbit": { pos: "noun", def: "a small burrowing plant-eating mammal with long ears and soft fur", category: "animal" },
+            "squirrel": { pos: "noun", def: "a small rodent with a bushy tail that climbs trees and gathers nuts", category: "animal" },
+            "mouse": { pos: "noun", def: "a small rodent with a pointed snout and long tail", category: "animal" },
+            "rat": { pos: "noun", def: "a rodent that resembles a large mouse", category: "animal" },
+            "bat": { pos: "noun", def: "a nocturnal flying mammal with membranous wings", category: "animal" },
+            "whale": { pos: "noun", def: "a very large marine mammal with a streamlined body and horizontal tail fin", category: "animal" },
+            "dolphin": { pos: "noun", def: "a small gregarious toothed whale that typically has a beaklike snout", category: "animal" },
+            "shark": { pos: "noun", def: "a large predatory marine fish with a cartilaginous skeleton and prominent dorsal fin", category: "animal" },
+            "octopus": { pos: "noun", def: "a marine mollusk with eight sucker-bearing arms and soft body", category: "animal" },
+            "jellyfish": { pos: "noun", def: "a free-swimming marine creature with a jellylike bell and trailing tentacles", category: "animal" },
+            "crab": { pos: "noun", def: "a crustacean with a broad carapace, stalked eyes, and five pairs of legs", category: "animal" },
+            "lobster": { pos: "noun", def: "a large marine crustacean with stalked eyes and the first pair of legs modified as pincers", category: "animal" },
+            "penguin": { pos: "noun", def: "a flightless seabird of the southern hemisphere with black and white plumage and flipper-like wings", category: "animal" },
+            "eagle": { pos: "noun", def: "a large bird of prey with keen vision and powerful flight", category: "animal" },
+            "owl": { pos: "noun", def: "a nocturnal bird of prey with large eyes, a hooked beak, and soft plumage", category: "animal" },
+            "parrot": { pos: "noun", def: "a tropical bird with brightly colored plumage and the ability to mimic sounds", category: "animal" },
+            "peacock": { pos: "noun", def: "a large colorful bird with long ornamental tail feathers that can be fanned out", category: "animal" },
+            "swan": { pos: "noun", def: "a large waterbird with a long flexible neck and typically all-white plumage", category: "animal" },
+            "duck": { pos: "noun", def: "a waterbird with a broad blunt bill, short legs, and webbed feet", category: "animal" },
+            "chicken": { pos: "noun", def: "a domesticated fowl kept for its eggs or meat", category: "animal" },
+            "turkey": { pos: "noun", def: "a large mainly domesticated game bird native to North America", category: "animal" },
+            "crocodile": { pos: "noun", def: "a large predatory semiaquatic reptile with long jaws and tough scaly skin", category: "animal" },
+            "alligator": { pos: "noun", def: "a large semiaquatic reptile similar to a crocodile but with a broader snout", category: "animal" },
+            "turtle": { pos: "noun", def: "a reptile with a hard protective shell and typically living in or near water", category: "animal" },
+            "lizard": { pos: "noun", def: "a reptile that typically has a long body and tail, four legs, and movable eyelids", category: "animal" },
+            "frog": { pos: "noun", def: "an amphibian with smooth moist skin that typically lives near water", category: "animal" },
+            "toad": { pos: "noun", def: "an amphibian similar to a frog but with drier warty skin", category: "animal" },
+            "butterfly": { pos: "noun", def: "an insect with two pairs of large colorful wings", category: "animal" },
+            "bee": { pos: "noun", def: "a flying insect that collects nectar and pollen and produces honey", category: "animal" },
+            "ant": { pos: "noun", def: "a small insect that lives in organized colonies", category: "animal" },
+            "spider": { pos: "noun", def: "an eight-legged predatory arachnid with fangs that inject venom", category: "animal" },
+            "mosquito": { pos: "noun", def: "a small flying insect that bites and feeds on blood", category: "animal" },
+            "fly": { pos: "noun", def: "a flying insect with a single pair of transparent wings", category: "animal" },
+            "dragonfly": { pos: "noun", def: "a fast-flying long-bodied predatory insect with two pairs of large transparent wings", category: "animal" },
+            "snail": { pos: "noun", def: "a mollusk with a spiral shell into which it can retract", category: "animal" },
+            "worm": { pos: "noun", def: "a long slender soft-bodied invertebrate animal", category: "animal" },
 
-// --- 2. THE TOKENIZER & MODEL BUILDER ---
-const MODEL = {};
-const START_WORDS = [];
+            // NOUNS - People
+            "person": { pos: "noun", def: "a human being regarded as an individual", category: "people" },
+            "child": { pos: "noun", def: "a young human being below the age of puberty", category: "people" },
+            "adult": { pos: "noun", def: "a person who is fully grown and developed", category: "people" },
+            "friend": { pos: "noun", def: "a person whom one knows and with whom one has a bond of mutual affection", category: "people" },
+            "teacher": { pos: "noun", def: "a person who teaches, especially in a school", category: "people" },
+            "student": { pos: "noun", def: "a person who is studying at a school or university", category: "people" },
+            "doctor": { pos: "noun", def: "a person who is qualified to treat people who are ill", category: "people" },
+            "artist": { pos: "noun", def: "a person who creates paintings, drawings, or other works of art", category: "people" },
+            "scientist": { pos: "noun", def: "a person who studies science and works in a scientific field", category: "people" },
+            "musician": { pos: "noun", def: "a person who plays a musical instrument or composes music", category: "people" },
 
-function trainModel() {
-    let status = document.getElementById('model-status');
-    status.innerText = "Training...";
+            // NOUNS - Places
+            "city": { pos: "noun", def: "a large town with important buildings and a dense population", category: "place" },
+            "country": { pos: "noun", def: "a nation with its own government and territory", category: "place" },
+            "house": { pos: "noun", def: "a building for human habitation", category: "place" },
+            "school": { pos: "noun", def: "an institution for educating children or students", category: "place" },
+            "park": { pos: "noun", def: "a large public green area in a town used for recreation", category: "place" },
+            "ocean": { pos: "noun", def: "a very large expanse of sea", category: "place" },
+            "mountain": { pos: "noun", def: "a large natural elevation of the earth's surface", category: "place" },
+            "forest": { pos: "noun", def: "a large area covered chiefly with trees and undergrowth", category: "place" },
+            "desert": { pos: "noun", def: "a barren area of landscape with little precipitation", category: "place" },
+            "river": { pos: "noun", def: "a large natural stream of water flowing in a channel to the sea or lake", category: "place" },
 
-    // Flatten data and clean it
-    let fullText = RAW_DATA.join(" ");
-    let tokens = fullText.split(/\s+/); // Split by whitespace
+            // NOUNS - Things
+            "book": { pos: "noun", def: "a written or printed work consisting of pages bound together", category: "object" },
+            "computer": { pos: "noun", def: "an electronic device for storing and processing data", category: "object" },
+            "phone": { pos: "noun", def: "a device used to transmit and receive voice communications", category: "object" },
+            "car": { pos: "noun", def: "a road vehicle powered by an engine used for transportation", category: "object" },
+            "chair": { pos: "noun", def: "a separate seat for one person with a back and four legs", category: "object" },
+            "table": { pos: "noun", def: "a piece of furniture with a flat top and legs used for eating or working", category: "object" },
+            "food": { pos: "noun", def: "any nutritious substance that people or animals eat or drink", category: "object" },
+            "water": { pos: "noun", def: "a clear liquid essential for most forms of life", category: "object" },
+            "music": { pos: "noun", def: "vocal or instrumental sounds combined to produce beauty of form and harmony", category: "abstract" },
+            "money": { pos: "noun", def: "a medium of exchange in the form of coins and banknotes", category: "object" },
 
-    for (let i = 0; i < tokens.length - 1; i++) {
-        let current = clean(tokens[i]);
-        let next = tokens[i+1]; // We keep punctuation in 'next' for natural flow
+            // NOUNS - Abstract Concepts
+            "love": { pos: "noun", def: "an intense feeling of deep affection", category: "emotion" },
+            "happiness": { pos: "noun", def: "the state of being happy and content", category: "emotion" },
+            "sadness": { pos: "noun", def: "the condition or quality of being sad", category: "emotion" },
+            "anger": { pos: "noun", def: "a strong feeling of annoyance, displeasure, or hostility", category: "emotion" },
+            "fear": { pos: "noun", def: "an unpleasant emotion caused by the threat of danger or pain", category: "emotion" },
+            "time": { pos: "noun", def: "the indefinite continued progress of existence and events", category: "abstract" },
+            "life": { pos: "noun", def: "the condition that distinguishes animals and plants from inorganic matter", category: "abstract" },
+            "death": { pos: "noun", def: "the end of life", category: "abstract" },
+            "knowledge": { pos: "noun", def: "facts, information, and skills acquired through experience or education", category: "abstract" },
+            "wisdom": { pos: "noun", def: "the quality of having experience, knowledge, and good judgment", category: "abstract" },
+            "truth": { pos: "noun", def: "the quality or state of being factually correct", category: "abstract" },
+            "beauty": { pos: "noun", def: "a combination of qualities that pleases the aesthetic senses", category: "abstract" },
 
-        if (!current) continue;
+            // NOUNS - Colors
+            "color": { pos: "noun", def: "the property possessed by an object of producing different sensations on the eye", category: "abstract" },
+            "red": { pos: "noun", def: "a color at the end of the spectrum next to orange", category: "color" },
+            "blue": { pos: "noun", def: "a color of the sky or sea on a sunny day", category: "color" },
+            "green": { pos: "noun", def: "the color of grass and emeralds", category: "color" },
+            "yellow": { pos: "noun", def: "the color of the sun or gold", category: "color" },
+            "orange": { pos: "noun", def: "a reddish-yellow color", category: "color" },
+            "purple": { pos: "noun", def: "a color between red and blue", category: "color" },
+            "pink": { pos: "noun", def: "a pale red color", category: "color" },
+            "black": { pos: "noun", def: "the darkest color, the absence of light", category: "color" },
+            "white": { pos: "noun", def: "the lightest color, reflecting all light", category: "color" },
+            "gray": { pos: "noun", def: "a color between black and white", category: "color" },
+            "brown": { pos: "noun", def: "a dark color like wood or soil", category: "color" },
 
-        // Record start words (words that start sentences)
-        if (i === 0 || tokens[i-1].includes('.')) {
-            START_WORDS.push(current);
+            // NOUNS - Weather & Nature
+            "rain": { pos: "noun", def: "water falling in drops from clouds", category: "weather" },
+            "snow": { pos: "noun", def: "frozen water vapor falling from the sky in white flakes", category: "weather" },
+            "wind": { pos: "noun", def: "air in natural motion", category: "weather" },
+            "storm": { pos: "noun", def: "a violent disturbance of the atmosphere with strong winds and rain", category: "weather" },
+            "thunder": { pos: "noun", def: "the loud rumbling sound heard after a lightning flash", category: "weather" },
+            "lightning": { pos: "noun", def: "a bright flash of electricity in the sky during a storm", category: "weather" },
+            "cloud": { pos: "noun", def: "a visible mass of water droplets suspended in the atmosphere", category: "weather" },
+            "sky": { pos: "noun", def: "the region of the atmosphere seen from earth", category: "nature" },
+            "star": { pos: "noun", def: "a luminous celestial body visible in the night sky", category: "nature" },
+            "planet": { pos: "noun", def: "a celestial body moving in an elliptical orbit around a star", category: "nature" },
+            "tree": { pos: "noun", def: "a woody plant with a trunk and branches", category: "nature" },
+            "flower": { pos: "noun", def: "the seed-bearing part of a plant with petals", category: "nature" },
+            "grass": { pos: "noun", def: "green plants with narrow leaves that cover the ground", category: "nature" },
+            "leaf": { pos: "noun", def: "a flat green structure of a plant growing from a stem or branch", category: "nature" },
+            "seed": { pos: "noun", def: "the fertilized ripened ovule of a flowering plant", category: "nature" },
+            "rock": { pos: "noun", def: "a solid mineral material of the earth's crust", category: "nature" },
+            "stone": { pos: "noun", def: "hard solid non-metallic mineral matter", category: "nature" },
+            "sand": { pos: "noun", def: "loose granular substance resulting from the erosion of rocks", category: "nature" },
+            "soil": { pos: "noun", def: "the upper layer of earth in which plants grow", category: "nature" },
+            "fire": { pos: "noun", def: "combustion producing flames, heat, and light", category: "nature" },
+            "ice": { pos: "noun", def: "frozen water", category: "nature" },
+            "air": { pos: "noun", def: "the invisible gaseous substance surrounding the earth", category: "nature" },
+
+            // NOUNS - Body Parts
+            "body": { pos: "noun", def: "the physical structure of a person or animal", category: "body" },
+            "head": { pos: "noun", def: "the upper part of the body containing the brain, eyes, and mouth", category: "body" },
+            "face": { pos: "noun", def: "the front part of the head from forehead to chin", category: "body" },
+            "eye": { pos: "noun", def: "the organ of sight", category: "body" },
+            "ear": { pos: "noun", def: "the organ of hearing", category: "body" },
+            "nose": { pos: "noun", def: "the organ of smell projecting from the face", category: "body" },
+            "mouth": { pos: "noun", def: "the opening through which food is taken in", category: "body" },
+            "hand": { pos: "noun", def: "the end part of the arm with fingers", category: "body" },
+            "finger": { pos: "noun", def: "one of the five digits of the hand", category: "body" },
+            "foot": { pos: "noun", def: "the lower extremity of the leg below the ankle", category: "body" },
+            "leg": { pos: "noun", def: "one of the limbs used for standing and walking", category: "body" },
+            "arm": { pos: "noun", def: "the upper limb from shoulder to hand", category: "body" },
+            "skin": { pos: "noun", def: "the outer covering of the body", category: "body" },
+            "hair": { pos: "noun", def: "the fine threadlike strands growing from the skin", category: "body" },
+            "tooth": { pos: "noun", def: "one of the hard bony structures in the mouth used for biting", category: "body" },
+            "blood": { pos: "noun", def: "the red liquid that circulates through the body", category: "body" },
+            "bone": { pos: "noun", def: "a hard whitish tissue making up the skeleton", category: "body" },
+
+            // NOUNS - Food & Drink
+            "bread": { pos: "noun", def: "a baked food made from flour and water", category: "food" },
+            "meat": { pos: "noun", def: "the flesh of an animal used as food", category: "food" },
+            "fruit": { pos: "noun", def: "the sweet seed-bearing product of a tree or plant", category: "food" },
+            "vegetable": { pos: "noun", def: "a plant or part of a plant used as food", category: "food" },
+            "apple": { pos: "noun", def: "a round fruit with red, green, or yellow skin", category: "food" },
+            "banana": { pos: "noun", def: "a long curved fruit with yellow skin", category: "food" },
+            "orange": { pos: "noun", def: "a round citrus fruit with orange skin", category: "food" },
+            "egg": { pos: "noun", def: "an oval object laid by a female bird containing the embryo", category: "food" },
+            "milk": { pos: "noun", def: "a white liquid produced by mammals to feed their young", category: "food" },
+            "cheese": { pos: "noun", def: "a food made from pressed milk curds", category: "food" },
+            "rice": { pos: "noun", def: "grains from a cereal plant used as food", category: "food" },
+            "sugar": { pos: "noun", def: "a sweet crystalline substance used to sweeten food", category: "food" },
+            "salt": { pos: "noun", def: "a white crystalline substance used for seasoning food", category: "food" },
+            "tea": { pos: "noun", def: "a hot drink made by infusing dried leaves in boiling water", category: "food" },
+            "coffee": { pos: "noun", def: "a hot drink made from roasted and ground coffee beans", category: "food" },
+
+            // NOUNS - Time & Numbers
+            "day": { pos: "noun", def: "a period of twenty-four hours", category: "time" },
+            "night": { pos: "noun", def: "the period of darkness between sunset and sunrise", category: "time" },
+            "morning": { pos: "noun", def: "the early part of the day from sunrise to noon", category: "time" },
+            "afternoon": { pos: "noun", def: "the time from noon to evening", category: "time" },
+            "evening": { pos: "noun", def: "the period of time at the end of the day", category: "time" },
+            "week": { pos: "noun", def: "a period of seven days", category: "time" },
+            "month": { pos: "noun", def: "one of the twelve divisions of a year", category: "time" },
+            "year": { pos: "noun", def: "the time taken by the earth to orbit the sun, about 365 days", category: "time" },
+            "hour": { pos: "noun", def: "a period of sixty minutes", category: "time" },
+            "minute": { pos: "noun", def: "a period of sixty seconds", category: "time" },
+            "second": { pos: "noun", def: "a unit of time equal to one sixtieth of a minute", category: "time" },
+
+            // NOUNS - Professions & Occupations
+            "engineer": { pos: "noun", def: "a person who designs, builds, or maintains engines, machines, or structures", category: "people" },
+            "nurse": { pos: "noun", def: "a person trained to care for the sick or injured", category: "people" },
+            "pilot": { pos: "noun", def: "a person who operates the flying controls of an aircraft", category: "people" },
+            "chef": { pos: "noun", def: "a professional cook who works in a restaurant", category: "people" },
+            "farmer": { pos: "noun", def: "a person who owns or manages a farm", category: "people" },
+            "lawyer": { pos: "noun", def: "a person who practices or studies law", category: "people" },
+            "writer": { pos: "noun", def: "a person who writes books, stories, or articles", category: "people" },
+            "actor": { pos: "noun", def: "a person who performs in plays, movies, or television", category: "people" },
+            "singer": { pos: "noun", def: "a person who sings professionally or skillfully", category: "people" },
+            "dancer": { pos: "noun", def: "a person who dances or whose profession is dancing", category: "people" },
+            "athlete": { pos: "noun", def: "a person who is proficient in sports and physical exercise", category: "people" },
+            "president": { pos: "noun", def: "the elected head of a republic", category: "people" },
+            "king": { pos: "noun", def: "a male ruler of an independent state", category: "people" },
+            "queen": { pos: "noun", def: "a female ruler of an independent state", category: "people" },
+
+            // NOUNS - Household & Objects
+            "door": { pos: "noun", def: "a hinged barrier used to close an opening in a wall", category: "object" },
+            "window": { pos: "noun", def: "an opening in a wall fitted with glass to admit light or air", category: "object" },
+            "wall": { pos: "noun", def: "a vertical structure forming a side of a building or room", category: "object" },
+            "floor": { pos: "noun", def: "the lower surface of a room on which one stands", category: "object" },
+            "ceiling": { pos: "noun", def: "the upper interior surface of a room", category: "object" },
+            "roof": { pos: "noun", def: "the structure forming the upper covering of a building", category: "object" },
+            "bed": { pos: "noun", def: "a piece of furniture for sleeping on", category: "object" },
+            "pillow": { pos: "noun", def: "a cushion for supporting the head while sleeping", category: "object" },
+            "blanket": { pos: "noun", def: "a large piece of fabric used for warmth", category: "object" },
+            "lamp": { pos: "noun", def: "a device for giving light", category: "object" },
+            "mirror": { pos: "noun", def: "a reflective surface for viewing one's reflection", category: "object" },
+            "clock": { pos: "noun", def: "an instrument for measuring and showing time", category: "object" },
+            "television": { pos: "noun", def: "a system for transmitting visual images and sound", category: "object" },
+            "radio": { pos: "noun", def: "a device for receiving broadcast programs", category: "object" },
+            "camera": { pos: "noun", def: "a device for recording visual images", category: "object" },
+            "key": { pos: "noun", def: "a small metal instrument for opening locks", category: "object" },
+            "pen": { pos: "noun", def: "an instrument for writing with ink", category: "object" },
+            "pencil": { pos: "noun", def: "an instrument for writing or drawing with graphite", category: "object" },
+            "paper": { pos: "noun", def: "material made from wood pulp used for writing or printing", category: "object" },
+            "bag": { pos: "noun", def: "a container made of flexible material for carrying things", category: "object" },
+            "box": { pos: "noun", def: "a container with flat sides for holding things", category: "object" },
+            "bottle": { pos: "noun", def: "a container with a narrow neck for holding liquids", category: "object" },
+            "cup": { pos: "noun", def: "a small container for drinking from", category: "object" },
+            "plate": { pos: "noun", def: "a flat dish for holding food", category: "object" },
+            "knife": { pos: "noun", def: "a cutting instrument with a sharp blade", category: "object" },
+            "spoon": { pos: "noun", def: "an eating utensil with a shallow bowl", category: "object" },
+            "fork": { pos: "noun", def: "an eating utensil with prongs", category: "object" },
+
+            // NOUNS - Vehicles & Transportation
+            "airplane": { pos: "noun", def: "a powered flying vehicle with fixed wings", category: "object" },
+            "helicopter": { pos: "noun", def: "an aircraft with rotating blades on top", category: "object" },
+            "boat": { pos: "noun", def: "a watercraft for traveling on water", category: "object" },
+            "ship": { pos: "noun", def: "a large waterborne vessel", category: "object" },
+            "train": { pos: "noun", def: "a series of connected railway cars", category: "object" },
+            "bus": { pos: "noun", def: "a large motor vehicle for carrying passengers", category: "object" },
+            "bicycle": { pos: "noun", def: "a two-wheeled vehicle powered by pedaling", category: "object" },
+            "motorcycle": { pos: "noun", def: "a two-wheeled motor vehicle", category: "object" },
+            "truck": { pos: "noun", def: "a large motor vehicle for transporting goods", category: "object" },
+
+            // NOUNS - Music & Art
+            "song": { pos: "noun", def: "a short piece of music with words", category: "abstract" },
+            "instrument": { pos: "noun", def: "a tool or device used to produce music", category: "object" },
+            "guitar": { pos: "noun", def: "a stringed musical instrument played by plucking", category: "object" },
+            "piano": { pos: "noun", def: "a large keyboard musical instrument", category: "object" },
+            "drum": { pos: "noun", def: "a percussion instrument played by striking", category: "object" },
+            "painting": { pos: "noun", def: "a picture created with paint", category: "object" },
+            "sculpture": { pos: "noun", def: "a three-dimensional work of art", category: "object" },
+            "photograph": { pos: "noun", def: "a picture made using a camera", category: "object" },
+
+            // NOUNS - Sports & Games
+            "game": { pos: "noun", def: "a form of competitive activity or sport", category: "abstract" },
+            "sport": { pos: "noun", def: "an athletic activity requiring skill or physical prowess", category: "abstract" },
+            "ball": { pos: "noun", def: "a spherical object used in games and sports", category: "object" },
+            "team": { pos: "noun", def: "a group of players forming one side in a game", category: "people" },
+            "victory": { pos: "noun", def: "an act of defeating an enemy or opponent", category: "abstract" },
+            "prize": { pos: "noun", def: "a reward given to a winner", category: "object" },
+
+            // NOUNS - Tools & Hardware
+            "hammer": { pos: "noun", def: "a tool with a heavy metal head used for hitting things", category: "object" },
+            "screwdriver": { pos: "noun", def: "a tool used for turning screws", category: "object" },
+            "drill": { pos: "noun", def: "a tool or machine with a rotating cutting tip", category: "object" },
+            "saw": { pos: "noun", def: "a hand tool for cutting wood or other hard materials", category: "object" },
+            "wrench": { pos: "noun", def: "a tool used for gripping and turning nuts or bolts", category: "object" },
+            "nail": { pos: "noun", def: "a small metal spike driven into wood to join things", category: "object" },
+            "screw": { pos: "noun", def: "a sharp-pointed metal pin with a raised thread", category: "object" },
+            "ladder": { pos: "noun", def: "a structure consisting of a series of bars or steps", category: "object" },
+
+            // NOUNS - Furniture & Household
+            "table": { pos: "noun", def: "a piece of furniture with a flat top and one or more legs", category: "object" },
+            "chair": { pos: "noun", def: "a separate seat for one person", category: "object" },
+            "sofa": { pos: "noun", def: "a long upholstered seat with a back and arms", category: "object" },
+            "couch": { pos: "noun", def: "a long upholstered piece of furniture for several people", category: "object" },
+            "carpet": { pos: "noun", def: "a floor covering made from thick woven fabric", category: "object" },
+            "curtain": { pos: "noun", def: "a piece of material suspended at the top to form a screen", category: "object" },
+            "sink": { pos: "noun", def: "a fixed basin with a water supply and a drain", category: "object" },
+            "toilet": { pos: "noun", def: "a fixed receptacle into which a person may urinate or defecate", category: "object" },
+            "bath": { pos: "noun", def: "a large container for water, used for immersing and washing the body", category: "object" },
+
+            // NOUNS - Nature & Geography
+            "river": { pos: "noun", def: "a large natural stream of water flowing in a channel", category: "place" },
+            "lake": { pos: "noun", def: "a large body of water surrounded by land", category: "place" },
+            "ocean": { pos: "noun", def: "a very large expanse of sea", category: "place" },
+            "mountain": { pos: "noun", def: "a large natural elevation of the earth's surface", category: "place" },
+            "hill": { pos: "noun", def: "a naturally raised area of land, not as high as a mountain", category: "place" },
+            "valley": { pos: "noun", def: "a low area of land between hills or mountains", category: "place" },
+            "forest": { pos: "noun", def: "a large area covered chiefly with trees and undergrowth", category: "place" },
+            "jungle": { pos: "noun", def: "an area of land overgrown with dense forest and tangled vegetation", category: "place" },
+            "desert": { pos: "noun", def: "a dry, barren area of land, especially one covered with sand", category: "place" },
+
+            // NOUNS - Music
+            "violin": { pos: "noun", def: "a stringed musical instrument of treble pitch", category: "object" },
+            "trumpet": { pos: "noun", def: "a brass musical instrument with a flared bell", category: "object" },
+            "flute": { pos: "noun", def: "a high-pitched woodwind instrument", category: "object" },
+            "orchestra": { pos: "noun", def: "a large group of musicians playing together", category: "people" },
+            "melody": { pos: "noun", def: "a sequence of single notes that is musically satisfying", category: "abstract" },
+            "rhythm": { pos: "noun", def: "a strong, regular, repeated pattern of movement or sound", category: "abstract" },
+
+            // NOUNS - Emotions & Feelings
+            "joy": { pos: "noun", def: "a feeling of great pleasure and happiness", category: "abstract" },
+            "fear": { pos: "noun", def: "an unpleasant emotion caused by the belief that something is dangerous", category: "abstract" },
+            "anger": { pos: "noun", def: "a strong feeling of annoyance, displeasure, or hostility", category: "abstract" },
+            "surprise": { pos: "noun", def: "an unexpected or astonishing event, fact, or thing", category: "abstract" },
+            "hope": { pos: "noun", def: "a feeling of expectation and desire for a certain thing to happen", category: "abstract" },
+            "love": { pos: "noun", def: "an intense feeling of deep affection", category: "abstract" },
+
+            // NOUNS - Clothing
+            "shirt": { pos: "noun", def: "a garment for the upper body", category: "object" },
+            "pants": { pos: "noun", def: "an outer garment covering the body from the waist to the ankles", category: "object" },
+            "shoe": { pos: "noun", def: "a covering for the foot", category: "object" },
+            "hat": { pos: "noun", def: "a covering for the head", category: "object" },
+            "dress": { pos: "noun", def: "a one-piece garment for a woman or girl", category: "object" },
+            "coat": { pos: "noun", def: "an outer garment worn outdoors", category: "object" },
+            "sock": { pos: "noun", def: "a garment for the foot and lower part of the leg", category: "object" },
+            "glove": { pos: "noun", def: "a covering for the hand", category: "object" },
+
+            // NOUNS - School & Education
+            "school": { pos: "noun", def: "an institution for educating children", category: "place" },
+            "teacher": { pos: "noun", def: "a person who teaches, especially in a school", category: "people" },
+            "student": { pos: "noun", def: "a person who is studying at a school or college", category: "people" },
+            "book": { pos: "noun", def: "a written or printed work consisting of pages", category: "object" },
+            "desk": { pos: "noun", def: "a piece of furniture with a flat or sloped surface for writing", category: "object" },
+            "library": { pos: "noun", def: "a building or room containing collections of books", category: "place" },
+            "pencil": { pos: "noun", def: "an instrument for writing or drawing", category: "object" },
+            "computer": { pos: "noun", def: "an electronic device for storing and processing data", category: "object" },
+
+            // VERBS (Simple)
+            "run": { pos: "verb", def: "move at a speed faster than a walk", forms: { present: "runs", past: "ran", future: "will run" } },
+            "jump": { pos: "verb", def: "push oneself off a surface and into the air", forms: { present: "jumps", past: "jumped", future: "will jump" } },
+            "sleep": { pos: "verb", def: "rest with eyes closed and mind unconscious", forms: { present: "sleeps", past: "slept", future: "will sleep" } },
+            "eat": { pos: "verb", def: "put food into the mouth and swallow it", forms: { present: "eats", past: "ate", future: "will eat" } },
+            "drink": { pos: "verb", def: "take a liquid into the mouth and swallow it", forms: { present: "drinks", past: "drank", future: "will drink" } },
+            "think": { pos: "verb", def: "have a particular opinion, belief, or idea", forms: { present: "thinks", past: "thought", future: "will think" } },
+            "read": { pos: "verb", def: "look at and comprehend the meaning of written matter", forms: { present: "reads", past: "read", future: "will read" } },
+            "write": { pos: "verb", def: "mark letters, words, or other symbols on a surface", forms: { present: "writes", past: "wrote", future: "will write" } },
+
+            // COMMON VERBS
+            "be": { pos: "verb", def: "to exist or live", forms: { present: "is/are", past: "was/were", future: "will be" } },
+            "have": { pos: "verb", def: "to possess, own, or hold", forms: { present: "has/have", past: "had", future: "will have" } },
+            "do": { pos: "verb", def: "to perform or execute an action", forms: { present: "does/do", past: "did", future: "will do" } },
+            "say": { pos: "verb", def: "to utter words to communicate", forms: { present: "says/say", past: "said", future: "will say" } },
+            "go": { pos: "verb", def: "to move from one place to another", forms: { present: "goes/go", past: "went", future: "will go" } },
+            "get": { pos: "verb", def: "to obtain or receive something", forms: { present: "gets/get", past: "got", future: "will get" } },
+            "make": { pos: "verb", def: "to create or form something", forms: { present: "makes/make", past: "made", future: "will make" } },
+            "know": { pos: "verb", def: "to be aware of through observation or inquiry", forms: { present: "knows/know", past: "knew", future: "will know" } },
+            "think": { pos: "verb", def: "to have a particular opinion or belief", forms: { present: "thinks/think", past: "thought", future: "will think" } },
+            "see": { pos: "verb", def: "to perceive with the eyes", forms: { present: "sees/see", past: "saw", future: "will see" } },
+            "come": { pos: "verb", def: "to move toward or arrive at a place", forms: { present: "comes/come", past: "came", future: "will come" } },
+            "want": { pos: "verb", def: "to have a desire to possess or do something", forms: { present: "wants/want", past: "wanted", future: "will want" } },
+            "look": { pos: "verb", def: "to direct one's gaze in a particular direction", forms: { present: "looks/look", past: "looked", future: "will look" } },
+            "use": { pos: "verb", def: "to employ something for a purpose", forms: { present: "uses/use", past: "used", future: "will use" } },
+            "find": { pos: "verb", def: "to discover or locate something", forms: { present: "finds/find", past: "found", future: "will find" } },
+            "give": { pos: "verb", def: "to freely transfer the possession of something to someone", forms: { present: "gives/give", past: "gave", future: "will give" } },
+            "tell": { pos: "verb", def: "to communicate information to someone", forms: { present: "tells/tell", past: "told", future: "will tell" } },
+            "work": { pos: "verb", def: "to be engaged in physical or mental activity", forms: { present: "works/work", past: "worked", future: "will work" } },
+            "call": { pos: "verb", def: "to cry out to or telephone someone", forms: { present: "calls/call", past: "called", future: "will call" } },
+            "try": { pos: "verb", def: "to make an attempt or effort", forms: { present: "tries/try", past: "tried", future: "will try" } },
+            "feel": { pos: "verb", def: "to experience a particular emotion or sensation", forms: { present: "feels/feel", past: "felt", future: "will feel" } },
+            "become": { pos: "verb", def: "to begin to be something", forms: { present: "becomes/become", past: "became", future: "will become" } },
+            "leave": { pos: "verb", def: "to go away from a place", forms: { present: "leaves/leave", past: "left", future: "will leave" } },
+            "put": { pos: "verb", def: "to place something in a particular position", forms: { present: "puts/put", past: "put", future: "will put" } },
+            "mean": { pos: "verb", def: "to signify or intend to convey", forms: { present: "means/mean", past: "meant", future: "will mean" } },
+            "keep": { pos: "verb", def: "to have or retain possession of", forms: { present: "keeps/keep", past: "kept", future: "will keep" } },
+            "let": { pos: "verb", def: "to allow or permit something", forms: { present: "lets/let", past: "let", future: "will let" } },
+            "begin": { pos: "verb", def: "to start or commence", forms: { present: "begins/begin", past: "began", future: "will begin" } },
+            "seem": { pos: "verb", def: "to give the impression of being something", forms: { present: "seems/seem", past: "seemed", future: "will seem" } },
+            "help": { pos: "verb", def: "to make it easier for someone to do something", forms: { present: "helps/help", past: "helped", future: "will help" } },
+            "show": { pos: "verb", def: "to make visible or demonstrate", forms: { present: "shows/show", past: "showed", future: "will show" } },
+            "hear": { pos: "verb", def: "to perceive sound with the ears", forms: { present: "hears/hear", past: "heard", future: "will hear" } },
+            "play": { pos: "verb", def: "to engage in activity for enjoyment and recreation", forms: { present: "plays/play", past: "played", future: "will play" } },
+            "run": { pos: "verb", def: "to move at a speed faster than a walk", forms: { present: "runs/run", past: "ran", future: "will run" } },
+            "move": { pos: "verb", def: "to change position or go from one place to another", forms: { present: "moves/move", past: "moved", future: "will move" } },
+            "live": { pos: "verb", def: "to remain alive or have one's home in a particular place", forms: { present: "lives/live", past: "lived", future: "will live" } },
+            "believe": { pos: "verb", def: "to accept something as true", forms: { present: "believes/believe", past: "believed", future: "will believe" } },
+            "bring": { pos: "verb", def: "to carry or convey something to a place", forms: { present: "brings/bring", past: "brought", future: "will bring" } },
+            "happen": { pos: "verb", def: "to take place or occur", forms: { present: "happens/happen", past: "happened", future: "will happen" } },
+            "write": { pos: "verb", def: "to mark letters or words on a surface", forms: { present: "writes/write", past: "wrote", future: "will write" } },
+            "sit": { pos: "verb", def: "to be in a position with one's weight supported by one's buttocks", forms: { present: "sits/sit", past: "sat", future: "will sit" } },
+            "stand": { pos: "verb", def: "to be in an upright position on the feet", forms: { present: "stands/stand", past: "stood", future: "will stand" } },
+            "lose": { pos: "verb", def: "to be deprived of or cease to have something", forms: { present: "loses/lose", past: "lost", future: "will lose" } },
+            "pay": { pos: "verb", def: "to give money in exchange for goods or services", forms: { present: "pays/pay", past: "paid", future: "will pay" } },
+            "meet": { pos: "verb", def: "to come into the presence of someone", forms: { present: "meets/meet", past: "met", future: "will meet" } },
+            "include": { pos: "verb", def: "to contain as part of a whole", forms: { present: "includes/include", past: "included", future: "will include" } },
+            "continue": { pos: "verb", def: "to persist in an activity or process", forms: { present: "continues/continue", past: "continued", future: "will continue" } },
+            "set": { pos: "verb", def: "to put or place something in a position", forms: { present: "sets/set", past: "set", future: "will set" } },
+            "learn": { pos: "verb", def: "to gain knowledge or skill by studying", forms: { present: "learns/learn", past: "learned", future: "will learn" } },
+            "change": { pos: "verb", def: "to make or become different", forms: { present: "changes/change", past: "changed", future: "will change" } },
+            "lead": { pos: "verb", def: "to guide or direct in a course", forms: { present: "leads/lead", past: "led", future: "will lead" } },
+            "understand": { pos: "verb", def: "to comprehend the meaning or nature of", forms: { present: "understands/understand", past: "understood", future: "will understand" } },
+            "watch": { pos: "verb", def: "to look at attentively", forms: { present: "watches/watch", past: "watched", future: "will watch" } },
+            "follow": { pos: "verb", def: "to go or come after", forms: { present: "follows/follow", past: "followed", future: "will follow" } },
+            "stop": { pos: "verb", def: "to cease moving or operating", forms: { present: "stops/stop", past: "stopped", future: "will stop" } },
+            "create": { pos: "verb", def: "to bring something into existence", forms: { present: "creates/create", past: "created", future: "will create" } },
+            "speak": { pos: "verb", def: "to say words or talk", forms: { present: "speaks/speak", past: "spoke", future: "will speak" } },
+            "read": { pos: "verb", def: "to look at and comprehend written or printed matter", forms: { present: "reads/read", past: "read", future: "will read" } },
+            "spend": { pos: "verb", def: "to pay out money or use time", forms: { present: "spends/spend", past: "spent", future: "will spend" } },
+            "grow": { pos: "verb", def: "to increase in size or develop", forms: { present: "grows/grow", past: "grew", future: "will grow" } },
+            "open": { pos: "verb", def: "to move something so that it is no longer closed", forms: { present: "opens/open", past: "opened", future: "will open" } },
+            "walk": { pos: "verb", def: "to move at a regular pace by lifting and setting down each foot", forms: { present: "walks/walk", past: "walked", future: "will walk" } },
+            "win": { pos: "verb", def: "to achieve victory in a contest", forms: { present: "wins/win", past: "won", future: "will win" } },
+            "teach": { pos: "verb", def: "to impart knowledge or instruct", forms: { present: "teaches/teach", past: "taught", future: "will teach" } },
+            "offer": { pos: "verb", def: "to present for acceptance or rejection", forms: { present: "offers/offer", past: "offered", future: "will offer" } },
+            "remember": { pos: "verb", def: "to have in or be able to bring to one's mind", forms: { present: "remembers/remember", past: "remembered", future: "will remember" } },
+            "consider": { pos: "verb", def: "to think carefully about", forms: { present: "considers/consider", past: "considered", future: "will consider" } },
+            "appear": { pos: "verb", def: "to become visible or come into sight", forms: { present: "appears/appear", past: "appeared", future: "will appear" } },
+            "buy": { pos: "verb", def: "to obtain in exchange for payment", forms: { present: "buys/buy", past: "bought", future: "will buy" } },
+            "serve": { pos: "verb", def: "to perform duties or provide food", forms: { present: "serves/serve", past: "served", future: "will serve" } },
+            "die": { pos: "verb", def: "to stop living", forms: { present: "dies/die", past: "died", future: "will die" } },
+            "send": { pos: "verb", def: "to cause to go or be taken somewhere", forms: { present: "sends/send", past: "sent", future: "will send" } },
+            "build": { pos: "verb", def: "to construct by putting parts together", forms: { present: "builds/build", past: "built", future: "will build" } },
+            "stay": { pos: "verb", def: "to remain in the same place", forms: { present: "stays/stay", past: "stayed", future: "will stay" } },
+            "fall": { pos: "verb", def: "to drop or descend under the force of gravity", forms: { present: "falls/fall", past: "fell", future: "will fall" } },
+            "cut": { pos: "verb", def: "to divide or separate with a sharp tool", forms: { present: "cuts/cut", past: "cut", future: "will cut" } },
+            "reach": { pos: "verb", def: "to arrive at or get as far as", forms: { present: "reaches/reach", past: "reached", future: "will reach" } },
+            "kill": { pos: "verb", def: "to cause the death of", forms: { present: "kills/kill", past: "killed", future: "will kill" } },
+            "raise": { pos: "verb", def: "to lift or move to a higher position", forms: { present: "raises/raise", past: "raised", future: "will raise" } },
+            "pass": { pos: "verb", def: "to move or go past", forms: { present: "passes/pass", past: "passed", future: "will pass" } },
+            "sell": { pos: "verb", def: "to give or hand over in exchange for money", forms: { present: "sells/sell", past: "sold", future: "will sell" } },
+            "decide": { pos: "verb", def: "to make a choice from two or more possibilities", forms: { present: "decides/decide", past: "decided", future: "will decide" } },
+            "return": { pos: "verb", def: "to come or go back to a place", forms: { present: "returns/return", past: "returned", future: "will return" } },
+            "explain": { pos: "verb", def: "to make something clear by describing it in detail", forms: { present: "explains/explain", past: "explained", future: "will explain" } },
+            "hope": { pos: "verb", def: "to want something to happen or be true", forms: { present: "hopes/hope", past: "hoped", future: "will hope" } },
+            "develop": { pos: "verb", def: "to grow or cause to grow gradually", forms: { present: "develops/develop", past: "developed", future: "will develop" } },
+            "carry": { pos: "verb", def: "to transport or support while moving", forms: { present: "carries/carry", past: "carried", future: "will carry" } },
+            "break": { pos: "verb", def: "to separate into pieces as a result of force", forms: { present: "breaks/break", past: "broke", future: "will break" } },
+            "receive": { pos: "verb", def: "to be given or presented with", forms: { present: "receives/receive", past: "received", future: "will receive" } },
+            "agree": { pos: "verb", def: "to have the same opinion or think alike", forms: { present: "agrees/agree", past: "agreed", future: "will agree" } },
+            "support": { pos: "verb", def: "to give assistance or bear the weight of", forms: { present: "supports/support", past: "supported", future: "will support" } },
+            "hit": { pos: "verb", def: "to bring one's hand forcibly into contact with", forms: { present: "hits/hit", past: "hit", future: "will hit" } },
+            "produce": { pos: "verb", def: "to make or manufacture from components", forms: { present: "produces/produce", past: "produced", future: "will produce" } },
+            "eat": { pos: "verb", def: "to put food into the mouth and chew and swallow it", forms: { present: "eats/eat", past: "ate", future: "will eat" } },
+            "cover": { pos: "verb", def: "to place something over or in front of", forms: { present: "covers/cover", past: "covered", future: "will cover" } },
+            "catch": { pos: "verb", def: "to capture or seize", forms: { present: "catches/catch", past: "caught", future: "will catch" } },
+            "draw": { pos: "verb", def: "to produce a picture by making lines and marks", forms: { present: "draws/draw", past: "drew", future: "will draw" } },
+
+            // ADJECTIVES - Descriptive
+            "good": { pos: "adjective", def: "having the required qualities or high standard", opposite: "bad" },
+            "bad": { pos: "adjective", def: "of poor quality or low standard", opposite: "good" },
+            "big": { pos: "adjective", def: "of considerable size or extent", opposite: "small" },
+            "small": { pos: "adjective", def: "of limited size or amount", opposite: "big" },
+            "great": { pos: "adjective", def: "of considerable importance, size, or intensity", opposite: "terrible" },
+            "new": { pos: "adjective", def: "not existing before; recently made or created", opposite: "old" },
+            "old": { pos: "adjective", def: "having lived for a long time", opposite: "new" },
+            "high": { pos: "adjective", def: "extending far upward", opposite: "low" },
+            "low": { pos: "adjective", def: "not extending far upward", opposite: "high" },
+            "long": { pos: "adjective", def: "measuring a great distance from end to end", opposite: "short" },
+            "short": { pos: "adjective", def: "measuring a small distance from end to end", opposite: "long" },
+            "young": { pos: "adjective", def: "having lived for a relatively short time", opposite: "old" },
+            "important": { pos: "adjective", def: "of great significance or value", opposite: "trivial" },
+            "different": { pos: "adjective", def: "not the same as another", opposite: "same" },
+            "easy": { pos: "adjective", def: "achieved without great effort", opposite: "difficult" },
+            "difficult": { pos: "adjective", def: "needing much effort or skill", opposite: "easy" },
+            "hard": { pos: "adjective", def: "solid, firm, and resistant to pressure", opposite: "soft" },
+            "soft": { pos: "adjective", def: "easy to mold or compress", opposite: "hard" },
+            "fast": { pos: "adjective", def: "moving or capable of moving at high speed", opposite: "slow" },
+            "slow": { pos: "adjective", def: "moving at a low speed", opposite: "fast" },
+            "hot": { pos: "adjective", def: "having a high temperature", opposite: "cold" },
+            "cold": { pos: "adjective", def: "having a low temperature", opposite: "hot" },
+            "warm": { pos: "adjective", def: "having a moderate degree of heat", opposite: "cool" },
+            "cool": { pos: "adjective", def: "slightly cold", opposite: "warm" },
+            "happy": { pos: "adjective", def: "feeling or showing pleasure or contentment", opposite: "sad" },
+            "sad": { pos: "adjective", def: "feeling or showing sorrow", opposite: "happy" },
+            "beautiful": { pos: "adjective", def: "pleasing the senses or mind aesthetically", opposite: "ugly" },
+            "ugly": { pos: "adjective", def: "unpleasant or repulsive in appearance", opposite: "beautiful" },
+            "strong": { pos: "adjective", def: "having the power to move heavy weights or perform physically demanding tasks", opposite: "weak" },
+            "weak": { pos: "adjective", def: "lacking physical strength", opposite: "strong" },
+            "light": { pos: "adjective", def: "of little weight or having little weight", opposite: "heavy" },
+            "heavy": { pos: "adjective", def: "of great weight", opposite: "light" },
+            "clean": { pos: "adjective", def: "free from dirt or impurities", opposite: "dirty" },
+            "dirty": { pos: "adjective", def: "covered or marked with dirt", opposite: "clean" },
+            "bright": { pos: "adjective", def: "giving out or reflecting much light", opposite: "dark" },
+            "dark": { pos: "adjective", def: "with little or no light", opposite: "bright" },
+            "rich": { pos: "adjective", def: "having a great deal of money or assets", opposite: "poor" },
+            "poor": { pos: "adjective", def: "lacking sufficient money", opposite: "rich" },
+            "full": { pos: "adjective", def: "containing as much as possible", opposite: "empty" },
+            "empty": { pos: "adjective", def: "containing nothing", opposite: "full" },
+            "right": { pos: "adjective", def: "morally good or correct", opposite: "wrong" },
+            "wrong": { pos: "adjective", def: "not correct or true", opposite: "right" },
+            "true": { pos: "adjective", def: "in accordance with fact or reality", opposite: "false" },
+            "false": { pos: "adjective", def: "not according with truth or fact", opposite: "true" },
+            "safe": { pos: "adjective", def: "protected from danger or risk", opposite: "dangerous" },
+            "dangerous": { pos: "adjective", def: "able or likely to cause harm or injury", opposite: "safe" },
+            "quiet": { pos: "adjective", def: "making little or no noise", opposite: "loud" },
+            "loud": { pos: "adjective", def: "producing much noise", opposite: "quiet" },
+            "simple": { pos: "adjective", def: "easily understood or done", opposite: "complex" },
+            "complex": { pos: "adjective", def: "consisting of many interconnected parts", opposite: "simple" },
+            "kind": { pos: "adjective", def: "having a friendly, generous, and considerate nature", opposite: "cruel" },
+            "cruel": { pos: "adjective", def: "willfully causing pain or suffering", opposite: "kind" },
+            "brave": { pos: "adjective", def: "ready to face danger or pain", opposite: "cowardly" },
+            "smart": { pos: "adjective", def: "having intelligence or good judgment", opposite: "stupid" },
+            "stupid": { pos: "adjective", def: "lacking intelligence or common sense", opposite: "smart" },
+            "wide": { pos: "adjective", def: "having a great extent from side to side", opposite: "narrow" },
+            "narrow": { pos: "adjective", def: "of small width", opposite: "wide" },
+            "thick": { pos: "adjective", def: "with a large distance between opposite sides", opposite: "thin" },
+            "thin": { pos: "adjective", def: "having little thickness", opposite: "thick" },
+            "wet": { pos: "adjective", def: "covered or saturated with liquid", opposite: "dry" },
+            "dry": { pos: "adjective", def: "free from moisture", opposite: "wet" },
+            "alive": { pos: "adjective", def: "living, not dead", opposite: "dead" },
+            "dead": { pos: "adjective", def: "no longer alive", opposite: "alive" },
+            "sharp": { pos: "adjective", def: "having a cutting edge or point", opposite: "dull" },
+            "smooth": { pos: "adjective", def: "having an even surface", opposite: "rough" },
+            "rough": { pos: "adjective", def: "having an uneven surface", opposite: "smooth" },
+            "sweet": { pos: "adjective", def: "having a pleasant taste characteristic of sugar", opposite: "bitter" },
+            "bitter": { pos: "adjective", def: "having a sharp, unpleasant taste", opposite: "sweet" },
+            "fresh": { pos: "adjective", def: "recently made or obtained", opposite: "stale" },
+            "healthy": { pos: "adjective", def: "in good physical or mental condition", opposite: "sick" },
+            "sick": { pos: "adjective", def: "affected by illness", opposite: "healthy" },
+            "lazy": { pos: "adjective", def: "unwilling to work or use energy", opposite: "active" },
+            "active": { pos: "adjective", def: "engaging in physical or mental activity", opposite: "lazy" },
+            "wild": { pos: "adjective", def: "living in a natural state", opposite: "tame" },
+            "calm": { pos: "adjective", def: "not showing or feeling nervousness or anger", opposite: "angry" },
+            "angry": { pos: "adjective", def: "feeling or showing strong annoyance", opposite: "calm" },
+
+            // ADVERBS
+            "very": { pos: "adverb", def: "to a high degree or extremely" },
+            "always": { pos: "adverb", def: "at all times or on all occasions" },
+            "never": { pos: "adverb", def: "not at any time or not ever" },
+            "often": { pos: "adverb", def: "frequently or many times" },
+            "sometimes": { pos: "adverb", def: "occasionally or now and then" },
+            "usually": { pos: "adverb", def: "in most cases or generally" },
+            "quickly": { pos: "adverb", def: "at a fast speed or rapidly" },
+            "slowly": { pos: "adverb", def: "at a slow speed or gradually" },
+            "well": { pos: "adverb", def: "in a good or satisfactory way" },
+            "badly": { pos: "adverb", def: "in an unsatisfactory or inadequate way" },
+            "really": { pos: "adverb", def: "in actual fact or to a great degree" },
+            "quite": { pos: "adverb", def: "to a certain extent or moderately" },
+            "almost": { pos: "adverb", def: "not quite or very nearly" },
+            "just": { pos: "adverb", def: "exactly or only" },
+            "now": { pos: "adverb", def: "at the present time" },
+            "then": { pos: "adverb", def: "at that time" },
+            "here": { pos: "adverb", def: "in, at, or to this place" },
+            "there": { pos: "adverb", def: "in, at, or to that place" },
+            "today": { pos: "adverb", def: "on this day" },
+            "yesterday": { pos: "adverb", def: "on the day before today" },
+            "tomorrow": { pos: "adverb", def: "on the day after today" },
+            "early": { pos: "adverb", def: "before the usual or expected time" },
+            "late": { pos: "adverb", def: "after the expected or usual time" },
+            "soon": { pos: "adverb", def: "in the near future" },
+            "finally": { pos: "adverb", def: "after a long time or at last" },
+            "also": { pos: "adverb", def: "in addition or as well" },
+            "together": { pos: "adverb", def: "with or in proximity to another" },
+            "alone": { pos: "adverb", def: "on one's own or by oneself" },
+
+            // PREPOSITIONS
+            "in": { pos: "preposition", def: "expressing location or position within something" },
+            "on": { pos: "preposition", def: "physically touching and supported by a surface" },
+            "at": { pos: "preposition", def: "expressing location or arrival at a particular place" },
+            "to": { pos: "preposition", def: "expressing motion in the direction of" },
+            "from": { pos: "preposition", def: "indicating the point in space where a journey or action starts" },
+            "with": { pos: "preposition", def: "accompanied by or in the company of" },
+            "by": { pos: "preposition", def: "identifying the agent performing an action" },
+            "for": { pos: "preposition", def: "in support of or on behalf of" },
+            "of": { pos: "preposition", def: "expressing the relationship between a part and a whole" },
+            "about": { pos: "preposition", def: "on the subject of or concerning" },
+            "over": { pos: "preposition", def: "extending directly upward from" },
+            "under": { pos: "preposition", def: "extending below" },
+            "between": { pos: "preposition", def: "in the space separating two things" },
+            "through": { pos: "preposition", def: "moving in one side and out the other" },
+            "during": { pos: "preposition", def: "throughout the course of" },
+            "before": { pos: "preposition", def: "during the period of time preceding" },
+            "after": { pos: "preposition", def: "in the time following" },
+            "above": { pos: "preposition", def: "at a higher level than" },
+            "below": { pos: "preposition", def: "at a lower level than" },
+            "into": { pos: "preposition", def: "expressing movement toward the inside" },
+            "near": { pos: "preposition", def: "at or to a short distance from" },
+            "across": { pos: "preposition", def: "from one side to the other of" },
+            "against": { pos: "preposition", def: "in opposition to" },
+            "among": { pos: "preposition", def: "surrounded by or in the company of" },
+            "behind": { pos: "preposition", def: "at or to the far side of" },
+            "beside": { pos: "preposition", def: "at the side of or next to" },
+            "around": { pos: "preposition", def: "located on every side of" },
+
+            // CONJUNCTIONS
+            "and": { pos: "conjunction", def: "used to connect words or clauses" },
+            "but": { pos: "conjunction", def: "used to introduce a contrast or exception" },
+            "or": { pos: "conjunction", def: "used to link alternatives" },
+            "so": { pos: "conjunction", def: "therefore or for that reason" },
+            "because": { pos: "conjunction", def: "for the reason that" },
+            "if": { pos: "conjunction", def: "on the condition that" },
+            "when": { pos: "conjunction", def: "at what time or at the time that" },
+            "while": { pos: "conjunction", def: "during the time that" },
+            "although": { pos: "conjunction", def: "in spite of the fact that" },
+            "unless": { pos: "conjunction", def: "except if" },
+            "until": { pos: "conjunction", def: "up to the point in time when" },
+            "since": { pos: "conjunction", def: "from the time that" },
+
+            // PRONOUNS
+            "I": { pos: "pronoun", def: "used by a speaker to refer to himself or herself" },
+            "you": { pos: "pronoun", def: "used to refer to the person being addressed" },
+            "he": { pos: "pronoun", def: "used to refer to a male previously mentioned" },
+            "she": { pos: "pronoun", def: "used to refer to a female previously mentioned" },
+            "it": { pos: "pronoun", def: "used to refer to a thing previously mentioned" },
+            "we": { pos: "pronoun", def: "used by a speaker to refer to himself or herself and others" },
+            "they": { pos: "pronoun", def: "used to refer to people or things previously mentioned" },
+            "this": { pos: "pronoun", def: "used to identify a specific person or thing close at hand" },
+            "that": { pos: "pronoun", def: "used to identify a specific person or thing at a distance" },
+            "who": { pos: "pronoun", def: "what or which person or people" },
+            "what": { pos: "pronoun", def: "asking for information specifying something" },
+            "which": { pos: "pronoun", def: "asking for information specifying one or more from a set" },
+            "where": { pos: "pronoun", def: "in or to what place or position" },
+            "why": { pos: "pronoun", def: "for what reason or purpose" },
+            "how": { pos: "pronoun", def: "in what way or manner" },
+
+            // ARTICLES AND DETERMINERS
+            "a": { pos: "article", def: "used when referring to something for the first time" },
+            "an": { pos: "article", def: "used before words beginning with a vowel sound" },
+            "the": { pos: "article", def: "used to refer to specific things" },
+            "some": { pos: "determiner", def: "an unspecified amount or number of" },
+            "any": { pos: "determiner", def: "one, some, or all without specification" },
+            "many": { pos: "determiner", def: "a large number of" },
+            "much": { pos: "determiner", def: "a large amount of" },
+            "few": { pos: "determiner", def: "a small number of" },
+            "all": { pos: "determiner", def: "the whole quantity or extent of" },
+            "both": { pos: "determiner", def: "two people or things together" },
+            "each": { pos: "determiner", def: "every one of two or more considered individually" },
+            "every": { pos: "determiner", def: "all of a group considered individually" },
+            "other": { pos: "determiner", def: "different from the one mentioned" },
+            "another": { pos: "determiner", def: "used to refer to an additional thing" },
+        };
+
+        // --- 2. GRAMMAR & KNOWLEDGE BASE ---
+
+        // CONVERSATIONAL RESPONSES - Handle greetings and casual chat
+        const CONVERSATIONAL_RESPONSES = {
+            "hi": "Hello! I'm Guahh AI. I can define words, answer questions, and share knowledge. What would you like to know?",
+            "hello": "Hi there! I'm Guahh AI with English language understanding. Ask me to define a word or explain a concept!",
+            "hey": "Hey! I'm here to help you understand English words and general knowledge. What can I explain for you?",
+            "how are you": "I'm functioning perfectly! As an AI, I'm always ready to help you learn. What would you like to know about?",
+            "what can you do": "I can define over 850 English words, explain their meanings, answer questions about general knowledge including science, history, geography, and technology, and write creative short stories! Try asking 'What is a dolphin?', 'Tell me about black holes', or 'Write a story about a cat'!",
+            "who are you": "I am Guahh AI version 2.2, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "what are you": "I am Guahh AI version 2.2, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "who made you": "I was created by Guahh, an Australian technology company based in Melbourne.",
+            "what is your name": "My name is Guahh AI, and I'm version 2.2 of this language understanding system.",
+            "thanks": "You're welcome! Feel free to ask me anything else.",
+            "thank you": "Happy to help! Let me know if you have more questions.",
+            "bye": "Goodbye! Come back anytime you want to learn something new!",
+            "goodbye": "See you later! I'll be here whenever you need me."
+        };
+
+        // GENERAL KNOWLEDGE DATABASE - Facts about the world
+        const GENERAL_KNOWLEDGE = {
+            // Science & Space
+            "solar system": "The solar system consists of the Sun and all celestial objects that orbit it, including eight planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
+            "sun": "The Sun is a yellow dwarf star at the center of our solar system. It's about 4.6 billion years old and makes up about 99.86% of the solar system's mass.",
+            "earth": "Earth is the third planet from the Sun and the only known planet to support life. It has one natural satellite called the Moon.",
+            "moon": "The Moon is Earth's only natural satellite. It's about one-quarter the size of Earth and takes 27.3 days to orbit our planet.",
+            "mars": "Mars is the fourth planet from the Sun, often called the Red Planet due to iron oxide on its surface. It has two small moons named Phobos and Deimos.",
+            "jupiter": "Jupiter is the fifth and largest planet in our solar system. It's a gas giant with at least 79 moons and a famous Great Red Spot storm.",
+            "gravity": "Gravity is a fundamental force of nature that attracts objects with mass toward each other. On Earth, it accelerates objects at 9.8 meters per second squared.",
+            "atom": "An atom is the smallest unit of matter that retains the properties of an element. It consists of a nucleus containing protons and neutrons, surrounded by electrons.",
+            "dna": "DNA (deoxyribonucleic acid) is the molecule that carries genetic instructions for life. It has a double helix structure discovered by Watson and Crick.",
+            "photosynthesis": "Photosynthesis is the process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen.",
+            "evolution": "Evolution is the process of biological change in species over successive generations through natural selection, as explained by Charles Darwin.",
+
+            // History
+            "world war 1": "World War 1 was a global conflict that lasted from 1914 to 1918, involving most of the world's great powers.",
+            "world war 2": "World War 2 was a global war from 1939 to 1945 involving most nations, including all great powers, forming two opposing alliances: the Allies and the Axis.",
+            "roman empire": "The Roman Empire was one of the largest empires in history, lasting from 27 BC to 476 AD in the West and until 1453 in the East.",
+            "renaissance": "The Renaissance was a period of European cultural, artistic, and scientific rebirth from the 14th to 17th century, beginning in Italy.",
+            "industrial revolution": "The Industrial Revolution was a period of major industrialization from the late 1700s to early 1800s, transforming agriculture-based economies into industrial ones.",
+
+            // Geography
+            "ocean": "Earth has five oceans: the Pacific (largest), Atlantic, Indian, Southern, and Arctic. Oceans cover about 71% of Earth's surface.",
+            "pacific ocean": "The Pacific Ocean is the largest and deepest ocean on Earth, covering more area than all land combined.",
+            "mount everest": "Mount Everest is Earth's highest mountain at 8,849 meters (29,032 feet) above sea level, located in the Himalayas on the Nepal-Tibet border.",
+            "sahara": "The Sahara is the world's largest hot desert, covering most of North Africa with an area of about 9 million square kilometers.",
+            "amazon": "The Amazon rainforest is the world's largest tropical rainforest, covering much of northwestern Brazil and extending into neighboring countries.",
+            "nile": "The Nile is traditionally considered the world's longest river at about 6,650 km, flowing through northeastern Africa.",
+
+            // Technology
+            "internet": "The Internet is a global network of connected computers that communicate using standardized protocols. It was developed in the late 20th century.",
+            "computer": "A computer is an electronic device that processes data according to a set of instructions called programs. Modern computers use the binary system.",
+            "artificial intelligence": "Artificial Intelligence (AI) is the simulation of human intelligence by machines, enabling them to learn, reason, and solve problems.",
+            "programming": "Programming is the process of creating instructions for computers to follow. Common programming languages include Python, JavaScript, and Java.",
+            "blockchain": "Blockchain is a decentralized digital ledger technology that records transactions across many computers securely and transparently.",
+
+            // Nature & Animals
+            "photosynthesis": "Photosynthesis is how plants make food using sunlight, water, and carbon dioxide, releasing oxygen as a byproduct.",
+            "ecosystem": "An ecosystem is a community of living organisms interacting with each other and their physical environment.",
+            "dinosaur": "Dinosaurs were a diverse group of reptiles that dominated Earth for about 165 million years before going extinct 66 million years ago.",
+            "mammal": "Mammals are warm-blooded vertebrates that have hair or fur, produce milk for their young, and typically give birth to live offspring.",
+
+            // Human Body
+            "brain": "The brain is the control center of the nervous system, responsible for thoughts, memory, emotions, and controlling body functions.",
+            "heart": "The heart is a muscular organ that pumps blood throughout the body, delivering oxygen and nutrients to tissues.",
+
+            // Companies & People (from original knowledge base)
+            "guahh ai": "I am Guahh AI, a language model with English dictionary knowledge and general knowledge running in your browser.",
+            "travis scott": "Travis Scott is an American rapper and record producer from Houston, Texas, known for albums like Astroworld and Rodeo.",
+            "kangaroo": "Kangaroo is a social media platform developed by Guahh that combines features from Twitter and Instagram.",
+            "guahh": "Guahh is an Australian technology company based in Melbourne that developed the Kangaroo social media platform and Guahh AI.",
+
+            // Expanded Animal Knowledge
+            "tiger facts": "Tigers are the largest cat species, with powerful jaws and distinctive orange fur with black stripes. They are solitary hunters and excellent swimmers.",
+            "dolphin facts": "Dolphins are highly intelligent marine mammals known for their playful behavior and complex communication using clicks and whistles. They live in social groups called pods.",
+            "elephant facts": "Elephants are the largest land animals with remarkable memory and intelligence. They use their trunks for breathing, smelling, touching, and grasping objects.",
+            "penguin facts": "Penguins are flightless birds adapted for swimming. They live primarily in the Southern Hemisphere and can dive deep underwater to catch fish.",
+            "eagle facts": "Eagles are powerful birds of prey with exceptional eyesight. They can spot prey from miles away and dive at speeds over 100 mph.",
+            "shark facts": "Sharks have existed for over 400 million years. They have multiple rows of teeth and excellent senses including the ability to detect electrical fields.",
+            "owl facts": "Owls are nocturnal birds of prey with excellent night vision and hearing. They can rotate their heads up to 270 degrees.",
+            "butterfly facts": "Butterflies go through complete metamorphosis from caterpillar to adult. They taste with their feet and have four wings covered in tiny scales.",
+            "kangaroo facts": "Kangaroos can jump up to 30 feet in a single leap and use their powerful tail for balance. Female kangaroos carry their young in a pouch.",
+            "whale facts": "Whales are the largest animals ever known to exist. Blue whales can weigh up to 200 tons and their songs can travel hundreds of miles underwater.",
+
+            // More Science
+            "black hole": "A black hole is a region of spacetime where gravity is so strong that nothing, not even light, can escape from it. They form when massive stars collapse.",
+            "molecule": "A molecule is two or more atoms bonded together. Water (H2O) is one of the most common molecules on Earth.",
+            "cell": "A cell is the basic unit of life. All living organisms are made of one or more cells that can reproduce, respond to stimuli, and maintain homeostasis.",
+            "quantum physics": "Quantum physics is the study of matter and energy at the atomic and subatomic level, where particles can exist in multiple states simultaneously.",
+            "electricity": "Electricity is the flow of electric charge. It powers most modern technology and can occur naturally in lightning.",
+            "magnet": "A magnet is an object that produces a magnetic field and attracts ferromagnetic materials like iron, nickel, and cobalt.",
+            "volcano": "A volcano is an opening in Earth's crust through which molten rock, gases, and debris can escape. There are about 1,500 active volcanoes on Earth.",
+            "earthquake": "An earthquake is the shaking of Earth's surface caused by sudden movement of rock beneath the surface along fault lines.",
+
+            // More History & Culture
+            "ancient egypt": "Ancient Egypt was one of the world's earliest civilizations, known for pyramids, pharaohs, hieroglyphics, and advances in mathematics and medicine.",
+            "ancient greece": "Ancient Greece was the birthplace of democracy, philosophy, theater, and the Olympic Games. Great thinkers like Socrates, Plato, and Aristotle lived there.",
+            "napoleon": "Napoleon Bonaparte was a French military leader who became Emperor of France in 1804 and conquered much of Europe before his defeat in 1815.",
+            "columbus": "Christopher Columbus was an Italian explorer who sailed across the Atlantic Ocean in 1492, leading to European awareness of the Americas.",
+            "shakespeare": "William Shakespeare was an English playwright and poet from the 16th-17th century, considered the greatest writer in the English language.",
+
+            // Technology & Modern
+            "smartphone": "A smartphone is a mobile device that combines cellular phone capabilities with computing functions, internet access, and various applications.",
+            "internet of things": "The Internet of Things (IoT) refers to the network of physical devices embedded with sensors and software that connect and exchange data.",
+            "virtual reality": "Virtual Reality (VR) is a computer-generated simulation of a three-dimensional environment that can be interacted with using special equipment.",
+            "machine learning": "Machine learning is a subset of AI where computers learn from data and improve their performance without being explicitly programmed.",
+            "cryptocurrency": "Cryptocurrency is a digital currency that uses cryptography for security. Bitcoin was the first decentralized cryptocurrency, created in 2009.",
+
+            // Detailed Planets
+            "mercury": "Mercury is the smallest planet in the Solar System and the closest to the Sun. It has no atmosphere to retain heat.",
+            "venus": "Venus is the second planet from the Sun. It is the hottest planet in the Solar System due to its thick toxic atmosphere.",
+            "uranus": "Uranus is the seventh planet from the Sun. It has a unique tint due to methane in its atmosphere and rotates on its side.",
+            "neptune": "Neptune is the eighth and farthest known planet from the Sun. It is a dark, cold, and windy ice giant.",
+
+            // Famous Scientists
+            "albert einstein": "Albert Einstein was a German-born theoretical physicist who developed the theory of relativity, one of the two pillars of modern physics.",
+            "isaac newton": "Sir Isaac Newton was an English mathematician, physicist, astronomer, and author who is widely recognised as one of the greatest mathematicians and most influential scientists of all time.",
+            "marie curie": "Marie Curie was a Polish and naturalized-French physicist and chemist who conducted pioneering research on radioactivity.",
+            "galileo galilei": "Galileo Galilei was an Italian astronomer, physicist and engineer, sometimes described as a polymath.",
+
+            // Coding Terms
+            "html": "HTML (HyperText Markup Language) is the standard markup language for documents designed to be displayed in a web browser.",
+            "css": "CSS (Cascading Style Sheets) is a style sheet language used for describing the presentation of a document written in a markup language like HTML.",
+            "javascript": "JavaScript is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.",
+            "algorithm": "An algorithm is a finite sequence of well-defined, computer-implementable instructions, typically to solve a class of problems.",
+            "bug": "A software bug is an error, flaw or fault in a computer program or system that causes it to produce an incorrect or unexpected result.",
+        };
+
+        const QUESTION_WORDS = ["what", "who", "where", "when", "why", "how", "is", "are", "can", "does", "do", "define", "explain", "tell", "describe"];
+
+        // --- STORY GENERATION SYSTEM ---
+        const STORY_TEMPLATES = {
+            adventure: [
+                {
+                    template: "Once upon a time, there was a {animal} named {name}. {name} lived in a {place} and loved to {action}. One day, {name} decided to go on an adventure to find {goal}. Along the way, {name} met a {friend} who became a great companion. Together, they faced many challenges, but with {emotion} and {quality}, they succeeded. In the end, {name} learned that {lesson}.",
+                    themes: ["courage", "friendship", "discovery"]
+                },
+                {
+                    template: "In a {place} far away, a brave {animal} named {name} set out on a journey. {name} wanted to {goal}. The journey was {adjective}, but {name} never gave up. After many days, {name} discovered something amazing: {discovery}. This changed everything, and {name} returned home with {reward}.",
+                    themes: ["perseverance", "exploration", "wonder"]
+                }
+            ],
+            friendship: [
+                {
+                    template: "There once was a {animal} named {name} who felt very {emotion}. One sunny {time}, {name} met a {friend} in the {place}. At first, they were {adjective}, but soon they became the best of friends. They would {action} together every day. Their friendship taught both of them that {lesson}.",
+                    themes: ["companionship", "acceptance", "joy"]
+                },
+                {
+                    template: "A lonely {animal} named {name} lived in a {place}. {name} wished for a friend to {action} with. One day, a {friend} appeared and said, 'Will you be my friend?' {name} was so {emotion}! Together they {action} and discovered that {lesson}.",
+                    themes: ["loneliness", "connection", "happiness"]
+                }
+            ],
+            learning: [
+                {
+                    template: "Young {name} the {animal} was very {adjective} and wanted to learn about {topic}. Every {time}, {name} would {action} in the {place}. A wise {friend} taught {name} many things. The most important lesson was that {lesson}. Now {name} uses this knowledge to {goal}.",
+                    themes: ["growth", "wisdom", "education"]
+                },
+                {
+                    template: "In a {place}, a curious {animal} named {name} loved to {action}. One day, {name} discovered {discovery}. This discovery taught {name} that {lesson}, and from that day on, {name} became known for {quality}.",
+                    themes: ["curiosity", "discovery", "knowledge"]
+                }
+            ],
+            mystery: [
+                {
+                    template: "Something strange was happening in the {place}. A clever {animal} named {name} decided to investigate. {name} followed clues and encountered a {friend} along the way. Together, they discovered that {discovery}. The mystery was solved, and everyone was {emotion}!",
+                    themes: ["investigation", "problem-solving", "revelation"]
+                }
+            ]
+        };
+
+        // Story generation function
+        function generateStory(subject = null) {
+            // Choose random story type
+            const types = Object.keys(STORY_TEMPLATES);
+            const chosenType = types[Math.floor(Math.random() * types.length)];
+            const templates = STORY_TEMPLATES[chosenType];
+            const template = templates[Math.floor(Math.random() * templates.length)].template;
+
+            // Get random elements from dictionary
+            const animals = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "animal");
+            const places = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "place");
+            const adjectives = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].pos === "adjective");
+            const emotions = ["happy", "sad", "excited", "curious", "brave", "kind", "wise", "strong"];
+            const actions = ["explore", "play", "learn", "discover", "help", "create", "teach", "protect"];
+            const times = ["morning", "afternoon", "evening", "day"];
+
+            // STRICT SUBJECT HANDLING
+            let mainAnimal = animals[Math.floor(Math.random() * animals.length)]; // Default random
+
+            if (subject) {
+                let cleanSubject = subject.toLowerCase().trim();
+                // Check if subject is a known animal
+                if (animals.includes(cleanSubject)) {
+                    mainAnimal = cleanSubject;
+                } else {
+                    // If subject is singular/plural mismatch (e.g. "cats" vs "cat"), try to fix
+                    if (cleanSubject.endsWith('s') && animals.includes(cleanSubject.slice(0, -1))) {
+                        mainAnimal = cleanSubject.slice(0, -1);
+                    }
+                }
+            }
+
+            const friendAnimal = animals.filter(a => a !== mainAnimal)[Math.floor(Math.random() * (animals.length - 1))];
+
+            // Generate random name
+            const names = ["Max", "Luna", "Charlie", "Bella", "Oliver", "Lucy", "Buddy", "Daisy", "Rocky", "Sophie", "Leo", "Mia", "Jack", "Chloe", "Sam"];
+            const name = names[Math.floor(Math.random() * names.length)];
+
+            // Random story elements
+            const place = places[Math.floor(Math.random() * places.length)];
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const emotion = emotions[Math.floor(Math.random() * emotions.length)];
+
+            // Story-specific elements
+            const goals = [`discover a hidden ${place}`, `find the secret of ${adjective} ${places[Math.floor(Math.random() * places.length)]}`, `help all the ${animals[Math.floor(Math.random() * animals.length)]}s`, `become the most ${adjective} ${mainAnimal} ever`];
+            const lessons = ["friendship is the greatest treasure", "being brave means trying even when you're scared", "kindness makes the world better", "every creature has something special to offer", "believing in yourself is the first step to success", "working together makes us stronger"];
+            const discoveries = [`a magical ${places[Math.floor(Math.random() * places.length)]}`, `the true meaning of ${emotions[Math.floor(Math.random() * emotions.length)]}ness`, `an ancient secret`];
+            const qualities = ["wisdom", "courage", "kindness", "intelligence", "loyalty", "creativity"];
+            const topics = ["the stars", "nature", "friendship", "courage", "science", "art"];
+
+            // Fill in the template
+            let story = template
+                .replace(/{animal}/g, mainAnimal)
+                .replace(/{name}/g, name)
+                .replace(/{place}/g, place)
+                .replace(/{action}/g, action)
+                .replace(/{friend}/g, friendAnimal)
+                .replace(/{adjective}/g, adjective)
+                .replace(/{emotion}/g, emotion)
+                .replace(/{goal}/g, goals[Math.floor(Math.random() * goals.length)])
+                .replace(/{lesson}/g, lessons[Math.floor(Math.random() * lessons.length)])
+                .replace(/{discovery}/g, discoveries[Math.floor(Math.random() * discoveries.length)])
+                .replace(/{quality}/g, qualities[Math.floor(Math.random() * qualities.length)])
+                .replace(/{time}/g, times[Math.floor(Math.random() * times.length)])
+                .replace(/{topic}/g, topics[Math.floor(Math.random() * topics.length)])
+                .replace(/{reward}/g, `new ${qualities[Math.floor(Math.random() * qualities.length)]}`);
+
+            return story;
         }
 
-        if (!MODEL[current]) MODEL[current] = [];
-        MODEL[current].push(next);
-    }
-    
-    // Math Logic (Hardcoded Logic Gates)
-    MODEL["MATH_GATE"] = true;
+        // --- 3. THE INFERENCE ENGINE ---
+        const chatWindow = document.getElementById('chat-window');
+        const inputField = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
 
-    status.innerText = `LLM Active: ${tokens.length} Parameters.`;
-}
-
-function clean(str) {
-    return str.toLowerCase().replace(/[^\w]/g, "");
-}
-
-// --- 3. THE INFERENCE ENGINE (REAL-TIME WRITING) ---
-const chatWindow = document.getElementById('chat-window');
-const inputField = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
-
-async function processPrompt() {
-    let prompt = inputField.value.trim();
-    if (!prompt) return;
-
-    // UI Handle
-    addMessage(prompt, 'user');
-    inputField.value = '';
-    inputField.disabled = true;
-    sendBtn.disabled = true;
-
-    // Create Bot Message Container
-    let botMsgDiv = document.createElement('div');
-    botMsgDiv.className = 'msg bot';
-    chatWindow.appendChild(botMsgDiv);
-    
-    // Add Cursor
-    let cursor = document.createElement('span');
-    cursor.className = 'cursor';
-    botMsgDiv.appendChild(cursor);
-
-    // --- THINKING PROCESS ---
-    
-    // 1. Context Search (RAG - Retrieval Augmented Generation)
-    // We look for the most relevant sentence in our Raw Data to start the chain
-    let bestSeed = findBestSeed(prompt);
-    let outputQueue = [];
-    
-    if (isMath(prompt)) {
-        outputQueue = solveMath(prompt).split(" ");
-    } else if (bestSeed) {
-        // We found a relevant fact. We will output it, but word by word.
-        outputQueue = bestSeed.split(" ");
-    } else {
-        // Hallucination Mode (Pure Markov Generation)
-        let seedWord = prompt.split(" ")[0] || "I";
-        outputQueue = generateChain(seedWord, 15);
-    }
-
-    // --- WRITING PROCESS (Word by Word) ---
-    for (let word of outputQueue) {
-        // Insert word before cursor
-        let textNode = document.createTextNode(word + " ");
-        cursor.before(textNode);
-        
-        // Auto Scroll
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-        
-        // The "Thinking" Delay - Variable speed based on word length
-        let delay = 30 + Math.random() * 50; 
-        if (word.includes('.') || word.includes(',')) delay += 150; // Pause at punctuation
-        
-        await new Promise(r => setTimeout(r, delay));
-    }
-
-    // Finished
-    cursor.remove();
-    inputField.disabled = false;
-    sendBtn.disabled = false;
-    inputField.focus();
-}
-
-// --- UTILITIES ---
-
-function findBestSeed(query) {
-    let q = clean(query);
-    // Score each sentence in RAW_DATA based on keyword matches
-    let bestSentence = "";
-    let highScore = 0;
-
-    for (let sentence of RAW_DATA) {
-        let score = 0;
-        let words = sentence.split(" ");
-        for (let w of words) {
-            if (q.includes(clean(w)) && clean(w).length > 2) score++;
+        function trainModel() {
+            let status = document.getElementById('model-status');
+            status.innerText = `Language Model Loaded: ${Object.keys(DICTIONARY).length} words in dictionary.`;
         }
-        
-        // Boost score for exact matches
-        if (sentence.toLowerCase().includes(q)) score += 5;
 
-        if (score > highScore) {
-            highScore = score;
-            bestSentence = sentence;
+        async function processPrompt() {
+            let prompt = inputField.value.trim();
+            if (!prompt) return;
+
+            // UI Handle
+            addMessage(prompt, 'user');
+            inputField.value = '';
+            inputField.disabled = true;
+            sendBtn.disabled = true;
+
+            // Create Bot Message Container
+            let botMsgDiv = document.createElement('div');
+            botMsgDiv.className = 'msg bot';
+            chatWindow.appendChild(botMsgDiv);
+
+            // Add Cursor
+            let cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            botMsgDiv.appendChild(cursor);
+
+            // --- THINKING PROCESS ---
+            let response = "";
+
+            if (isMath(prompt)) {
+                response = solveMath(prompt);
+            } else {
+                response = generateIntelligentResponse(prompt);
+            }
+
+            // --- WRITING PROCESS ---
+            let wordsToType = response.split(" ");
+
+            for (let word of wordsToType) {
+                let textNode = document.createTextNode(word + " ");
+                cursor.before(textNode);
+
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                // Typing speed variance
+                let delay = 30 + Math.random() * 40;
+                if (word.includes('.') || word.includes(',')) delay += 100;
+                await new Promise(r => setTimeout(r, delay));
+            }
+
+            // Finished
+            cursor.remove();
+            inputField.disabled = false;
+            sendBtn.disabled = false;
+            inputField.focus();
         }
-    }
 
-    if (highScore > 0) return bestSentence;
-    return null;
-}
+        // --- INTELLIGENCE FUNCTIONS ---
 
-function generateChain(startWord, length) {
-    let chain = [];
-    let current = clean(startWord);
-    
-    // If start word not in model, pick random start
-    if (!MODEL[current]) current = clean(START_WORDS[Math.floor(Math.random() * START_WORDS.length)]);
+        function generateIntelligentResponse(prompt) {
+            let cleanPrompt = prompt.toLowerCase().trim();
 
-    chain.push(current.charAt(0).toUpperCase() + current.slice(1)); // Capitalize first
+            // 1. Check for conversational/greeting responses first
+            if (CONVERSATIONAL_RESPONSES[cleanPrompt]) {
+                return CONVERSATIONAL_RESPONSES[cleanPrompt];
+            }
 
-    for(let i=0; i<length; i++) {
-        let options = MODEL[current];
-        if (!options || options.length === 0) break;
-        
-        let next = options[Math.floor(Math.random() * options.length)];
-        chain.push(next);
-        current = clean(next);
-        
-        if (next.includes('.')) break; // Stop at period
-    }
-    return chain;
-}
+            // 2. PRIORITY: Check "tell me about" questions BEFORE word lookup
+            if (cleanPrompt.startsWith("tell me about")) {
+                let topic = cleanPrompt.replace("tell me about", "").trim();
+                // Check general knowledge
+                for (let key in GENERAL_KNOWLEDGE) {
+                    if (topic.includes(key) || key.includes(topic)) {
+                        return GENERAL_KNOWLEDGE[key];
+                    }
+                }
+                // If not in knowledge base, check dictionary to define it
+                let checkTopic = topic;
+                if (topic.endsWith('s') && DICTIONARY[topic.slice(0, -1)]) {
+                    checkTopic = topic.slice(0, -1);
+                }
 
-function isMath(input) {
-    return /[\d]/.test(input) && /[\+\-\*\/]/.test(input);
-}
+                if (DICTIONARY[checkTopic]) {
+                    return handleDefinitionQuestion("what is " + checkTopic);
+                }
 
-function solveMath(input) {
-    try {
-        let safe = input.replace(/[^\d\+\-\*\/\.\(\)]/g, "");
-        let res = eval(safe);
-        return `The calculated result is ${res}.`;
-    } catch (e) {
-        return "I could not calculate that.";
-    }
-}
+                return `I don't have specific information about "${topic}" in my knowledge base yet, but I'm learning new things every day!`;
+            }
 
-function addMessage(text, type) {
-    let div = document.createElement('div');
-    div.className = `msg ${type}`;
-    div.innerText = text;
-    chatWindow.appendChild(div);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-}
+            // 3. PRIORITY: Check for story generation requests
+            if (cleanPrompt.includes("write a story") || cleanPrompt.includes("tell me a story") ||
+                cleanPrompt.includes("make a story") || cleanPrompt.includes("create a story") ||
+                cleanPrompt === "story" || cleanPrompt.includes("write me a story")) {
 
-// Boot
-window.onload = () => {
-    trainModel();
-    // Simulate initial thought
-    setTimeout(() => {
-        let intro = document.createElement('div');
-        intro.className = 'msg bot';
-        intro.innerHTML = "<strong>Guahh AI Online.</strong> Waiting for input.";
-        chatWindow.appendChild(intro);
-    }, 500);
-};
+                // Check if they want a story about something specific
+                let subject = null;
+                let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
 
-</script>
+                // Look for "about" keyword
+                let aboutIndex = words.indexOf("about");
+                if (aboutIndex !== -1 && words[aboutIndex + 1]) {
+                    let potentialSubject = words[aboutIndex + 1];
+                    // Skip articles "a", "an", "the"
+                    if (["a", "an", "the"].includes(potentialSubject) && words[aboutIndex + 2]) {
+                        subject = words[aboutIndex + 2];
+                    } else {
+                        subject = potentialSubject;
+                    }
+                }
+
+                return generateStory(subject);
+            }
+
+            // 4. Check if it's a definition request
+            if (cleanPrompt.startsWith("what is") || cleanPrompt.startsWith("what's") || cleanPrompt.startsWith("define")) {
+                return handleDefinitionQuestion(cleanPrompt);
+            }
+
+            if (cleanPrompt.startsWith("what does") && cleanPrompt.includes("mean")) {
+                return handleMeaningQuestion(cleanPrompt);
+            }
+
+            // 5. Check general knowledge base for any topic match
+            for (let topic in GENERAL_KNOWLEDGE) {
+                if (cleanPrompt.includes(topic)) {
+                    return GENERAL_KNOWLEDGE[topic];
+                }
+            }
+
+            // 6. LAST RESORT: Try to identify key words and construct a response
+            let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
+            let knownWords = words.filter(w => DICTIONARY[w]);
+
+            if (knownWords.length > 0) {
+                // EXCLUSION LIST: Words we should NEVER just randomly define if encountered
+                let skipWords = ["what", "is", "the", "a", "an", "tell", "me", "about", "write", "make", "story", "do", "you", "are", "who", "where", "when", "why", "how", "stories", "telling", "it", "that", "this"];
+                let keyWord = knownWords.find(w => !skipWords.includes(w));
+
+                // Only use it if it's not in our skip list
+                if (keyWord && !skipWords.includes(keyWord)) {
+                    let entry = DICTIONARY[keyWord];
+                    if (entry.pos === "noun") {
+                        return `A ${keyWord} ${entry.def}.`;
+                    } else if (entry.pos === "verb") {
+                        return `To ${keyWord} means to ${entry.def}.`;
+                    } else if (entry.pos === "adjective") {
+                        return `${capitalizeFirst(keyWord)} means ${entry.def}.`;
+                    } else {
+                        return `${capitalizeFirst(keyWord)} ${entry.def}.`;
+                    }
+                }
+            }
+
+            // Default response
+            return "I understand your question, but I don't have enough information to answer it accurately. Try asking me to define a word, ask about topics like science, history, geography, or technology, or ask me to write a story!";
+        }
+
+        function handleDefinitionQuestion(prompt) {
+            // Extract the subject
+            let subject = prompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
+
+            // Handle articles
+            subject = subject.replace(/^(a |an |the )/i, "");
+
+            // Check general knowledge first for broader topics
+            for (let topic in GENERAL_KNOWLEDGE) {
+                if (subject.toLowerCase().includes(topic) || topic.includes(subject.toLowerCase())) {
+                    return GENERAL_KNOWLEDGE[topic];
+                }
+            }
+
+            if (DICTIONARY[subject]) {
+                let entry = DICTIONARY[subject];
+
+                if (entry.pos === "noun") {
+                    return `A ${subject} is ${entry.def}.`;
+                } else if (entry.pos === "verb") {
+                    return `To ${subject} means to ${entry.def}.`;
+                } else if (entry.pos === "adjective") {
+                    return `${capitalizeFirst(subject)} means ${entry.def}.`;
+                } else {
+                    return `${capitalizeFirst(subject)} is ${entry.def}.`;
+                }
+            } else {
+                return `I don't have a definition for "${subject}" in my dictionary yet. Try asking about topics like science, space, history, or technology!`;
+            }
+        }
+
+        function handleMeaningQuestion(prompt) {
+            // Extract word from "what does X mean"
+            let match = prompt.match(/what does\s+([a-z]+)\s+mean/i);
+            if (match && match[1]) {
+                let word = match[1].toLowerCase();
+                if (DICTIONARY[word]) {
+                    let entry = DICTIONARY[word];
+                    return `${capitalizeFirst(word)} means ${entry.def}.`;
+                } else {
+                    return `I don't know what "${word}" means yet.`;
+                }
+            }
+            return "I didn't understand your question. Try asking 'What does [word] mean?'";
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function isMath(input) {
+            return /^[\d\s\+\-\*\/\.\(\)]+$/.test(input) && /\d/.test(input);
+        }
+
+        function solveMath(input) {
+            try {
+                let res = eval(input);
+                if (!isFinite(res)) return "Result is infinite.";
+                return `The calculated result is ${res}.`;
+            } catch (e) {
+                return "I could not calculate that.";
+            }
+        }
+
+        function addMessage(text, type) {
+            let div = document.createElement('div');
+            div.className = `msg ${type}`;
+            div.innerText = text;
+            chatWindow.appendChild(div);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Boot
+        window.onload = () => {
+            trainModel();
+            setTimeout(() => {
+                let intro = document.createElement('div');
+                intro.className = 'msg bot';
+                intro.innerHTML = "<strong>Guahh AI 2.2</strong>";
+                chatWindow.appendChild(intro);
+            }, 500);
+        };
+
+    </script>
 </body>
 </html>
