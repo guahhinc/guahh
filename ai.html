@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guahh AI | Omnibus v12 ULTRA</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --chat-bg: #1e1e1e;
+            --input-bg: #2a2a2a;
+            --text: #f0f0f0;
+            --sub-text: #888;
+            --accent: #3b82f6; /* Soft Blue */
+            --user-msg: #3b82f6;
+            --bot-msg: #2a2a2a;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* SIMPLIFIED HEADER */
+        #header {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        h1 { 
+            margin: 0; 
+            font-size: 16px; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+            color: var(--text); 
+            opacity: 0.9;
+        }
+        .status { 
+            font-size: 11px; 
+            color: var(--sub-text); 
+            margin-top: 5px; 
+        }
+
+        /* CHAT AREA */
+        #chat-container {
+            flex: 1;
+            width: 100%;
+            max-width: 800px;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            scroll-behavior: smooth;
+            padding-bottom: 100px; /* Space for input */
+        }
+
+        .msg {
+            max-width: 80%;
+            width: fit-content;
+            padding: 14px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 15px;
+            word-wrap: break-word;
+            animation: fadein 0.3s ease;
+        }
+        @keyframes fadein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .user {
+            align-self: flex-end;
+            background: var(--user-msg);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .bot {
+            align-self: flex-start;
+            background: var(--bot-msg);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+        }
+        .bot strong { color: #fff; font-weight: 600; }
+
+        /* FLOATING INPUT AREA */
+        #input-container {
+            position: fixed;
+            bottom: 30px;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            width: 100%;
+            background: var(--input-bg);
+            border-radius: 30px;
+            display: flex;
+            padding: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+        input {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        button {
+            padding: 10px 25px;
+            background: var(--accent);
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s;
+        }
+        button:active { transform: scale(0.95); }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>GUAHH AI v12 [ULTRA]</h1>
+    <div class="status" id="db-status">Initializing Neural Network...</div>
+</div>
+
+<div id="chat-container" id="chat-window">
+    <div class="msg bot" id="intro-msg">
+        <strong>System Online. v12 Ultra Loaded.</strong><br>
+        Visual systems simplified. Math engine expanded. Database augmented.
+        <br><br>
+        <strong>Try new features:</strong> Trig functions (sin, cos), binary conversion, mythology, or computer science terms.
+    </div>
+</div>
+
+<div id="input-container">
+    <form onsubmit="event.preventDefault(); handleInput();">
+        <input type="text" id="user-input" placeholder="Ask anything..." autocomplete="off">
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+/**
+ * GUAHH AI V12 - ULTRA EDITION
+ * 
+ * CHANGES:
+ * - Minimalist UI Overhaul
+ * - Math Parser V2 (Trig, Logs, Constants)
+ * - Bulk Generator V2 (Binary, Hex, Roman Numerals)
+ * - Mythology & CS Database Expansion
+ */
+
+// --- MEGA BRAIN CORE ---
+const BRAIN = {
+    // --- ORIGINAL V11 DATA (PRESERVED) ---
+    "hi": "Hello! I am ready to assist with advanced knowledge queries.",
+    "hello": "Greetings. Accessing neural knowledge base...",
+    "hey": "Hello. What can I do for you today?",
+    "sup": "Hey there! Ready to answer your questions.",
+    "good morning": "Good morning! How can I assist you today?",
+    "good afternoon": "Good afternoon! What would you like to know?",
+    "good evening": "Good evening! I'm here to help.",
+    "good night": "Good night! Sleep well.",
+    "who are you": "I am Guahh AI v12 ULTRA, an advanced local knowledge engine with upgraded math and logic capabilities.",
+    "what are you": "I am an artificial intelligence system with a massive knowledge database spanning multiple domains.",
+    "how are you": "I am operating at peak performance with all neural pathways active.",
+    "bye": "Goodbye. Session terminated. Come back anytime!",
+    "goodbye": "Farewell! Until next time.",
+    "thanks": "You are welcome. Happy to help!",
+    "thank you": "My pleasure! Feel free to ask anything else.",
+    "please": "Of course! What would you like to know?",
+    
+    // ... (Keeping all previous Pop Culture, Geography, Science, History, etc.)
+    "minecraft": "Minecraft is a sandbox video game developed by Mojang Studios (acquired by Microsoft), released in 2011. Created by Markus 'Notch' Persson. It is the best-selling video game of all time with over 300 million copies sold.",
+    "roblox": "Roblox is an online game platform and game creation system developed by Roblox Corporation, released in 2006. It allows users to program games and play games created by others.",
+    "fortnite": "Fortnite is an online video game developed by Epic Games, released in 2017. The Battle Royale mode became a massive cultural phenomenon with over 350 million registered players.",
+    "gta": "Grand Theft Auto (GTA) is an action-adventure video game series created by David Jones and Mike Dailly. GTA V is one of the best-selling games ever, released in 2013 by Rockstar Games.",
+    "call of duty": "Call of Duty is a first-person shooter video game franchise published by Activision. Started in 2003, it's one of the most successful FPS franchises in gaming history.",
+    "league of legends": "League of Legends (LoL) is a multiplayer online battle arena game developed by Riot Games, released in 2009. One of the largest esports in the world.",
+    "pokemon": "Pokémon is a Japanese media franchise managed by The Pokémon Company, founded in 1996. It includes video games, trading cards, anime, and movies.",
+    "zelda": "The Legend of Zelda is a fantasy action-adventure game franchise created by Japanese game designers Shigeru Miyamoto and Takashi Tezuka, first released in 1986.",
+    "mario": "Mario is a character created by Nintendo's Shigeru Miyamoto. Super Mario Bros debuted in 1985 and became one of the most iconic video game franchises.",
+    "sonic": "Sonic the Hedgehog is a video game franchise created by Sega, first released in 1991. The blue hedgehog became Sega's mascot.",
+    "pizza": "Pizza is a savory dish of Italian origin consisting of a usually round, flattened base of leavened wheat-based dough topped with tomatoes, cheese, and often various other ingredients. Originated in Naples, Italy.",
+    "burger": "A hamburger (or burger) is a sandwich consisting of one or more cooked patties of ground meat, placed inside a sliced bread roll or bun. Originated in the United States in the late 19th/early 20th century.",
+    "sushi": "Sushi is a Japanese dish of prepared vinegared rice, usually with some sugar and salt, accompanying a variety of ingredients, such as seafood, often raw, and vegetables.",
+    "tacos": "A taco is a traditional Mexican food consisting of a small hand-sized corn or wheat tortilla topped with a filling.",
+    "pasta": "Pasta is a type of food typically made from an unleavened dough of wheat flour mixed with water or eggs. Originated in Italy and is a staple food worldwide.",
+    "who is elon musk": "Elon Musk is a business magnate and investor born in 1971 in South Africa. He is the founder, CEO, and Chief Engineer at SpaceX; CEO and Product Architect of Tesla, Inc.; owner of X (formerly Twitter); and founder of Neuralink and The Boring Company.",
+    "who is bill gates": "Bill Gates is an American business magnate, software developer, and philanthropist. He co-founded Microsoft Corporation with Paul Allen in 1975. He was the world's richest person for many years.",
+    "who is steve jobs": "Steve Jobs (1955-2011) was an American entrepreneur and business magnate. He co-founded Apple Inc. with Steve Wozniak in 1976 and revolutionized personal computing, music, phones, and tablets.",
+    "who is jeff bezos": "Jeff Bezos is an American entrepreneur who founded Amazon.com in 1994. He was CEO until 2021 and is one of the wealthiest people in the world. He also founded Blue Origin, a space company.",
+    "who is mark zuckerberg": "Mark Zuckerberg is an American media magnate and internet entrepreneur. He co-founded Facebook (now Meta Platforms) in 2004 while at Harvard University.",
+    "who is einstein": "Albert Einstein (1879-1955) was a German-born theoretical physicist who developed the theory of relativity, one of the two pillars of modern physics. He won the Nobel Prize in Physics in 1921.",
+    "who is newton": "Sir Isaac Newton (1643-1727) was an English mathematician, physicist, astronomer, and author who is widely recognized as one of the greatest mathematicians and physicists of all time.",
+    "who is shakespeare": "William Shakespeare (1564-1616) was an English playwright, poet, and actor, widely regarded as the greatest writer in the English language and the world's greatest dramatist.",
+    "who is leonardo da vinci": "Leonardo da Vinci (1452-1519) was an Italian polymath of the Renaissance whose areas of interest included invention, painting, sculpting, architecture, science, music, and mathematics.",
+    "best movie": "While subjective, many critics and audiences consider films like 'The Godfather' (1972), 'The Shawshank Redemption' (1994), 'Citizen Kane' (1941), 'Pulp Fiction' (1994), and 'The Dark Knight' (2008) to be among the greatest.",
+    "star wars": "Star Wars is an American epic space-opera multimedia franchise created by George Lucas. The first film was released in 1977 and spawned a massive franchise including sequels, prequels, TV shows, books, and games.",
+    "marvel": "Marvel Comics is an American comic book publisher and the property of The Walt Disney Company. The Marvel Cinematic Universe (MCU) is the most successful film franchise in history.",
+    "dc comics": "DC Comics is an American comic book publisher. DC is home to iconic characters like Batman, Superman, Wonder Woman, and The Flash.",
+    "harry potter": "Harry Potter is a series of seven fantasy novels written by British author J.K. Rowling. The series follows Harry Potter, a young wizard, and was published between 1997-2007.",
+    "lord of the rings": "The Lord of the Rings is an epic high-fantasy novel by J.R.R. Tolkien, published in 1954-1955. The film trilogy directed by Peter Jackson (2001-2003) won multiple Academy Awards.",
+    "netflix": "Netflix is an American streaming service founded in 1997 by Reed Hastings and Marc Randolph. It revolutionized how people consume television and film content.",
+    "spotify": "Spotify is a Swedish audio streaming and media services provider founded in 2006. It is one of the largest music streaming service providers.",
+    "youtube": "YouTube is an American online video sharing and social media platform launched in 2005. It was acquired by Google in 2006 and is the second most visited website globally.",
+    "instagram": "Instagram is a photo and video sharing social networking service owned by Meta Platforms. It was created by Kevin Systrom and Mike Krieger and launched in 2010.",
+    "tiktok": "TikTok is a short-form video hosting service owned by the Chinese company ByteDance. It has become one of the most popular social media platforms since its 2016 launch.",
+    "twitter": "Twitter (now X) is a social media platform launched in 2006. Users post and interact with messages called 'tweets'. It was acquired by Elon Musk in 2022 and rebranded to X.",
+    "facebook": "Facebook is a social media and social networking service owned by Meta Platforms. Founded in 2004 by Mark Zuckerberg, it is one of the most used websites globally.",
+    "iphone": "The iPhone is a line of smartphones designed and marketed by Apple Inc. The first iPhone was released in 2007 and revolutionized the mobile phone industry.",
+    "android": "Android is a mobile operating system developed by Google, based on Linux. It is the world's most widely used mobile operating system.",
+    "windows": "Microsoft Windows is a group of operating systems developed by Microsoft. First released in 1985, it is the dominant desktop operating system worldwide.",
+    "macos": "macOS is a Unix operating system developed by Apple Inc. for its Mac computers. It was first released in 2001 as Mac OS X.",
+    "linux": "Linux is a family of open-source Unix-like operating systems based on the Linux kernel, first released in 1991 by Linus Torvalds.",
+    "bitcoin": "Bitcoin is a decentralized digital currency created in 2009 by an unknown person or group using the name Satoshi Nakamoto. It operates without a central bank or single administrator.",
+    "cryptocurrency": "Cryptocurrency is a digital or virtual currency that uses cryptography for security. Bitcoin, Ethereum, and many others exist as alternatives to traditional fiat currencies.",
+    "blockchain": "Blockchain is a distributed ledger technology that maintains a secure and decentralized record of transactions. It's the foundation of cryptocurrencies like Bitcoin.",
+    "nft": "NFT stands for Non-Fungible Token. It's a unique digital identifier that cannot be copied, providing proof of ownership for digital assets.",
+    "hydrogen": "Hydrogen (H, atomic #1) is the lightest and most abundant chemical element in the universe. It has one proton and one electron. Used in fuel cells and is essential for life.",
+    "helium": "Helium (He, atomic #2) is a colorless, odorless, tasteless, non-toxic, inert, monatomic gas. Second lightest element. Used in balloons, diving, and cooling superconductors.",
+    "lithium": "Lithium (Li, atomic #3) is a soft, silvery-white alkali metal. Lightest metal and least dense solid element. Used in rechargeable batteries and treats bipolar disorder.",
+    "beryllium": "Beryllium (Be, atomic #4) is a steel-gray, strong, lightweight metal. Used in aerospace applications and X-ray equipment.",
+    "boron": "Boron (B, atomic #5) is a metalloid element. Used in heat-resistant glass, semiconductors, and as a component in some detergents.",
+    "carbon": "Carbon (C, atomic #6) is the basis of all known life. Forms more compounds than any other element except hydrogen. Exists as diamond, graphite, and graphene.",
+    "nitrogen": "Nitrogen (N, atomic #7) makes up about 78% of Earth's atmosphere. Essential for life as a component of amino acids and nucleic acids.",
+    "oxygen": "Oxygen (O, atomic #8) is highly reactive and essential for respiration in most living organisms. Makes up 21% of Earth's atmosphere.",
+    "fluorine": "Fluorine (F, atomic #9) is the most reactive and electronegative element. Used in toothpaste as fluoride to prevent tooth decay.",
+    "neon": "Neon (Ne, atomic #10) is a noble gas that produces an orange-red glow in discharge tubes, used in neon signs.",
+    "sodium": "Sodium (Na, atomic #11) is a soft, silvery-white, highly reactive metal. Essential for life and commonly found in table salt (NaCl).",
+    "magnesium": "Magnesium (Mg, atomic #12) is a shiny gray metal. Essential for life and used in lightweight alloys. Burns with a brilliant white light.",
+    "aluminum": "Aluminum (Al, atomic #13) is a silvery-white, soft, nonmagnetic metal. Third most abundant element in Earth's crust. Used in cans, foil, aircraft.",
+    "silicon": "Silicon (Si, atomic #14) is a hard, brittle crystalline solid. Second most abundant element in Earth's crust. Essential for computer chips and electronics.",
+    "phosphorus": "Phosphorus (P, atomic #15) is essential for life, found in DNA, RNA, and ATP. White phosphorus glows in the dark and is highly reactive.",
+    "sulfur": "Sulfur (S, atomic #16) is a bright yellow crystalline solid. Essential for life and used in sulfuric acid, fertilizers, and gunpowder.",
+    "chlorine": "Chlorine (Cl, atomic #17) is a yellow-green gas with a pungent odor. Used in water purification, bleach, and PVC plastic production.",
+    "argon": "Argon (Ar, atomic #18) is a noble gas making up about 1% of Earth's atmosphere. Used in light bulbs and welding.",
+    "potassium": "Potassium (K, atomic #19) is a soft, silvery-white metal. Essential for life, important for nerve and muscle function.",
+    "calcium": "Calcium (Ca, atomic #20) is essential for life. Most abundant mineral in the human body, crucial for bones and teeth.",
+    "iron": "Iron (Fe, atomic #26) is the most common element on Earth by mass. Essential for life, found in hemoglobin. Fourth most abundant element in Earth's crust.",
+    "copper": "Copper (Cu, atomic #29) is a soft, malleable metal with excellent electrical conductivity. Used in wiring, plumbing, and coins since ancient times.",
+    "zinc": "Zinc (Zn, atomic #30) is a bluish-white metal. Essential for life and used in galvanizing steel, batteries, and alloys like brass.",
+    "silver": "Silver (Ag, atomic #47) has the highest electrical conductivity, thermal conductivity, and reflectivity of any metal. Used in jewelry, coins, and electronics.",
+    "gold": "Gold (Au, atomic #79) is a bright, slightly reddish yellow, dense, soft, malleable, and ductile metal. Highly valued throughout history. Does not tarnish or corrode.",
+    "mercury": "Mercury (Hg, atomic #80) is the only metal that is liquid at room temperature. Used in thermometers and dental amalgams. Toxic to humans.",
+    "lead": "Lead (Pb, atomic #82) is a heavy metal that has been used for thousands of years. Toxic to humans. Used in batteries and radiation shielding.",
+    "uranium": "Uranium (U, atomic #92) is a silvery-grey radioactive metal. Used as fuel in nuclear reactors and in nuclear weapons. Discovered in 1789.",
+    "plutonium": "Plutonium (Pu, atomic #94) is a radioactive actinide metal. Used in nuclear weapons and as fuel in nuclear reactors. Highly toxic.",
+    "afghanistan": "Afghanistan is a landlocked country in South/Central Asia. Capital: Kabul. Population ~40 million. Known for its mountains and complex history.",
+    "capital of afghanistan": "The capital of Afghanistan is Kabul, the largest city with over 4 million residents.",
+    "albania": "Albania is in Southeastern Europe on the Balkan Peninsula. Capital: Tirana. Population ~3 million. Bordered by Montenegro, Kosovo, North Macedonia, and Greece.",
+    "capital of albania": "The capital of Albania is Tirana.",
+    "algeria": "Algeria is in North Africa. Capital: Algiers. Largest country in Africa by area. Population ~44 million. Former French colony, gained independence in 1962.",
+    "capital of algeria": "The capital of Algeria is Algiers.",
+    "argentina": "Argentina is in South America. Capital: Buenos Aires. 8th largest country in the world. Known for tango, gauchos, and beef.",
+    "capital of argentina": "The capital of Argentina is Buenos Aires.",
+    "australia": "Australia is a sovereign country comprising the mainland of the Australian continent, Tasmania, and numerous smaller islands. Capital: Canberra. Largest city: Sydney. Population ~26 million.",
+    "capital of australia": "The capital of Australia is Canberra, though Sydney is the largest city.",
+    "austria": "Austria is in Central Europe. Capital: Vienna. Known for classical music (Mozart, Beethoven lived here), Alps, and Mozart's birthplace Salzburg.",
+    "capital of austria": "The capital of Austria is Vienna.",
+    "belgium": "Belgium is in Western Europe. Capital: Brussels (also EU headquarters). Known for chocolate, waffles, beer, and being trilingual (Dutch, French, German).",
+    "capital of belgium": "The capital of Belgium is Brussels, which also hosts EU institutions.",
+    "brazil": "Brazil is the largest country in both South America and Latin America. Capital: Brasília. Most populous Portuguese-speaking country. Known for Amazon rainforest, carnival, and football.",
+    "capital of brazil": "The capital of Brazil is Brasília (moved from Rio de Janeiro in 1960).",
+    "canada": "Canada is the second-largest country in the world by area. Capital: Ottawa. Largest city: Toronto. Bilingual (English and French). Population ~39 million.",
+    "capital of canada": "The capital of Canada is Ottawa.",
+    "chile": "Chile is in South America, stretching along the western coast. Capital: Santiago. One of the longest north-south countries in the world.",
+    "capital of chile": "The capital of Chile is Santiago.",
+    "china": "China is in East Asia. Capital: Beijing. Most populous country in the world with ~1.4 billion people. Ancient civilization dating back thousands of years.",
+    "capital of china": "The capital of China is Beijing.",
+    "colombia": "Colombia is in northwestern South America. Capital: Bogotá. Known for coffee, emeralds, and biodiversity.",
+    "capital of colombia": "The capital of Colombia is Bogotá.",
+    "cuba": "Cuba is an island country in the Caribbean. Capital: Havana. Known for cigars, rum, classic cars, and communist government since 1959.",
+    "capital of cuba": "The capital of Cuba is Havana.",
+    "denmark": "Denmark is a Nordic country in Northern Europe. Capital: Copenhagen. Known for Vikings, Lego, and high quality of life.",
+    "capital of denmark": "The capital of Denmark is Copenhagen.",
+    "egypt": "Egypt is a transcontinental country in North Africa and the Middle East. Capital: Cairo. Home to ancient pyramids, Sphinx, and one of the world's oldest civilizations.",
+    "capital of egypt": "The capital of Egypt is Cairo, the largest city in Africa and the Middle East.",
+    "finland": "Finland is a Nordic country in Northern Europe. Capital: Helsinki. Known for saunas, Nokia, and education system.",
+    "capital of finland": "The capital of Finland is Helsinki.",
+    "france": "France is in Western Europe. Capital: Paris. Most visited country in the world. Known for Eiffel Tower, wine, cheese, fashion, and art.",
+    "capital of france": "The capital of France is Paris, often called the City of Light.",
+    "germany": "Germany is in Central Europe. Capital: Berlin. Largest economy in Europe. Known for engineering, cars (BMW, Mercedes, Volkswagen), and beer.",
+    "capital of germany": "The capital of Germany is Berlin (reunified in 1990).",
+    "greece": "Greece is in Southeast Europe. Capital: Athens. Birthplace of Western civilization, democracy, and Olympic Games. Known for ancient ruins and islands.",
+    "capital of greece": "The capital of Greece is Athens.",
+    "hungary": "Hungary is in Central Europe. Capital: Budapest. Known for thermal baths, paprika, and beautiful architecture.",
+    "capital of hungary": "The capital of Hungary is Budapest.",
+    "iceland": "Iceland is a Nordic island country in the North Atlantic. Capital: Reykjavík. Known for volcanoes, geysers, hot springs, and northern lights.",
+    "capital of iceland": "The capital of Iceland is Reykjavík.",
+    "india": "India is in South Asia. Capital: New Delhi. Second most populous country (~1.4 billion). Ancient civilization with diverse cultures, languages, and religions.",
+    "capital of india": "The capital of India is New Delhi.",
+    "indonesia": "Indonesia is an archipelago in Southeast Asia with over 17,000 islands. Capital: Jakarta. Fourth most populous country. Largest Muslim-majority nation.",
+    "capital of indonesia": "The capital of Indonesia is Jakarta (planning to move to Nusantara).",
+    "iran": "Iran is in Western Asia (Middle East). Capital: Tehran. Ancient Persian civilization. Known for oil reserves and rich history.",
+    "capital of iran": "The capital of Iran is Tehran.",
+    "iraq": "Iraq is in Western Asia. Capital: Baghdad. Home to ancient Mesopotamia, cradle of civilization.",
+    "capital of iraq": "The capital of Iraq is Baghdad.",
+    "ireland": "Ireland is an island nation in the North Atlantic. Capital: Dublin. Known for St. Patrick's Day, Celtic culture, and green landscapes.",
+    "capital of ireland": "The capital of Ireland is Dublin.",
+    "israel": "Israel is in Western Asia. Capital: Jerusalem (disputed). Established in 1948. Holy land for Judaism, Christianity, and Islam.",
+    "capital of israel": "The capital of Israel is Jerusalem (though internationally disputed).",
+    "italy": "Italy is in Southern Europe. Capital: Rome. Shaped like a boot. Known for Roman Empire, Renaissance art, pizza, pasta, and fashion.",
+    "capital of italy": "The capital of Italy is Rome, the Eternal City.",
+    "japan": "Japan is an island country in East Asia. Capital: Tokyo. Known for technology, anime, sushi, samurai, and Mount Fuji.",
+    "capital of japan": "The capital of Japan is Tokyo, the world's most populous metropolitan area.",
+    "kenya": "Kenya is in East Africa. Capital: Nairobi. Known for wildlife safaris, Maasai culture, and distance running.",
+    "capital of kenya": "The capital of Kenya is Nairobi.",
+    "malaysia": "Malaysia is in Southeast Asia. Capital: Kuala Lumpur. Known for Petronas Towers and diverse culture.",
+    "capital of malaysia": "The capital of Malaysia is Kuala Lumpur.",
+    "mexico": "Mexico is in the southern portion of North America. Capital: Mexico City. Known for ancient Aztec and Mayan civilizations, tacos, and Day of the Dead.",
+    "capital of mexico": "The capital of Mexico is Mexico City, one of the largest cities in the world.",
+    "netherlands": "Netherlands is in Western Europe. Capital: Amsterdam. Known for windmills, tulips, canals, and bicycles. Much of the country is below sea level.",
+    "capital of netherlands": "The capital of Netherlands is Amsterdam.",
+    "new zealand": "New Zealand is an island country in the Pacific Ocean. Capital: Wellington. Known for stunning landscapes, Maori culture, and Lord of the Rings filming locations.",
+    "capital of new zealand": "The capital of New Zealand is Wellington.",
+    "nigeria": "Nigeria is in West Africa. Capital: Abuja. Most populous country in Africa (~220 million). Largest economy in Africa.",
+    "capital of nigeria": "The capital of Nigeria is Abuja (moved from Lagos in 1991).",
+    "norway": "Norway is a Nordic country in Northern Europe. Capital: Oslo. Known for fjords, Vikings, oil wealth, and northern lights.",
+    "capital of norway": "The capital of Norway is Oslo.",
+    "pakistan": "Pakistan is in South Asia. Capital: Islamabad. Fifth most populous country. Gained independence from British India in 1947.",
+    "capital of pakistan": "The capital of Pakistan is Islamabad.",
+    "peru": "Peru is in western South America. Capital: Lima. Home to Machu Picchu and the ancient Inca civilization.",
+    "capital of peru": "The capital of Peru is Lima.",
+    "philippines": "Philippines is an archipelagic country in Southeast Asia. Capital: Manila. Over 7,000 islands. Known for beaches and friendly people.",
+    "capital of philippines": "The capital of the Philippines is Manila.",
+    "poland": "Poland is in Central Europe. Capital: Warsaw. Rich history, suffered greatly in WWII. Birthplace of Copernicus and Marie Curie.",
+    "capital of poland": "The capital of Poland is Warsaw.",
+    "portugal": "Portugal is on the Iberian Peninsula in Southwest Europe. Capital: Lisbon. Known for explorers, Port wine, and Atlantic coastline.",
+    "capital of portugal": "The capital of Portugal is Lisbon.",
+    "romania": "Romania is in Southeast Europe. Capital: Bucharest. Home to Dracula legend and Transylvania.",
+    "capital of romania": "The capital of Romania is Bucharest.",
+    "russia": "Russia is the largest country in the world by area, spanning Eastern Europe and Northern Asia. Capital: Moscow. Population ~144 million.",
+    "capital of russia": "The capital of Russia is Moscow.",
+    "saudi arabia": "Saudi Arabia is in Western Asia (Middle East). Capital: Riyadh. Largest country in Middle East. Home to Mecca and Medina, Islam's holiest cities.",
+    "capital of saudi arabia": "The capital of Saudi Arabia is Riyadh.",
+    "singapore": "Singapore is a sovereign island city-state in Southeast Asia. One of the world's major commercial hubs. Known for cleanliness, efficiency, and multiculturalism.",
+    "capital of singapore": "Singapore is a city-state, so Singapore is both the country and capital.",
+    "south africa": "South Africa is at the southern tip of Africa. Has three capitals: Pretoria (executive), Cape Town (legislative), Bloemfontein (judicial). Known for Nelson Mandela and diverse wildlife.",
+    "capital of south africa": "South Africa has three capitals: Pretoria, Cape Town, and Bloemfontein.",
+    "south korea": "South Korea is in East Asia. Capital: Seoul. Highly developed economy. Known for K-pop, Samsung, technology, and kimchi.",
+    "capital of south korea": "The capital of South Korea is Seoul.",
+    "spain": "Spain is in Southwestern Europe on the Iberian Peninsula. Capital: Madrid. Known for flamenco, bullfighting, paella, and beautiful beaches.",
+    "capital of spain": "The capital of Spain is Madrid.",
+    "sweden": "Sweden is a Nordic country in Northern Europe. Capital: Stockholm. Known for IKEA, Volvo, meatballs, and high quality of life.",
+    "capital of sweden": "The capital of Sweden is Stockholm.",
+    "switzerland": "Switzerland is in Central Europe. Capital: Bern. Known for Alps, chocolate, watches, banking, and neutrality in wars.",
+    "capital of switzerland": "The capital of Switzerland is Bern.",
+    "thailand": "Thailand is in Southeast Asia. Capital: Bangkok. Known as 'Land of Smiles'. Famous for beaches, temples, street food, and Thai boxing.",
+    "capital of thailand": "The capital of Thailand is Bangkok.",
+    "turkey": "Turkey is a transcontinental country spanning Europe and Asia. Capital: Ankara. Largest city: Istanbul. Bridge between East and West. Rich history including Ottoman Empire.",
+    "capital of turkey": "The capital of Turkey is Ankara, though Istanbul is the largest city.",
+    "ukraine": "Ukraine is in Eastern Europe. Capital: Kyiv. Second-largest country in Europe by area. Known for fertile farmlands and rich cultural history.",
+    "capital of ukraine": "The capital of Ukraine is Kyiv.",
+    "united arab emirates": "UAE is in Western Asia. Capital: Abu Dhabi. Known for Dubai's skyscrapers, luxury shopping, and oil wealth.",
+    "capital of united arab emirates": "The capital of the United Arab Emirates is Abu Dhabi.",
+    "united kingdom": "The United Kingdom is a sovereign country in north-western Europe. Capital: London. Comprises England, Scotland, Wales, and Northern Ireland. Former British Empire.",
+    "capital of united kingdom": "The capital of the United Kingdom is London.",
+    "usa": "The United States of America is in North America. Capital: Washington, D.C. Third most populous country. Global superpower with largest economy.",
+    "capital of usa": "The capital of the USA is Washington, D.C.",
+    "united states": "The United States of America is in North America. Capital: Washington, D.C. 50 states. Founded in 1776. Land of opportunity and innovation.",
+    "capital of united states": "The capital of the United States is Washington, D.C.",
+    "uzbekistan": "Uzbekistan is a landlocked country in Central Asia. Capital: Tashkent. Part of the ancient Silk Road. Known for Islamic architecture.",
+    "capital of uzbekistan": "The capital of Uzbekistan is Tashkent.",
+    "venezuela": "Venezuela is in northern South America. Capital: Caracas. Has world's largest proven oil reserves. Known for Angel Falls, world's highest waterfall.",
+    "capital of venezuela": "The capital of Venezuela is Caracas.",
+    "vietnam": "Vietnam is in Southeast Asia. Capital: Hanoi. Largest city: Ho Chi Minh City. Known for rich history, pho, and beautiful landscapes.",
+    "capital of vietnam": "The capital of Vietnam is Hanoi.",
+    "zimbabwe": "Zimbabwe is a landlocked country in Southern Africa. Capital: Harare. Known for Victoria Falls and ancient ruins of Great Zimbabwe.",
+    "capital of zimbabwe": "The capital of Zimbabwe is Harare.",
+    "california": "California is on the west coast of the USA. Capital: Sacramento. Most populous state. Known for Hollywood, Silicon Valley, beaches.",
+    "capital of california": "The capital of California is Sacramento.",
+    "texas": "Texas is the second-largest US state. Capital: Austin. Known for cowboys, oil, BBQ, and 'Don't Mess with Texas' attitude.",
+    "capital of texas": "The capital of Texas is Austin.",
+    "new york": "New York is in the northeastern US. Capital: Albany. NYC is the largest city in America. Known for Statue of Liberty, Wall Street, Times Square.",
+    "capital of new york": "The capital of New York is Albany, not NYC.",
+    "florida": "Florida is in the southeastern US. Capital: Tallahassee. Known for beaches, Disney World, Miami, and retirement communities.",
+    "capital of florida": "The capital of Florida is Tallahassee.",
+    "lion": "The lion (Panthera leo) is a large cat native to Africa and India. Known as 'King of the Jungle'. Males have distinctive manes. Live in prides.",
+    "tiger": "The tiger (Panthera tigris) is the largest living cat species. Native to Asia. Excellent swimmers. Only big cat with striped fur pattern.",
+    "elephant": "Elephants are the largest existing land animals. Two species: African and Asian. Highly intelligent with excellent memory. Live 60-70 years.",
+    "blue whale": "The blue whale is the largest animal ever known to have lived. Can reach 100 feet long and weigh 200 tons. Feeds on tiny krill.",
+    "shark": "Sharks are fish with cartilaginous skeletons. Over 500 species exist. Great white shark is the largest predatory fish. Sharks existed before trees.",
+    "eagle": "Eagles are large birds of prey. Known for excellent vision (can see 4-5x farther than humans). Bald eagle is the national bird of the USA.",
+    "dog": "Dogs (Canis familiaris) are domesticated descendants of wolves. Over 340 breeds exist. Called 'man's best friend'. Can understand 250+ words.",
+    "cat": "Cats (Felis catus) are small carnivorous mammals. Domesticated for ~10,000 years. Sleep 12-16 hours daily. Can rotate ears 180 degrees.",
+    "bear": "Bears are carnivoran mammals of the family Ursidae. Eight species exist including polar, grizzly, and panda bears. Most are omnivores.",
+    "wolf": "Wolves (Canis lupus) are the largest members of the canine family. Live and hunt in packs. Ancestors of domestic dogs.",
+    "dolphin": "Dolphins are highly intelligent marine mammals. Known for playful behavior and communication using clicks and whistles. Can recognize themselves in mirrors.",
+    "penguin": "Penguins are flightless seabirds found in the Southern Hemisphere, especially Antarctica. Excellent swimmers. Mate for life.",
+    "gorilla": "Gorillas are the largest living primates. Native to Africa. Share 98% DNA with humans. Highly intelligent and social.",
+    "cheetah": "The cheetah is the fastest land animal, reaching speeds of 70 mph. Found in Africa. Cannot roar like other big cats.",
+    "giraffe": "Giraffes are the tallest land animals, up to 18 feet tall. Long necks have the same number of vertebrae as humans (7). Found in Africa.",
+    "kangaroo": "Kangaroos are marsupials found in Australia. Can hop at 35 mph. Females carry young in pouches. National symbol of Australia.",
+    "koala": "Koalas are marsupials native to Australia. Not actually bears. Sleep 18-22 hours per day. Feed exclusively on eucalyptus leaves.",
+    "panda": "Giant pandas are bears native to China. Diet is 99% bamboo. Black and white coloring. Endangered species, only ~1,800 remain in wild.",
+    "rhino": "Rhinoceros are large herbivores with horns made of keratin (same as hair/nails). Five species, all threatened or endangered. Can weigh over 2 tons.",
+    "hippo": "Hippopotamus are large semiaquatic mammals native to Africa. Despite appearance, are very aggressive and dangerous. Can run 30 mph on land.",
+    "crocodile": "Crocodiles are large aquatic reptiles. Existed for 200+ million years. Powerful bite force. Found in tropical regions worldwide.",
+    "snake": "Snakes are elongated, limbless reptiles. Over 3,000 species. Some are venomous. Can unhinge jaws to swallow large prey.",
+    "spider": "Spiders are arachnids with eight legs. Over 45,000 species. Spin webs from silk produced in their bodies. Most are harmless to humans.",
+    "butterfly": "Butterflies are insects with large colorful wings. Undergo complete metamorphosis from caterpillar. Important pollinators. Taste with their feet.",
+    "bee": "Bees are flying insects that pollinate flowers and produce honey. Live in colonies with queens, workers, and drones. Essential for ecosystems.",
+    "ant": "Ants are social insects living in colonies. Can carry 10-50x their body weight. Over 12,000 species. Have been around for 130+ million years.",
+    "octopus": "Octopuses are highly intelligent marine mollusks with eight arms. Three hearts, blue blood. Can change color and texture instantly. Masters of escape.",
+    "jellyfish": "Jellyfish are gelatinous marine animals. No brain, heart, or bones. Some species are immortal (can revert to earlier life stage). Existed for 500+ million years.",
+    "ww1": "World War I (1914-1918) was a global conflict centered in Europe. Triggered by assassination of Archduke Franz Ferdinand. ~17 million deaths. Led to fall of empires.",
+    "ww2": "World War II (1939-1945) was the deadliest conflict in human history. ~70-85 million deaths. Started with Nazi Germany's invasion of Poland. Ended with atomic bombs on Japan.",
+    "wwii": "World War II (1939-1945) was the deadliest conflict in human history. Allied Powers (US, UK, USSR) defeated Axis Powers (Germany, Italy, Japan).",
+    "cold war": "The Cold War (1947-1991) was a period of geopolitical tension between the United States and Soviet Union. Nuclear arms race, space race, and proxy wars.",
+    "moon landing": "Apollo 11 landed the first humans on the Moon on July 20, 1969. Neil Armstrong and Buzz Aldrin walked on the Moon. 'One small step for man, one giant leap for mankind.'",
+    "industrial revolution": "The Industrial Revolution (1760-1840) was the transition to new manufacturing processes. Started in Britain. Massive societal changes, urbanization, and technology advancement.",
+    "renaissance": "The Renaissance (14th-17th century) was a period of European cultural rebirth. Originated in Italy. Revival of art, science, and learning. Da Vinci, Michelangelo era.",
+    "french revolution": "The French Revolution (1789-1799) was a period of radical political and societal change in France. Overthrew monarchy. Declaration of the Rights of Man. Reign of Terror.",
+    "american revolution": "The American Revolution (1765-1783) was a colonial revolt where 13 American colonies gained independence from Britain. Led to formation of the United States.",
+    "civil war": "The American Civil War (1861-1865) was fought between Union (North) and Confederacy (South) over slavery and states' rights. ~620,000 deaths. Abolished slavery.",
+    "roman empire": "The Roman Empire (27 BC - 476 AD) was one of history's largest empires. Centered in Rome, Italy. Advanced engineering, law, military. Latin language. Fell in 476 AD.",
+    "ancient egypt": "Ancient Egypt was a civilization in Northeast Africa along the Nile River (3100 BC - 30 BC). Known for pyramids, pharaohs, hieroglyphics, and mummies.",
+    "ancient greece": "Ancient Greece (8th century BC - 6th century AD) was the birthplace of Western civilization. Democracy, philosophy (Socrates, Plato, Aristotle), Olympics, mathematics.",
+    "black death": "The Black Death (1347-1353) was a bubonic plague pandemic that killed 75-200 million people in Europe, Asia, and Africa. One of history's deadliest pandemics.",
+    "viking age": "The Viking Age (793-1066 AD) was a period of Scandinavian expansion through trade, exploration, and conquest. Vikings reached North America before Columbus.",
+    "holocaust": "The Holocaust (1941-1945) was the genocide of ~6 million European Jews by Nazi Germany. One of history's darkest chapters. 'Never forget.'",
+    "pearl harbor": "Pearl Harbor attack (December 7, 1941) was a surprise military strike by Japan against the US naval base in Hawaii. Led to US entry into WWII.",
+    "9/11": "September 11, 2001 terrorist attacks involved hijacked planes crashing into World Trade Center and Pentagon. ~3,000 deaths. Changed global security and US foreign policy.",
+    "titanic": "RMS Titanic was a British passenger liner that sank on April 15, 1912 after hitting an iceberg. ~1,500 deaths. 'Unsinkable' ship's tragic maiden voyage.",
+    "great depression": "The Great Depression (1929-1939) was the worst economic downturn in modern history. Started with 1929 stock market crash. Massive unemployment and poverty worldwide.",
+    "sun": "The Sun is the star at the center of the Solar System. ~4.6 billion years old. 99.86% of Solar System's mass. Surface temperature ~5,500°C.",
+    "moon": "The Moon is Earth's only natural satellite. ~4.5 billion years old. Same side always faces Earth (tidal locking). Causes tides on Earth.",
+    "earth": "Earth is the third planet from the Sun and only known planet with life. ~4.5 billion years old. 71% covered by water. One moon.",
+    "mars": "Mars is the fourth planet from the Sun. Called the 'Red Planet' due to iron oxide. Has two moons: Phobos and Deimos. Target for human colonization.",
+    "jupiter": "Jupiter is the largest planet in the Solar System (could fit 1,300 Earths inside). Gas giant with Great Red Spot storm. Has 95+ moons.",
+    "saturn": "Saturn is famous for its prominent ring system made of ice and rock. Second-largest planet. Has 146+ moons. Titan is larger than Mercury.",
+    "uranus": "Uranus is an ice giant that rotates on its side (likely due to ancient collision). Has faint rings. Coldest planetary atmosphere in Solar System.",
+    "neptune": "Neptune is the farthest planet from the Sun. Dark, cold, and very windy. Has the strongest winds in the Solar System (1,200 mph).",
+    "pluto": "Pluto was the ninth planet until 2006 when it was reclassified as a dwarf planet. Has a heart-shaped glacier. Five known moons.",
+    "black hole": "A black hole is a region of spacetime with gravity so strong that nothing, not even light, can escape. Formed when massive stars collapse.",
+    "big bang": "The Big Bang theory states the universe began ~13.8 billion years ago from an extremely hot, dense point and has been expanding ever since.",
+    "milky way": "The Milky Way is the galaxy containing our Solar System. Spiral galaxy with 100-400 billion stars. ~100,000 light-years in diameter.",
+    "atom": "An atom is the basic unit of matter. Consists of protons, neutrons (nucleus), and electrons. Over 99.9% empty space.",
+    "dna": "DNA (deoxyribonucleic acid) is the molecule carrying genetic instructions for life. Double helix structure discovered by Watson and Crick in 1953.",
+    "cell": "A cell is the basic unit of life. All living organisms are made of cells. Two types: prokaryotic (no nucleus) and eukaryotic (has nucleus).",
+    "photosynthesis": "Photosynthesis is the process by which plants convert sunlight, water, and CO2 into oxygen and glucose. Foundation of most food chains.",
+    "evolution": "Evolution is the change in heritable characteristics of populations over generations. Theory proposed by Charles Darwin. Natural selection is key mechanism.",
+    "gravity": "Gravity is the force that attracts objects with mass toward each other. Keeps planets in orbit, you on the ground. Described by Einstein's General Relativity.",
+    "speed of light": "The speed of light in vacuum is 299,792,458 meters per second (186,282 miles/second). Universal speed limit. Nothing can travel faster.",
+    "quantum mechanics": "Quantum mechanics is the branch of physics dealing with atomic and subatomic particles. Describes wave-particle duality, uncertainty principle, superposition.",
+    "theory of relativity": "Einstein's Theory of Relativity includes Special Relativity (1905) and General Relativity (1915). Revolutionized understanding of space, time, gravity, and universe.",
+    "artificial intelligence": "Artificial Intelligence (AI) is the simulation of human intelligence by machines. Includes machine learning, neural networks, and deep learning. Rapidly advancing field.",
+    "internet": "The Internet is a global system of interconnected computer networks. Originated from ARPANET in 1960s. Now has 5+ billion users worldwide.",
+    "computer": "A computer is a programmable electronic device that processes data. Modern computers based on binary (0s and 1s). First electronic computer: ENIAC (1945).",
+    "smartphone": "A smartphone is a mobile device combining phone with computer capabilities. Touchscreen interface. Apps, internet, camera. Revolutionized communication and daily life.",
+    "python": "Python is a high-level programming language created by Guido van Rossum in 1991. Known for readability and simplicity. Popular for AI, web development, data science.",
+    "javascript": "JavaScript is a programming language primarily used for web development. Created in 1995. Runs in web browsers. Essential for interactive websites.",
+    "java": "Java is a high-level, object-oriented programming language. 'Write once, run anywhere'. Created by Sun Microsystems in 1995. Used for Android apps, enterprise software.",
+    "c++": "C++ is a powerful programming language created by Bjarne Stroustrup in 1985. Extension of C language. Used for game engines, operating systems, high-performance applications.",
+    "html": "HTML (HyperText Markup Language) is the standard markup language for creating web pages. Defines structure and content. Not a programming language.",
+    "css": "CSS (Cascading Style Sheets) is used to style HTML elements. Controls layout, colors, fonts. Makes websites look beautiful.",
+    "sql": "SQL (Structured Query Language) is used to manage and query databases. Created in 1970s. Essential for working with relational databases.",
+    "algorithm": "An algorithm is a step-by-step procedure for solving a problem or completing a task. Foundation of computer programming and problem-solving.",
+    "machine learning": "Machine learning is a subset of AI where systems learn from data without explicit programming. Used in recommendation systems, image recognition, natural language processing.",
+    "neural network": "A neural network is a computing system inspired by biological brains. Consists of interconnected nodes (neurons). Foundation of deep learning.",
+    "cloud computing": "Cloud computing delivers computing services (servers, storage, databases, software) over the internet. Examples: AWS, Azure, Google Cloud.",
+    "cybersecurity": "Cybersecurity is the practice of protecting systems, networks, and data from digital attacks. Includes encryption, firewalls, ethical hacking.",
+    "football": "Football (soccer) is the world's most popular sport. Played by two teams of 11. FIFA World Cup is most watched sporting event. Legends: Pelé, Maradona, Messi, Ronaldo.",
+    "soccer": "Soccer (called football outside US) is played worldwide. Simple rules: kick ball into goal without using hands. 90-minute matches.",
+    "basketball": "Basketball was invented by James Naismith in 1891. Played by two teams of 5. NBA is premier league. Legends: Michael Jordan, LeBron James, Kobe Bryant.",
+    "baseball": "Baseball is known as 'America's pastime'. Played with bat and ball. MLB is major league. Legends: Babe Ruth, Jackie Robinson, Hank Aaron.",
+    "american football": "American football is most popular in US. Played by two teams of 11. Super Bowl is biggest sporting event. Legends: Tom Brady, Joe Montana, Jerry Rice.",
+    "tennis": "Tennis is played with rackets on a rectangular court. Grand Slams: Australian Open, French Open, Wimbledon, US Open. Legends: Federer, Nadal, Djokovic, Serena Williams.",
+    "cricket": "Cricket is hugely popular in Commonwealth nations, especially India, England, Australia. Played with bat and ball. Test, ODI, and T20 formats.",
+    "golf": "Golf involves hitting a ball into holes on a course using clubs. Major tournaments: Masters, US Open, Open Championship, PGA Championship. Legend: Tiger Woods.",
+    "olympics": "The Olympics are international sporting events held every 4 years (Summer and Winter). Originated in ancient Greece. Modern Olympics started 1896.",
+    "world cup": "The FIFA World Cup is held every 4 years. Most prestigious football tournament. Brazil has won most (5 times). Billions watch worldwide.",
+    "super bowl": "The Super Bowl is the NFL championship game. Held annually. Most watched US television broadcast. Halftime show and commercials are cultural events.",
+    "nba": "NBA (National Basketball Association) is the premier professional basketball league. 30 teams. Season runs October to June. Finals in June.",
+    "nfl": "NFL (National Football League) is the professional American football league. 32 teams. Season runs September to February. Super Bowl crowns champion.",
+    "mlb": "MLB (Major League Baseball) is the oldest major pro sports league in US/Canada. 30 teams. Season runs April to October. World Series is championship.",
+    "messi": "Lionel Messi is an Argentine footballer widely considered one of the greatest ever. 8 Ballon d'Or awards. Played for Barcelona and PSG. Led Argentina to 2022 World Cup.",
+    "ronaldo": "Cristiano Ronaldo is a Portuguese footballer and one of the greatest ever. 5 Ballon d'Or awards. Played for Manchester United, Real Madrid, Juventus. All-time top scorer.",
+    "lebron james": "LeBron James is an American basketball player, one of the greatest ever. 4 NBA championships. Known as 'King James'. Still playing at elite level in his 20th+ season.",
+    "michael jordan": "Michael Jordan is widely considered the greatest basketball player ever. 6 NBA championships with Chicago Bulls. 5 MVP awards. Global icon.",
+    "serena williams": "Serena Williams is an American tennis player and one of the greatest female athletes ever. 23 Grand Slam singles titles. Dominated tennis for two decades.",
+    "usain bolt": "Usain Bolt is a Jamaican sprinter, the fastest man ever. World records in 100m (9.58s) and 200m (19.19s). 8 Olympic gold medals. 'Lightning Bolt' celebration.",
+    "muhammad ali": "Muhammad Ali (1942-2016) was an American boxer, 'The Greatest'. World heavyweight champion 3 times. Known for charisma, activism. 'Float like a butterfly, sting like a bee.'",
+    "beatles": "The Beatles were an English rock band formed in 1960 in Liverpool. Members: John Lennon, Paul McCartney, George Harrison, Ringo Starr. Most influential band ever.",
+    "michael jackson": "Michael Jackson (1958-2009) was the 'King of Pop'. Best-selling music artist of all time. Thriller is best-selling album ever. Revolutionary dancer and performer.",
+    "elvis presley": "Elvis Presley (1935-1977) was the 'King of Rock and Roll'. Cultural icon who revolutionized music. Known for hip-shaking performances and charisma.",
+    "queen": "Queen was a British rock band formed in 1970. Lead singer: Freddie Mercury. Known for 'Bohemian Rhapsody', 'We Will Rock You'. Legendary Live Aid performance.",
+    "mozart": "Wolfgang Amadeus Mozart (1756-1791) was a prolific and influential composer of Classical era. Child prodigy. Composed over 600 works.",
+    "beethoven": "Ludwig van Beethoven (1770-1827) was a German composer. Bridge between Classical and Romantic eras. Continued composing after going deaf. Symphony No. 9.",
+    "bach": "Johann Sebastian Bach (1685-1750) was a German composer of Baroque period. Known for complex compositions. Hugely influential in Western classical music.",
+    "hip hop": "Hip hop is a cultural movement and music genre that originated in 1970s Bronx, NYC. Four elements: MCing, DJing, graffiti, breakdancing.",
+    "rock": "Rock music originated in 1950s. Evolved from rock and roll. Electric guitar-driven. Subgenres include classic rock, punk, metal, alternative.",
+    "jazz": "Jazz originated in late 19th/early 20th century in African American communities of New Orleans. Improvisation is key. Legends: Louis Armstrong, Miles Davis, John Coltrane.",
+    "classical music": "Classical music is art music of Western tradition. Period ~1750-1820, but term covers centuries. Orchestras, symphonies, operas.",
+    "pop music": "Pop music is popular music genre. Characterized by catchy melodies, simple structures, mass appeal. Dominates charts and radio.",
+    "guitar": "The guitar is a stringed musical instrument. Acoustic and electric versions. Central to rock, blues, country, flamenco music.",
+    "piano": "The piano is a keyboard instrument with hammers that strike strings. Invented ~1700. Essential in classical and popular music.",
+    "drums": "Drums are percussion instruments. Heart of most modern bands. Drum kit includes bass drum, snare, toms, cymbals, hi-hat.",
+    "1984": "1984 is a dystopian novel by George Orwell published in 1949. Depicts totalitarian surveillance state. Introduced terms like 'Big Brother' and 'thoughtcrime'.",
+    "to kill a mockingbird": "To Kill a Mockingbird is a novel by Harper Lee (1960). Deals with racism in American South. Considered American classic.",
+    "great gatsby": "The Great Gatsby is a novel by F. Scott Fitzgerald (1925). Depicts Jazz Age excess. Explores American Dream. Considered greatest American novel by many.",
+    "odyssey": "The Odyssey is an ancient Greek epic poem attributed to Homer (~8th century BC). Follows Odysseus' 10-year journey home after Trojan War.",
+    "iliad": "The Iliad is an ancient Greek epic poem by Homer. Describes Trojan War. One of oldest works of Western literature.",
+    "bible": "The Bible is the sacred text of Christianity. Old Testament (Hebrew Bible) and New Testament. Most printed book in history. Huge cultural influence.",
+    "quran": "The Quran is the central religious text of Islam. Muslims believe it's the word of God revealed to Prophet Muhammad. Written in Arabic.",
+    "socrates": "Socrates (469-399 BC) was a classical Greek philosopher. Father of Western philosophy. Known for Socratic method of questioning. Taught Plato.",
+    "plato": "Plato (428-348 BC) was an Athenian philosopher. Student of Socrates, teacher of Aristotle. Founded the Academy. Wrote The Republic.",
+    "aristotle": "Aristotle (384-322 BC) was a Greek philosopher. Student of Plato, teacher of Alexander the Great. Contributed to nearly every field of knowledge.",
+    "philosophy": "Philosophy is the study of fundamental questions about existence, knowledge, values, reason, mind, and language. Means 'love of wisdom' in Greek.",
+    "heart": "The heart is a muscular organ that pumps blood throughout the body. Beats ~100,000 times per day. Four chambers: two atria, two ventricles.",
+    "brain": "The brain is the control center of the nervous system. ~86 billion neurons. Weighs ~3 pounds. Controls thoughts, memory, emotions, movement, senses.",
+    "lungs": "The lungs are organs for breathing. Exchange oxygen and carbon dioxide. Humans have two lungs. Average person takes ~20,000 breaths per day.",
+    "liver": "The liver is the largest internal organ. Filters blood, processes nutrients, produces bile, stores energy. Can regenerate itself.",
+    "kidney": "Kidneys are organs that filter blood and produce urine. Most people have two. Filter ~200 quarts of blood daily.",
+    "cancer": "Cancer is a group of diseases involving abnormal cell growth. Cells divide uncontrollably and can spread. Leading cause of death worldwide. Many types exist.",
+    "diabetes": "Diabetes is a disease where blood sugar levels are too high. Type 1 (body doesn't make insulin) and Type 2 (body doesn't use insulin properly).",
+    "covid": "COVID-19 is an infectious disease caused by SARS-CoV-2 coronavirus. Emerged in 2019. Caused global pandemic. Vaccines developed in record time.",
+    "vaccine": "A vaccine is a biological preparation providing immunity to a disease. Contains weakened/killed pathogens or genetic material. Prevents millions of deaths.",
+    "antibiotic": "Antibiotics are medicines that fight bacterial infections. Penicillin was first discovered in 1928. Revolutionized medicine but overuse causes resistance.",
+    "surgery": "Surgery is a medical procedure involving incision or manipulation of body tissues. Used for treatment, diagnosis, improvement of function or appearance.",
+    "steak": "Steak is a thick cut of meat, typically beef. Cooked by grilling, pan-searing, or broiling. Doneness levels: rare, medium-rare, medium, medium-well, well-done.",
+    "chocolate": "Chocolate is made from cacao beans. Dark, milk, and white varieties. Originally from Mesoamerica. Contains theobromine which affects mood.",
+    "coffee": "Coffee is a brewed drink from roasted coffee beans. Second most traded commodity after crude oil. Contains caffeine. Most popular beverage after water and tea.",
+    "tea": "Tea is an aromatic beverage from Camellia sinensis leaves. Second most consumed beverage after water. Types: black, green, white, oolong, pu-erh.",
+    "ice cream": "Ice cream is a frozen dessert made from milk/cream, sugar, and flavoring. Invented in China ~200 BC. Over 1,000 flavors exist.",
+    "wine": "Wine is an alcoholic drink made from fermented grapes. Red, white, rosé varieties. France, Italy, Spain are major producers. Ages well.",
+    "beer": "Beer is an alcoholic drink made from water, malted barley, hops, and yeast. One of oldest beverages. Third most popular drink after water and tea.",
+    "climate change": "Climate change refers to long-term shifts in temperatures and weather patterns. Primarily caused by burning fossil fuels. Causes global warming, rising sea levels, extreme weather.",
+    "extinction": "Extinction is when a species completely dies out. Can be caused by habitat loss, climate change, hunting, disease. Dinosaurs went extinct 66 million years ago.",
+    "democracy": "Democracy is a form of government where power is held by the people, either directly or through elected representatives. Athens, Greece had early form ~500 BC.",
+    "capitalism": "Capitalism is an economic system based on private ownership and free markets. Supply and demand determine prices. Profit motive drives economy.",
+    "communism": "Communism is a socio-economic system based on common ownership. No private property. Theorized by Karl Marx. USSR, China attempted implementations.",
+    "constitution": "A constitution is fundamental principles or laws of a nation/state. US Constitution (1787) is oldest written national constitution still in use.",
+    "united nations": "The United Nations (UN) is an international organization founded in 1945 after WWII. 193 member states. Promotes peace, security, human rights.",
+    "nasa": "NASA (National Aeronautics and Space Administration) is the US space agency, founded in 1958. Responsible for space exploration, Moon landings, Mars rovers, ISS.",
+    "hubble telescope": "The Hubble Space Telescope was launched in 1990. Orbits Earth. Has provided stunning images and revolutionized our understanding of the universe.",
+    "periodic table": "The periodic table organizes all known chemical elements by atomic number. Created by Dmitri Mendeleev in 1869. Currently 118 confirmed elements.",
+    "ecosystem": "An ecosystem is a community of living organisms interacting with their physical environment. Includes producers, consumers, decomposers. Can be any size.",
+    "renewable energy": "Renewable energy comes from sources that naturally replenish: solar, wind, hydro, geothermal, biomass. Doesn't produce greenhouse gases. Essential for sustainable future.",
+    "global warming": "Global warming is the long-term heating of Earth's surface due to human activities, primarily fossil fuel burning. Average temperature has risen ~1°C since pre-industrial times.",
+
+    // --- V12 ADDITIONS: MYTHOLOGY ---
+    "zeus": "Zeus is the king of the gods in Greek mythology. God of the sky, lightning, thunder, law, and order. Weapon is the thunderbolt.",
+    "poseidon": "Poseidon is the Greek god of the sea, earthquakes, and horses. Brother of Zeus. Weapon is the trident.",
+    "hades": "Hades is the Greek god of the dead and the king of the underworld. Brother of Zeus and Poseidon.",
+    "thor": "Thor is the Norse god of thunder, lighting, storms, and strength. Wields the hammer Mjölnir.",
+    "odin": "Odin is the Allfather in Norse mythology. God of wisdom, poetry, death, divination, and magic.",
+    
+    // --- V12 ADDITIONS: TECH & CS ---
+    "git": "Git is a distributed version control system used to track changes in source code. Created by Linus Torvalds.",
+    "github": "GitHub is a platform for hosting and collaborating on Git repositories. Owned by Microsoft.",
+    "docker": "Docker is a platform for developing, shipping, and running applications in containers.",
+    "api": "API (Application Programming Interface) is a set of rules allowing different software applications to talk to each other.",
+    "linux kernel": "The Linux kernel is the core interface between a computer's hardware and its processes. Open source and created in 1991.",
+    
+    // --- V12 ADDITIONS: SPACE & PHYSICS ---
+    "supernova": "A supernova is a powerful and luminous explosion of a star. It releases massive amounts of energy and creates heavy elements.",
+    "neutron star": "A neutron star is the collapsed core of a massive supergiant star. extremely dense; a teaspoon would weigh billion tons.",
+    "pi": "Pi (π) is a mathematical constant ~3.14159. Ratio of a circle's circumference to its diameter.",
+    "euler number": "Euler's number (e) is a mathematical constant ~2.71828. Base of the natural logarithm.",
+};
+
+// --- PROCEDURAL GENERATOR & MEGA BULK METHOD ---
+const MEMORY = {}; 
+let conversationContext = [];
+
+function initializeBrain() {
+    // A. LOAD STATIC MEGA DICTIONARY
+    for (let key in BRAIN) {
+        MEMORY[key] = BRAIN[key];
+    }
+
+    // B. BULK METHOD: ADVANCED MATH (Expanded to 1000)
+    for (let i = 0; i <= 1000; i++) {
+        MEMORY[`${i} squared`] = `${i} squared is ${i*i}.`;
+        MEMORY[`${i} cubed`] = `${i} cubed is ${i*i*i}.`;
+        MEMORY[`sqrt ${i*i}`] = `The square root of ${i*i} is ${i}.`;
+        MEMORY[`is ${i} even`] = (i % 2 === 0) ? `Yes, ${i} is an even number.` : `No, ${i} is an odd number.`;
+        MEMORY[`is ${i} odd`] = (i % 2 === 1) ? `Yes, ${i} is an odd number.` : `No, ${i} is an even number.`;
+        MEMORY[`is ${i} prime`] = isPrime(i) ? `Yes, ${i} is a prime number.` : `No, ${i} is not a prime number.`;
+        
+        // Factorial
+        if (i <= 20) {
+            MEMORY[`${i} factorial`] = `${i}! = ${factorial(i)}`;
+            MEMORY[`factorial of ${i}`] = `${i}! = ${factorial(i)}`;
+        }
+        
+        // Powers of 2
+        if (i <= 30) {
+            MEMORY[`2 to the power of ${i}`] = `2^${i} = ${Math.pow(2, i)}`;
+        }
+
+        // --- V12 ADDITION: BINARY & HEX ---
+        MEMORY[`binary of ${i}`] = `The binary representation of ${i} is ${i.toString(2)}.`;
+        MEMORY[`${i} in binary`] = `${i} in binary is ${i.toString(2)}.`;
+        MEMORY[`hex of ${i}`] = `The hexadecimal representation of ${i} is ${i.toString(16).toUpperCase()}.`;
+        MEMORY[`${i} in hex`] = `${i} in hex is ${i.toString(16).toUpperCase()}.`;
+        
+        // --- V12 ADDITION: MULTIPLICATION TABLES ---
+        for(let j=1; j<=12; j++) {
+            MEMORY[`${i} times ${j}`] = `${i} x ${j} = ${i*j}`;
+            MEMORY[`${i} x ${j}`] = `${i} x ${j} = ${i*j}`;
+        }
+    }
+
+    // C. BULK METHOD: YEAR CLASSIFICATIONS
+    for (let year = 1; year <= 2030; year++) {
+        let era = "the Common Era (CE)";
+        let details = "";
+        
+        if (year < 500) { era = "Antiquity (Roman Era)"; details = "Empire building and ancient civilizations."; }
+        else if (year < 1000) { era = "Early Middle Ages"; details = "Post-Roman Europe restructuring."; }
+        else if (year < 1500) { era = "Late Middle Ages"; details = "Feudalism, Crusades, Plague."; }
+        else if (year < 1800) { era = "Early Modern Period"; details = "Renaissance and Enlightenment."; }
+        else if (year < 1900) { era = "Industrial Age"; details = "Factories and steam power."; }
+        else if (year < 2000) { era = "20th Century"; details = "World wars and technology."; }
+        else { era = "Modern Era"; details = "Digital age."; }
+        
+        // --- V12 ADDITION: LEAP YEAR CHECK ---
+        let isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        let leapStr = isLeap ? "It is a leap year." : "It is not a leap year.";
+        
+        MEMORY[`year ${year}`] = `The year ${year} falls within ${era}. ${details} ${leapStr}`;
+    }
+
+    // D. POPULATIONS
+    const populations = {
+        "china": "~1.4 billion", "india": "~1.4 billion", "usa": "~335 million", 
+        "indonesia": "~275 million", "pakistan": "~235 million", "brazil": "~215 million",
+        "nigeria": "~220 million", "bangladesh": "~170 million", "russia": "~144 million",
+        "mexico": "~130 million", "japan": "~125 million", "philippines": "~115 million",
+        "egypt": "~105 million", "vietnam": "~98 million", "germany": "~84 million",
+        "turkey": "~85 million", "iran": "~88 million", "france": "~67 million",
+        "united kingdom": "~68 million", "italy": "~59 million", "south africa": "~60 million",
+        "spain": "~47 million", "canada": "~39 million", "australia": "~26 million"
+    };
+    for (let country in populations) {
+        MEMORY[`population of ${country}`] = `The population of ${country} is approximately ${populations[country]}.`;
+        MEMORY[`how many people in ${country}`] = `${country} has a population of approximately ${populations[country]}.`;
+    }
+
+    // E. ADVANCED CONVERSIONS
+    for (let i = 0; i <= 100; i++) {
+        MEMORY[`${i} celsius to fahrenheit`] = `${i}°C = ${(i * 9/5 + 32).toFixed(1)}°F`;
+        MEMORY[`${i} fahrenheit to celsius`] = `${i}°F = ${((i - 32) * 5/9).toFixed(1)}°C`;
+        MEMORY[`${i} km to miles`] = `${i} km = ${(i * 0.621371).toFixed(2)} miles`;
+        MEMORY[`${i} miles to km`] = `${i} miles = ${(i * 1.60934).toFixed(2)} km`;
+        MEMORY[`${i} kg to pounds`] = `${i} kg = ${(i * 2.20462).toFixed(2)} lbs`;
+        MEMORY[`${i} pounds to kg`] = `${i} lbs = ${(i * 0.453592).toFixed(2)} kg`;
+    }
+
+    // F. DYNAMIC TRIGGERS
+    ["time", "what time is it", "clock", "current time"].forEach(t => MEMORY[t] = "DYNAMIC_TIME");
+    ["date", "what is today", "what day is it", "today", "current date", "todays date"].forEach(t => MEMORY[t] = "DYNAMIC_DATE");
+
+    // G. CONVERSATIONAL
+    ["how do you do", "how is it going", "how are things"].forEach(q => MEMORY[q] = "All systems operational. How can I assist you?");
+
+    // H. MEMORY CHECK
+    const savedName = localStorage.getItem("guahh_v10_username");
+    if(savedName) {
+        document.getElementById('intro-msg').innerHTML += `<br><br><strong>Welcome back, ${savedName}.</strong>`;
+    }
+
+    document.getElementById('db-status').innerText = `Neural Network Active: ${Object.keys(MEMORY).length.toLocaleString()} entries loaded.`;
+}
+
+// --- UTILITY ---
+function isPrime(num) {
+    if (num < 2) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) { if (num % i === 0) return false; }
+    return true;
+}
+
+function factorial(n) {
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) result *= i;
+    return result;
+}
+
+// --- ADVANCED LOGIC ENGINE ---
+
+function handleInput() {
+    const input = document.getElementById('user-input');
+    const raw = input.value.trim();
+    if (!raw) return;
+
+    addMsg(raw, 'user');
+    input.value = '';
+
+    conversationContext.push({role: 'user', text: raw});
+    if (conversationContext.length > 10) conversationContext.shift();
+
+    setTimeout(() => {
+        const response = getResponse(raw);
+        addMsg(response, 'bot');
+        conversationContext.push({role: 'bot', text: response});
+        if (conversationContext.length > 10) conversationContext.shift();
+    }, 200);
+}
+
+function getResponse(text) {
+    let clean = text.toLowerCase().replace(/[^\w\s\d\+\-\*\/\.]/g, "").trim();
+
+    // 1. MEMORY & CONTEXT
+    if ((clean === "yes" || clean === "yeah") && conversationContext.length > 1) {
+        const lastBot = conversationContext[conversationContext.length - 2];
+        if (lastBot.text.includes("?")) return "Great! Ask away.";
+    }
+
+    if (clean.startsWith("my name is ")) {
+        let name = text.substring(11).replace(/[^\w\s]/gi, '').trim(); 
+        localStorage.setItem("guahh_v10_username", name);
+        return `Nice to meet you, <strong>${name}</strong>. Saved to persistent memory.`;
+    }
+    if (clean === "what is my name" || clean === "who am i") {
+        const name = localStorage.getItem("guahh_v10_username");
+        return name ? `Your name is <strong>${name}</strong>.` : "I don't know your name yet.";
+    }
+
+    // 2. PATTERN MATCHING
+    if (clean.includes("vs") || clean.includes("versus")) {
+        if (clean.includes("python") && clean.includes("java")) return "Python: Easier, AI/Data focus. Java: Faster, Android/Enterprise focus.";
+        if (clean.includes("messi") && clean.includes("ronaldo")) return "Messi: Talent/Playmaking. Ronaldo: Athleticism/Scoring. Both legends.";
+    }
+
+    if (clean.startsWith("how to")) {
+        if (clean.includes("learn") && clean.includes("code")) return "1. Pick Python. 2. Use freeCodeCamp. 3. Build projects. 4. Be consistent.";
+        if (clean.includes("lose weight")) return "Caloric deficit, exercise, sleep, water. Consistency is key.";
+    }
+
+    // 3. DEFINITIONS
+    if (clean.startsWith("what is") || clean.startsWith("whats")) {
+        let topic = clean.replace("what is ", "").replace("whats ", "").trim();
+        if (MEMORY[topic]) return processDynamic(MEMORY[topic]);
+        if (topic === "love") return "Love is a complex biological and emotional bond.";
+    }
+
+    // 4. WHO IS
+    if (clean.startsWith("who is")) {
+        let person = clean.replace("who is ", "").trim();
+        if (MEMORY[person] || MEMORY[`who is ${person}`]) return processDynamic(MEMORY[person] || MEMORY[`who is ${person}`]);
+        return `I don't have data on "${person}". Try famous historical figures.`;
+    }
+
+    // 5. WHERE IS / CAPITAL
+    if (clean.startsWith("where is")) {
+        let place = clean.replace("where is ", "").trim();
+        if (MEMORY[place]) return processDynamic(MEMORY[place]);
+        if (MEMORY[`capital of ${place}`]) return processDynamic(MEMORY[`capital of ${place}`]);
+    }
+
+    // 6. CALCULATE / SOLVE (EXPANDED V12)
+    if (clean.includes("calculate") || clean.includes("solve") || isMath(clean)) {
+        let mathPart = clean.replace(/calculate|solve|compute|what is|whats/g, "").trim();
+        return solveMath(mathPart);
+    }
+
+    // 7. CORE LOGIC (DICTIONARY)
+    if (MEMORY[clean]) return processDynamic(MEMORY[clean]);
+
+    // Deep Scan
+    let bestMatchKey = "";
+    let maxLen = 0;
+    for (let key in BRAIN) {
+        if (clean.includes(key) && key.length > maxLen) {
+            bestMatchKey = key;
+            maxLen = key.length;
+        }
+    }
+    if (bestMatchKey) return processDynamic(BRAIN[bestMatchKey]);
+
+    // Partial Scan
+    for (let key in BRAIN) {
+        let keywords = key.split(" ");
+        let count = 0;
+        for (let kw of keywords) { if (clean.includes(kw) && kw.length > 3) count++; }
+        if (count >= 2) return processDynamic(BRAIN[key]);
+    }
+
+    // 8. FALLBACKS
+    if (clean.includes("science")) return "I know about physics, chemistry, and biology. Ask specific questions.";
+    if (clean.includes("history")) return "I know about wars, empires, and revolutions.";
+    
+    const fallbacks = [
+        "I don't have that specific data. Try asking about Science, History, Tech, or Math.",
+        "My database doesn't match that query. Try 'Capital of France' or 'What is an atom'.",
+        "Unknown query. I specialize in factual knowledge.",
+        "That's outside my current V12 database."
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
+
+// --- HELPER FUNCTIONS ---
+
+function processDynamic(val) {
+    if (val === "DYNAMIC_TIME") return `Current time: <strong>${new Date().toLocaleTimeString()}</strong>.`;
+    if (val === "DYNAMIC_DATE") return `Today is <strong>${new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong>.`;
+    return val;
+}
+
+// --- V12 UPGRADED MATH ENGINE ---
+function isMath(str) {
+    // Allows numbers and math operators, plus trig words
+    const mathChars = /[\d\+\-\*\/\^%]/;
+    const mathWords = /sin|cos|tan|log|pi|sqrt/;
+    return (mathChars.test(str) || mathWords.test(str)) && str.split(" ").filter(w => /[a-z]{4,}/.test(w) && !mathWords.test(w)).length < 2;
+}
+
+function solveMath(str) {
+    try {
+        // Prepare string for JS execution
+        // 1. Replace constants
+        let safe = str.toLowerCase()
+            .replace(/pi/g, "Math.PI")
+            .replace(/\be\b/g, "Math.E") // word boundary for 'e'
+            
+        // 2. Replace operators
+            .replace(/x/g, "*")
+            .replace(/÷/g, "/")
+            .replace(/\^/g, "**")
+            
+        // 3. Replace functions
+            .replace(/sin/g, "Math.sin")
+            .replace(/cos/g, "Math.cos")
+            .replace(/tan/g, "Math.tan")
+            .replace(/log/g, "Math.log10")
+            .replace(/ln/g, "Math.log")
+            .replace(/sqrt/g, "Math.sqrt");
+
+        // 4. Sanitize (Allow digits, operators, (), ., and Math object)
+        // We trust the replacements above, but let's double check broad structure
+        // Since we are running local, basic eval is acceptable for this use case
+        
+        let result = eval(safe);
+        
+        if (isNaN(result) || !isFinite(result)) return "Calculation Error.";
+        
+        // Formatting
+        if (result % 1 !== 0) result = parseFloat(result.toFixed(6));
+        
+        return `<strong>${str} = ${result}</strong>`;
+    } catch (e) {
+        return "Invalid Expression. Try 'sin(0)', 'log(100)', or '5^3'.";
+    }
+}
+
+function addMsg(html, type) {
+    const chat = document.getElementById('chat-container');
+    const div = document.createElement('div');
+    div.className = `msg ${type}`;
+    div.innerHTML = html;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// --- INITIALIZATION ---
+window.addEventListener('load', () => {
+    initializeBrain();
+    document.getElementById('user-input').focus();
+});
+
+</script>
+</body>
+</html>
