@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI 2.2</title>
+    <title>Guahh AI 2.3</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -187,7 +187,7 @@
 <body>
 
     <header>
-        <h1>GUAHH AI 2.2</h1>
+        <h1>GUAHH AI 2.3</h1>
         <div class="status" id="model-status">Loading English Dictionary...</div>
     </header>
 
@@ -212,6 +212,10 @@
          */
 
         // --- 1. ENGLISH DICTIONARY DATABASE ---
+        // MEMORY SYSTEM
+        let conversationHistory = [];
+        let currentTopic = null;
+
         const DICTIONARY = {
             // NOUNS - Animals
             "cat": { pos: "noun", def: "a small domesticated carnivorous mammal with fur, four legs, and a tail", category: "animal" },
@@ -843,6 +847,49 @@
             "every": { pos: "determiner", def: "all of a group considered individually" },
             "other": { pos: "determiner", def: "different from the one mentioned" },
             "another": { pos: "determiner", def: "used to refer to an additional thing" },
+
+            // NEW: FOOD & DRINK (Expanded)
+            "pizza": { pos: "noun", def: "a dish of Italian origin consisting of a flat, round base of dough baked with a topping of tomato sauce and cheese", category: "food" },
+            "burger": { pos: "noun", def: "a dish consisting of a flat round cake of minced beef served in a bread roll", category: "food" },
+            "salad": { pos: "noun", def: "a cold dish of various mixtures of raw or cooked vegetables", category: "food" },
+            "soup": { pos: "noun", def: "a liquid dish, typically made by boiling meat, fish, or vegetables", category: "food" },
+            "cake": { pos: "noun", def: "an item of soft, sweet food made from a mixture of flour, shortening, eggs, sugar, and other ingredients", category: "food" },
+            "ice cream": { pos: "noun", def: "a soft frozen food made with sweetened and flavored milk fat", category: "food" },
+            "chocolate": { pos: "noun", def: "a food preparation in the form of a paste or solid block made from roasted and ground cacao seeds", category: "food" },
+
+            // NEW: ANIMALS (Expanded)
+            "cheetah": { pos: "noun", def: "a large slender spotted cat found in Africa and parts of Asia, the fastest land animal", category: "animal" },
+            "sloth": { pos: "noun", def: "a slow-moving tropical American mammal that hangs upside down from branches", category: "animal" },
+            "hippo": { pos: "noun", def: "a large thick-skinned semiaquatic African mammal, with massive jaws and large tusks", category: "animal" },
+            "rhino": { pos: "noun", def: "a large, heavily built plant-eating mammal with one or two horns on the nose", category: "animal" },
+
+            // NEW: ADJECTIVES (Expanded)
+            "delicious": { pos: "adjective", def: "highly pleasant to the taste", opposite: "disgusting" },
+            "shiny": { pos: "adjective", def: "reflecting light, typically because very clean or polished", opposite: "dull" },
+            "loud": { pos: "adjective", def: "producing or capable of producing much noise", opposite: "quiet" },
+            "silent": { pos: "adjective", def: "not making or accompanied by any sound", opposite: "noisy" },
+            "famous": { pos: "adjective", def: "known about by many people", opposite: "unknown" },
+            "ancient": { pos: "adjective", def: "belonging to the very distant past and no longer in existence", opposite: "modern" },
+            "tiny": { pos: "adjective", def: "very small", opposite: "huge" },
+            "huge": { pos: "adjective", def: "extremely large; enormous", opposite: "tiny" },
+
+            // NEW: GAMING & ULTRAKILL
+            "destroy": { pos: "verb", def: "end the existence of something by attacking or damaging it" },
+            "shoot": { pos: "verb", def: "kill or wound a person or animal with a bullet or arrow" },
+            "heal": { pos: "verb", def: "cause a wound, injury, or person to become sound or healthy again" },
+            "bleed": { pos: "verb", def: "lose blood from the body as a result of an injury or illness" },
+            "parry": { pos: "verb", def: "ward off a weapon or attack with a countermove" },
+            "dash": { pos: "verb", def: "run or travel somewhere in a great hurry" },
+            "slide": { pos: "verb", def: "move along a smooth surface while maintaining continuous contact with it" },
+            "shotgun": { pos: "noun", def: "a smoothbore gun for firing small shot at short range", category: "weapon" },
+            "revolver": { pos: "noun", def: "a pistol with revolving chambers enabling several shots to be fired without reloading", category: "weapon" },
+            "machine": { pos: "noun", def: "an apparatus using or applying mechanical power and having several parts", category: "object" },
+            "demon": { pos: "noun", def: "an evil spirit or devil, especially one thought to possess a person or act as a tormentor in hell", category: "creature" },
+            "angel": { pos: "noun", def: "a spiritual being believed to act as an attendant, agent, or messenger of God", category: "creature" },
+            "husk": { pos: "noun", def: "the dry outer covering of some fruits or seeds, or a shell of a person", category: "object" },
+            "violent": { pos: "adjective", def: "using or involving physical force intended to hurt, damage, or kill someone or something" },
+            "retro": { pos: "adjective", def: "imitative of a style, fashion, or design from the recent past" },
+            "stylish": { pos: "adjective", def: "fashionably elegant and sophisticated" }
         };
 
         // --- 2. GRAMMAR & KNOWLEDGE BASE ---
@@ -971,6 +1018,32 @@
             "javascript": "JavaScript is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.",
             "algorithm": "An algorithm is a finite sequence of well-defined, computer-implementable instructions, typically to solve a class of problems.",
             "bug": "A software bug is an error, flaw or fault in a computer program or system that causes it to produce an incorrect or unexpected result.",
+
+            // Countries
+            "usa": "The United States of America (USA) is a country primarily located in North America, consisting of 50 states.",
+            "united kingdom": "The United Kingdom (UK) is a country in northwestern Europe, made up of England, Scotland, Wales, and Northern Ireland.",
+            "australia": "Australia is a sovereign country comprising the mainland of the Australian continent, the island of Tasmania, and numerous smaller islands.",
+            "japan": "Japan is an island country in East Asia, located in the northwest Pacific Ocean.",
+            "france": "France is a country located primarily in Western Europe, known for its culture, wine, and landmarks like the Eiffel Tower.",
+            "china": "China is a country in East Asia and is the world's most populous country, known for its long history and the Great Wall.",
+            "india": "India is a country in South Asia, the seventh-largest country by area and the second-most populous democracy in the world.",
+
+            // Pop Culture & Movies
+            "star wars": "Star Wars is an epic space-opera media franchise created by George Lucas, beginning with the eponymous 1977 film.",
+            "harry potter": "Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling, chronicling the lives of a young wizard and his friends.",
+            "marvel": "Marvel Comics is an American media and entertainment company widely known for its comic books and the Marvel Cinematic Universe movies.",
+            "lord of the rings": "The Lord of the Rings is an epic high-fantasy novel by J. R. R. Tolkien.",
+            "batman": "Batman is a superhero appearing in American comic books published by DC Comics.",
+            "superman": "Superman is a superhero appearing in American comic books published by DC Comics, born on the planet Krypton.",
+
+            // ULTRAKILL & Games
+            "ultrakill": "ULTRAKILL is a fast-paced ultraviolent retro FPS combining the skill-based style scoring from character action games with unadulterated carnage inspired by the best shooters of the '90s. Rip apart your foes with varied destructive weapons and shower in their blood to regain your health.",
+            "minecraft": "Minecraft is a sandbox video game developed by Mojang Studios where players explore a blocky, procedurally generated 3D world with infinite terrain.",
+            "doom": "Doom is a 1993 first-person shooter game by id Software. It is considered one of the most significant and influential titles in video game history.",
+            "quake": "Quake is a first-person shooter video game developed by id Software and published by GT Interactive in 1996.",
+            "tetris": "Tetris is a tile-matching video game created by Soviet software engineer Alexey Pajitnov in 1984.",
+            "the matrix": "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis. It depicts a dystopian future where humanity is unknowingly trapped inside a simulated reality.",
+            "inception": "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with his wife, Emma Thomas."
         };
 
         const QUESTION_WORDS = ["what", "who", "where", "when", "why", "how", "is", "are", "can", "does", "do", "define", "explain", "tell", "describe"];
@@ -1100,6 +1173,9 @@
             let prompt = inputField.value.trim();
             if (!prompt) return;
 
+            // MEMORY: Push user prompt to history
+            conversationHistory.push({ role: "user", content: prompt });
+
             // UI Handle
             addMessage(prompt, 'user');
             inputField.value = '';
@@ -1124,6 +1200,9 @@
             } else {
                 response = generateIntelligentResponse(prompt);
             }
+
+            // MEMORY: Push bot response to history
+            conversationHistory.push({ role: "bot", content: response });
 
             // --- WRITING PROCESS ---
             let wordsToType = response.split(" ");
@@ -1151,22 +1230,59 @@
 
         function generateIntelligentResponse(prompt) {
             let cleanPrompt = prompt.toLowerCase().trim();
+            // Create a punctuation-free version for logic checks
+            let cleanMsg = cleanPrompt.replace(/[?.,!]/g, "");
 
-            // 1. Check for conversational/greeting responses first
+            // 0. MEMORY: Metadata Questions (History Check)
+            if (conversationHistory.length > 0) {
+                if (cleanMsg === "what did i just say" || cleanMsg === "what was the last thing i said" || cleanMsg === "what did i ask") {
+                    let userMsgs = conversationHistory.filter(m => m.role === "user");
+                    if (userMsgs.length >= 2) {
+                        return `You just said: "${userMsgs[userMsgs.length - 2].content}"`;
+                    }
+                    return "You haven't said anything else yet!";
+                }
+                if (cleanMsg === "what did you say" || cleanMsg === "what was the last thing you said") {
+                    let lastBot = [...conversationHistory].reverse().find(m => m.role === "bot");
+                    if (lastBot) return `I said: "${lastBot.content}"`;
+                    return "I haven't said anything yet!";
+                }
+            }
+
+            // 1. CONTEXT RESOLUTION (Pronouns)
+            let processingPrompt = cleanPrompt;
+            if (currentTopic) {
+                let pronouns = ["it", "that", "this", "he", "she", "him", "her", "they"];
+                // Use regex with word boundaries to effectively match "it?" or "it."
+                let regex = new RegExp(`\\b(${pronouns.join("|")})\\b`, "gi");
+
+                // Replace pronouns in the processing prompt with the actual topic
+                processingPrompt = processingPrompt.replace(regex, currentTopic);
+
+                // Check if replacement happened implies we should use the new prompt
+                if (processingPrompt !== cleanPrompt) {
+                    cleanPrompt = processingPrompt;
+                }
+            }
+
+            // 2. Check for conversational responses
             if (CONVERSATIONAL_RESPONSES[cleanPrompt]) {
                 return CONVERSATIONAL_RESPONSES[cleanPrompt];
             }
 
-            // 2. PRIORITY: Check "tell me about" questions BEFORE word lookup
+            // 3. PRIORITY: Check "tell me about"
             if (cleanPrompt.startsWith("tell me about")) {
                 let topic = cleanPrompt.replace("tell me about", "").trim();
+                // Set context immediately
+                currentTopic = topic;
+
                 // Check general knowledge
                 for (let key in GENERAL_KNOWLEDGE) {
                     if (topic.includes(key) || key.includes(topic)) {
                         return GENERAL_KNOWLEDGE[key];
                     }
                 }
-                // If not in knowledge base, check dictionary to define it
+                // Check dictionary
                 let checkTopic = topic;
                 if (topic.endsWith('s') && DICTIONARY[topic.slice(0, -1)]) {
                     checkTopic = topic.slice(0, -1);
@@ -1179,57 +1295,63 @@
                 return `I don't have specific information about "${topic}" in my knowledge base yet, but I'm learning new things every day!`;
             }
 
-            // 3. PRIORITY: Check for story generation requests
+            // 4. PRIORITY: Story
             if (cleanPrompt.includes("write a story") || cleanPrompt.includes("tell me a story") ||
                 cleanPrompt.includes("make a story") || cleanPrompt.includes("create a story") ||
                 cleanPrompt === "story" || cleanPrompt.includes("write me a story")) {
 
-                // Check if they want a story about something specific
                 let subject = null;
                 let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
-
-                // Look for "about" keyword
                 let aboutIndex = words.indexOf("about");
                 if (aboutIndex !== -1 && words[aboutIndex + 1]) {
                     let potentialSubject = words[aboutIndex + 1];
-                    // Skip articles "a", "an", "the"
-                    if (["a", "an", "the"].includes(potentialSubject) && words[aboutIndex + 2]) {
+                    if (["a", "an"].includes(potentialSubject) && words[aboutIndex + 2]) {
+                        subject = words[aboutIndex + 2];
+                    } else if (potentialSubject === "the" && words[aboutIndex + 2]) {
                         subject = words[aboutIndex + 2];
                     } else {
                         subject = potentialSubject;
                     }
                 }
-
                 return generateStory(subject);
             }
 
-            // 4. Check if it's a definition request
+            // 5. Definition / Meaning
             if (cleanPrompt.startsWith("what is") || cleanPrompt.startsWith("what's") || cleanPrompt.startsWith("define")) {
+                let potentialTopic = cleanPrompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
+
+                // Set context if it's a valid topic
+                if (potentialTopic && !["it", "this", "that", "he", "she"].includes(potentialTopic)) {
+                    currentTopic = potentialTopic;
+                }
+
                 return handleDefinitionQuestion(cleanPrompt);
             }
 
             if (cleanPrompt.startsWith("what does") && cleanPrompt.includes("mean")) {
+                let match = cleanPrompt.match(/what does\s+([a-z]+)\s+mean/i);
+                if (match && match[1]) currentTopic = match[1];
                 return handleMeaningQuestion(cleanPrompt);
             }
 
-            // 5. Check general knowledge base for any topic match
+            // 6. General Knowledge Search
             for (let topic in GENERAL_KNOWLEDGE) {
                 if (cleanPrompt.includes(topic)) {
+                    currentTopic = topic; // SET CONTEXT
                     return GENERAL_KNOWLEDGE[topic];
                 }
             }
 
-            // 6. LAST RESORT: Try to identify key words and construct a response
+            // 7. Last Resort (Dictionary Keyword)
             let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
             let knownWords = words.filter(w => DICTIONARY[w]);
 
             if (knownWords.length > 0) {
-                // EXCLUSION LIST: Words we should NEVER just randomly define if encountered
                 let skipWords = ["what", "is", "the", "a", "an", "tell", "me", "about", "write", "make", "story", "do", "you", "are", "who", "where", "when", "why", "how", "stories", "telling", "it", "that", "this"];
                 let keyWord = knownWords.find(w => !skipWords.includes(w));
 
-                // Only use it if it's not in our skip list
                 if (keyWord && !skipWords.includes(keyWord)) {
+                    currentTopic = keyWord; // SET CONTEXT
                     let entry = DICTIONARY[keyWord];
                     if (entry.pos === "noun") {
                         return `A ${keyWord} ${entry.def}.`;
@@ -1243,8 +1365,7 @@
                 }
             }
 
-            // Default response
-            return "I understand your question, but I don't have enough information to answer it accurately. Try asking me to define a word, ask about topics like science, history, geography, or technology, or ask me to write a story!";
+            return "I understand your question, but I don't have enough information to answer it accurately. Try asking me to define a word, or ask about science, history, or geography!";
         }
 
         function handleDefinitionQuestion(prompt) {
@@ -1256,8 +1377,17 @@
 
             // Check general knowledge first for broader topics
             for (let topic in GENERAL_KNOWLEDGE) {
-                if (subject.toLowerCase().includes(topic) || topic.includes(subject.toLowerCase())) {
+                // Strict match: topic equals subject (allowing for case)
+                // OR topic contains subject (e.g. "planet mars" contains "mars"), but avoid pronouns
+                if (subject.toLowerCase() === topic || topic === subject.toLowerCase()) {
                     return GENERAL_KNOWLEDGE[topic];
+                }
+
+                // Allow fuzzy match ONLY if subject is specific (not "it", "this", "that")
+                if (!["it", "this", "that", "he", "she"].includes(subject.toLowerCase())) {
+                    if (topic.includes(subject.toLowerCase())) {
+                        return GENERAL_KNOWLEDGE[topic];
+                    }
                 }
             }
 
@@ -1325,7 +1455,7 @@
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 2.2</strong>";
+                intro.innerHTML = "<strong>Guahh AI 2.3</strong>";
                 chatWindow.appendChild(intro);
             }, 500);
         };
