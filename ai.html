@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI 2.3</title>
+    <title>Guahh AI 2.4</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -187,7 +187,7 @@
 <body>
 
     <header>
-        <h1>GUAHH AI 2.3</h1>
+        <h1>GUAHH AI 2.4</h1>
         <div class="status" id="model-status">Loading English Dictionary...</div>
     </header>
 
@@ -889,7 +889,42 @@
             "husk": { pos: "noun", def: "the dry outer covering of some fruits or seeds, or a shell of a person", category: "object" },
             "violent": { pos: "adjective", def: "using or involving physical force intended to hurt, damage, or kill someone or something" },
             "retro": { pos: "adjective", def: "imitative of a style, fashion, or design from the recent past" },
-            "stylish": { pos: "adjective", def: "fashionably elegant and sophisticated" }
+            "stylish": { pos: "adjective", def: "fashionably elegant and sophisticated" },
+
+            // NEW v2.4: SCIENCE & FANTASY
+            "galaxy": { pos: "noun", def: "a system of millions or billions of stars, together with gas and dust, held together by gravitational attraction", category: "science" },
+            "universe": { pos: "noun", def: "all existing matter and space considered as a whole", category: "science" },
+            "energy": { pos: "noun", def: "the strength and vitality required for sustained physical or mental activity", category: "science" },
+            "magic": { pos: "noun", def: "the power of apparently influencing the course of events by using mysterious or supernatural forces", category: "fantasy" },
+            "dragon": { pos: "noun", def: "a mythical monster like a giant reptile, typically breathing fire", category: "fantasy" },
+            "wizard": { pos: "noun", def: "a man who has magical powers, especially in legends and fairy tales", category: "fantasy" },
+            "sword": { pos: "noun", def: "a weapon with a long metal blade and a hilt with a handguard", category: "fantasy" },
+            "shield": { pos: "noun", def: "a broad piece of metal or another suitable material, held by straps or a handle attached on one side, used as a protection against blows or missiles", category: "fantasy" },
+            "potion": { pos: "noun", def: "a liquid with healing, magical, or poisonous properties", category: "fantasy" },
+            "robot": { pos: "noun", def: "a machine capable of carrying out a complex series of actions automatically", category: "tech" },
+
+            // NEW v2.4 REFINEMENT: PLACES & DESCRIPTORS
+            "forest": { pos: "noun", def: "a large area covered chiefly with trees and undergrowth", category: "place" },
+            "mountain": { pos: "noun", def: "a large natural elevation of the earth's surface rising abruptly from the surrounding level", category: "place" },
+            "river": { pos: "noun", def: "a large natural stream of water flowing in a channel to the sea, a lake, or another such stream", category: "place" },
+            "ocean": { pos: "noun", def: "a very large expanse of sea, in particular each of the main areas into which the sea is divided", category: "place" },
+            "desert": { pos: "noun", def: "a dry, barren area of land, especially one covered with sand, that is characteristically desolate, waterless, and without vegetation", category: "place" },
+            "city": { pos: "noun", def: "a large town", category: "place" },
+            "castle": { pos: "noun", def: "a large building, typically one of the medieval period, fortified against attack with thick walls, battlements, towers, and in many cases a moat", category: "place" },
+            "cave": { pos: "noun", def: "a large underground chamber, typically of natural origin, in a hillside or cliff", category: "place" },
+            "island": { pos: "noun", def: "a piece of land surrounded by water", category: "place" },
+            "planet": { pos: "noun", def: "a celestial body moving in an elliptical orbit around a star", category: "place" },
+            "space station": { pos: "noun", def: "a large artificial satellite used as a long-term base for manned operations in space", category: "place" },
+            "lab": { pos: "noun", def: "a laboratory", category: "place" },
+            "school": { pos: "noun", def: "an institution for educating children", category: "place" },
+            "library": { pos: "noun", def: "a building or room containing collections of books, periodicals, and sometimes films and recorded music for people to read, borrow, or refer to", category: "place" },
+
+            "mysterious": { pos: "adjective", def: "difficult or impossible to understand, explain, or identify", opposite: "clear" },
+            "futuristic": { pos: "adjective", def: "having or involving very modern technology or design", opposite: "old-fashioned" },
+            "magical": { pos: "adjective", def: "relating to, using, or resembling magic", opposite: "mundane" },
+            "forgotten": { pos: "adjective", def: "not remembered", opposite: "remembered" },
+            "hidden": { pos: "adjective", def: "kept out of sight", opposite: "visible" },
+            "ancient": { pos: "adjective", def: "belonging to the very distant past", opposite: "modern" }
         };
 
         // --- 2. GRAMMAR & KNOWLEDGE BASE ---
@@ -901,10 +936,10 @@
             "hey": "Hey! I'm here to help you understand English words and general knowledge. What can I explain for you?",
             "how are you": "I'm functioning perfectly! As an AI, I'm always ready to help you learn. What would you like to know about?",
             "what can you do": "I can define over 850 English words, explain their meanings, answer questions about general knowledge including science, history, geography, and technology, and write creative short stories! Try asking 'What is a dolphin?', 'Tell me about black holes', or 'Write a story about a cat'!",
-            "who are you": "I am Guahh AI version 2.2, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
-            "what are you": "I am Guahh AI version 2.2, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "who are you": "I am Guahh AI version 2.4, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "what are you": "I am Guahh AI version 2.4, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
             "who made you": "I was created by Guahh, an Australian technology company based in Melbourne.",
-            "what is your name": "My name is Guahh AI, and I'm version 2.2 of this language understanding system.",
+            "what is your name": "My name is Guahh AI, and I'm version 2.4 of this language understanding system.",
             "thanks": "You're welcome! Feel free to ask me anything else.",
             "thank you": "Happy to help! Let me know if you have more questions.",
             "bye": "Goodbye! Come back anytime you want to learn something new!",
@@ -1043,13 +1078,58 @@
             "quake": "Quake is a first-person shooter video game developed by id Software and published by GT Interactive in 1996.",
             "tetris": "Tetris is a tile-matching video game created by Soviet software engineer Alexey Pajitnov in 1984.",
             "the matrix": "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis. It depicts a dystopian future where humanity is unknowingly trapped inside a simulated reality.",
-            "inception": "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with his wife, Emma Thomas."
+            "inception": "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with his wife, Emma Thomas.",
+
+            // NEW v2.4: TECH & CULTURE
+            "apple": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California, known for the iPhone, Mac, and iPad.",
+            "google": "Google LLC is an American multinational technology company that focuses on search engine technology, online advertising, cloud computing, and software.",
+            "microsoft": "Microsoft Corporation is an American multinational technology corporation which produces computer software, consumer electronics, personal computers, and related services.",
+            "tesla": "Tesla, Inc. is an American electric vehicle and clean energy company headquartered in Austin, Texas.",
+            "pokemon": "Pokémon is a Japanese media franchise managed by The Pokémon Company, centering on fictional creatures called 'Pokémon' which humans, known as Pokémon Trainers, catch and train to battle each other.",
+            "mario": "Mario is a fictional character in the Mario video game franchise, owned by Nintendo and created by video game designer Shigeru Miyamoto.",
+            "zelda": "The Legend of Zelda is a high-fantasy action-adventure video game franchise created by Japanese game designers Shigeru Miyamoto and Takashi Tezuka.",
+            "fortnite": "Fortnite is an online video game developed by Epic Games and released in 2017.",
+            "roblox": "Roblox is an online game platform and game creation system developed by Roblox Corporation."
         };
 
         const QUESTION_WORDS = ["what", "who", "where", "when", "why", "how", "is", "are", "can", "does", "do", "define", "explain", "tell", "describe"];
 
         // --- STORY GENERATION SYSTEM ---
         const STORY_TEMPLATES = {
+            scifi: [
+                {
+                    template: "In the year 3000, a {animal} named {name} was the pilot of a starship called The {adjective} Star. {name} traveled to the {place} Galaxy to find {goal}. On a distant planet, {name} met a {friend} who was a robot. Together they fought against a {adjective} alien and saved the {place}. It was a {emotion} adventure!",
+                    themes: ["space", "future", "adventure"]
+                },
+                {
+                    template: "Deep in space, a {animal} astronaut named {name} discovered a new planet. It was made entirely of {food}! {name} was so {emotion}. But soon, {name} realized that the planet was inhabited by giant {friend}s. They taught {name} that {lesson}.",
+                    themes: ["discovery", "space", "wonder"]
+                },
+                {
+                    template: "The year is 4025. Humanity has engaged in hyper-travel, but {name} the {animal} prefers the quiet life on Station {place}. One day, a rogue AI named ZERO shuts down the life support. {name} has to use {quality} to hack the mainframe. Along the way, {name} teams up with a cyborg {friend}. Together they reboot the system and save everyone. It was a {emotion} day.",
+                    themes: ["cyberpunk", "ai", "heroism"]
+                }
+            ],
+            fantasy: [
+                {
+                    template: "In a magical kingdom, a {animal} named {name} found a {adjective} sword. {name} was destined to defeat the evil Dragon of {place}. With the help of a wizard {friend}, {name} learned to use magic. In the final battle, {name} used {quality} to win. The kingdom was saved!",
+                    themes: ["magic", "heroism", "destiny"]
+                },
+                {
+                    template: "Legends speak of the {adjective} {animal} named {name}, who lived in the High {place}. One day, a sorcerer stole the Crystal of {quality}. {name} gathered a party: a brave {friend}, a wise {animal}, and a mysterious rogue. They journeyed through the {place} of Despair. In the end, {name} proved that {lesson} and restored the crystal.",
+                    themes: ["fantasy", "quest", "legend"]
+                }
+            ],
+            mystery: [
+                {
+                    template: "It was a dark and stormy night. {name} the {animal} heard a strange noise in the {place}. {name} decided to investigate. There were footprints leading to the {place}. Suddenly, {name} found {discovery}! It turned out that the noise was just a {friend} playing a trick. They both felt {emotion}.",
+                    themes: ["mystery", "suspense", "surprise"]
+                },
+                {
+                    template: "Detective {name}, the smartest {animal} in the city, was called to the Old {place}. A {adjective} jewel had gone missing. {name} found a clue: a piece of {food} left at the scene. It pointed to the notorious {friend} Bandit! After a chase through the {place}, {name} caught the thief. It was a case of pure {quality}.",
+                    themes: ["detective", "crime", "noir"]
+                }
+            ],
             adventure: [
                 {
                     template: "Once upon a time, there was a {animal} named {name}. {name} lived in a {place} and loved to {action}. One day, {name} decided to go on an adventure to find {goal}. Along the way, {name} met a {friend} who became a great companion. Together, they faced many challenges, but with {emotion} and {quality}, they succeeded. In the end, {name} learned that {lesson}.",
@@ -1089,10 +1169,22 @@
         };
 
         // Story generation function
-        function generateStory(subject = null) {
-            // Choose random story type
-            const types = Object.keys(STORY_TEMPLATES);
-            const chosenType = types[Math.floor(Math.random() * types.length)];
+        function generateStory(options = {}) {
+            // Handle legacy single-argument call or string input
+            if (typeof options === 'string' || options === null) {
+                options = { subject: options };
+            }
+            let { subject, genre, place, emotion, adjective } = options;
+
+            // Choose story type
+            let chosenType;
+            if (genre && STORY_TEMPLATES[genre]) {
+                chosenType = genre;
+            } else {
+                const types = Object.keys(STORY_TEMPLATES);
+                chosenType = types[Math.floor(Math.random() * types.length)];
+            }
+
             const templates = STORY_TEMPLATES[chosenType];
             const template = templates[Math.floor(Math.random() * templates.length)].template;
 
@@ -1100,42 +1192,40 @@
             const animals = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "animal");
             const places = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "place");
             const adjectives = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].pos === "adjective");
-            const emotions = ["happy", "sad", "excited", "curious", "brave", "kind", "wise", "strong"];
-            const actions = ["explore", "play", "learn", "discover", "help", "create", "teach", "protect"];
-            const times = ["morning", "afternoon", "evening", "day"];
+            const emotions = ["happy", "sad", "excited", "curious", "brave", "kind", "wise", "strong", "scared", "nervous", "proud"];
+            const actions = ["explore", "play", "learn", "discover", "help", "create", "teach", "protect", "investigate", "build"];
+            const times = ["morning", "afternoon", "evening", "night", "day", "dawn", "dusk"];
+            const foods = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "food");
+            if (foods.length === 0) foods.push("pizza"); // fallback
 
             // STRICT SUBJECT HANDLING
             let mainAnimal = animals[Math.floor(Math.random() * animals.length)]; // Default random
 
             if (subject) {
                 let cleanSubject = subject.toLowerCase().trim();
-                // Check if subject is a known animal
                 if (animals.includes(cleanSubject)) {
                     mainAnimal = cleanSubject;
-                } else {
-                    // If subject is singular/plural mismatch (e.g. "cats" vs "cat"), try to fix
-                    if (cleanSubject.endsWith('s') && animals.includes(cleanSubject.slice(0, -1))) {
-                        mainAnimal = cleanSubject.slice(0, -1);
-                    }
+                } else if (cleanSubject.endsWith('s') && animals.includes(cleanSubject.slice(0, -1))) {
+                    mainAnimal = cleanSubject.slice(0, -1);
                 }
             }
 
             const friendAnimal = animals.filter(a => a !== mainAnimal)[Math.floor(Math.random() * (animals.length - 1))];
 
-            // Generate random name
-            const names = ["Max", "Luna", "Charlie", "Bella", "Oliver", "Lucy", "Buddy", "Daisy", "Rocky", "Sophie", "Leo", "Mia", "Jack", "Chloe", "Sam"];
+            const names = ["Max", "Luna", "Charlie", "Bella", "Oliver", "Lucy", "Buddy", "Daisy", "Rocky", "Sophie", "Leo", "Mia", "Jack", "Chloe", "Sam", "Atlas", "Nova", "Rex"];
             const name = names[Math.floor(Math.random() * names.length)];
 
-            // Random story elements
-            const place = places[Math.floor(Math.random() * places.length)];
+            // Random story elements (Use overrides if provided)
+            const chosenPlace = place || (places.length > 0 ? places[Math.floor(Math.random() * places.length)] : "forest");
             const action = actions[Math.floor(Math.random() * actions.length)];
-            const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-            const emotion = emotions[Math.floor(Math.random() * emotions.length)];
+            const chosenAdjective = adjective || (adjectives.length > 0 ? adjectives[Math.floor(Math.random() * adjectives.length)] : "brave");
+            const chosenEmotion = emotion || emotions[Math.floor(Math.random() * emotions.length)];
+            const chosenFood = foods[Math.floor(Math.random() * foods.length)];
 
             // Story-specific elements
-            const goals = [`discover a hidden ${place}`, `find the secret of ${adjective} ${places[Math.floor(Math.random() * places.length)]}`, `help all the ${animals[Math.floor(Math.random() * animals.length)]}s`, `become the most ${adjective} ${mainAnimal} ever`];
+            const goals = [`discover a hidden ${chosenPlace}`, `find the secret of ${chosenAdjective} ${places[Math.floor(Math.random() * places.length)]}`, `help all the ${animals[Math.floor(Math.random() * animals.length)]}s`, `become the most ${chosenAdjective} ${mainAnimal} ever`];
             const lessons = ["friendship is the greatest treasure", "being brave means trying even when you're scared", "kindness makes the world better", "every creature has something special to offer", "believing in yourself is the first step to success", "working together makes us stronger"];
-            const discoveries = [`a magical ${places[Math.floor(Math.random() * places.length)]}`, `the true meaning of ${emotions[Math.floor(Math.random() * emotions.length)]}ness`, `an ancient secret`];
+            const discoveries = [`a magical ${chosenPlace}`, `the true meaning of ${chosenEmotion}ness`, `an ancient secret`];
             const qualities = ["wisdom", "courage", "kindness", "intelligence", "loyalty", "creativity"];
             const topics = ["the stars", "nature", "friendship", "courage", "science", "art"];
 
@@ -1143,11 +1233,12 @@
             let story = template
                 .replace(/{animal}/g, mainAnimal)
                 .replace(/{name}/g, name)
-                .replace(/{place}/g, place)
+                .replace(/{place}/g, chosenPlace)
                 .replace(/{action}/g, action)
                 .replace(/{friend}/g, friendAnimal)
-                .replace(/{adjective}/g, adjective)
-                .replace(/{emotion}/g, emotion)
+                .replace(/{adjective}/g, chosenAdjective)
+                .replace(/{emotion}/g, chosenEmotion)
+                .replace(/{food}/g, chosenFood)
                 .replace(/{goal}/g, goals[Math.floor(Math.random() * goals.length)])
                 .replace(/{lesson}/g, lessons[Math.floor(Math.random() * lessons.length)])
                 .replace(/{discovery}/g, discoveries[Math.floor(Math.random() * discoveries.length)])
@@ -1233,7 +1324,42 @@
             // Create a punctuation-free version for logic checks
             let cleanMsg = cleanPrompt.replace(/[?.,!]/g, "");
 
-            // 0. MEMORY: Metadata Questions (History Check)
+            // 0. DATE & TIME (New v2.4)
+            if (cleanMsg === "what time is it" || cleanMsg.includes("current time") || cleanMsg.includes("tell me the time")) {
+                let now = new Date();
+                return "It is currently " + now.toLocaleTimeString();
+            }
+            if (cleanMsg === "what day is it" || cleanMsg.includes("what is the date") || cleanMsg.includes("current date") || cleanMsg.includes("todays date")) {
+                let now = new Date();
+                return "Today is " + now.toDateString();
+            }
+
+            // 0.5 UTILITIES / RNG (New v2.4)
+            if (cleanMsg.includes("roll a dice") || cleanMsg.includes("roll a die")) {
+                return "You rolled a " + (Math.floor(Math.random() * 6) + 1);
+            }
+            if (cleanMsg.includes("flip a coin") || cleanMsg.includes("toss a coin")) {
+                return (Math.random() < 0.5) ? "It's Heads!" : "It's Tails!";
+            }
+            if (cleanMsg.includes("random number") || cleanMsg.includes("pick a number")) {
+                let match = cleanMsg.match(/between (\d+) and (\d+)/);
+                if (match) {
+                    let min = parseInt(match[1]);
+                    let max = parseInt(match[2]);
+                    return "Your random number is " + (Math.floor(Math.random() * (max - min + 1)) + min);
+                }
+                return "Your random number is " + Math.floor(Math.random() * 100);
+            }
+            if (cleanMsg.includes("random color") || cleanMsg.includes("pick a color")) {
+                let colors = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Black", "White", "Cyan", "Magenta", "Lime", "Indigo"];
+                return "I picked " + colors[Math.floor(Math.random() * colors.length)];
+            }
+            if (cleanMsg.includes("random letter") || cleanMsg.includes("pick a letter")) {
+                let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                return "I picked " + letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+
+            // 1. MEMORY: Metadata Questions (History Check)
             if (conversationHistory.length > 0) {
                 if (cleanMsg === "what did i just say" || cleanMsg === "what was the last thing i said" || cleanMsg === "what did i ask") {
                     let userMsgs = conversationHistory.filter(m => m.role === "user");
@@ -1249,40 +1375,39 @@
                 }
             }
 
-            // 1. CONTEXT RESOLUTION (Pronouns)
+            // 2. CONTEXT RESOLUTION (Pronouns)
             let processingPrompt = cleanPrompt;
             if (currentTopic) {
                 let pronouns = ["it", "that", "this", "he", "she", "him", "her", "they"];
-                // Use regex with word boundaries to effectively match "it?" or "it."
                 let regex = new RegExp(`\\b(${pronouns.join("|")})\\b`, "gi");
-
-                // Replace pronouns in the processing prompt with the actual topic
                 processingPrompt = processingPrompt.replace(regex, currentTopic);
-
-                // Check if replacement happened implies we should use the new prompt
                 if (processingPrompt !== cleanPrompt) {
                     cleanPrompt = processingPrompt;
                 }
             }
 
-            // 2. Check for conversational responses
+            // 3. MATH (Natural Language v2.4)
+            // Replace words with symbols for checking
+            let mathPrompt = cleanMsg.replace(/plus/g, "+").replace(/minus/g, "-").replace(/times/g, "*").replace(/divided by/g, "/");
+            if (isMath(mathPrompt)) {
+                return solveMath(mathPrompt);
+            }
+
+            // 4. Check for conversational responses
             if (CONVERSATIONAL_RESPONSES[cleanPrompt]) {
                 return CONVERSATIONAL_RESPONSES[cleanPrompt];
             }
 
-            // 3. PRIORITY: Check "tell me about"
+            // 5. PRIORITY: Check "tell me about"
             if (cleanPrompt.startsWith("tell me about")) {
                 let topic = cleanPrompt.replace("tell me about", "").trim();
-                // Set context immediately
                 currentTopic = topic;
 
-                // Check general knowledge
                 for (let key in GENERAL_KNOWLEDGE) {
                     if (topic.includes(key) || key.includes(topic)) {
                         return GENERAL_KNOWLEDGE[key];
                     }
                 }
-                // Check dictionary
                 let checkTopic = topic;
                 if (topic.endsWith('s') && DICTIONARY[topic.slice(0, -1)]) {
                     checkTopic = topic.slice(0, -1);
@@ -1291,36 +1416,62 @@
                 if (DICTIONARY[checkTopic]) {
                     return handleDefinitionQuestion("what is " + checkTopic);
                 }
-
                 return `I don't have specific information about "${topic}" in my knowledge base yet, but I'm learning new things every day!`;
             }
 
-            // 4. PRIORITY: Story
+            // 6. PRIORITY: Story (Refined v2.4+)
             if (cleanPrompt.includes("write a story") || cleanPrompt.includes("tell me a story") ||
                 cleanPrompt.includes("make a story") || cleanPrompt.includes("create a story") ||
                 cleanPrompt === "story" || cleanPrompt.includes("write me a story")) {
 
-                let subject = null;
+                let options = { subject: null, genre: null, place: null, emotion: null, adjective: null };
+
+                // Genre detection
+                if (cleanPrompt.includes("scifi") || cleanPrompt.includes("sci-fi") || cleanPrompt.includes("space")) options.genre = "scifi";
+                else if (cleanPrompt.includes("fantasy") || cleanPrompt.includes("legend") || cleanPrompt.includes("magic") || cleanPrompt.includes("dragon")) options.genre = "fantasy";
+                else if (cleanPrompt.includes("mystery") || cleanPrompt.includes("detective") || cleanPrompt.includes("crime") || cleanPrompt.includes("scary")) options.genre = "mystery";
+                else if (cleanPrompt.includes("adventure") || cleanPrompt.includes("journey") || cleanPrompt.includes("quest")) options.genre = "adventure";
+                else if (cleanPrompt.includes("friend")) options.genre = "friendship";
+                else if (cleanPrompt.includes("learn") || cleanPrompt.includes("lesson")) options.genre = "learning";
+
+                // Subject extraction (Primitive NLP)
                 let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
                 let aboutIndex = words.indexOf("about");
                 if (aboutIndex !== -1 && words[aboutIndex + 1]) {
                     let potentialSubject = words[aboutIndex + 1];
                     if (["a", "an"].includes(potentialSubject) && words[aboutIndex + 2]) {
-                        subject = words[aboutIndex + 2];
+                        options.subject = words[aboutIndex + 2];
                     } else if (potentialSubject === "the" && words[aboutIndex + 2]) {
-                        subject = words[aboutIndex + 2];
+                        options.subject = words[aboutIndex + 2];
                     } else {
-                        subject = potentialSubject;
+                        options.subject = potentialSubject;
                     }
                 }
-                return generateStory(subject);
+
+                // Place extraction
+                let places = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].category === "place");
+                let foundPlace = places.find(p => cleanPrompt.includes(p));
+                if (foundPlace) options.place = foundPlace;
+
+                // Emotion extraction
+                let emotions = ["happy", "sad", "excited", "curious", "brave", "kind", "wise", "strong", "scared", "nervous", "proud"];
+                let foundEmotion = emotions.find(e => cleanPrompt.includes(e));
+                if (foundEmotion) options.emotion = foundEmotion;
+
+                // Adjective extraction
+                let adjectives = Object.keys(DICTIONARY).filter(k => DICTIONARY[k].pos === "adjective");
+                // Filter out common/boring ones slightly? No. Use finding reverse to find longer matches? or just first.
+                // Sort by length desc to find "mysterious" before "my"? (Unlikely conflict).
+                let foundAdj = adjectives.find(a => cleanPrompt.includes(a));
+                if (foundAdj) options.adjective = foundAdj;
+
+                return generateStory(options);
             }
 
-            // 5. Definition / Meaning
+            // 7. Definition / Meaning
             if (cleanPrompt.startsWith("what is") || cleanPrompt.startsWith("what's") || cleanPrompt.startsWith("define")) {
                 let potentialTopic = cleanPrompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
 
-                // Set context if it's a valid topic
                 if (potentialTopic && !["it", "this", "that", "he", "she"].includes(potentialTopic)) {
                     currentTopic = potentialTopic;
                 }
@@ -1334,15 +1485,15 @@
                 return handleMeaningQuestion(cleanPrompt);
             }
 
-            // 6. General Knowledge Search
+            // 8. General Knowledge Search
             for (let topic in GENERAL_KNOWLEDGE) {
                 if (cleanPrompt.includes(topic)) {
-                    currentTopic = topic; // SET CONTEXT
+                    currentTopic = topic;
                     return GENERAL_KNOWLEDGE[topic];
                 }
             }
 
-            // 7. Last Resort (Dictionary Keyword)
+            // 9. Last Resort (Dictionary Keyword)
             let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
             let knownWords = words.filter(w => DICTIONARY[w]);
 
@@ -1351,7 +1502,7 @@
                 let keyWord = knownWords.find(w => !skipWords.includes(w));
 
                 if (keyWord && !skipWords.includes(keyWord)) {
-                    currentTopic = keyWord; // SET CONTEXT
+                    currentTopic = keyWord;
                     let entry = DICTIONARY[keyWord];
                     if (entry.pos === "noun") {
                         return `A ${keyWord} ${entry.def}.`;
@@ -1455,7 +1606,7 @@
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 2.3</strong>";
+                intro.innerHTML = "<strong>Guahh AI 2.4</strong>";
                 chatWindow.appendChild(intro);
             }, 500);
         };
