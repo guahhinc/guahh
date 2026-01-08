@@ -3,912 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI | Omnibus v13 GOD MODE</title>
+    <title>Guahh AI | v15 LLM CORE</title>
+    <!-- Inter Tight Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --chat-bg: #0f0f0f;
+            --bg: #0d0d0d;
+            --chat-bg: #141414;
             --input-bg: #1a1a1a;
             --text: #e0e0e0;
-            --sub-text: #666;
-            --accent: #8b5cf6; /* Violet */
-            --user-msg: #6d28d9;
-            --bot-msg: #1a1a1a;
-            --code-font: 'Consolas', 'Monaco', monospace;
+            --accent: #ffffff;
+            --user-msg: #262626;
+            --bot-msg: #141414;
+            --border: #333;
         }
         body {
             margin: 0;
             background: var(--bg);
             color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter Tight', sans-serif;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-        
-        /* HEADER */
-        #header {
-            width: 100%;
-            padding: 20px;
-            text-align: center;
-            background: rgba(5, 5, 5, 0.95);
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            backdrop-filter: blur(5px);
-        }
-        h1 { 
-            margin: 0; 
-            font-size: 18px; 
-            font-weight: 700; 
-            letter-spacing: 2px; 
-            color: var(--accent); 
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-        }
-        .status { 
-            font-size: 11px; 
-            color: var(--sub-text); 
-            margin-top: 5px; 
-            font-family: var(--code-font);
+            overflow: hidden;
         }
 
-        /* CHAT AREA */
-        #chat-container {
+        /* HEADER */
+        header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        h1 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.5px; }
+        .status { font-size: 12px; color: #666; font-weight: 300; }
+
+        /* CHAT */
+        #chat-window {
             flex: 1;
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
+            margin: 0 auto;
             overflow-y: auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            scroll-behavior: smooth;
-            padding-bottom: 120px; /* Space for input */
+            padding-bottom: 100px;
         }
 
         .msg {
-            max-width: 85%;
-            width: fit-content;
-            padding: 16px 22px;
-            border-radius: 12px;
+            max-width: 90%;
             line-height: 1.6;
             font-size: 15px;
-            word-wrap: break-word;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s ease;
+            font-weight: 300;
         }
         
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-
         .user {
             align-self: flex-end;
             background: var(--user-msg);
+            padding: 10px 15px;
+            border-radius: 8px;
             color: #fff;
-            border-bottom-right-radius: 2px;
         }
+
         .bot {
             align-self: flex-start;
-            background: var(--bot-msg);
-            color: var(--text);
-            border-left: 2px solid var(--accent);
-            border-bottom-left-radius: 2px;
-        }
-        .bot strong { color: var(--accent); font-weight: 700; }
-        .bot code { 
-            background: #000; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
-            font-family: var(--code-font); 
-            color: #a78bfa;
-            font-size: 0.9em;
+            color: #ccc;
         }
 
-        /* INPUT AREA */
-        #input-container {
-            position: fixed;
-            bottom: 30px;
-            width: 90%;
-            max-width: 900px;
-            display: flex;
-            justify-content: center;
-            z-index: 20;
-        }
+        .bot strong { color: #fff; font-weight: 600; }
 
-        form {
+        /* INPUT */
+        #input-area {
             width: 100%;
-            background: var(--input-bg);
-            border-radius: 16px;
-            display: flex;
-            padding: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0; 
+            right: 0;
+            background: var(--bg);
         }
+        
+        form {
+            display: flex;
+            gap: 10px;
+            background: var(--input-bg);
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
         input {
             flex: 1;
-            padding: 14px 24px;
             background: transparent;
             border: none;
             color: white;
-            font-size: 16px;
+            padding: 12px;
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 15px;
             outline: none;
-            font-family: inherit;
         }
-        button {
-            padding: 10px 30px;
-            background: var(--accent);
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            color: white;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        button:hover { background: #7c3aed; }
-        button:active { transform: scale(0.96); }
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
+        button {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 0 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter Tight', sans-serif;
+        }
+        button:disabled { opacity: 0.5; cursor: wait; }
+
+        /* Cursor Animation */
+        .cursor {
+            display: inline-block;
+            width: 5px;
+            height: 15px;
+            background: var(--accent);
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div id="header">
-    <h1>GUAHH AI v13 [GOD MODE]</h1>
-    <div class="status" id="db-status">Initializing Massive Neural Network...</div>
-</div>
+<header>
+    <h1>GUAHH AI v15</h1>
+    <div class="status" id="model-status">Initializing LLM Weights...</div>
+</header>
 
-<div id="chat-container">
-    <div class="msg bot" id="intro-msg">
-        <strong>System Online. GOD MODE Activated.</strong><br>
-        I have ingested a massive dataset of human knowledge.<br><br>
-        <strong>New Database Expansions:</strong>
-        <br>- Complete Periodic Table (118 Elements)
-        <br>- All 50 US States & Capitals
-        <br>- Global Mythology (Greek, Roman, Norse, Egyptian)
-        <br>- Astronomy, Anatomy, & Literature
-        <br>- Advanced Math (Fibonacci, Prime Factors)
-    </div>
-</div>
+<div id="chat-window"></div>
 
-<div id="input-container">
-    <form onsubmit="event.preventDefault(); handleInput();">
-        <input type="text" id="user-input" placeholder="Query the omnibus..." autocomplete="off">
-        <button type="submit">QUERY</button>
+<div id="input-area">
+    <form onsubmit="event.preventDefault(); processPrompt();">
+        <input type="text" id="user-input" placeholder="Message Guahh..." autocomplete="off">
+        <button type="submit" id="send-btn">Send</button>
     </form>
 </div>
 
 <script>
 /**
- * GUAHH AI V13 - GOD MODE EDITION
+ * GUAHH AI V15 - LLM CORE
  * 
- * ------------------------------------------------------------------
- * MASSIVE DATABASE EXPANSION LOG:
- * ------------------------------------------------------------------
- * 1. Added all 50 US States and Capitals.
- * 2. Added detailed entries for Elements 1-118.
- * 3. Added Major Constellations & Stars.
- * 4. Added Human Anatomy (Bones, Organs).
- * 5. Added Greek & Roman Mythology deep dive.
- * 6. Added NATO Phonetic Alphabet & Greek Alphabet.
- * 7. Added procedural generators for Fibonacci, ASCII, and Metric conversions.
- * ------------------------------------------------------------------
+ * ARCHITECTURE:
+ * 1. CORPUS: A massive text string containing all knowledge.
+ * 2. TOKENIZER: Splits the corpus into a probabilistic map (Bigrams/Trigrams).
+ * 3. INFERENCE: Generates the next word based on the previous word(s) in real-time.
  */
 
-// --- GOD MODE CORE ---
-const BRAIN = {
-    // --- GREETINGS & BASICS ---
-    "hi": "Hello! I am ready to assist with advanced knowledge queries.",
-    "hello": "Greetings. Accessing neural knowledge base...",
-    "hey": "Hello. What can I do for you today?",
-    "sup": "Hey there! Ready to answer your questions.",
-    "good morning": "Good morning! How can I assist you today?",
-    "good afternoon": "Good afternoon! What would you like to know?",
-    "good evening": "Good evening! I'm here to help.",
-    "good night": "Good night! Sleep well.",
-    "who are you": "I am Guahh AI v13 GOD MODE, a comprehensive local knowledge engine.",
-    "what are you": "I am a massive dictionary-based artificial intelligence.",
-    "how are you": "Operating at 100% efficiency. Database fully loaded.",
-    "bye": "Goodbye. Session terminated.",
-    "thanks": "You are welcome.",
+// --- 1. KNOWLEDGE CORPUS (The Brain) ---
+// We treat this as one continuous stream of consciousness for the AI to learn patterns from.
+const RAW_DATA = [
+    "I am Guahh AI, a large language model running locally in your browser.",
+    "Travis Scott is an American rapper, singer, songwriter, and record producer from Houston Texas. His albums include Rodeo, Astroworld, and Utopia. He founded Cactus Jack Records.",
+    "Guahh is an Australian technology company based in Sydney. Guahh developed Kangaroo, a social media platform. Kangaroo combines features of Twitter and Instagram.",
+    "Kangaroo is a social media website known for its hop feature. It was created by the tech giant Guahh.",
+    "Biology is the study of life. Frogs are amphibians. Frogs absorb water through their skin. Sharks are marine predators with cartilage skeletons.",
+    "Space is vast. The Sun is a star. Mars is the red planet. Jupiter is a gas giant. Black holes have infinite gravity.",
+    "History records the past. World War 1 lasted from 1914 to 1918. World War 2 lasted from 1939 to 1945. The Roman Empire fell in 476 AD.",
+    "Computer Science is the study of computation. Python is a programming language. JavaScript runs the web. AI stands for Artificial Intelligence.",
+    "Math is the language of the universe. Pi is approximately 3.14. E is approximately 2.71. Gravity is 9.8 meters per second squared.",
+    "The capital of France is Paris. The capital of Japan is Tokyo. The capital of Australia is Canberra.",
+    "Music is art. Hip hop originated in New York. Jazz originated in New Orleans. Rock music uses electric guitars.",
+    "Elon Musk runs Tesla and SpaceX. Bill Gates founded Microsoft. Steve Jobs founded Apple.",
+    "Water is H2O. Oxygen is O2. Carbon is the basis of life.",
+    "The internet connects the world. Blockchain is a decentralized ledger. Bitcoin is a cryptocurrency.",
+    "Football is the most popular sport. LeBron James plays basketball. Messi plays soccer.",
+    "Zeus is the Greek god of the sky. Thor is the Norse god of thunder. Hades rules the underworld.",
+    "Supernovas are exploding stars. Neutron stars are dense. The speed of light is the universal speed limit.",
+    "Git is a version control system. Docker uses containers. Linux is an open source kernel."
+];
 
-    // --- POP CULTURE (LEGACY & EXPANDED) ---
-    "minecraft": "Minecraft is a sandbox video game developed by Mojang. Best-selling game of all time.",
-    "roblox": "Roblox is a game creation platform released in 2006.",
-    "fortnite": "Fortnite is a Battle Royale game by Epic Games (2017).",
-    "gta": "Grand Theft Auto is an open-world action series by Rockstar Games.",
-    "pokemon": "Pokémon is a Japanese media franchise managed by The Pokémon Company.",
-    "star wars": "Star Wars is a space opera franchise created by George Lucas (1977).",
-    "marvel": "Marvel Comics is the home of the Avengers, X-Men, and Spider-Man.",
-    "dc comics": "DC Comics is the home of Superman, Batman, and Wonder Woman.",
-    "harry potter": "Harry Potter is a wizarding world franchise by J.K. Rowling.",
-    "lord of the rings": "LOTR is a high-fantasy epic by J.R.R. Tolkien.",
-    "matrix": "The Matrix (1999) is a sci-fi film about simulated reality.",
-    "breaking bad": "Breaking Bad is a crime drama series about Walter White.",
-    "game of thrones": "Game of Thrones is a fantasy TV series based on books by George R.R. Martin.",
-    "stranger things": "Stranger Things is a sci-fi horror series set in the 1980s.",
-    "spongebob": "SpongeBob SquarePants is an animated series created by Stephen Hillenburg.",
-    "simpsons": "The Simpsons is the longest-running American animated sitcom.",
+// --- 2. THE TOKENIZER & MODEL BUILDER ---
+const MODEL = {};
+const START_WORDS = [];
 
-    // --- TECHNOLOGY ---
-    "python": "Python is a readable, high-level programming language (1991).",
-    "javascript": "JavaScript is the scripting language of the web.",
-    "java": "Java is an object-oriented language. 'Write once, run anywhere'.",
-    "c++": "C++ is a high-performance language used in systems and games.",
-    "html": "HTML is the standard markup language for documents designed to be displayed in a web browser.",
-    "css": "CSS is a style sheet language used for describing the presentation of a document written in HTML.",
-    "sql": "SQL is a domain-specific language used in programming and designed for managing data held in a relational database management system.",
-    "react": "React is a free and open-source front-end JavaScript library for building user interfaces based on UI components.",
-    "node": "Node.js is a cross-platform, open-source server environment that can run JavaScript on Windows, Linux, Unix, macOS, and more.",
-    "linux": "Linux is a family of open-source Unix-like operating systems based on the Linux kernel.",
-    "windows": "Microsoft Windows is a group of several proprietary graphical operating system families, all of which are developed and marketed by Microsoft.",
-    "macos": "macOS is a Unix operating system developed and marketed by Apple Inc. since 2001.",
-    "android": "Android is a mobile operating system based on a modified version of the Linux kernel and other open source software.",
-    "ios": "iOS is a mobile operating system created and developed by Apple Inc. exclusively for its hardware.",
-    "bitcoin": "Bitcoin is a decentralized digital currency, without a central bank or single administrator.",
-    "ethereum": "Ethereum is a decentralized, open-source blockchain with smart contract functionality.",
-    "nft": "A non-fungible token (NFT) is a unique digital identifier that cannot be copied, substituted, or subdivided.",
-    "ai": "Artificial Intelligence is intelligence demonstrated by machines, as opposed to the natural intelligence displayed by animals and humans.",
+function trainModel() {
+    let status = document.getElementById('model-status');
+    status.innerText = "Training...";
 
-    // --- US STATES & CAPITALS (COMPLETE LIST) ---
-    "alabama": "State: Alabama. Capital: Montgomery. Known as the Yellowhammer State.",
-    "capital of alabama": "The capital of Alabama is Montgomery.",
-    "alaska": "State: Alaska. Capital: Juneau. The largest US state by area.",
-    "capital of alaska": "The capital of Alaska is Juneau.",
-    "arizona": "State: Arizona. Capital: Phoenix. Home of the Grand Canyon.",
-    "capital of arizona": "The capital of Arizona is Phoenix.",
-    "arkansas": "State: Arkansas. Capital: Little Rock. The Natural State.",
-    "capital of arkansas": "The capital of Arkansas is Little Rock.",
-    "california": "State: California. Capital: Sacramento. Most populous state.",
-    "capital of california": "The capital of California is Sacramento.",
-    "colorado": "State: Colorado. Capital: Denver. The Centennial State.",
-    "capital of colorado": "The capital of Colorado is Denver.",
-    "connecticut": "State: Connecticut. Capital: Hartford. The Constitution State.",
-    "capital of connecticut": "The capital of Connecticut is Hartford.",
-    "delaware": "State: Delaware. Capital: Dover. The First State.",
-    "capital of delaware": "The capital of Delaware is Dover.",
-    "florida": "State: Florida. Capital: Tallahassee. The Sunshine State.",
-    "capital of florida": "The capital of Florida is Tallahassee.",
-    "georgia": "State: Georgia. Capital: Atlanta. The Peach State.",
-    "capital of georgia": "The capital of Georgia is Atlanta.",
-    "hawaii": "State: Hawaii. Capital: Honolulu. The Aloha State.",
-    "capital of hawaii": "The capital of Hawaii is Honolulu.",
-    "idaho": "State: Idaho. Capital: Boise. The Gem State.",
-    "capital of idaho": "The capital of Idaho is Boise.",
-    "illinois": "State: Illinois. Capital: Springfield. The Prairie State.",
-    "capital of illinois": "The capital of Illinois is Springfield.",
-    "indiana": "State: Indiana. Capital: Indianapolis. The Hoosier State.",
-    "capital of indiana": "The capital of Indiana is Indianapolis.",
-    "iowa": "State: Iowa. Capital: Des Moines. The Hawkeye State.",
-    "capital of iowa": "The capital of Iowa is Des Moines.",
-    "kansas": "State: Kansas. Capital: Topeka. The Sunflower State.",
-    "capital of kansas": "The capital of Kansas is Topeka.",
-    "kentucky": "State: Kentucky. Capital: Frankfort. The Bluegrass State.",
-    "capital of kentucky": "The capital of Kentucky is Frankfort.",
-    "louisiana": "State: Louisiana. Capital: Baton Rouge. The Pelican State.",
-    "capital of louisiana": "The capital of Louisiana is Baton Rouge.",
-    "maine": "State: Maine. Capital: Augusta. The Pine Tree State.",
-    "capital of maine": "The capital of Maine is Augusta.",
-    "maryland": "State: Maryland. Capital: Annapolis. The Old Line State.",
-    "capital of maryland": "The capital of Maryland is Annapolis.",
-    "massachusetts": "State: Massachusetts. Capital: Boston. The Bay State.",
-    "capital of massachusetts": "The capital of Massachusetts is Boston.",
-    "michigan": "State: Michigan. Capital: Lansing. The Great Lakes State.",
-    "capital of michigan": "The capital of Michigan is Lansing.",
-    "minnesota": "State: Minnesota. Capital: St. Paul. The North Star State.",
-    "capital of minnesota": "The capital of Minnesota is St. Paul.",
-    "mississippi": "State: Mississippi. Capital: Jackson. The Magnolia State.",
-    "capital of mississippi": "The capital of Mississippi is Jackson.",
-    "missouri": "State: Missouri. Capital: Jefferson City. The Show-Me State.",
-    "capital of missouri": "The capital of Missouri is Jefferson City.",
-    "montana": "State: Montana. Capital: Helena. The Treasure State.",
-    "capital of montana": "The capital of Montana is Helena.",
-    "nebraska": "State: Nebraska. Capital: Lincoln. The Cornhusker State.",
-    "capital of nebraska": "The capital of Nebraska is Lincoln.",
-    "nevada": "State: Nevada. Capital: Carson City. The Silver State.",
-    "capital of nevada": "The capital of Nevada is Carson City.",
-    "new hampshire": "State: New Hampshire. Capital: Concord. The Granite State.",
-    "capital of new hampshire": "The capital of New Hampshire is Concord.",
-    "new jersey": "State: New Jersey. Capital: Trenton. The Garden State.",
-    "capital of new jersey": "The capital of New Jersey is Trenton.",
-    "new mexico": "State: New Mexico. Capital: Santa Fe. The Land of Enchantment.",
-    "capital of new mexico": "The capital of New Mexico is Santa Fe.",
-    "new york": "State: New York. Capital: Albany. The Empire State.",
-    "capital of new york": "The capital of New York is Albany.",
-    "north carolina": "State: North Carolina. Capital: Raleigh. The Tar Heel State.",
-    "capital of north carolina": "The capital of North Carolina is Raleigh.",
-    "north dakota": "State: North Dakota. Capital: Bismarck. The Peace Garden State.",
-    "capital of north dakota": "The capital of North Dakota is Bismarck.",
-    "ohio": "State: Ohio. Capital: Columbus. The Buckeye State.",
-    "capital of ohio": "The capital of Ohio is Columbus.",
-    "oklahoma": "State: Oklahoma. Capital: Oklahoma City. The Sooner State.",
-    "capital of oklahoma": "The capital of Oklahoma is Oklahoma City.",
-    "oregon": "State: Oregon. Capital: Salem. The Beaver State.",
-    "capital of oregon": "The capital of Oregon is Salem.",
-    "pennsylvania": "State: Pennsylvania. Capital: Harrisburg. The Keystone State.",
-    "capital of pennsylvania": "The capital of Pennsylvania is Harrisburg.",
-    "rhode island": "State: Rhode Island. Capital: Providence. The Ocean State.",
-    "capital of rhode island": "The capital of Rhode Island is Providence.",
-    "south carolina": "State: South Carolina. Capital: Columbia. The Palmetto State.",
-    "capital of south carolina": "The capital of South Carolina is Columbia.",
-    "south dakota": "State: South Dakota. Capital: Pierre. The Mount Rushmore State.",
-    "capital of south dakota": "The capital of South Dakota is Pierre.",
-    "tennessee": "State: Tennessee. Capital: Nashville. The Volunteer State.",
-    "capital of tennessee": "The capital of Tennessee is Nashville.",
-    "texas": "State: Texas. Capital: Austin. The Lone Star State.",
-    "capital of texas": "The capital of Texas is Austin.",
-    "utah": "State: Utah. Capital: Salt Lake City. The Beehive State.",
-    "capital of utah": "The capital of Utah is Salt Lake City.",
-    "vermont": "State: Vermont. Capital: Montpelier. The Green Mountain State.",
-    "capital of vermont": "The capital of Vermont is Montpelier.",
-    "virginia": "State: Virginia. Capital: Richmond. The Old Dominion.",
-    "capital of virginia": "The capital of Virginia is Richmond.",
-    "washington": "State: Washington. Capital: Olympia. The Evergreen State.",
-    "capital of washington": "The capital of Washington is Olympia.",
-    "west virginia": "State: West Virginia. Capital: Charleston. The Mountain State.",
-    "capital of west virginia": "The capital of West Virginia is Charleston.",
-    "wisconsin": "State: Wisconsin. Capital: Madison. The Badger State.",
-    "capital of wisconsin": "The capital of Wisconsin is Madison.",
-    "wyoming": "State: Wyoming. Capital: Cheyenne. The Equality State.",
-    "capital of wyoming": "The capital of Wyoming is Cheyenne.",
+    // Flatten data and clean it
+    let fullText = RAW_DATA.join(" ");
+    let tokens = fullText.split(/\s+/); // Split by whitespace
 
-    // --- PERIODIC TABLE (MASSIVE EXPANSION) ---
-    "hydrogen": "H (1). Gas. Lightest element.",
-    "helium": "He (2). Noble gas. Inert.",
-    "lithium": "Li (3). Alkali metal. Batteries.",
-    "beryllium": "Be (4). Alkaline earth metal.",
-    "boron": "B (5). Metalloid.",
-    "carbon": "C (6). Nonmetal. Basis of life.",
-    "nitrogen": "N (7). Gas. Atmosphere.",
-    "oxygen": "O (8). Gas. Respiration.",
-    "fluorine": "F (9). Halogen. Toothpaste.",
-    "neon": "Ne (10). Noble gas. Lights.",
-    "sodium": "Na (11). Alkali metal. Salt.",
-    "magnesium": "Mg (12). Alkaline earth metal.",
-    "aluminum": "Al (13). Post-transition metal.",
-    "silicon": "Si (14). Metalloid. Tech.",
-    "phosphorus": "P (15). Nonmetal.",
-    "sulfur": "S (16). Nonmetal. Yellow.",
-    "chlorine": "Cl (17). Halogen. Pools.",
-    "argon": "Ar (18). Noble gas.",
-    "potassium": "K (19). Alkali metal. Bananas.",
-    "calcium": "Ca (20). Alkaline earth metal. Bones.",
-    "scandium": "Sc (21). Transition metal.",
-    "titanium": "Ti (22). Transition metal. Strong.",
-    "vanadium": "V (23). Transition metal.",
-    "chromium": "Cr (24). Transition metal. Shiny.",
-    "manganese": "Mn (25). Transition metal.",
-    "iron": "Fe (26). Transition metal. Steel.",
-    "cobalt": "Co (27). Transition metal.",
-    "nickel": "Ni (28). Transition metal.",
-    "copper": "Cu (29). Transition metal. Wires.",
-    "zinc": "Zn (30). Transition metal.",
-    "gallium": "Ga (31). Melts in hand.",
-    "germanium": "Ge (32). Metalloid.",
-    "arsenic": "As (33). Metalloid. Poison.",
-    "selenium": "Se (34). Nonmetal.",
-    "bromine": "Br (35). Halogen. Liquid.",
-    "krypton": "Kr (36). Noble gas.",
-    "rubidium": "Rb (37). Alkali metal.",
-    "strontium": "Sr (38). Alkaline earth metal.",
-    "yttrium": "Y (39). Transition metal.",
-    "zirconium": "Zr (40). Transition metal.",
-    "niobium": "Nb (41). Transition metal.",
-    "molybdenum": "Mo (42). Transition metal.",
-    "technetium": "Tc (43). Radioactive.",
-    "ruthenium": "Ru (44). Platinum group.",
-    "rhodium": "Rh (45). Platinum group.",
-    "palladium": "Pd (46). Platinum group.",
-    "silver": "Ag (47). Precious metal.",
-    "cadmium": "Cd (48). Toxic metal.",
-    "indium": "In (49). Soft metal.",
-    "tin": "Sn (50). Post-transition metal.",
-    "antimony": "Sb (51). Metalloid.",
-    "tellurium": "Te (52). Metalloid.",
-    "iodine": "I (53). Halogen. Antiseptic.",
-    "xenon": "Xe (54). Noble gas.",
-    "cesium": "Cs (55). Alkali metal. Clock.",
-    "barium": "Ba (56). Alkaline earth metal.",
-    "lanthanum": "La (57). Lanthanide.",
-    "cerium": "Ce (58). Lanthanide.",
-    "praseodymium": "Pr (59). Lanthanide.",
-    "neodymium": "Nd (60). Magnets.",
-    "promethium": "Pm (61). Radioactive.",
-    "samarium": "Sm (62). Lanthanide.",
-    "europium": "Eu (63). Lanthanide.",
-    "gadolinium": "Gd (64). MRI contrast.",
-    "terbium": "Tb (65). Lanthanide.",
-    "dysprosium": "Dy (66). Lanthanide.",
-    "holmium": "Ho (67). Lanthanide.",
-    "erbium": "Er (68). Lanthanide.",
-    "thulium": "Tm (69). Lanthanide.",
-    "ytterbium": "Yb (70). Lanthanide.",
-    "lutetium": "Lu (71). Lanthanide.",
-    "hafnium": "Hf (72). Transition metal.",
-    "tantalum": "Ta (73). Transition metal.",
-    "tungsten": "W (74). Light bulbs.",
-    "rhenium": "Re (75). Transition metal.",
-    "osmium": "Os (76). Densest element.",
-    "iridium": "Ir (77). Dinosaur extinction layer.",
-    "platinum": "Pt (78). Precious metal.",
-    "gold": "Au (79). Precious metal.",
-    "mercury": "Hg (80). Liquid metal.",
-    "thallium": "Tl (81). Toxic.",
-    "lead": "Pb (82). Heavy metal. Shielding.",
-    "bismuth": "Bi (83). Pepto-Bismol.",
-    "polonium": "Po (84). Radioactive.",
-    "astatine": "At (85). Radioactive.",
-    "radon": "Rn (86). Radioactive gas.",
-    "francium": "Fr (87). Radioactive.",
-    "radium": "Ra (88). Glows in dark.",
-    "actinium": "Ac (89). Actinide.",
-    "thorium": "Th (90). Nuclear fuel potential.",
-    "protactinium": "Pa (91). Actinide.",
-    "uranium": "U (92). Nuclear fuel.",
-    "neptunium": "Np (93). Actinide.",
-    "plutonium": "Pu (94). Nuclear weapon.",
-    "americium": "Am (95). Smoke detectors.",
-    "curium": "Cm (96). Actinide.",
-    "berkelium": "Bk (97). Actinide.",
-    "californium": "Cf (98). Actinide.",
-    "einsteinium": "Es (99). Actinide.",
-    "fermium": "Fm (100). Actinide.",
-    "mendelevium": "Md (101). Actinide.",
-    "nobelium": "No (102). Actinide.",
-    "lawrencium": "Lr (103). Actinide.",
-    "rutherfordium": "Rf (104). Synthetic.",
-    "dubnium": "Db (105). Synthetic.",
-    "seaborgium": "Sg (106). Synthetic.",
-    "bohrium": "Bh (107). Synthetic.",
-    "hassium": "Hs (108). Synthetic.",
-    "meitnerium": "Mt (109). Synthetic.",
-    "darmstadtium": "Ds (110). Synthetic.",
-    "roentgenium": "Rg (111). Synthetic.",
-    "copernicium": "Cn (112). Synthetic.",
-    "nihonium": "Nh (113). Synthetic.",
-    "flerovium": "Fl (114). Synthetic.",
-    "moscovium": "Mc (115). Synthetic.",
-    "livermorium": "Lv (116). Synthetic.",
-    "tennessine": "Ts (117). Synthetic.",
-    "oganesson": "Og (118). Synthetic. Heaviest known element.",
+    for (let i = 0; i < tokens.length - 1; i++) {
+        let current = clean(tokens[i]);
+        let next = tokens[i+1]; // We keep punctuation in 'next' for natural flow
 
-    // --- ANATOMY & MEDICINE ---
-    "femur": "The femur is the thigh bone. The longest and strongest bone in the body.",
-    "humerus": "The humerus is the long bone in the upper arm.",
-    "skull": "The skull protects the brain. Consists of the cranium and mandible.",
-    "ribs": "Humans typically have 12 pairs of ribs protecting the heart and lungs.",
-    "spine": "The spine (vertebral column) has 33 vertebrae.",
-    "skin": "Skin is the largest organ of the human body.",
-    "stomach": "The stomach digests food using acid and enzymes.",
-    "pancreas": "The pancreas produces insulin and digestive enzymes.",
-    "gallbladder": "The gallbladder stores bile produced by the liver.",
-    "spleen": "The spleen filters blood and supports the immune system.",
-    "appendix": "The appendix is a small tube attached to the large intestine.",
-    "dna": "Deoxyribonucleic acid carries genetic instructions.",
-    "rna": "Ribonucleic acid acts as a messenger for DNA.",
-    "neuron": "A neuron is a nerve cell that transmits information.",
-    "virus": "A virus is a submicroscopic infectious agent.",
-    "bacteria": "Bacteria are microscopic single-celled organisms.",
+        if (!current) continue;
 
-    // --- ASTRONOMY ---
-    "sun": "The Sun is a G-type main-sequence star. Center of our system.",
-    "mercury": "Mercury is the smallest planet, closest to the Sun.",
-    "venus": "Venus is the hottest planet due to greenhouse effect.",
-    "earth": "Earth is the only known planet to harbor life.",
-    "mars": "Mars is the Red Planet. Has Olympus Mons, largest volcano.",
-    "jupiter": "Jupiter is a gas giant. Largest planet. Great Red Spot.",
-    "saturn": "Saturn is known for its extensive ring system.",
-    "uranus": "Uranus rotates on its side. Ice giant.",
-    "neptune": "Neptune is the windiest planet. Ice giant.",
-    "pluto": "Pluto is a dwarf planet in the Kuiper belt.",
-    "ceres": "Ceres is a dwarf planet in the asteroid belt.",
-    "eris": "Eris is a massive dwarf planet in the scattered disc.",
-    "betelgeuse": "Betelgeuse is a red supergiant in the constellation Orion.",
-    "sirius": "Sirius is the brightest star in the night sky. Dog Star.",
-    "polaris": "Polaris is the North Star. Used for navigation.",
-    "andromeda": "Andromeda is the nearest major galaxy to the Milky Way.",
-    "milky way": "The Milky Way is our home galaxy. Barred spiral.",
-    "black hole": "A region where gravity is so strong light cannot escape.",
-    "nebula": "A giant cloud of dust and gas in space.",
-    "supernova": "A massive stellar explosion.",
+        // Record start words (words that start sentences)
+        if (i === 0 || tokens[i-1].includes('.')) {
+            START_WORDS.push(current);
+        }
 
-    // --- CONSTELLATIONS ---
-    "orion": "Orion the Hunter. Contains Betelgeuse and Rigel.",
-    "ursa major": "The Great Bear. Contains the Big Dipper.",
-    "ursa minor": "The Little Bear. Contains Polaris.",
-    "cassiopeia": "The Queen. Shaped like a 'W'.",
-    "scorpio": "The Scorpion. Contains Antares.",
-    "leo": "The Lion. Contains Regulus.",
-    "gemini": "The Twins (Castor and Pollux).",
-    "taurus": "The Bull. Contains Aldebaran and Pleiades.",
-
-    // --- MYTHOLOGY (EXTENDED) ---
-    // GREEK
-    "zeus": "Greek King of Gods. Sky, Thunder.",
-    "hera": "Greek Queen of Gods. Marriage, Women.",
-    "poseidon": "Greek God of the Sea. Trident.",
-    "demeter": "Greek Goddess of Harvest.",
-    "athena": "Greek Goddess of Wisdom and War Strategy.",
-    "apollo": "Greek God of Sun, Music, Prophecy.",
-    "artemis": "Greek Goddess of the Hunt and Moon.",
-    "ares": "Greek God of War. Violence.",
-    "aphrodite": "Greek Goddess of Love and Beauty.",
-    "hephaestus": "Greek God of Fire and Forge.",
-    "hermes": "Greek Messenger God. Speed.",
-    "hestia": "Greek Goddess of the Hearth.",
-    "dionysus": "Greek God of Wine and Festivity.",
-    "hades": "Greek God of the Underworld.",
-    // ROMAN
-    "jupiter": "Roman King of Gods (Zeus).",
-    "juno": "Roman Queen of Gods (Hera).",
-    "neptune": "Roman God of Sea (Poseidon).",
-    "minerva": "Roman Goddess of Wisdom (Athena).",
-    "mars": "Roman God of War (Ares).",
-    "venus": "Roman Goddess of Love (Aphrodite).",
-    "mercury": "Roman Messenger God (Hermes).",
-    "vulcan": "Roman God of Fire (Hephaestus).",
-    // NORSE
-    "odin": "Norse Allfather. Wisdom, War, Poetry.",
-    "thor": "Norse God of Thunder. Mjolnir.",
-    "loki": "Norse God of Mischief.",
-    "freya": "Norse Goddess of Love and War.",
-    "tyr": "Norse God of Law and War.",
-    "heimdall": "Norse Guardian of the Bifrost.",
-    "baldr": "Norse God of Light and Purity.",
-    "frigg": "Norse Queen. Wife of Odin.",
-    // EGYPTIAN
-    "ra": "Egyptian Sun God. King of Deities.",
-    "osiris": "Egyptian God of the Afterlife.",
-    "isis": "Egyptian Goddess of Magic and Motherhood.",
-    "horus": "Egyptian God of the Sky. Falcon head.",
-    "anubis": "Egyptian God of Embalming. Jackal head.",
-    "set": "Egyptian God of Chaos and Storms.",
-    "thoth": "Egyptian God of Wisdom and Writing.",
-
-    // --- ALPHABETS ---
-    "alpha": "Greek letter A.",
-    "beta": "Greek letter B.",
-    "gamma": "Greek letter G.",
-    "delta": "Greek letter D.",
-    "epsilon": "Greek letter E.",
-    "zeta": "Greek letter Z.",
-    "eta": "Greek letter H.",
-    "theta": "Greek letter Th.",
-    "iota": "Greek letter I.",
-    "kappa": "Greek letter K.",
-    "lambda": "Greek letter L.",
-    "mu": "Greek letter M.",
-    "nu": "Greek letter N.",
-    "xi": "Greek letter X.",
-    "omicron": "Greek letter O.",
-    "pi": "Greek letter P.",
-    "rho": "Greek letter R.",
-    "sigma": "Greek letter S.",
-    "tau": "Greek letter T.",
-    "upsilon": "Greek letter U.",
-    "phi": "Greek letter Ph.",
-    "chi": "Greek letter Ch.",
-    "psi": "Greek letter Ps.",
-    "omega": "Greek letter O (long). Last letter.",
+        if (!MODEL[current]) MODEL[current] = [];
+        MODEL[current].push(next);
+    }
     
-    // --- NATO PHONETIC ---
-    "alfa": "NATO: A",
-    "bravo": "NATO: B",
-    "charlie": "NATO: C",
-    "delta": "NATO: D",
-    "echo": "NATO: E",
-    "foxtrot": "NATO: F",
-    "golf": "NATO: G",
-    "hotel": "NATO: H",
-    "india": "NATO: I",
-    "juliett": "NATO: J",
-    "kilo": "NATO: K",
-    "lima": "NATO: L",
-    "mike": "NATO: M",
-    "november": "NATO: N",
-    "oscar": "NATO: O",
-    "papa": "NATO: P",
-    "quebec": "NATO: Q",
-    "romeo": "NATO: R",
-    "sierra": "NATO: S",
-    "tango": "NATO: T",
-    "uniform": "NATO: U",
-    "victor": "NATO: V",
-    "whiskey": "NATO: W",
-    "xray": "NATO: X",
-    "yankee": "NATO: Y",
-    "zulu": "NATO: Z",
+    // Math Logic (Hardcoded Logic Gates)
+    MODEL["MATH_GATE"] = true;
 
-    // --- ANIMALS (LEGACY) ---
-    "lion": "The lion is the king of the jungle.",
-    "tiger": "The tiger is the largest cat species.",
-    "bear": "Bears are large mammals of family Ursidae.",
-    "wolf": "Wolves are social canines.",
-    "eagle": "Eagles are birds of prey.",
-    "shark": "Sharks are cartilaginous fish.",
-    "whale": "Whales are marine mammals.",
+    status.innerText = `LLM Active: ${tokens.length} Parameters.`;
+}
+
+function clean(str) {
+    return str.toLowerCase().replace(/[^\w]/g, "");
+}
+
+// --- 3. THE INFERENCE ENGINE (REAL-TIME WRITING) ---
+const chatWindow = document.getElementById('chat-window');
+const inputField = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
+
+async function processPrompt() {
+    let prompt = inputField.value.trim();
+    if (!prompt) return;
+
+    // UI Handle
+    addMessage(prompt, 'user');
+    inputField.value = '';
+    inputField.disabled = true;
+    sendBtn.disabled = true;
+
+    // Create Bot Message Container
+    let botMsgDiv = document.createElement('div');
+    botMsgDiv.className = 'msg bot';
+    chatWindow.appendChild(botMsgDiv);
     
-    // --- MISC ---
-    "internet": "Global network of computers.",
-    "wifi": "Wireless networking technology.",
-    "bluetooth": "Short-range wireless technology.",
-    "gps": "Global Positioning System.",
-    "radar": "Radio Detection and Ranging.",
-    "sonar": "Sound Navigation and Ranging.",
-    "laser": "Light Amplification by Stimulated Emission of Radiation.",
-    "scuba": "Self-Contained Underwater Breathing Apparatus."
+    // Add Cursor
+    let cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    botMsgDiv.appendChild(cursor);
+
+    // --- THINKING PROCESS ---
+    
+    // 1. Context Search (RAG - Retrieval Augmented Generation)
+    // We look for the most relevant sentence in our Raw Data to start the chain
+    let bestSeed = findBestSeed(prompt);
+    let outputQueue = [];
+    
+    if (isMath(prompt)) {
+        outputQueue = solveMath(prompt).split(" ");
+    } else if (bestSeed) {
+        // We found a relevant fact. We will output it, but word by word.
+        outputQueue = bestSeed.split(" ");
+    } else {
+        // Hallucination Mode (Pure Markov Generation)
+        let seedWord = prompt.split(" ")[0] || "I";
+        outputQueue = generateChain(seedWord, 15);
+    }
+
+    // --- WRITING PROCESS (Word by Word) ---
+    for (let word of outputQueue) {
+        // Insert word before cursor
+        let textNode = document.createTextNode(word + " ");
+        cursor.before(textNode);
+        
+        // Auto Scroll
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        
+        // The "Thinking" Delay - Variable speed based on word length
+        let delay = 30 + Math.random() * 50; 
+        if (word.includes('.') || word.includes(',')) delay += 150; // Pause at punctuation
+        
+        await new Promise(r => setTimeout(r, delay));
+    }
+
+    // Finished
+    cursor.remove();
+    inputField.disabled = false;
+    sendBtn.disabled = false;
+    inputField.focus();
+}
+
+// --- UTILITIES ---
+
+function findBestSeed(query) {
+    let q = clean(query);
+    // Score each sentence in RAW_DATA based on keyword matches
+    let bestSentence = "";
+    let highScore = 0;
+
+    for (let sentence of RAW_DATA) {
+        let score = 0;
+        let words = sentence.split(" ");
+        for (let w of words) {
+            if (q.includes(clean(w)) && clean(w).length > 2) score++;
+        }
+        
+        // Boost score for exact matches
+        if (sentence.toLowerCase().includes(q)) score += 5;
+
+        if (score > highScore) {
+            highScore = score;
+            bestSentence = sentence;
+        }
+    }
+
+    if (highScore > 0) return bestSentence;
+    return null;
+}
+
+function generateChain(startWord, length) {
+    let chain = [];
+    let current = clean(startWord);
+    
+    // If start word not in model, pick random start
+    if (!MODEL[current]) current = clean(START_WORDS[Math.floor(Math.random() * START_WORDS.length)]);
+
+    chain.push(current.charAt(0).toUpperCase() + current.slice(1)); // Capitalize first
+
+    for(let i=0; i<length; i++) {
+        let options = MODEL[current];
+        if (!options || options.length === 0) break;
+        
+        let next = options[Math.floor(Math.random() * options.length)];
+        chain.push(next);
+        current = clean(next);
+        
+        if (next.includes('.')) break; // Stop at period
+    }
+    return chain;
+}
+
+function isMath(input) {
+    return /[\d]/.test(input) && /[\+\-\*\/]/.test(input);
+}
+
+function solveMath(input) {
+    try {
+        let safe = input.replace(/[^\d\+\-\*\/\.\(\)]/g, "");
+        let res = eval(safe);
+        return `The calculated result is ${res}.`;
+    } catch (e) {
+        return "I could not calculate that.";
+    }
+}
+
+function addMessage(text, type) {
+    let div = document.createElement('div');
+    div.className = `msg ${type}`;
+    div.innerText = text;
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Boot
+window.onload = () => {
+    trainModel();
+    // Simulate initial thought
+    setTimeout(() => {
+        let intro = document.createElement('div');
+        intro.className = 'msg bot';
+        intro.innerHTML = "<strong>Guahh AI Online.</strong> Waiting for input.";
+        chatWindow.appendChild(intro);
+    }, 500);
 };
 
-// --- PROCEDURAL GENERATOR & GOD MODE BULK METHOD ---
-const MEMORY = {}; 
-let conversationContext = [];
-
-function initializeBrain() {
-    // 1. LOAD STATIC MEGA DICTIONARY
-    for (let key in BRAIN) {
-        MEMORY[key] = BRAIN[key];
-    }
-
-    // 2. MATH: SQUARES, CUBES, ROOTS, BINARY, HEX, ROMAN (0-1000)
-    for (let i = 0; i <= 1000; i++) {
-        // Basic Math
-        MEMORY[`${i} squared`] = `${i}² = ${i*i}`;
-        MEMORY[`${i} cubed`] = `${i}³ = ${i*i*i}`;
-        MEMORY[`root ${i*i}`] = `√${i*i} = ${i}`;
-        MEMORY[`sqrt ${i*i}`] = `√${i*i} = ${i}`;
-        
-        // Parity
-        MEMORY[`is ${i} even`] = (i % 2 === 0) ? "Yes, Even." : "No, Odd.";
-        MEMORY[`is ${i} odd`] = (i % 2 === 1) ? "Yes, Odd." : "No, Even.";
-        
-        // Primality
-        MEMORY[`is ${i} prime`] = isPrime(i) ? "Yes, Prime." : "No, Composite.";
-        
-        // Factorial (Limit to 20)
-        if (i <= 20) MEMORY[`${i} factorial`] = `${i}! = ${factorial(i)}`;
-
-        // Base Conversion
-        MEMORY[`binary of ${i}`] = `BIN: ${i.toString(2)}`;
-        MEMORY[`hex of ${i}`] = `HEX: ${i.toString(16).toUpperCase()}`;
-        
-        // Roman Numerals (1-1000)
-        if(i > 0) MEMORY[`roman of ${i}`] = `Roman: ${toRoman(i)}`;
-        
-        // Multiplication Tables (1-12)
-        for(let j=1; j<=12; j++) {
-            MEMORY[`${i} times ${j}`] = `${i} x ${j} = ${i*j}`;
-            MEMORY[`${i} x ${j}`] = `${i} x ${j} = ${i*j}`;
-        }
-    }
-
-    // 3. FIBONACCI SEQUENCE (First 50)
-    let n1 = 0, n2 = 1, nextTerm;
-    for (let i = 1; i <= 50; i++) {
-        MEMORY[`fibonacci ${i}`] = `Fibonacci term #${i} is ${n1}`;
-        nextTerm = n1 + n2;
-        n1 = n2;
-        n2 = nextTerm;
-    }
-
-    // 4. ASCII CODES (0-127)
-    for (let i = 32; i < 127; i++) {
-        let char = String.fromCharCode(i);
-        MEMORY[`ascii ${i}`] = `ASCII ${i} represents the character '${char}'`;
-        MEMORY[`code for ${char}`] = `The ASCII code for '${char}' is ${i}`;
-    }
-
-    // 5. METRIC/IMPERIAL CONVERSIONS (Detailed)
-    for (let i = 1; i <= 100; i++) {
-        // Distance
-        MEMORY[`${i} in to cm`] = `${i}" = ${(i * 2.54).toFixed(2)} cm`;
-        MEMORY[`${i} cm to in`] = `${i} cm = ${(i / 2.54).toFixed(2)}"`;
-        MEMORY[`${i} ft to m`] = `${i} ft = ${(i * 0.3048).toFixed(2)} m`;
-        MEMORY[`${i} m to ft`] = `${i} m = ${(i * 3.28084).toFixed(2)} ft`;
-        MEMORY[`${i} mi to km`] = `${i} mi = ${(i * 1.60934).toFixed(2)} km`;
-        MEMORY[`${i} km to mi`] = `${i} km = ${(i * 0.621371).toFixed(2)} mi`;
-        
-        // Mass
-        MEMORY[`${i} lb to kg`] = `${i} lbs = ${(i * 0.453592).toFixed(2)} kg`;
-        MEMORY[`${i} kg to lb`] = `${i} kg = ${(i * 2.20462).toFixed(2)} lbs`;
-        MEMORY[`${i} oz to g`] = `${i} oz = ${(i * 28.3495).toFixed(2)} g`;
-        
-        // Volume
-        MEMORY[`${i} gal to l`] = `${i} gal = ${(i * 3.78541).toFixed(2)} L`;
-        MEMORY[`${i} l to gal`] = `${i} L = ${(i * 0.264172).toFixed(2)} gal`;
-    }
-
-    // 6. TIME CALCULATIONS
-    MEMORY["how many seconds in a minute"] = "60 seconds.";
-    MEMORY["how many seconds in an hour"] = "3,600 seconds.";
-    MEMORY["how many seconds in a day"] = "86,400 seconds.";
-    MEMORY["how many seconds in a year"] = "31,536,000 seconds.";
-    MEMORY["how many minutes in an hour"] = "60 minutes.";
-    MEMORY["how many minutes in a day"] = "1,440 minutes.";
-    MEMORY["how many hours in a day"] = "24 hours.";
-    MEMORY["how many hours in a week"] = "168 hours.";
-    MEMORY["how many hours in a year"] = "8,760 hours.";
-
-    // 7. HISTORY / YEAR LOGIC
-    for (let year = 1; year <= 2030; year++) {
-        let era = (year < 500) ? "Antiquity" : 
-                  (year < 1500) ? "Middle Ages" : 
-                  (year < 1800) ? "Early Modern" : 
-                  (year < 1900) ? "19th Century" : 
-                  (year < 2000) ? "20th Century" : "21st Century";
-        let leap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0) ? "Leap Year" : "Normal Year";
-        MEMORY[`year ${year}`] = `${year}: ${era}. ${leap}.`;
-    }
-
-    // 8. DYNAMIC TRIGGERS
-    ["time", "clock", "now"].forEach(t => MEMORY[t] = "DYNAMIC_TIME");
-    ["date", "today", "day"].forEach(t => MEMORY[t] = "DYNAMIC_DATE");
-
-    // 9. RESTORE USER
-    const savedName = localStorage.getItem("guahh_v13_user");
-    if(savedName) document.getElementById('intro-msg').innerHTML += `<br><br>Welcome back, ${savedName}.`;
-
-    document.getElementById('db-status').innerText = `Neural Network Active. ${Object.keys(MEMORY).length.toLocaleString()} nodes online.`;
-}
-
-// --- LOGIC FUNCTIONS ---
-function isPrime(num) {
-    if (num < 2) return false;
-    for (let i = 2; i <= Math.sqrt(num); i++) if (num % i === 0) return false;
-    return true;
-}
-
-function factorial(n) {
-    if (n === 0 || n === 1) return 1;
-    let res = 1;
-    for(let i=2; i<=n; i++) res *= i;
-    return res;
-}
-
-function toRoman(num) {
-    const lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1};
-    let roman = '', i;
-    for ( i in lookup ) {
-        while ( num >= lookup[i] ) {
-            roman += i;
-            num -= lookup[i];
-        }
-    }
-    return roman;
-}
-
-// --- MAIN HANDLER ---
-function handleInput() {
-    const input = document.getElementById('user-input');
-    const raw = input.value.trim();
-    if (!raw) return;
-
-    addMsg(raw, 'user');
-    input.value = '';
-
-    conversationContext.push({role: 'user', text: raw});
-    if (conversationContext.length > 10) conversationContext.shift();
-
-    setTimeout(() => {
-        const response = getResponse(raw);
-        addMsg(response, 'bot');
-        conversationContext.push({role: 'bot', text: response});
-        if (conversationContext.length > 10) conversationContext.shift();
-    }, 150);
-}
-
-function getResponse(text) {
-    let clean = text.toLowerCase().replace(/[^\w\s\d\+\-\*\/\.\^%]/g, "").trim();
-
-    // 1. NAME MEMORY
-    if (clean.startsWith("my name is ")) {
-        let name = text.substring(11).trim(); 
-        localStorage.setItem("guahh_v13_user", name);
-        return `Name saved: <strong>${name}</strong>.`;
-    }
-
-    // 2. MATH PARSER (God Mode)
-    if (isMath(clean)) return solveMath(clean);
-
-    // 3. COMPARISONS
-    if (clean.includes("vs")) {
-        if (clean.includes("ios") && clean.includes("android")) return "iOS: Closed ecosystem, polished, secure. Android: Open source, customizable, diverse hardware.";
-        if (clean.includes("marvel") && clean.includes("dc")) return "Marvel: Relatable heroes, MCU dominance. DC: God-like icons, darker tone.";
-    }
-
-    // 4. "HOW TO" / "LIST"
-    if (clean.startsWith("how to")) return "I recommend searching for a specific tutorial, but I can define the terms for you.";
-    if (clean.startsWith("list")) {
-        if (clean.includes("state")) return "I have all 50 US states. Ask for 'Alabama', 'Texas', 'California', etc.";
-        if (clean.includes("element")) return "I have 118 elements. Ask for 'Hydrogen', 'Gold', 'Oganesson', etc.";
-    }
-
-    // 5. DIRECT LOOKUP
-    if (MEMORY[clean]) return processDynamic(MEMORY[clean]);
-
-    // 6. KEYWORD SEARCH (Deep)
-    // Priority to longest match
-    let bestKey = "";
-    for (let key in BRAIN) {
-        if (clean.includes(key) && key.length > bestKey.length) bestKey = key;
-    }
-    if (bestKey) return processDynamic(BRAIN[bestKey]);
-
-    // 7. FUZZY SEARCH (Multi-word)
-    const words = clean.split(" ");
-    for (let key in BRAIN) {
-        let hits = 0;
-        for (let w of words) {
-            if (w.length > 3 && key.includes(w)) hits++;
-        }
-        if (hits >= 2) return processDynamic(BRAIN[key]);
-    }
-
-    // 8. FALLBACKS
-    if (clean.includes("capital")) return "I know all US capitals and major world capitals. Be specific.";
-    if (clean.includes("god") || clean.includes("myth")) return "I have Greek, Roman, Norse, and Egyptian gods.";
-    
-    return "Query unclear. I specialize in Science, Math, Geography, Mythology, and History. Try 'Roman of 58', 'Fibonacci 10', 'Capital of Texas', or 'Who is Zeus'.";
-}
-
-// --- UTILS ---
-function processDynamic(val) {
-    if (val === "DYNAMIC_TIME") return `Time: <strong>${new Date().toLocaleTimeString()}</strong>`;
-    if (val === "DYNAMIC_DATE") return `Date: <strong>${new Date().toLocaleDateString()}</strong>`;
-    return val;
-}
-
-function isMath(str) {
-    const mathChars = /[\d\+\-\*\/\^%]/;
-    const mathWords = /sin|cos|tan|log|pi|sqrt|root|pow/;
-    // Ensure it looks like math and not just text
-    return (mathChars.test(str) || mathWords.test(str)) && str.split(" ").filter(w => /[a-z]{4,}/.test(w) && !mathWords.test(w)).length < 2;
-}
-
-function solveMath(str) {
-    try {
-        let safe = str.toLowerCase()
-            .replace(/pi/g, "Math.PI")
-            .replace(/\be\b/g, "Math.E")
-            .replace(/x/g, "*")
-            .replace(/\^/g, "**")
-            .replace(/sin/g, "Math.sin")
-            .replace(/cos/g, "Math.cos")
-            .replace(/tan/g, "Math.tan")
-            .replace(/log/g, "Math.log10")
-            .replace(/sqrt/g, "Math.sqrt")
-            .replace(/root/g, "Math.sqrt");
-        let res = eval(safe);
-        if (isNaN(res) || !isFinite(res)) throw new Error();
-        if (res % 1 !== 0) res = parseFloat(res.toFixed(6));
-        return `<strong>${str} = ${res}</strong>`;
-    } catch(e) {
-        return "Calculation Error. Try '5^2', 'sqrt 144', or 'sin(0)'.";
-    }
-}
-
-function addMsg(html, type) {
-    const chat = document.getElementById('chat-container');
-    const div = document.createElement('div');
-    div.className = `msg ${type}`;
-    div.innerHTML = html;
-    chat.appendChild(div);
-    chat.scrollTop = chat.scrollHeight;
-}
-
-window.addEventListener('load', () => {
-    initializeBrain();
-    document.getElementById('user-input').focus();
-});
 </script>
 </body>
 </html>
