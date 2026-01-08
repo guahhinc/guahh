@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI 2.4</title>
+    <title>Guahh AI 2.5</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,9 +52,33 @@
         }
 
         .status {
-            font-size: 12px;
-            color: #666;
-            font-weight: 300;
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        .new-chat-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .new-chat-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 157, 0.25);
         }
 
         /* CHAT */
@@ -187,8 +211,9 @@
 <body>
 
     <header>
-        <h1>GUAHH AI 2.4</h1>
+        <h1>GUAHH AI 2.5</h1>
         <div class="status" id="model-status">Loading English Dictionary...</div>
+        <button class="new-chat-btn" onclick="clearMemory()">New Chat</button>
     </header>
 
     <div id="chat-window"></div>
@@ -215,6 +240,8 @@
         // MEMORY SYSTEM
         let conversationHistory = [];
         let currentTopic = null;
+        let lastBotQuestion = null; // Context for follow-up
+        let userName = "User"; // Default name
 
         const DICTIONARY = {
             // NOUNS - Animals
@@ -775,6 +802,170 @@
             // PREPOSITIONS
             "in": { pos: "preposition", def: "expressing location or position within something" },
             "on": { pos: "preposition", def: "physically touching and supported by a surface" },
+
+            // NEW v2.5 MASSIVE EXPANSION (SPACE & SCIENCE)
+            "universe": { pos: "noun", def: "all existing matter and space considered as a whole", category: "space" },
+            "galaxy": { pos: "noun", def: "a system of millions or billions of stars, together with gas and dust", category: "space" },
+            "nebula": { pos: "noun", def: "a giant cloud of dust and gas in space", category: "space" },
+            "asteroid": { pos: "noun", def: "a small rocky body orbiting the sun", category: "space" },
+            "comet": { pos: "noun", def: "a celestial object consisting of a nucleus of ice and dust", category: "space" },
+            "orbit": { pos: "noun", def: "the curved path of a celestial object or spacecraft around a star, planet, or moon", category: "space" },
+            "gravity": { pos: "noun", def: "the force that attracts a body toward the center of the earth", category: "science" },
+            "energy": { pos: "noun", def: "the strength and vitality required for sustained physical or mental activity", category: "science" },
+            "force": { pos: "noun", def: "strength or energy as an attribute of physical action or movement", category: "science" },
+            "mass": { pos: "noun", def: "a coherent, typically large body of matter with no definite shape", category: "science" },
+            "atom": { pos: "noun", def: "the basic unit of a chemical element", category: "science" },
+            "molecule": { pos: "noun", def: "a group of atoms bonded together", category: "science" },
+            "cell": { pos: "noun", def: "the smallest structural and functional unit of an organism", category: "science" },
+            "gene": { pos: "noun", def: "a unit of heredity that is transferred from a parent to offspring", category: "science" },
+            "virus": { pos: "noun", def: "an infective agent that typically consists of a nucleic acid molecule in a protein coat", category: "science" },
+
+            // NEW v2.5 TECH & MODERN
+            "software": { pos: "noun", def: "the programs and other operating information used by a computer", category: "tech" },
+            "hardware": { pos: "noun", def: "machines, wiring, and other physical components of a computer", category: "tech" },
+            "internet": { pos: "noun", def: "a global computer network providing a variety of information and communication facilities", category: "tech" },
+            "wifi": { pos: "noun", def: "a facility allowing computers, smartphones, or other devices to connect to the internet mostly wirelessly", category: "tech" },
+            "pixel": { pos: "noun", def: "a minute area of illumination on a display screen", category: "tech" },
+            "video": { pos: "noun", def: "the recording, reproducing, or broadcasting of moving visual images", category: "tech" },
+            "audio": { pos: "noun", def: "sound, especially when recorded, transmitted, or reproduced", category: "tech" },
+            "cloud": { pos: "noun", def: "a network of remote servers hosted on the Internet (also a weather term)", category: "tech/weather" },
+
+            // NEW v2.5 ART & MUSIC
+            "sketch": { pos: "noun", def: "a rough or unfinished drawing or painting", category: "art" },
+            "canvas": { pos: "noun", def: "a strong, coarse unbleached cloth used for painting", category: "art" },
+            "brush": { pos: "noun", def: "an implement with a handle, consisting of bristles", category: "art" },
+            "tempo": { pos: "noun", def: "the speed at which a passage of music is or should be played", category: "music" },
+            "beat": { pos: "noun", def: "a main accent or rhythmic unit in music or poetry", category: "music" },
+            "harmony": { pos: "noun", def: "the combination of simultaneously sounded musical notes to produce chords", category: "music" },
+
+            // MORE VERBS
+            "fight": { pos: "verb", def: "take part in a violent struggle involving the exchange of physical blows", forms: { present: "fights", past: "fought", future: "will fight" } },
+            "fly": { pos: "verb", def: "move through the air using wings", forms: { present: "flies", past: "flew", future: "will fly" } },
+            "swim": { pos: "verb", def: "propel the body through water by using the limbs", forms: { present: "swims", past: "swam", future: "will swim" } },
+            "climb": { pos: "verb", def: "go or come up (a slope, incline, or staircase)", forms: { present: "climbs", past: "climbed", future: "will climb" } },
+            "drive": { pos: "verb", def: "operate and control the direction and speed of a motor vehicle", forms: { present: "drives", past: "drove", future: "will drive" } },
+            "cook": { pos: "verb", def: "prepare (food, a dish, or a meal) by combining, mixing, and heating ingredients", forms: { present: "cooks", past: "cooked", future: "will cook" } },
+            "sing": { pos: "verb", def: "make musical sounds with the voice", forms: { present: "sings", past: "sang", future: "will sing" } },
+            "dance": { pos: "verb", def: "move rhythmically to music", forms: { present: "dances", past: "danced", future: "will dance" } },
+            "smile": { pos: "verb", def: "form one's features into a pleased, kind, or amused expression", forms: { present: "smiles", past: "smiled", future: "will smile" } },
+            "laugh": { pos: "verb", def: "make the spontaneous sounds and movements of the face and body that are the instinctive expressions of lively amusement", forms: { present: "laughs", past: "laughed", future: "will laugh" } },
+
+            // MORE ADJECTIVES
+            "huge": { pos: "adjective", def: "extremely large; enormous", opposite: "tiny" },
+            "tiny": { pos: "adjective", def: "very small", opposite: "huge" },
+            "loud": { pos: "adjective", def: "producing or capable of producing much noise", opposite: "quiet" },
+            "quiet": { pos: "adjective", def: "making little or no noise", opposite: "loud" },
+            "polite": { pos: "adjective", def: "having or showing behavior that is respectful and considerate of other people", opposite: "rude" },
+            "rude": { pos: "adjective", def: "offensively impolite or ill-mannered", opposite: "polite" },
+            "funny": { pos: "adjective", def: "causing laughter or amusement", opposite: "serious" },
+            "serious": { pos: "adjective", def: "demanding careful consideration or application", opposite: "funny" },
+            "famous": { pos: "adjective", def: "known about by many people", opposite: "unknown" },
+            "unknown": { pos: "adjective", def: "not known or familiar", opposite: "famous" },
+
+            // FINAL v2.5 MASSIVE PUSH (>1000 GOAL)
+            // MISC NOUNS
+            "bridge": { pos: "noun", def: "structure carrying a road across a river", category: "object" },
+            "road": { pos: "noun", def: "a wide way leading from one place to another", category: "place" },
+            "street": { pos: "noun", def: "a public road in a city or town", category: "place" },
+            "tower": { pos: "noun", def: "a tall narrow building", category: "place" },
+            "castle": { pos: "noun", def: "a large building fortified against attack", category: "place" },
+            "market": { pos: "noun", def: "a regular gathering of people for purchase of provisions", category: "place" },
+            "office": { pos: "noun", def: "a room or building used for work", category: "place" },
+            "factory": { pos: "noun", def: "a building where goods are manufactured", category: "place" },
+            "farm": { pos: "noun", def: "an area of land used for growing crops", category: "place" },
+            "zoo": { pos: "noun", def: "an establishment where wild animals are kept", category: "place" },
+
+            "gold": { pos: "noun", def: "a yellow precious metal", category: "material" },
+            "silver": { pos: "noun", def: "a precious shiny grayish-white metal", category: "material" },
+            "iron": { pos: "noun", def: "a strong, hard magnetic silvery-gray metal", category: "material" },
+            "wood": { pos: "noun", def: "the hard fibrous material forming the trunk of trees", category: "material" },
+            "glass": { pos: "noun", def: "a hard, brittle substance, typically transparent", category: "material" },
+            "plastic": { pos: "noun", def: "a synthetic material made from organic polymers", category: "material" },
+            "paper": { pos: "noun", def: "material manufactured in thin sheets from wood pulp", category: "material" },
+
+            "shadow": { pos: "noun", def: "a dark area or shape produced by a body coming between rays of light and a surface", category: "abstract" },
+            "light": { pos: "noun", def: "the natural agent that stimulates sight", category: "abstract" },
+            "sound": { pos: "noun", def: "vibrations that travel through the air", category: "abstract" },
+            "silence": { pos: "noun", def: "complete absence of sound", category: "abstract" },
+            "dream": { pos: "noun", def: "a series of thoughts, images, and sensations occurring in a person's mind during sleep", category: "abstract" },
+            "nightmare": { pos: "noun", def: "a frightening or unpleasant dream", category: "abstract" },
+            "idea": { pos: "noun", def: "a thought or suggestion as to a possible course of action", category: "abstract" },
+            "memory": { pos: "noun", def: "the faculty by which the mind stores and remembers information", category: "abstract" },
+            "history": { pos: "noun", def: "the study of past events", category: "abstract" },
+            "future": { pos: "noun", def: "the time or a period of time following the moment of speaking or writing", category: "abstract" },
+
+            // VERBS++
+            "ask": { pos: "verb", def: "say something in order to obtain an answer", forms: { present: "asks", past: "asked", future: "will ask" } },
+            "answer": { pos: "verb", def: "say or write something to deal with a question", forms: { present: "answers", past: "answered", future: "will answer" } },
+            "break": { pos: "verb", def: "separate into pieces as a result of a blow", forms: { present: "breaks", past: "broke", future: "will break" } },
+            "fix": { pos: "verb", def: "fasten something securely in a particular place or position", forms: { present: "fixes", past: "fixed", future: "will fix" } },
+            "laugh": { pos: "verb", def: "make the spontaneous sounds and movements of the face and body that are the instinctive expressions of lively amusement", forms: { present: "laughs", past: "laughed", future: "will laugh" } },
+            "cry": { pos: "verb", def: "shed tears, typically as an expression of distress, pain, or sorrow", forms: { present: "cries", past: "cried", future: "will cry" } },
+            "shout": { pos: "verb", def: "utter a loud call or cry", forms: { present: "shouts", past: "shouted", future: "will shout" } },
+            "whisper": { pos: "verb", def: "speak very softly using one's breath without one's vocal cords", forms: { present: "whispers", past: "whispered", future: "will whisper" } },
+            "touch": { pos: "verb", def: "come so close to as to be in contact", forms: { present: "touches", past: "touched", future: "will touch" } },
+            "taste": { pos: "verb", def: "perceive or experience the flavor of", forms: { present: "tastes", past: "tasted", future: "will taste" } },
+            "smell": { pos: "verb", def: "perceive or detect the odor or scent of", forms: { present: "smells", past: "smelled", future: "will smell" } },
+            "push": { pos: "verb", def: "exert force on someone or something so as to move them away from oneself", forms: { present: "pushes", past: "pushed", future: "will push" } },
+            "pull": { pos: "verb", def: "exert force on someone or something so as to cause movement toward oneself", forms: { present: "pulls", past: "pulled", future: "will pull" } },
+            "throw": { pos: "verb", def: "propel with force through the air", forms: { present: "throws", past: "threw", future: "will throw" } },
+            "catch": { pos: "verb", def: "intercept and hold something which has been thrown", forms: { present: "catches", past: "caught", future: "will catch" } },
+            "dig": { pos: "verb", def: "break up and move earth with a tool or machine", forms: { present: "digs", past: "dug", future: "will dig" } },
+            "build": { pos: "verb", def: "construct by putting parts or material together", forms: { present: "builds", past: "built", future: "will build" } },
+            "destroy": { pos: "verb", def: "put an end to the existence of something", forms: { present: "destroys", past: "destroyed", future: "will destroy" } },
+            "hide": { pos: "verb", def: "put or keep out of sight", forms: { present: "hides", past: "hid", future: "will hide" } },
+            "seek": { pos: "verb", def: "attempt to find", forms: { present: "seeks", past: "sought", future: "will seek" } },
+
+            // ADJECTIVES++
+            "clean": { pos: "adjective", def: "free from dirt, marks, or stains", opposite: "dirty" },
+            "dirty": { pos: "adjective", def: "covered or marked with an unclean substance", opposite: "clean" },
+            "full": { pos: "adjective", def: "containing or holding as much or as many as possible", opposite: "empty" },
+            "empty": { pos: "adjective", def: "containing nothing; not filled or occupied", opposite: "full" },
+            "high": { pos: "adjective", def: "of great vertical extent", opposite: "low" },
+            "low": { pos: "adjective", def: "of less than average height", opposite: "high" },
+            "soft": { pos: "adjective", def: "easy to mold, cut, compress, or fold", opposite: "hard" },
+            "hard": { pos: "adjective", def: "solid, firm, and rigid", opposite: "soft" },
+            "cheap": { pos: "adjective", def: "low in price", opposite: "expensive" },
+            "expensive": { pos: "adjective", def: "costing a lot of money", opposite: "cheap" },
+            "rich": { pos: "adjective", def: "having a great deal of money or assets", opposite: "poor" },
+            "poor": { pos: "adjective", def: "lacking sufficient money", opposite: "rich" },
+            "young": { pos: "adjective", def: "having lived or existed for only a short time", opposite: "old" },
+            "old": { pos: "adjective", def: "having lived for a long time", opposite: "young" },
+            "brave": { pos: "adjective", def: "ready to face and endure danger or pain", opposite: "cowardly" },
+            "cowardly": { pos: "adjective", def: "lacking courage", opposite: "brave" },
+            "calm": { pos: "adjective", def: "not showing or feeling nervousness, anger, or other strong emotions", opposite: "panicked" },
+            "excited": { pos: "adjective", def: "very enthusiastic and eager", opposite: "bored" },
+            "bored": { pos: "adjective", def: "feeling weary and restless through lack of interest", opposite: "interested" },
+            "tired": { pos: "adjective", def: "in need of sleep or rest", opposite: "energetic" },
+            "awake": { pos: "adjective", def: "not asleep", opposite: "asleep" },
+            "asleep": { pos: "adjective", def: "in a state of sleep", opposite: "awake" },
+            "hungry": { pos: "adjective", def: "feeling or displaying the need for food", opposite: "full" },
+            "thirsty": { pos: "adjective", def: "feeling a need to drink", opposite: "quenched" },
+            "sharp": { pos: "adjective", def: "having an edge or point that is able to cut or pierce something", opposite: "dull" },
+            "dull": { pos: "adjective", def: "lacking interest or excitement", opposite: "interesting" },
+            "wet": { pos: "adjective", def: "covered or saturated with water or another liquid", opposite: "dry" },
+            "dry": { pos: "adjective", def: "free from moisture or liquid", opposite: "wet" },
+            "heavy": { pos: "adjective", def: "of great weight; difficult to lift or move", opposite: "light" },
+            "light": { pos: "adjective", def: "having little weight", opposite: "heavy" },
+            "dark": { pos: "adjective", def: "with little or no light", opposite: "bright" },
+            "bright": { pos: "adjective", def: "giving out or reflecting a lot of light", opposite: "dark" },
+
+            // FOOD++
+            "pizza": { pos: "noun", def: "a dish of Italian origin consisting of a flat, round base of dough baked with a topping of tomato sauce and cheese", category: "food" },
+            "burger": { pos: "noun", def: "a dish consisting of a flat round cake of minced beef served on a bun", category: "food" },
+            "salad": { pos: "noun", def: "a cold dish of various mixtures of raw or cooked vegetables", category: "food" },
+            "soup": { pos: "noun", def: "a liquid dish, typically made by boiling meat, fish, or vegetables", category: "food" },
+            "sandwich": { pos: "noun", def: "an item of food consisting of two pieces of bread with meat, cheese, or other filling between them", category: "food" },
+            "cake": { pos: "noun", def: "an item of soft, sweet food made from a mixture of flour, shortening, eggs, sugar, and other ingredients", category: "food" },
+            "cookie": { pos: "noun", def: "a sweet biscuit", category: "food" },
+            "chocolate": { pos: "noun", def: "a food preparation in the form of a paste or solid block made from roasted and ground cacao seeds", category: "food" },
+            "ice cream": { pos: "noun", def: "a soft frozen food made with sweetened and flavored milk fat", category: "food" },
+            "pie": { pos: "noun", def: "a baked dish of fruit, or meat and vegetables, typically with a top and base of pastry", category: "food" },
+            "steak": { pos: "noun", def: "high-quality beef taken from the hindquarters of the animal", category: "food" },
+            "chicken": { pos: "noun", def: "a domestic fowl kept for its eggs or meat", category: "food" },
+            "fish": { pos: "noun", def: "a limbless cold-blooded vertebrate animal with gills and fins and living wholly in water", category: "food" },
+            "rice": { pos: "noun", def: "a swamp grass that is widely cultivated as a source of food", category: "food" },
+            "pasta": { pos: "noun", def: "a dish originally from Italy consisting of dough made from durum wheat and water, extruded or stamped into various shapes", category: "food" },
             "at": { pos: "preposition", def: "expressing location or arrival at a particular place" },
             "to": { pos: "preposition", def: "expressing motion in the direction of" },
             "from": { pos: "preposition", def: "indicating the point in space where a journey or action starts" },
@@ -833,7 +1024,6 @@
             "how": { pos: "pronoun", def: "in what way or manner" },
 
             // ARTICLES AND DETERMINERS
-            "a": { pos: "article", def: "used when referring to something for the first time" },
             "an": { pos: "article", def: "used before words beginning with a vowel sound" },
             "the": { pos: "article", def: "used to refer to specific things" },
             "some": { pos: "determiner", def: "an unspecified amount or number of" },
@@ -924,7 +1114,73 @@
             "magical": { pos: "adjective", def: "relating to, using, or resembling magic", opposite: "mundane" },
             "forgotten": { pos: "adjective", def: "not remembered", opposite: "remembered" },
             "hidden": { pos: "adjective", def: "kept out of sight", opposite: "visible" },
-            "ancient": { pos: "adjective", def: "belonging to the very distant past", opposite: "modern" }
+            "ancient": { pos: "adjective", def: "belonging to the very distant past", opposite: "modern" },
+
+            // NEW v2.5 EXPANSION: ABSTRACT & COMPLEX
+            "freedom": { pos: "noun", def: "the power or right to act, speak, or think as one wants without hindrance or restraint", category: "abstract" },
+            "justice": { pos: "noun", def: "just behavior or treatment", category: "abstract" },
+            "chaos": { pos: "noun", def: "complete disorder and confusion", category: "abstract" },
+            "order": { pos: "noun", def: "the arrangement or disposition of people or things in relation to each other", category: "abstract" },
+            "truth": { pos: "noun", def: "the quality or state of being true", category: "abstract" },
+            "knowledge": { pos: "noun", def: "facts, information, and skills acquired by a person through experience or education", category: "abstract" },
+
+            // EMOTIONS++
+            "melancholy": { pos: "noun", def: "a feeling of pensive sadness, typically with no obvious cause", category: "emotion" },
+            "euphoria": { pos: "noun", def: "a feeling or state of intense excitement and happiness", category: "emotion" },
+            "anxiety": { pos: "noun", def: "a feeling of worry, nervousness, or unease", category: "emotion" },
+            "relief": { pos: "noun", def: "a feeling of reassurance and relaxation following release from anxiety or distress", category: "emotion" },
+            "apathy": { pos: "noun", def: "lack of interest, enthusiasm, or concern", category: "emotion" },
+            "nostalgia": { pos: "noun", def: "a sentimental longing or wistful affection for the past", category: "emotion" },
+
+            // SCIENCE++
+            "quantum": { pos: "noun", def: "a discrete quantity of energy proportional in magnitude to the frequency of the radiation it represents", category: "science" },
+            "gravity": { pos: "noun", def: "the force that attracts a body toward the center of the earth, or toward any other physical body having mass", category: "science" },
+            "relativity": { pos: "noun", def: "the dependence of various physical phenomena on relative motion of the observer and the observed objects", category: "science" },
+            "evolution": { pos: "noun", def: "the process by which different kinds of living organisms are thought to have developed and diversified from earlier forms", category: "science" },
+            "photosynthesis": { pos: "noun", def: "the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water", category: "science" },
+            "dna": { pos: "noun", def: "deoxyribonucleic acid, a self-replicating material present in nearly all living organisms as the main constituent of chromosomes", category: "science" },
+            "atom": { pos: "noun", def: "the basic unit of a chemical element", category: "science" },
+            "molecule": { pos: "noun", def: "a group of atoms bonded together", category: "science" },
+
+            // MISC
+            "umbrella": { pos: "noun", def: "a device consisting of a circular canopy of cloth on a folding metal frame supported by a central rod, used as protection against rain", category: "object" },
+            "guitar": { pos: "noun", def: "a stringed musical instrument played by plucking", category: "object" },
+            "piano": { pos: "noun", def: "a large keyboard musical instrument with a wooden case enclosing a soundboard and metal strings", category: "object" },
+            "computer": { pos: "noun", def: "an electronic device for storing and processing data", category: "tech" },
+
+            // VEHICLES
+            "car": { pos: "noun", def: "a four-wheeled road vehicle powered by an engine", category: "vehicle" },
+            "truck": { pos: "noun", def: "a large, heavy motor vehicle used for transporting goods", category: "vehicle" },
+            "bicycle": { pos: "noun", def: "a vehicle composed of two wheels held in a frame one behind the other", category: "vehicle" },
+            "plane": { pos: "noun", def: "a powered flying vehicle with fixed wings and a weight greater than that of the air it displaces", category: "vehicle" },
+            "ship": { pos: "noun", def: "a large boat for transporting people or goods by sea", category: "vehicle" },
+            "boat": { pos: "noun", def: "a small vessel for traveling over water", category: "vehicle" },
+            "train": { pos: "noun", def: "a series of railroad cars moved as a unit by a locomotive", category: "vehicle" },
+            "bus": { pos: "noun", def: "a large motor vehicle carrying passengers by road", category: "vehicle" },
+
+            // CLOTHING
+            "shirt": { pos: "noun", def: "a garment for the upper body", category: "clothing" },
+            "pants": { pos: "noun", def: "an outer garment covering the body from the waist to the ankles", category: "clothing" },
+            "shoes": { pos: "noun", def: "a covering for the foot, typically made of leather", category: "clothing" },
+            "hat": { pos: "noun", def: "a shaped covering for the head worn for warmth, as a fashion item, or as part of a uniform", category: "clothing" },
+            "jacket": { pos: "noun", def: "an outer garment extending either to the waist or the hips", category: "clothing" },
+            "coat": { pos: "noun", def: "an outer garment worn outdoors, having sleeves and typically extending below the hips", category: "clothing" },
+            "dress": { pos: "noun", def: "a one-piece garment for a woman or girl that covers the body and extends down over the legs", category: "clothing" },
+
+            // TOOLS
+            "hammer": { pos: "noun", def: "a tool with a heavy metal head mounted at right angles to the handle, used for breaking things and driving nails", category: "tool" },
+            "screwdriver": { pos: "noun", def: "a tool with a flattened, cross-shaped, or star-shaped tip that fits into the head of a screw to turn it", category: "tool" },
+            "wrench": { pos: "noun", def: "a tool used for gripping and turning nuts, bolts, pipes, etc.", category: "tool" },
+            "drill": { pos: "noun", def: "a hand tool, power tool, or machine with a rotating cutting tip or reciprocating hammer or chisel, used for making holes", category: "tool" },
+            "saw": { pos: "noun", def: "a hand tool for cutting wood or other hard materials, typically with a long, thin serrated steel blade", category: "tool" },
+            "axe": { pos: "noun", def: "a tool used for chopping wood, typically of iron with a steel edge and wooden handle", category: "tool" },
+
+            // MORE KITCHEN
+            "fork": { pos: "noun", def: "an implement with two or more prongs used for lifting food to the mouth or holding it when cutting", category: "tool" },
+            "spoon": { pos: "noun", def: "an implement consisting of a small, shallow oval or round bowl on a long handle", category: "tool" },
+            "knife": { pos: "noun", def: "an instrument composed of a blade fixed into a handle, used for cutting or as a weapon", category: "tool" },
+            "plate": { pos: "noun", def: "a flat dish, typically circular and made of china, from which food is eaten or served", category: "object" },
+            "cup": { pos: "noun", def: "a small bowl-shaped container for drinking from", category: "object" }
         };
 
         // --- 2. GRAMMAR & KNOWLEDGE BASE ---
@@ -936,17 +1192,18 @@
             "hey": "Hey! I'm here to help you understand English words and general knowledge. What can I explain for you?",
             "how are you": "I'm functioning perfectly! As an AI, I'm always ready to help you learn. What would you like to know about?",
             "what can you do": "I can define over 850 English words, explain their meanings, answer questions about general knowledge including science, history, geography, and technology, and write creative short stories! Try asking 'What is a dolphin?', 'Tell me about black holes', or 'Write a story about a cat'!",
-            "who are you": "I am Guahh AI version 2.4, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
-            "what are you": "I am Guahh AI version 2.4, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "who are you": "I am Guahh AI version 2.5, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "what are you": "I am Guahh AI version 2.5, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
             "who made you": "I was created by Guahh, an Australian technology company based in Melbourne.",
-            "what is your name": "My name is Guahh AI, and I'm version 2.4 of this language understanding system.",
+            "what is your name": "My name is Guahh AI, and I'm version 2.5 of this language understanding system.",
             "thanks": "You're welcome! Feel free to ask me anything else.",
             "thank you": "Happy to help! Let me know if you have more questions.",
             "bye": "Goodbye! Come back anytime you want to learn something new!",
             "goodbye": "See you later! I'll be here whenever you need me."
         };
 
-        // GENERAL KNOWLEDGE DATABASE - Facts about the world
+
+
         const GENERAL_KNOWLEDGE = {
             // Science & Space
             "solar system": "The solar system consists of the Sun and all celestial objects that orbit it, including eight planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
@@ -1074,6 +1331,91 @@
             // ULTRAKILL & Games
             "ultrakill": "ULTRAKILL is a fast-paced ultraviolent retro FPS combining the skill-based style scoring from character action games with unadulterated carnage inspired by the best shooters of the '90s. Rip apart your foes with varied destructive weapons and shower in their blood to regain your health.",
             "minecraft": "Minecraft is a sandbox video game developed by Mojang Studios where players explore a blocky, procedurally generated 3D world with infinite terrain.",
+
+            // NEW v2.5 KNOWLEDGE: GEOGRAPHY & HISTORY
+            "japan": "Japan is an island country in East Asia, known for its traditional arts, tea ceremonies, calligraphy, and flower arranging, as well as its distinctive gardens and sculpture.",
+            "brazil": "Brazil is the largest country in both South America and Latin America, known for the Amazon Rainforest and Carnival.",
+            "egypt": "Egypt is a country linking northeast Africa with the Middle East, dating to the time of the pharaohs and known for the Pyramids of Giza.",
+            "australia": "Australia is a country and continent surrounded by the Indian and Pacific oceans. Its major cities – Sydney, Brisbane, Melbourne, Perth, Adelaide – are coastal.",
+            "canada": "Canada is a country in North America. Its ten provinces and three territories extend from the Atlantic to the Pacific and northward into the Arctic Ocean.",
+
+            "amazon river": "The Amazon River in South America is the largest river by discharge volume of water in the world.",
+            "mount everest": "Mount Everest is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas.",
+            "sahara desert": "The Sahara is a desert on the African continent. It is the largest hot desert in the world.",
+
+            "world war 2": "World War II was a global war that lasted from 1939 to 1945. It involved the vast majority of the world's countries.",
+            "moon landing": "The Apollo 11 mission was the spaceflight that first landed humans on the Moon. Commander Neil Armstrong and lunar module pilot Buzz Aldrin formed the American crew that landed the Apollo Lunar Module Eagle on July 20, 1969.",
+            "industrial revolution": "The Industrial Revolution was the transition to new manufacturing processes in Great Britain, continental Europe, and the United States, in the period from about 1760 to sometime between 1820 and 1840.",
+            "renaissance": "The Renaissance was a fervent period of European cultural, artistic, political and economic rebirth following the Middle Ages.",
+
+            "water cycle": "The water cycle, also known as the hydrologic cycle, describes the continuous movement of water on, above, and below the surface of the Earth.",
+            "solar system": "The Solar System is the gravitationally bound system of the Sun and the objects that orbit it, including eight planets.",
+            "periodic table": "The periodic table, also known as the periodic table of elements, is a tabular display of the chemical elements, which are arranged by atomic number.",
+
+            // NEW v2.5 EXTRA KNOWLEDGE
+            "black hole": "A black hole is a region of spacetime where gravity is so strong that nothing—no particles or even electromagnetic radiation such as light—can escape from it.",
+            "supernova": "A supernova is a powerful and luminous stellar explosion. This transient astronomical event occurs during the last evolutionary stages of a massive star.",
+            "mars": "Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System, being larger than only Mercury.",
+            "jupiter": "Jupiter is the fifth planet from the Sun and the largest in the Solar System. It is a gas giant with a mass one-thousandth that of the Sun, but two-and-a-half times that of all the other planets in the Solar System combined.",
+            "saturn": "Saturn is the sixth planet from the Sun and the second-largest in the Solar System, after Jupiter. It is a gas giant with an average radius of about nine and a half times that of Earth.",
+
+            "rome": "Rome is the capital city of Italy. It is also the capital of the Lazio region, the center of the Metropolitan City of Rome Capital, and a special comune.",
+            "paris": "Paris is the capital and most populous city of France. Since the 17th century, Paris has been one of Europe's major centres of finance, diplomacy, commerce, fashion, gastronomy, science, and arts.",
+            "london": "London is the capital and largest city of England and the United Kingdom.",
+            "new york": "New York City is the most populous city in the United States.",
+
+            "einstein": "Albert Einstein was a German-born theoretical physicist, widely acknowledged to be one of the greatest and most influential physicists of all time. He is best known for developing the theory of relativity.",
+            "newton": "Sir Isaac Newton was an English mathematician, physicist, astronomer, alchemist, theologian, and author who is widely recognised as one of the greatest mathematicians and physicists of all time.",
+            "tesla": "Nikola Tesla was a Serbian-American inventor, electrical engineer, mechanical engineer, and futurist who is best known for his contributions to the design of the modern alternating current (AC) electricity supply system.",
+
+            "internet": "The Internet is a global system of interconnected computer networks that uses the Internet protocol suite (TCP/IP) to communicate between networks and devices.",
+            "artificial intelligence": "Artificial intelligence (AI) is intelligence demonstrated by machines, as opposed to the natural intelligence displayed by animals including humans.",
+            "machine learning": "Machine learning (ML) is a field of study in artificial intelligence concerned with the development and study of statistical algorithms that can learn from data.",
+
+            // MORE KNOWLEDGE
+            "photosynthesis": "Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.",
+            "gravity": "Gravity is a force which tries to pull two objects toward each other. Anything which has mass also has a gravitational pull.",
+            "dna": "Deoxyribonucleic acid is a molecule composed of two polynucleotide chains that coil around each other to form a double helix carrying genetic instructions.",
+            "electricity": "Electricity is the set of physical phenomena associated with the presence and motion of matter that has a property of electric charge.",
+            "evolution": "Evolution is change in the heritable characteristics of biological populations over successive generations.",
+            "big bang": "The Big Bang theory is the prevailing cosmological model for the observable universe from the earliest known periods through its subsequent large-scale evolution.",
+            "democracy": "Democracy is a form of government in which the people have the authority to deliberate and decide legislation, or to choose governing officials to do so.",
+            "capitalism": "Capitalism is an economic system based on the private ownership of the means of production and their operation for profit.",
+            "socialism": "Socialism is a political, social, and economic philosophy encompassing a range of economic and social systems characterised by social ownership of the means of production.",
+            "philosophy": "Philosophy is the study of general and fundamental questions, such as those about existence, knowledge, values, reason, mind, and language.",
+            "psychology": "Psychology is the scientific study of mind and behavior. Psychologists are actively involved in studying and understanding mental processes, brain functions, and behavior.",
+            "economics": "Economics is the social science that studies how people interact with value; in particular, the production, distribution, and consumption of goods and services.",
+
+            // FAMOUS PEOPLE
+            "leonardo da vinci": "Leonardo da Vinci was an Italian polymath of the Renaissance who was active as a painter, draughtsman, engineer, scientist, theorist, sculptor, and architect.",
+            "william shakespeare": "William Shakespeare was an English playwright, poet, and actor, widely regarded as the greatest writer in the English language and the world's greatest dramatist.",
+            "wolfgang amadeus mozart": "Wolfgang Amadeus Mozart was a prolific and influential composer of the Classical period. He composed over 600 works.",
+            "mahatma gandhi": "Mahatma Gandhi was an Indian lawyer, anti-colonial nationalist, and political ethicist who employed nonviolent resistance to lead India to independence from British rule.",
+            "martin luther king jr": "Martin Luther King Jr. was an American Baptist minister and activist who became the most visible spokesperson and leader in the civil rights movement.",
+            "marie curie": "Marie Curie was a Polish and naturalized-French physicist and chemist who conducted pioneering research on radioactivity.",
+            "charles darwin": "Charles Darwin was an English naturalist, geologist and biologist, best known for his contributions to the science of evolution.",
+            "nelson mandela": "Nelson Mandela was a South African anti-apartheid revolutionary, political leader and philanthropist who served as President of South Africa from 1994 to 1999.",
+
+            // LANDMARKS
+            "eiffel tower": "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France. It is named after the engineer Gustave Eiffel.",
+            "statue of liberty": "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York Harbor within New York City.",
+            "great wall of china": "The Great Wall of China is a series of fortifications that were built across the historical northern borders of ancient Chinese states and Imperial China.",
+            "taj mahal": "The Taj Mahal is an ivory-white marble mausoleum on the southern bank of the river Yamuna in the Indian city of Agra.",
+            "colosseum": "The Colosseum is an oval amphitheatre in the centre of the city of Rome, Italy, just east of the Roman Forum.",
+            "machu picchu": "Machu Picchu is a 15th-century Inca citadel, located in the Eastern Cordillera of southern Peru on a 2,430-meter mountain ridge.",
+
+            // MOVIES & CINEMA
+            "the matrix": "The Matrix is a 1999 science fiction action film depicting a dystopian future in which humanity is unknowingly trapped inside a simulated reality.",
+            "inception": "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced the film with Emma Thomas. It stars Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets.",
+            "lord of the rings": "The Lord of the Rings is a series of three epic fantasy adventure films directed by Peter Jackson, based on the novel written by J. R. R. Tolkien.",
+            "avatar": "Avatar is a 2009 epic science fiction film directed, written, produced, and co-edited by James Cameron.",
+            "titanic": "Titanic is a 1997 American epic romance and disaster film directed, written, co-produced, and co-edited by James Cameron.",
+            "the godfather": "The Godfather is a 1972 American crime film directed by Francis Ford Coppola, who co-wrote the screenplay with Mario Puzo, based on Puzo's best-selling 1969 novel.",
+
+            // NATURE / ANIMALS (Detailed Knowledge)
+            "blue whale": "The blue whale is a marine mammal belonging to the baleen whale suborder Mysticeti. Growing up to 29.9 meters in length, it is the largest animal known to have ever lived.",
+            "cheetah": "The cheetah is a large cat native to Africa and central Iran. It is the fastest land animal, capable of running at 80 to 128 km/h.",
+            "great white shark": "The great white shark is a species of large mackerel shark which can be found in the coastal surface waters of all the major oceans.",
             "doom": "Doom is a 1993 first-person shooter game by id Software. It is considered one of the most significant and influential titles in video game history.",
             "quake": "Quake is a first-person shooter video game developed by id Software and published by GT Interactive in 1996.",
             "tetris": "Tetris is a tile-matching video game created by Soviet software engineer Alexey Pajitnov in 1984.",
@@ -1089,12 +1431,33 @@
             "mario": "Mario is a fictional character in the Mario video game franchise, owned by Nintendo and created by video game designer Shigeru Miyamoto.",
             "zelda": "The Legend of Zelda is a high-fantasy action-adventure video game franchise created by Japanese game designers Shigeru Miyamoto and Takashi Tezuka.",
             "fortnite": "Fortnite is an online video game developed by Epic Games and released in 2017.",
-            "roblox": "Roblox is an online game platform and game creation system developed by Roblox Corporation."
+            "roblox": "Roblox is an online game platform and game creation system developed by Roblox Corporation.",
+
+            // POP CULTURE
+            "harry potter": "Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley.",
+            "star trek": "Star Trek is an American science fiction media franchise created by Gene Roddenberry, which began with the eponymous 1960s television series.",
+            "sherlock holmes": "Sherlock Holmes is a fictional private detective created by British author Sir Arthur Conan Doyle.",
+
+            // CITIES
+            "tokyo": "Tokyo is the capital and most populous prefecture of Japan. It is the political and economic center of the country.",
+            "sydney": "Sydney is the capital city of the state of New South Wales, and the most populous city in Australia and Oceania.",
+            "dubai": "Dubai is the most populous city in the United Arab Emirates (UAE) and the capital of the Emirate of Dubai.",
+            "rio de janeiro": "Rio de Janeiro is a huge seaside city in Brazil, famous for its Copacabana and Ipanema beaches, 38m Christ the Redeemer statue atop Mount Corcovado and for Sugarloaf Mountain.",
+            "cairo": "Cairo is the capital of Egypt and the largest city in the Arab world. Its metropolitan area is one of the largest in Africa.",
+
+            // LITERATURE
+            "1984": "Nineteen Eighty-Four is a dystopian social science fiction novel and cautionary tale written by the English novelist George Orwell.",
+            "to kill a mockingbird": "To Kill a Mockingbird is a novel by the American author Harper Lee. It was published in 1960 and was instantly successful.",
+            "the great gatsby": "The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, the novel depicts narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby.",
+            "pride and prejudice": "Pride and Prejudice is an 1813 romantic novel of manners written by Jane Austen.",
+            "moby dick": "Moby-Dick; or, The Whale is an 1851 novel by American writer Herman Melville. The book is the sailor Ishmael's narrative of the obsessive quest of Ahab."
         };
 
         const QUESTION_WORDS = ["what", "who", "where", "when", "why", "how", "is", "are", "can", "does", "do", "define", "explain", "tell", "describe"];
 
         // --- STORY GENERATION SYSTEM ---
+
+
         const STORY_TEMPLATES = {
             scifi: [
                 {
@@ -1256,16 +1619,21 @@
         const sendBtn = document.getElementById('send-btn');
 
         function trainModel() {
+            let dictCount = Object.keys(DICTIONARY).length;
+            let knowCount = Object.keys(GENERAL_KNOWLEDGE).length;
+            let storyCount = Object.keys(STORY_TEMPLATES).reduce((acc, k) => acc + STORY_TEMPLATES[k].length, 0);
+            let total = dictCount + knowCount + storyCount;
             let status = document.getElementById('model-status');
-            status.innerText = `Language Model Loaded: ${Object.keys(DICTIONARY).length} words in dictionary.`;
+            status.innerText = `Guahh Data Points: ${total} | Model Loaded`;
         }
 
         async function processPrompt() {
             let prompt = inputField.value.trim();
             if (!prompt) return;
 
-            // MEMORY: Push user prompt to history
+            // MEMORY: Push user prompt to history and save
             conversationHistory.push({ role: "user", content: prompt });
+            saveMemory();
 
             // UI Handle
             addMessage(prompt, 'user');
@@ -1286,14 +1654,11 @@
             // --- THINKING PROCESS ---
             let response = "";
 
-            if (isMath(prompt)) {
-                response = solveMath(prompt);
-            } else {
-                response = generateIntelligentResponse(prompt);
-            }
+            response = generateIntelligentResponse(prompt);
 
-            // MEMORY: Push bot response to history
+            // MEMORY: Push bot response to history and save
             conversationHistory.push({ role: "bot", content: response });
+            saveMemory();
 
             // --- WRITING PROCESS ---
             let wordsToType = response.split(" ");
@@ -1321,28 +1686,67 @@
 
         function generateIntelligentResponse(prompt) {
             let cleanPrompt = prompt.toLowerCase().trim();
-            // Create a punctuation-free version for logic checks
-            let cleanMsg = cleanPrompt.replace(/[?.,!]/g, "");
+            cleanPrompt = cleanPrompt.replace(/[?.!;,]/g, ""); // Remove punctuation for easier matching logic
+
+            // 0. CONTEXT CHECK (Follow-up)
+            if (lastBotQuestion === "want_story") {
+                if (cleanPrompt === "yes" || cleanPrompt === "sure" || cleanPrompt === "please" || cleanPrompt === "yeah" || cleanPrompt === "yep" || cleanPrompt.includes("please")) {
+                    lastBotQuestion = null;
+                    return generateStory({ emotion: "happy" }); // Default happy story to cheer up
+                } else if (cleanPrompt === "no" || cleanPrompt === "nope") {
+                    lastBotQuestion = null;
+                    return "Okay, I'm here if you need to talk.";
+                }
+                // If answer is unrelated, clear context and proceed? Or keep it?
+                // Let's clear it to avoid getting stuck in loop, or assume it's a new prompt.
+                lastBotQuestion = null;
+            }
+
+            // 1. NAME RECOGNITION
+            if (cleanPrompt.startsWith("my name is ") || cleanPrompt.startsWith("im ") || cleanPrompt.startsWith("i am ") && !cleanPrompt.includes("sad") && !cleanPrompt.includes("happy")) {
+                // Basic heuristic to catch "I am [Name]" but avoid emotions like "I am sad" which are handled later
+                // Actually "i am sad" is handled in Emotion.
+                // Let's stick to explicit "matches" for name setting to avoid conflict
+            }
+
+            if (cleanPrompt.startsWith("my name is ")) {
+                let name = prompt.substring(11).trim().replace(/[.!]/g, "");
+                userName = name;
+                saveMemory();
+                return `Nice to meet you, ${userName}! I'll remember that.`;
+            }
+
+            // ROBUST NAME CHECK (Fix for Dictionary Fallthrough)
+            if (cleanPrompt.includes("what is my name") || cleanPrompt.includes("whats my name") || cleanPrompt.includes("who am i") || cleanPrompt.includes("know my name")) {
+                return userName !== "User" ? `Your name is ${userName}.` : "I don't know your name yet. You can tell me by saying 'My name is...'";
+            }
+
+            // 2. MATH
+            // Pre-process natural language math to symbols for isMath check
+            let mathPrompt = cleanPrompt.replace(/plus/g, "+").replace(/minus/g, "-").replace(/times/g, "*").replace(/divided by/g, "/");
+            if (isMath(mathPrompt)) {
+                return solveMath(mathPrompt);
+            }
 
             // 0. DATE & TIME (New v2.4)
-            if (cleanMsg === "what time is it" || cleanMsg.includes("current time") || cleanMsg.includes("tell me the time")) {
+            if (cleanPrompt === "what time is it" || cleanPrompt.includes("current time") || cleanPrompt.includes("tell me the time")) {
                 let now = new Date();
                 return "It is currently " + now.toLocaleTimeString();
             }
-            if (cleanMsg === "what day is it" || cleanMsg.includes("what is the date") || cleanMsg.includes("current date") || cleanMsg.includes("todays date")) {
+            if (cleanPrompt === "what day is it" || cleanPrompt.includes("what is the date") || cleanPrompt.includes("current date") || cleanPrompt.includes("todays date")) {
                 let now = new Date();
                 return "Today is " + now.toDateString();
             }
 
             // 0.5 UTILITIES / RNG (New v2.4)
-            if (cleanMsg.includes("roll a dice") || cleanMsg.includes("roll a die")) {
+            if (cleanPrompt.includes("roll a dice") || cleanPrompt.includes("roll a die")) {
                 return "You rolled a " + (Math.floor(Math.random() * 6) + 1);
             }
-            if (cleanMsg.includes("flip a coin") || cleanMsg.includes("toss a coin")) {
+            if (cleanPrompt.includes("flip a coin") || cleanPrompt.includes("toss a coin")) {
                 return (Math.random() < 0.5) ? "It's Heads!" : "It's Tails!";
             }
-            if (cleanMsg.includes("random number") || cleanMsg.includes("pick a number")) {
-                let match = cleanMsg.match(/between (\d+) and (\d+)/);
+            if (cleanPrompt.includes("random number") || cleanPrompt.includes("pick a number")) {
+                let match = cleanPrompt.match(/between (\d+) and (\d+)/);
                 if (match) {
                     let min = parseInt(match[1]);
                     let max = parseInt(match[2]);
@@ -1350,25 +1754,25 @@
                 }
                 return "Your random number is " + Math.floor(Math.random() * 100);
             }
-            if (cleanMsg.includes("random color") || cleanMsg.includes("pick a color")) {
+            if (cleanPrompt.includes("random color") || cleanPrompt.includes("pick a color")) {
                 let colors = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Black", "White", "Cyan", "Magenta", "Lime", "Indigo"];
                 return "I picked " + colors[Math.floor(Math.random() * colors.length)];
             }
-            if (cleanMsg.includes("random letter") || cleanMsg.includes("pick a letter")) {
+            if (cleanPrompt.includes("random letter") || cleanPrompt.includes("pick a letter")) {
                 let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 return "I picked " + letters.charAt(Math.floor(Math.random() * letters.length));
             }
 
             // 1. MEMORY: Metadata Questions (History Check)
             if (conversationHistory.length > 0) {
-                if (cleanMsg === "what did i just say" || cleanMsg === "what was the last thing i said" || cleanMsg === "what did i ask") {
+                if (cleanPrompt === "what did i just say" || cleanPrompt === "what was the last thing i said" || cleanPrompt === "what did i ask") {
                     let userMsgs = conversationHistory.filter(m => m.role === "user");
                     if (userMsgs.length >= 2) {
                         return `You just said: "${userMsgs[userMsgs.length - 2].content}"`;
                     }
                     return "You haven't said anything else yet!";
                 }
-                if (cleanMsg === "what did you say" || cleanMsg === "what was the last thing you said") {
+                if (cleanPrompt === "what did you say" || cleanPrompt === "what was the last thing you said") {
                     let lastBot = [...conversationHistory].reverse().find(m => m.role === "bot");
                     if (lastBot) return `I said: "${lastBot.content}"`;
                     return "I haven't said anything yet!";
@@ -1384,13 +1788,6 @@
                 if (processingPrompt !== cleanPrompt) {
                     cleanPrompt = processingPrompt;
                 }
-            }
-
-            // 3. MATH (Natural Language v2.4)
-            // Replace words with symbols for checking
-            let mathPrompt = cleanMsg.replace(/plus/g, "+").replace(/minus/g, "-").replace(/times/g, "*").replace(/divided by/g, "/");
-            if (isMath(mathPrompt)) {
-                return solveMath(mathPrompt);
             }
 
             // 4. Check for conversational responses
@@ -1468,7 +1865,19 @@
                 return generateStory(options);
             }
 
-            // 7. Definition / Meaning
+            // 7. Emotion / Sentiment Check (v2.5)
+            let sentiment = analyzeSentiment(cleanPrompt);
+            if (cleanPrompt.startsWith("i am ") || cleanPrompt.startsWith("i feel ") || cleanPrompt.startsWith("im ")) {
+                if (sentiment === "negative") {
+                    lastBotQuestion = "want_story"; // Set context
+                    return "I'm sorry to hear that you're feeling down. Do you want me to tell you a story to cheer you up?";
+                }
+                if (sentiment === "positive") {
+                    return [`That's wonderful news, ${userName}! I'm happy for you!`, "Yay! It's great to feel good.", "That sounds amazing! Tell me more!"][Math.floor(Math.random() * 3)];
+                }
+            }
+
+            // 8. Definition / Meaning
             if (cleanPrompt.startsWith("what is") || cleanPrompt.startsWith("what's") || cleanPrompt.startsWith("define")) {
                 let potentialTopic = cleanPrompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
 
@@ -1582,6 +1991,20 @@
             return /^[\d\s\+\-\*\/\.\(\)]+$/.test(input) && /\d/.test(input);
         }
 
+        function analyzeSentiment(text) {
+            let clean = text.toLowerCase();
+            const posWords = ["happy", "joy", "love", "good", "great", "excellent", "amazing", "wonderful", "beautiful", "fun", "like", "enjoy", "best", "glad", "excited"];
+            const negWords = ["sad", "unhappy", "bad", "terrible", "awful", "horrible", "worst", "hate", "dislike", "angry", "mad", "furious", "scared", "afraid", "fear", "nervous", "worried", "lonely", "depressed"];
+
+            let score = 0;
+            posWords.forEach(w => { if (clean.includes(w)) score++; });
+            negWords.forEach(w => { if (clean.includes(w)) score--; });
+
+            if (score > 0) return "positive";
+            if (score < 0) return "negative";
+            return "neutral";
+        }
+
         function solveMath(input) {
             try {
                 let res = eval(input);
@@ -1603,13 +2026,50 @@
         // Boot
         window.onload = () => {
             trainModel();
+            loadMemory(); // Restore chat history
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 2.4</strong>";
+                intro.innerHTML = "<strong>Guahh AI 2.5</strong>";
                 chatWindow.appendChild(intro);
             }, 500);
         };
+
+        // --- PERSISTENCE ---
+        function saveMemory() {
+            localStorage.setItem('guahh_history', JSON.stringify({
+                history: conversationHistory,
+                user: userName
+            }));
+        }
+
+        function loadMemory() {
+            let data = localStorage.getItem('guahh_history');
+            if (data) {
+                try {
+                    let parsed = JSON.parse(data);
+                    // Handle legacy format (array) vs new format (object)
+                    if (Array.isArray(parsed)) {
+                        conversationHistory = parsed;
+                    } else {
+                        conversationHistory = parsed.history || [];
+                        userName = parsed.user || "User";
+                    }
+
+                    conversationHistory.forEach(msg => {
+                        addMessage(msg.content, msg.role);
+                    });
+                } catch (e) {
+                    console.error("Failed to load history", e);
+                }
+            }
+        }
+
+        function clearMemory() {
+            localStorage.removeItem('guahh_history');
+            conversationHistory = [];
+            location.reload();
+        }
 
     </script>
 </body>
