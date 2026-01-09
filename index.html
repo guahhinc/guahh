@@ -77,6 +77,11 @@
             padding: 0 20px;
         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-logo img {
             height: 22px; 
             width: auto;
@@ -90,6 +95,11 @@
             opacity: 1;
         }
 
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
         .nav-links a {
             color: #424245;
             text-decoration: none;
@@ -101,6 +111,33 @@
 
         .nav-links a:hover {
             color: #000;
+        }
+
+        /* PROFILE BALL (Top Right) */
+        .nav-profile-ball {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-left: 24px;
+            cursor: pointer;
+            overflow: hidden;
+            background-color: #f5f5f7;
+            border: 1px solid rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-profile-ball:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* HERO SECTION */
@@ -231,24 +268,226 @@
             text-decoration: underline;
         }
 
-        /* 
-           SPECIFIC BACKGROUNDS 
-        */
-
-        /* Guahh AI: Blue -> Purple -> Yellow -> White */
+        /* SPECIFIC BACKGROUNDS */
         #guahh-ai {
             background: linear-gradient(
                 180deg, 
-                rgba(0, 113, 227, 0.12) 0%,    /* Blue */
-                rgba(189, 0, 255, 0.12) 35%,   /* Purple */
-                rgba(255, 221, 0, 0.12) 70%,   /* Yellow */
+                rgba(0, 113, 227, 0.12) 0%,    
+                rgba(189, 0, 255, 0.12) 35%,   
+                rgba(255, 221, 0, 0.12) 70%,   
                 #ffffff 100%
             );
         }
 
-        /* Kangaroo: Earthy Tone -> White */
         #kangaroo {
             background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
+        }
+
+        /* 
+           MODAL / POPUP STYLES (New Account System) 
+        */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f5f5f7;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-modal-btn:hover {
+            background: #e5e5ea;
+        }
+
+        /* Auth Styles reused inside Modal */
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            background: #f5f5f7;
+            padding: 4px;
+            border-radius: 98px;
+            display: inline-flex;
+            width: 100%;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 98px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--gray-text);
+        }
+
+        .auth-tab.active {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: #fbfbfd;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: var(--accent-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .auth-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: scale(1.02);
+            background: var(--accent-hover);
+        }
+
+        .auth-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-msg {
+            margin-top: 20px;
+            font-size: 14px;
+            min-height: 20px;
+            text-align: center;
+        }
+
+        .auth-msg.error { color: var(--status-red); }
+        .auth-msg.success { color: var(--status-green); }
+
+        /* Profile View inside Modal */
+        .profile-view {
+            display: none;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .profile-pic-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            background: #eee;
+            object-fit: cover;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .profile-username {
+            font-size: 16px;
+            color: var(--gray-text);
+            margin-bottom: 30px;
+        }
+
+        .signout-btn {
+            background: #f5f5f7;
+            color: var(--status-red);
+            padding: 14px 28px;
+            border-radius: 98px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .signout-btn:hover {
+            background: #ffe5e5;
         }
 
 
@@ -558,6 +797,8 @@
             .hero h2 { font-size: 22px; }
             .ventures-grid { grid-template-columns: 1fr; }
             .footer-content { flex-direction: column; gap: 10px; text-align: center;}
+            .nav-links a { display: none; } /* Hide text links on mobile, keep logo & profile */
+            .nav-profile-ball { margin-left: auto; }
         }
     </style>
 </head>
@@ -566,9 +807,12 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-content">
-            <a href="#" class="nav-logo">
-                <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
-            </a>
+            <div class="nav-left">
+                <a href="#" class="nav-logo">
+                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
+                </a>
+            </div>
+            
             <div class="nav-links">
                 <a href="#guahh-ai">AI</a>
                 <a href="#kangaroo">Kangaroo</a>
@@ -576,9 +820,59 @@
                 <a href="#blog">News</a>
                 <a href="#ventures">Ventures</a>
                 <a href="#terms">Terms</a>
+                
+                <!-- Profile Ball Trigger -->
+                <div class="nav-profile-ball" onclick="openAuthModal()">
+                    <img id="nav-pfp-icon" src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Profile" class="nav-profile-img">
+                </div>
             </div>
         </div>
     </nav>
+
+    <!-- AUTH MODAL / POPUP -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeAuthModal()">✕</button>
+
+            <!-- Auth Forms (Login/Register) -->
+            <div id="auth-forms">
+                <div class="auth-header">
+                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" style="width: 50px; margin-bottom: 10px; filter: invert(0);">
+                    <h3 class="auth-title">Guahh Account</h3>
+                </div>
+
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Log In</div>
+                    <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Sign Up</div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
+                    <input type="text" id="login-username" class="auth-input" placeholder="Username" required>
+                    <input type="password" id="login-password" class="auth-input" placeholder="Password" required>
+                    <button type="submit" id="login-btn" class="auth-btn">Log In</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
+                    <input type="text" id="reg-username" class="auth-input" placeholder="Username (Unique)" required>
+                    <input type="text" id="reg-displayname" class="auth-input" placeholder="Display Name" required>
+                    <input type="password" id="reg-password" class="auth-input" placeholder="Password (Min 4 chars)" required>
+                    <button type="submit" id="reg-btn" class="auth-btn">Create Account</button>
+                </form>
+
+                <div id="auth-message" class="auth-msg"></div>
+            </div>
+
+            <!-- Logged In View -->
+            <div id="profile-view" class="profile-view">
+                <img id="user-pfp-large" src="" alt="Profile" class="profile-pic-large">
+                <h3 id="user-displayname" class="profile-name"></h3>
+                <p id="user-username" class="profile-username"></p>
+                <button onclick="handleLogout()" class="signout-btn">Sign Out</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -594,7 +888,7 @@
             <!-- Guahh AI Logo -->
             <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/guahhai.png" alt="Guahh AI Icon" class="app-icon">
             
-            <h3 class="product-title">Guahh AI 3</h3>
+            <h3 class="product-title">Guahh AI</h3>
             <p class="product-desc">
                 Built from scratch. A new foundation model designed by Guahh for the next generation of intelligence.
             </p>
@@ -700,6 +994,202 @@
 
     <!-- Scripts -->
     <script>
+        // --- AUTH LOGIC (Guahh Accounts) ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2A8eK6bbH73380G0qW2WJH9RKBAxvqlGIAJf8k35iwBKtW3X0cZo4FRW4ag4OmzVG/exec';
+        const DEFAULT_PFP = 'https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png';
+
+        // Check local storage for session on load
+        window.addEventListener('load', () => {
+            const storedUser = localStorage.getItem('guahh_user');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                updateUIForLoggedInUser(user);
+            }
+        });
+
+        // Modal Functions
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.add('active');
+            // If logged in, show profile view immediately
+            const storedUser = localStorage.getItem('guahh_user');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                showProfileInModal(user);
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('active');
+            // Small delay to clear messages after transition
+            setTimeout(() => {
+                document.getElementById('auth-message').textContent = '';
+            }, 300);
+        }
+
+        // Close modal when clicking outside card
+        document.getElementById('auth-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('auth-modal')) {
+                closeAuthModal();
+            }
+        });
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const msg = document.getElementById('auth-message');
+
+            msg.textContent = '';
+            msg.className = 'auth-msg';
+
+            if (tab === 'login') {
+                loginForm.style.display = 'flex';
+                regForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabReg.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                regForm.style.display = 'flex';
+                tabLogin.classList.remove('active');
+                tabReg.classList.add('active');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('reg-btn');
+            const msg = document.getElementById('auth-message');
+            
+            const username = document.getElementById('reg-username').value;
+            const displayName = document.getElementById('reg-displayname').value;
+            const password = document.getElementById('reg-password').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Creating Account...';
+            msg.textContent = '';
+
+            const payload = {
+                action: 'register',
+                username: username,
+                displayName: displayName,
+                password: password
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('guahh_user', JSON.stringify(data.user));
+                    updateUIForLoggedInUser(data.user);
+                    showProfileInModal(data.user);
+                    msg.textContent = '';
+                } else {
+                    msg.textContent = data.message || 'Registration failed.';
+                    msg.className = 'auth-msg error';
+                }
+
+            } catch (error) {
+                console.error(error);
+                msg.textContent = 'Connection error. Please try again.';
+                msg.className = 'auth-msg error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const msg = document.getElementById('auth-message');
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Logging In...';
+            msg.textContent = '';
+
+            const payload = {
+                action: 'login',
+                username: username,
+                password: password
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('guahh_user', JSON.stringify(data.user));
+                    updateUIForLoggedInUser(data.user);
+                    showProfileInModal(data.user);
+                    msg.textContent = '';
+                } else {
+                    msg.textContent = data.message || 'Login failed.';
+                    msg.className = 'auth-msg error';
+                }
+
+            } catch (error) {
+                console.error(error);
+                msg.textContent = 'Login error. Check credentials.';
+                msg.className = 'auth-msg error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Log In';
+            }
+        }
+
+        function updateUIForLoggedInUser(user) {
+            // Update the Nav Ball Icon
+            const navIcon = document.getElementById('nav-pfp-icon');
+            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
+            navIcon.src = pfp;
+            navIcon.style.filter = "invert(0)"; // Remove invert if it was set for the default logo
+        }
+
+        function showProfileInModal(user) {
+            document.getElementById('auth-forms').style.display = 'none';
+            document.getElementById('profile-view').style.display = 'block';
+
+            document.getElementById('user-displayname').textContent = user.displayName;
+            document.getElementById('user-username').textContent = '@' + user.username;
+            
+            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
+            document.getElementById('user-pfp-large').src = pfp;
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('guahh_user');
+            
+            // Reset Nav Icon
+            document.getElementById('nav-pfp-icon').src = DEFAULT_PFP;
+            
+            // Reset Modal View
+            document.getElementById('auth-forms').style.display = 'block';
+            document.getElementById('profile-view').style.display = 'none';
+            
+            // Reset forms
+            document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
+            document.getElementById('auth-message').textContent = '';
+            
+            // Default to login tab
+            switchAuthTab('login');
+        }
+
+
+        // --- EXISTING WEBSITE LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- 0. CONFIG ---
@@ -721,7 +1211,6 @@
                 });
             }, observerOptions);
 
-            // Updated to observe ALL product titles (Guahh AI, Kangaroo, etc.)
             const productTitles = document.querySelectorAll('.product-title');
             productTitles.forEach(title => {
                 observer.observe(title);
@@ -739,8 +1228,6 @@
             function setStatusUI(state, customMsg = null) {
                 statusDot.className = 'status-dot';
                 
-                // Define background start colors (Light versions of status colors)
-                // Green: #e3f9e5 | Red: #ffe5e5 | Yellow: #fff9e1
                 let bgStartColor = '#e3f9e5'; // Default Green
 
                 if (state === 'green') {
@@ -772,9 +1259,8 @@
                     return;
                 }
                 
-                // AbortController for Timeout Logic
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds
+                const timeoutId = setTimeout(() => controller.abort(), 10000); 
 
                 fetch(url, { mode: 'no-cors', signal: controller.signal })
                     .then(() => {
@@ -806,7 +1292,6 @@
                     const appScriptUrl = cols[0] ? cols[0].trim() : "";
                     const customStatus = cols[1] ? cols[1].trim().toUpperCase() : "";
 
-                    // Override logic (UI updated to remove "Manual Override" text)
                     if (customStatus === 'UP') {
                         setStatusUI('green', 'Services are running normally.');
                     } else if (customStatus === 'DOWN') {
@@ -847,10 +1332,7 @@
                     const allRows = data.split('\n');
                     blogFeed.innerHTML = '';
                     
-                    // Filter empty rows and header
                     let contentRows = allRows.slice(1).filter(r => r.trim() !== '');
-                    
-                    // REVERSE the array so the bottom of the sheet (newest) comes first
                     contentRows.reverse();
 
                     contentRows.forEach((row, index) => {
@@ -864,7 +1346,6 @@
                         const card = document.createElement('div');
                         card.className = 'blog-card';
                         
-                        // Hide posts after the 3rd one
                         if (index >= 3) {
                             card.classList.add('hidden-post');
                         } else {
@@ -884,7 +1365,6 @@
                         blogFeed.appendChild(card);
                     });
 
-                    // See More Logic
                     if (contentRows.length > 3) {
                         seeMoreContainer.style.display = 'block';
                         
