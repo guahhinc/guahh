@@ -200,14 +200,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1a1a1a;
-            padding: 8px 12px;
+            background: rgba(30, 30, 30, 0.95);
+            padding: 10px 16px;
             border-bottom: 1px solid var(--border);
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 600;
             font-family: 'Consolas', monospace;
-            color: #8b949e;
+            color: #a0a0a0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            user-select: none;
         }
 
         .copy-btn {
@@ -457,7 +459,7 @@
 
     <header>
         <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/guahhai.png" alt="Guahh AI" class="logo-img">
-        <div class="status" id="model-status">Loading Guahh AI V3.1...</div>
+        <div class="status" id="model-status">Loading Guahh AI V3.2...</div>
         <button class="new-chat-btn" onclick="clearMemory()">+</button>
     </header>
 
@@ -1630,7 +1632,82 @@
             "scrutinize": { pos: "verb", def: "examine or inspect closely and thoroughly", category: "action" },
             "subtle": { pos: "adjective", def: "so delicate or precise as to be difficult to analyze or describe", category: "description" },
             "tangible": { pos: "adjective", def: "perceptible by touch", category: "description" },
-            "utility": { pos: "noun", def: "the state of being useful, profitable, or beneficial", category: "abstract" }
+            "utility": { pos: "noun", def: "the state of being useful, profitable, or beneficial", category: "abstract" },
+
+            // V3.9 Dictionary Expansion (Common Words)
+            "adventure": { pos: "noun", def: "an unusual and exciting, typically hazardous, experience or activity", category: "action" },
+            "brilliant": { pos: "adjective", def: "very bright and radiant; exceptionally clever or talented", category: "description" },
+            "courage": { pos: "noun", def: "the ability to do something that frightens one", category: "abstract" },
+            "delight": { pos: "noun", def: "great pleasure", category: "emotion" },
+            "essence": { pos: "noun", def: "the intrinsic nature or indispensable quality of something", category: "abstract" },
+            "flourish": { pos: "verb", def: "grow or develop in a healthy or vigorous way", category: "action" },
+            "genuine": { pos: "adjective", def: "truly what something is said to be; authentic", category: "description" },
+            "harmony": { pos: "noun", def: "the combination of simultaneously sounded musical notes to produce chords and chord progressions", category: "abstract" },
+            "inspire": { pos: "verb", def: "fill (someone) with the urge or ability to do or feel something", category: "action" },
+            "journey": { pos: "noun", def: "an act of traveling from one place to another", category: "action" },
+            "kindness": { pos: "noun", def: "the quality of being friendly, generous, and considerate", category: "emotion" },
+            "legacy": { pos: "noun", def: "something left or handed down by a predecessor", category: "abstract" },
+            "measure": { pos: "verb", def: "ascertain the size, amount, or degree of (something)", category: "action" },
+            "nurture": { pos: "verb", def: "care for and encourage the growth or development of", category: "action" },
+            "optimism": { pos: "noun", def: "hopefulness and confidence about the future or the successful outcome of something", category: "emotion" },
+            "passion": { pos: "noun", def: "strong and barely controllable emotion", category: "emotion" },
+            "quest": { pos: "noun", def: "a long or arduous search for something", category: "action" },
+            "radiant": { pos: "adjective", def: "sending out light; shining or glowing with bright light", category: "description" },
+            "serenity": { pos: "noun", def: "the state of being calm, peaceful, and untroubled", category: "emotion" },
+            "triumph": { pos: "noun", def: "a great victory or achievement", category: "abstract" },
+
+            // V3.8 Massive Dictionary Expansion (Understanding Boost)
+            "altruism": { pos: "noun", def: "the belief in or practice of disinterested and selfless concern for the well-being of others", category: "abstract" },
+            "cacophony": { pos: "noun", def: "a harsh, discordant mixture of sounds", category: "description" },
+            "cognizant": { pos: "adjective", def: "having knowledge or being aware of", category: "description" },
+            "confluence": { pos: "noun", def: "the junction of two rivers, especially rivers of approximately equal width", category: "place" },
+            "dichotomy": { pos: "noun", def: "a division or contrast between two things that are or are represented as being opposed or entirely different", category: "abstract" },
+            "epiphany": { pos: "noun", def: "a moment of sudden revelation or insight", category: "abstract" },
+            "facetious": { pos: "adjective", def: "treating serious issues with deliberately inappropriate humor; flippant", category: "description" },
+            "gregarious": { pos: "adjective", def: "fond of company; sociable", category: "description" },
+            "harbinger": { pos: "noun", def: "a person or thing that announces or signals the approach of another", category: "abstract" },
+            "iconoclast": { pos: "noun", def: "a person who attacks cherished beliefs or institutions", category: "person" },
+            "juxtaposition": { pos: "noun", def: "the fact of two things being seen or placed close together with contrasting effect", category: "abstract" },
+            "kinetic": { pos: "adjective", def: "relating to or resulting from motion", category: "science" },
+            "labyrinthine": { pos: "adjective", def: "like a labyrinth; irregular and twisting", category: "description" },
+            "magnanimous": { pos: "adjective", def: "wealthy or generous, especially to a rival or less powerful person", category: "description" },
+            "nebulous": { pos: "adjective", def: "in the form of a cloud or haze; hazy", category: "description" },
+            "obfuscate": { pos: "verb", def: "render obscure, unclear, or unintelligible", category: "action" },
+            "paradigm": { pos: "noun", def: "a typical example or pattern of something; a model", category: "abstract" },
+            "quandary": { pos: "noun", def: "a state of perplexity or uncertainty over what to do in a difficult situation", category: "abstract" },
+            "ramification": { pos: "noun", def: "a consequence of an action or event, especially when complex or unwelcome", category: "abstract" },
+            "salient": { pos: "adjective", def: "most noticeable or important", category: "description" },
+            "trepidation": { pos: "noun", def: "a feeling of fear or agitation about something that may happen", category: "emotion" },
+            "ubiquitous": { pos: "adjective", def: "present, appearing, or found everywhere", category: "description" },
+            "vacillate": { pos: "verb", def: "alternate or waver between different opinions or actions; be indecisive", category: "action" },
+            "wistful": { pos: "adjective", def: "having or showing a feeling of vague or regretful longing", category: "emotion" },
+            "xenial": { pos: "adjective", def: "hospitable, especially to visiting strangers or foreigners", category: "description" },
+            "yearn": { pos: "verb", def: "have an intense feeling of loss or lack and longing for something", category: "emotion" },
+            "zenith": { pos: "noun", def: "the time at which something is most powerful or successful", category: "abstract" },
+            "acumen": { pos: "noun", def: "the ability to make good judgments and quick decisions", category: "abstract" },
+            "brevity": { pos: "noun", def: "concise and exact use of words in writing or speech", category: "abstract" },
+            "candour": { pos: "noun", def: "the quality of being open and honest in expression; frankness", category: "abstract" },
+            "debacle": { pos: "noun", def: "a sudden and ignominious failure; a fiasco", category: "abstract" },
+            "equanimity": { pos: "noun", def: "mental calmness, composure, and evenness of temper, especially in a difficult situation", category: "emotion" },
+            "fastidious": { pos: "adjective", def: "very attentive to and concerned about accuracy and detail", category: "description" },
+            "galvanize": { pos: "verb", def: "shock or excite (someone) into taking action", category: "action" },
+            "hedonist": { pos: "noun", def: "a person who believes that the pursuit of pleasure is the most important thing in life", category: "person" },
+            "impeccable": { pos: "adjective", def: "in accordance with the highest standards of propriety; faultless", category: "description" },
+            "juggernaut": { pos: "noun", def: "a huge, powerful, and overwhelming force or institution", category: "abstract" },
+            "kudos": { pos: "noun", def: "praise and honor received for an achievement", category: "abstract" },
+            "lethargy": { pos: "noun", def: "a lack of energy and enthusiasm", category: "emotion" },
+            "maverick": { pos: "noun", def: "an unorthodox or independent-minded person", category: "person" },
+            "nonchalant": { pos: "adjective", def: "of a person or manner) feeling or appearing casually calm and relaxed", category: "emotion" },
+            "ostracize": { pos: "verb", def: "exclude (someone) from a society or group", category: "action" },
+            "panacea": { pos: "noun", def: "a solution or remedy for all difficulties or diseases", category: "abstract" },
+            "quixotic": { pos: "adjective", def: "exceedingly idealistic; unrealistic and impractical", category: "description" },
+            "reticent": { pos: "adjective", def: "not revealing one's thoughts or feelings readily", category: "description" },
+            "sycophant": { pos: "noun", def: "a person who acts obsequiously toward someone important in order to gain advantage", category: "person" },
+            "taciturn": { pos: "adjective", def: "reserved or uncommunicative in speech; saying little", category: "description" },
+            "unilateral": { pos: "adjective", def: "performed by or affecting only one person, group, or country involved in a particular situation", category: "description" },
+            "venerable": { pos: "adjective", def: "accorded a great deal of respect, especially because of age, wisdom, or character", category: "description" },
+            "wanderlust": { pos: "noun", def: "a strong desire to travel", category: "emotion" },
+            "zealous": { pos: "adjective", def: "having or showing zeal", category: "description" }
         };
 
         // --- V2.6 MARKOV CHAIN SENTENCE GENERATOR ---
@@ -3048,6 +3125,48 @@
             "k28mj-d": "K28MJ-D is a television station identifier.",
             "crystal dashboard design": "Crystal is a design language or theme for software dashboards.",
             "computer machine learning": "Machine learning is a field of AI that focuses on building systems that learn from data.",
+
+            // V3.8 Knowledge Expansion (Tech, Science, Games, History)
+            "python programming": "Python is a high-level, interpreted programming language known for its readability and versatility.",
+            "game development": "Game development is the art of creating games, involving design, art, audio, and programming.",
+            "random number generation": "RNG is a process that generates a sequence of numbers or symbols that cannot be reasonably predicted better than by random chance.",
+            "javascript": "JavaScript is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS.",
+            "reactjs": "React is a free and open-source front-end JavaScript library for building user interfaces based on UI components.",
+            "nodejs": "Node.js is a cross-platform, open-source server environment that can run JavaScript applications outside the browser.",
+            "artificial general intelligence": "AGI is a hypothetical type of intelligent agent that can learn to accomplish any intellectual task that human beings or animals can.",
+            "large language model": "An LLM is a language model characterized by its large size and training on vast amounts of text data.",
+            "neural network": "Neural networks are computing systems inspired by the biological neural networks that constitute animal brains.",
+            "simulation hypothesis": "The simulation hypothesis is the proposal that all of reality, including the Earth and the universe, is an artificial simulation.",
+
+            "mars colonization": "The colonization of Mars is a proposed goal of future human spaceflight.",
+            "crispr": "CRISPR is a family of DNA sequences found in the genomes of prokaryotic organisms such as bacteria and archaea.",
+            "black hole information paradox": "Use of quantum mechanics and general relativity suggests that physical information could permanently disappear in a black hole.",
+            "fermi paradox": "The Fermi paradox is the discrepancy between the lack of conclusive evidence of advanced extraterrestrial life and the apparently high a priori likelihood of its existence.",
+            "great filter": "The Great Filter is a possible explanation for the Fermi paradox, suggesting that at least one of the steps required for life to become interstellar is highly improbable.",
+
+            "ancient rome": "Ancient Rome was an Italic civilization that began on the Italian Peninsula as early as the 8th century BC.",
+            "industrial revolution": "The Industrial Revolution was the transition to new manufacturing processes in Great Britain, continental Europe, and the United States.",
+            "renaissance": "The Renaissance was a fervent period of European cultural, artistic, political, and economic rebirth following the Middle Ages.",
+            "cold war": "The Cold War was a period of geopolitical tension between the United States and the Soviet Union and their respective allies.",
+            "blockchain": "A blockchain is a decentralized, distributed, and oftentimes public digital ledger that is used to record transactions across many computers.",
+
+            "minecraft": "Minecraft is a sandbox video game developed by Mojang Studios where players explore a blocky, procedurally generated 3D world.",
+            "fortnite": "Fortnite is an online video game developed by Epic Games and released in 2017.",
+            "super mario": "Super Mario is a platform game series created by Nintendo featuring their mascot, Mario.",
+            "legend of zelda": "The Legend of Zelda is a high-fantasy action-adventure video game franchise created by Japanese game designers Shigeru Miyamoto and Takashi Tezuka.",
+            "call of duty": "Call of Duty is a first-person shooter video game franchise published by Activision.",
+
+            "apple inc": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California.",
+            "microsoft": "Microsoft Corporation is an American multinational technology corporation which produces computer software, consumer electronics, personal computers, and related services.",
+            "google": "Google LLC is an American multinational technology company that focuses on search engine technology, online advertising, cloud computing, computer software, quantum computing, e-commerce, artificial intelligence, and consumer electronics.",
+            "tesla": "Tesla, Inc. is an American automotive and clean energy company headquartered in Austin, Texas.",
+            "spacex": "Space Exploration Technologies Corp. is an American spacecraft manufacturer, launcher, and satellite communications corporation.",
+
+            "climate change": "Climate change includes both global warming driven by human-induced emissions of greenhouse gases and the resulting large-scale shifts in weather patterns.",
+            "renewable energy": "Renewable energy is energy that is collected from renewable resources that are naturally replenished on a human timescale.",
+            "electric vehicle": "An electric vehicle (EV) uses one or more electric motors for propulsion.",
+            "virtual reality": "Virtual reality (VR) is a simulated experience that can be similar to or completely different from the real world.",
+            "augmented reality": "Augmented reality (AR) is an interactive experience of a real-world environment where the objects that reside in the real world are enhanced by computer-generated perceptual information.",
             "abbé goujet": "Claude-Pierre Goujet (Abbé Goujet) was a French historian and cleric of the 18th century.",
             "scorporo": "Scorporo was a mixed electoral system used in Italy between 1993 and 2005.",
             "sean furey": "Sean Furey is an American javelin thrower and Olympian.",
@@ -3164,7 +3283,74 @@
             "nebula": "A nebula is a giant cloud of dust and gas in space. Some nebulae come from the gas and dust thrown out by the explosion of a dying star.",
             "supernova": "A supernova is a powerful and luminous stellar explosion. It occurs during the last evolutionary stages of a massive star.",
             "exoplanet": "An exoplanet is a planet that orbits a star outside our solar system.",
-            "dark matter": "Dark matter is a form of matter thought to account for approximately 85% of the matter in the universe and about a quarter of its total energy density."
+            "dark matter": "Dark matter is a form of matter thought to account for approximately 85% of the matter in the universe and about a quarter of its total energy density.",
+
+            // V3.4 Expanded Knowledge: Diverse Topics
+            // Technology & Computing
+            "open source": "Open source indicates software for which the original source code is made freely available and may be redistributed and modified.",
+            "linux": "Linux is a family of open-source Unix-like operating systems based on the Linux kernel, first released by Linus Torvalds in 1991.",
+            "cloud": "Cloud computing relies on sharing computing resources rather than having local servers or personal devices to handle applications.",
+            "database": "A database is an organized collection of data, generally stored and accessed electronically from a computer system.",
+            "virtual machine": "A virtual machine (VM) is the virtualization/emulation of a computer system. VMs are based on computer architectures and provide functionality of a physical computer.",
+            "ip address": "An Internet Protocol (IP) address is a numerical label assigned to each device connected to a computer network that uses the Internet Protocol for communication.",
+            "vpn": "A virtual private network (VPN) extends a private network across a public network and enables users to send and receive data across shared or public networks.",
+            "firewall": "A firewall is a network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.",
+            "http": "The Hypertext Transfer Protocol (HTTP) is an application layer protocol for distributed, collaborative, hypermedia information systems.",
+            "router": "A router is a networking device that forwards data packets between computer networks.",
+
+            // Science & Nature
+            "immune system": "The immune system is a network of biological processes that protects an organism from diseases. It detects and responds to a wide variety of pathogens.",
+            "nervous system": "The nervous system is a highly complex part of an animal that coordinates its actions and sensory information by transmitting signals to and from different parts of its body.",
+            "circulatory system": "The circulatory system, also called the cardiovascular system, is an organ system that permits blood to circulate and transport nutrients and oxygen.",
+            "respiratory system": "The respiratory system involves the breakdown of glucose for energy. In humans, it typically includes the nose, nasal cavity, pharynx, larynx, trachea, bronchi, and lungs.",
+            "biome": "A biome is a large community of plants and animals that occupies a distinct region defined by its climate and dominant vegetation.",
+            "tundra": "Where the tree growth is hindered by low temperatures and short growing seasons. It is a type of biome where the tree growth is hindered by low temperatures.",
+            "rainforest": "Rainforests are forests characterized by high and continuous rainfall, with annual rainfall between 2.5 and 4.5 metres.",
+            "coral reef": "Coral reefs are diverse underwater ecosystems held together by calcium carbonate structures secreted by corals.",
+            "glacier": "A glacier is a persistent body of dense ice that is constantly moving under its own weight.",
+            "monsoon": "A monsoon is a seasonal prevailing wind in the region of South and Southeast Asia, blowing from the southwest between May and September and bringing rain.",
+
+            // History & Famous People
+            "nelson mandela": "Nelson Mandela was a South African anti-apartheid revolutionary who served as President of South Africa from 1994 to 1999.",
+            "martin luther king jr": "Martin Luther King Jr. was an American Christian minister and activist who became the most visible spokesperson and leader in the civil rights movement.",
+            "wright brothers": "The Wright brothers, Orville and Wilbur, were American aviation pioneers generally credited with inventing, building, and flying the world's first successful motor-operated airplane.",
+            "amelia earhart": "Amelia Earhart was an American aviation pioneer and author. She was the first female aviator to fly solo across the Atlantic Ocean.",
+            "rosa parks": "Rosa Parks was an American activist in the civil rights movement best known for her pivotal role in the Montgomery bus boycott.",
+            "maya civilization": "The Maya civilization was a Mesoamerican civilization developed by the Maya peoples, noted for their logosyllabic script—the most advanced writing system in pre-Columbian Americas.",
+            "inca empire": "The Inca Empire was the largest empire in pre-Columbian America. Its administrative, political and military center was located in the city of Cusco.",
+            "aztec empire": "The Aztec Empire was an alliance of three Nahua altepetl city-states: Mexico-Tenochtitlan, Texcoco, and Tlacopan.",
+            "industrial revolution": "The Industrial Revolution was the transition to new manufacturing processes in Europe and the United States, in the period from about 1760 to sometime between 1820 and 1840.",
+            "cold war": "The Cold War was a period of geopolitical tension between the Soviet Union and the United States and their respective allies, the Eastern Bloc and the Western Bloc.",
+
+            // General Concepts & Philosophy
+            "stoicism": "Stoicism is a school of Hellenistic philosophy which teaches that virtue is the only good for human beings and that external things are indifferent.",
+            "utilitarianism": "Utilitarianism is a family of normative ethical theories that prescribe actions that maximize happiness and well-being for all affected individuals.",
+            "existentialism": "Existentialism is a form of philosophical inquiry that explores the problem of human existence and centers on the experience of the thinking, feeling, and acting individual.",
+            "nihilism": "Nihilism is a philosophy, or a family of views within philosophy, that rejects generally accepted or fundamental aspects of human existence, such as objective truth, knowledge, morality, values or meaning.",
+            "meditation": "Meditation is a practice where an individual uses a technique – such as mindfulness, or focusing the mind on a particular object, thought, or activity – to train attention and awareness.",
+            "yoga": "Yoga is a group of physical, mental, and spiritual practices or disciplines which originated in ancient India.",
+            "origami": "Origami is the art of paper folding, which is often associated with Japanese culture.",
+            "haiku": "Haiku is a type of short form poetry originally from Japan. Traditional Japanese haiku consist of three phrases that behave like a 5, 7, 5 syllable structure.",
+            "chess": "Chess is a board game played between two players. It is sometimes called Western chess or international chess to distinguish it from related games such as xiangqi and shogi.",
+            "go game": "Go is an abstract strategy board game for two players in which the aim is to surround more territory than the opponent.",
+
+            // Geography & Places
+            "antarctica": "Antarctica is Earth's southernmost continent. It contains the geographic South Pole and is situated in the Antarctic region of the Southern Hemisphere.",
+            "great wall of china": "The Great Wall of China is a series of fortifications that were built across the historical northern borders of ancient Chinese states.",
+            "machu picchu": "Machu Picchu is a 15th-century Inca citadel, located in the Eastern Cordillera of southern Peru on a 2,430-meter mountain ridge.",
+            "taj mahal": "The Taj Mahal is an ivory-white marble mausoleum on the southern bank of the river Yamuna in the Indian city of Agra.",
+            "colosseum": "The Colosseum is an oval amphitheatre in the centre of the city of Rome, Italy, just east of the Roman Forum.",
+            "petra": "Petra is a historical and archaeological city in southern Jordan. It is famous for its rock-cut architecture and water conduit system.",
+            "chichen itza": "Chichen Itza was a large pre-Columbian city built by the Maya people of the Terminal Classic period.",
+            "christ the redeemer": "Christ the Redeemer is an Art Deco statue of Jesus Christ in Rio de Janeiro, Brazil.",
+            "great pyramid of giza": "The Great Pyramid of Giza is the oldest and largest of the pyramids in the Giza pyramid complex bordering present-day Giza in Greater Cairo, Egypt.",
+
+            // Fun Miscellaneous
+            "rubiks cube": "The Rubik's Cube is a 3D combination puzzle invented in 1974 by Hungarian sculptor and professor of architecture Ernő Rubik.",
+            "fidget spinner": "A fidget spinner is a toy that consists of a ball bearing in the center of a multi-lobed flat structure made from metal or plastic.",
+            "yo-yo": "A yo-yo is a toy consisting of an axle connected to two disks, and a string looped around the axle.",
+            "boomerang": "A boomerang is a thrown tool, typically constructed as a flat airfoil, that is designed to spin about an axis perpendicular to the direction of its flight.",
+            "frisbee": "A frisbee is a gliding toy or sporting item that is generally plastic and roughly 20 to 25 centimetres in diameter."
         };
 
         // V2.6: BRAINSTORMING & IDEA GENERATION SYSTEM
@@ -3407,7 +3593,218 @@
                 "Ultimately, [Topic] stands as a testament to the power of human curiosity and innovation. It will undoubtedly continue to influence our thoughts and actions for many years to come.",
                 "Looking ahead, the legacy of [Topic] will be defined by its ongoing relevance and its ability to inspire new modes of thinking. It is a subject that rewards careful study and reflection.",
                 "As we wrap up this look at [Topic], it is clear that it is more than just a simple concept. It is a dynamic and evolving field that will continue to shape our world in meaningful ways."
+            ],
+            persuasive: [
+                "Consider the undeniable impact of [Topic]. To ignore its significance is to overlook a fundamental shift in our reality. The time has come to embrace this change.",
+                "Why should we care about [Topic]? Because it represents the future. Those who understand its potential will be the ones to lead us forward.",
+                "The evidence is clear: [Topic] is not just a trend, but a necessity. By adopting this perspective, we open doors to opportunities we never thought possible.",
+                "Imagine a world without [Topic]. It would be a step backward. We must advocate for its advancement and integration into our daily lives.",
+                "Proponents of [Topic] argue that it is a cornerstone of modern progress. I stand with them in the belief that we simply cannot afford to ignore it.",
+                "Some may say [Topic] is controversial, but controversy often breeds innovation. This is about being on the right side of history.",
+                "If we value efficiency and growth, we must value [Topic]. It is the engine that will drive us towards a more prosperous future.",
+                "The question is not 'why [Topic]?', but 'when?'. And the answer should be now. Delaying will only cost us opportunities."
+            ],
+            letter: [
+                "I am writing to you today to discuss [Topic]. This is a matter of great importance that requires your immediate attention and understanding.",
+                "I wanted to reach out and share my thoughts on [Topic]. It has been on my mind lately, and I believe it is something we should consider carefully.",
+                "To [Recipient],\n\nI hope this letter finds you well. I am writing to express my strong feelings regarding [Topic].",
+                "Dear [Recipient],\n\nI am writing to you with a request concerning [Topic]. I have given this much thought and believe it is the right path forward.",
+                "To [Recipient],\n\nI'm writing to ask for your support with [Topic]. I know you value thoughtful decisions, and I believe this is one we can agree on.",
+                "Dear [Recipient],\n\nPlease consider my request regarding [Topic]. It would mean the world to me if you could hear me out on this.",
+                "To [Recipient],\n\nI've been thinking a lot about [Topic] and I wanted to put my thoughts into words for you. Here is why I think it matters.",
+                "Subject: A thought about [Topic]\n\nDear [Recipient],\n\nI hope you have a moment to read this. I feel quite passionately about [Topic] and wanted to share my perspective."
+            ],
+            persuasive_letter: [
+                "Dear [Recipient],\n\nI am writing to you to formally request [Topic]. I understand this is a significant ask, but I have researched it thoroughly and believe it is a worthwhile investment.",
+                "To [Recipient],\n\nI would like to persuade you to consider [Topic]. It offers numerous benefits that I believe we cannot overlook.",
+                "Dear [Recipient],\n\nPlease hear me out regarding [Topic]. I know there are reservations, but the potential upside specifically for us is undeniable.",
+                "Hey [Recipient],\n\nI really want to talk about [Topic]. It would mean so much to me if you could agree to this, and here is why I think it's a great idea."
+            ],
+            // V3.9: Simple, Natural Templates (Longer but clearer)
+            // V3.9: Simple, Natural Templates (Longer but clearer)
+            simple_natural: [
+                "Let's be real about [Topic]. It's genuinely something that makes sense when you look at the big picture. It's not just about what we want, but what actually works best.",
+                "Thinking about [Topic], it's clear that this is the right move. I've looked at all the angles, and honestly, the benefits are just too good to ignore.",
+                "There’s a lot to say about [Topic], but it boils down to this: it’s a smart choice. It brings value, quality, and a lot of positives that we shouldn't pass up.",
+                "I've been going back and forth on [Topic], but the more I think about it, the more I realize it's exactly what is needed right now.",
+                "Honestly, [Topic] just makes sense. It fits perfectly with what we are trying to achieve and solves a lot of the issues we've been facing.",
+                "When you really break it down, [Topic] offers a solution that is both practical and effective. It's rare to find something that checks all the boxes like this.",
+                "I truly believe that [Topic] is the way forward. It might seem like a big step, but it's one that will pay off in the long run.",
+                "It's not often I feel this strongly about something, but [Topic] is different. It has the potential to really change things for the better.",
+                "Let's assume for a moment we go with [Topic]. The advantages are immediate—better efficiency, more enjoyment, and less hassle.",
+                "Getting [Topic] isn't just a want; it feels like a necessary upgrade. The impact it would have is undeniable.",
+                "Imagine having [Topic]. It would simplify so many things and bring a level of quality we've been missing.",
+                "I know we've discussed similar things, but [Topic] stands out because of its reliability and specific features that match our needs.",
+                "The case for [Topic] is strong. It's not just about the immediate benefit, but the long-term value it brings.",
+                "Simply put, [Topic] is a game-changer. It upgrades the entire experience and is worth every bit of consideration.",
+                "We shouldn't overthink [Topic]. The facts are there, the benefits are clear, and the timing is right."
+            ],
+            // V3.2: Dynamic Mix-in components
+            openers: [
+                "I wanted to take a moment to discuss something important.",
+                "I hope you're having a good day. I've been thinking about something.",
+                "Here is something that has been on my mind recently.",
+                "I'm writing this because I believe it's time we talked about this.",
+                "Quick thought regarding a topic that I assume you'll find interesting.",
+                "I was reflecting on our recent needs and this came to mind."
+            ],
+            closers: [
+                "I really hope you see the value in this as I do.",
+                "Let me know your thoughts—I'm keen to hear what you think.",
+                "Thanks for taking the time to consider this perspective.",
+                "I'm looking forward to potentially moving forward with this.",
+                "It would mean a lot if we could make this happen.",
+                "I appreciate you hearing me out on this matter."
+            ],
+            human_connectors: [
+                "Looking at it from another angle,",
+                "What's more,",
+                "It's also worth noting that",
+                "To put it another way,",
+                "Not to mention,",
+                "On top of that,",
+                "It's clear that",
+                "Ideally,",
+                "Normally I wouldn't insist, but",
+                "Considering everything,"
+            ],
+            smart_fillers: [
+                "Furthermore,", "Additionally,", "In contrast,", "Consequently,", "Nevertheless,", "For instance,", "On the other hand,", "As a result,", "In other words,", "To clarify,",
+                "Moreover,", "However,", "Therefore,", "Significantly,", "Interestingly,", "In fact,", "Indeed,", "Specifically,", "Ultimately,",
+                "Basically,", "Honestly,", "To put it simply,", "Looking at the facts,"
             ]
+        };
+
+        // CREATIVE ENGINE: The New Core for Text Generation
+        const CreativeEngine = {
+            generatePersuasive: async function (topic) {
+                let capitalizedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+
+                // Fetch facts for "Logos" (Logic)
+                let wikiRes = await searchWikipedia(topic, 5);
+                let facts = "Evidence supports this view.";
+                if (wikiRes) {
+                    facts = wikiRes.replace(/^(Here's what I found: |According to my knowledge base, |I learned that |Interestingly, )/i, "");
+                }
+
+                let template = WRITING_KNOWLEDGE.persuasive[Math.floor(Math.random() * WRITING_KNOWLEDGE.persuasive.length)];
+                let filler = WRITING_KNOWLEDGE.smart_fillers[Math.floor(Math.random() * WRITING_KNOWLEDGE.smart_fillers.length)];
+
+                // V3.5: Advanced Structure
+                return `## A Case for ${capitalizedTopic}\n\n${template.replace(/\[Topic\]/g, capitalizedTopic)}\n\n**The Facts:**\n${facts}\n\n**The Argument:**\n${filler} we must recognize that ${topic} is essential. It is not merely a choice, but a responsibility to understand and utilize it for the greater good.`;
+            },
+
+            deepTalk: function (topic) {
+                let capitalizedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+                let template = WRITING_KNOWLEDGE.philosophical[Math.floor(Math.random() * WRITING_KNOWLEDGE.philosophical.length)];
+
+                return `${template.replace(/\[Topic\]/g, capitalizedTopic)}\n\nI find myself wondering... if ${topic} were to change, would we change with it? What do you think is the essence of it?`;
+            },
+
+            generateLetter: async function (topic, recipient = "To Whom It May Concern", style = "standard") {
+                let capitalizedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+
+                // Determine letter type: Persuasive or General?
+                // Look for keywords indicating a request or persuasion
+                // Added fuzzy matching for "pursua" (typo)
+                let isPersuasive = topic.toLowerCase().includes("buy") || topic.toLowerCase().includes("get") ||
+                    topic.toLowerCase().includes("allow") || topic.toLowerCase().includes("let me") ||
+                    topic.toLowerCase().includes("convinc") || topic.toLowerCase().includes("persuade") ||
+                    topic.toLowerCase().includes("pursua");
+
+                // V3.2: Dynamic Template Selection
+                let hasNatural = false;
+                let template = "";
+
+                // V3.9: Use Simple Natural templates for casual persuasive requests
+                if (style === "natural" || topic.includes("why i should") || topic.includes("why we should") || topic.includes("why to get")) {
+                    let naturals = WRITING_KNOWLEDGE.simple_natural;
+                    if (naturals) {
+                        template = naturals[Math.floor(Math.random() * naturals.length)];
+                        hasNatural = true;
+                    }
+                }
+
+                // Fallback if no natural template selected
+                if (!template) {
+                    let templateArr = (isPersuasive && WRITING_KNOWLEDGE.persuasive_letter) ? WRITING_KNOWLEDGE.persuasive_letter : WRITING_KNOWLEDGE.letter;
+                    template = templateArr[Math.floor(Math.random() * templateArr.length)];
+                }
+
+                // Enhance content with Wiki knowledge ONLY if appropriate
+                // V3.6: Context Awareness - Don't search Wiki for personal requests (borrowing money, apologies, etc)
+                let personalKeywords = ["borrow", "money", "loan", "apology", "sorry", "love", "thanks", "thank you", "asking", "raise"];
+                let isPersonal = personalKeywords.some(sw => topic.toLowerCase().includes(sw));
+
+                let wikiRes = null;
+                // V3.9: Wiki Relevance Check - Don't use wiki if it's about court cases or unrelated history for new tech
+                if (!isPersonal) {
+                    let rawWiki = await searchWikipedia(topic, 4);
+                    if (rawWiki) {
+                        // Filter out "lawsuit", "court", "legal action"
+                        let lowerWiki = rawWiki.toLowerCase();
+                        if (!lowerWiki.includes("sued") && !lowerWiki.includes("lawsuit") && !lowerWiki.includes("legal action") && !lowerWiki.includes("litigation")) {
+                            wikiRes = rawWiki;
+                        } else {
+                            // Fallback for tech items
+                            if (topic.toLowerCase().includes("switch") || topic.toLowerCase().includes("console") || topic.toLowerCase().includes("phone")) {
+                                wikiRes = "This device represents the cutting edge of technology, offering improved performance, graphics, and user experience compared to its predecessors. It is widely anticipated to set a new standard in the industry.";
+                            }
+                        }
+                    }
+                }
+
+                // V3.2: Construct Dynamic Body
+                // If using "Natural" template, wrapper with Opener/Closer/Connector
+                if (hasNatural && WRITING_KNOWLEDGE.openers && WRITING_KNOWLEDGE.closers) {
+                    let opener = WRITING_KNOWLEDGE.openers[Math.floor(Math.random() * WRITING_KNOWLEDGE.openers.length)];
+                    let closer = WRITING_KNOWLEDGE.closers[Math.floor(Math.random() * WRITING_KNOWLEDGE.closers.length)];
+                    let connector = WRITING_KNOWLEDGE.human_connectors ? WRITING_KNOWLEDGE.human_connectors[Math.floor(Math.random() * WRITING_KNOWLEDGE.human_connectors.length)] : "Also,";
+
+                    // Replace standard template logic with assembled paragraph
+                    template = `${opener} ${template} ${connector} the context surrounding this is quite telling.`;
+
+                    // Modify wiki context integration for flow
+                    if (wikiRes && !wikiRes.includes("I couldn't find") && !wikiRes.includes("No specific information")) {
+                        let cleanWiki = wikiRes.replace(/^(Here's what I found: |According to my knowledge base, )/i, "");
+                        template += `\n\n${cleanWiki}\n\n${closer}`;
+                    } else {
+                        template += `\n\n${closer}`;
+                    }
+
+                    // Clear separate context variable since we integrated it
+                    wikiRes = null;
+                }
+
+                let context = "";
+                if (wikiRes && !wikiRes.includes("I couldn't find") && !wikiRes.includes("No specific information")) {
+                    context = "\n\n**Supporting Context:**\n" + wikiRes.replace(/^(Here's what I found: |According to my knowledge base, )/i, "");
+                }
+
+                // Clean Recipient Name (e.g. "a guy named bill" -> "Bill")
+                if (recipient.toLowerCase().startsWith("a guy named ")) recipient = recipient.replace(/^a guy named /i, "");
+                if (recipient.toLowerCase().startsWith("my friend ")) recipient = recipient.replace(/^my friend /i, "");
+                // Capitalize Recipient
+                recipient = recipient.charAt(0).toUpperCase() + recipient.slice(1);
+
+                let letterBody = template.replace(/\[Topic\]/g, capitalizedTopic).replace(/\[Recipient\]/g, recipient);
+
+                return `**Letter regarding ${capitalizedTopic}**\n\n${letterBody}${context}\n\nSincerely,\n[Your Name]`;
+            },
+
+            generateCreativeText: async function (topic, type = "general") {
+                if (type === "persuasive") return await this.generatePersuasive(topic);
+                return await this.generateParagraph(topic);
+            },
+
+            generateParagraph: async function (topic) {
+                let wikiRes = await searchWikipedia(topic, 8);
+                if (!wikiRes) return `I tried to write about ${topic}, but I need more data to be creative.`;
+
+                let cleanText = wikiRes.replace(/^(Here's what I found: |According to my knowledge base, |I learned that |Interestingly, )/i, "");
+
+                return `**Creative Overview: ${topic.toUpperCase()}**\n\n${cleanText} This subject remains one of the most intriguing aspects of our world, constantly inviting us to learn more.`;
+            }
         };
 
         // V3: Professional Python Code Generation (High Logic)
@@ -3547,6 +3944,145 @@ if __name__ == "__main__":
                 "Scalable Dictionary-based Configuration",
                 "Comprehensive Error Handling (Try/Except blocks)"
             ];
+
+            return { code, lang: "python", features };
+        }
+
+        // V3.8: Interactive Python Generator (Games, Tools)
+        function generateInteractivePython(topic, requirements = "") {
+            let code = "";
+            let features = [];
+            let reqLower = requirements.toLowerCase();
+            let topicLower = topic.toLowerCase();
+
+            if (topicLower.includes("game") || reqLower.includes("game")) {
+                // Game Logic
+                if (topicLower.includes("guess") || topicLower.includes("number")) {
+                    code = `import random
+
+def guess_the_number():
+    print("Welcome to Guess the Number!")
+    print("I'm thinking of a number between 1 and 100.")
+    
+    secret_number = random.randint(1, 100)
+    attempts = 0
+    
+    while True:
+        try:
+            guess = int(input("Enter your guess: "))
+            attempts += 1
+            
+            if guess < secret_number:
+                print("Too low! Try again.")
+            elif guess > secret_number:
+                print("Too high! Try again.")
+            else:
+                print(f"Congratulations! You found it in {attempts} attempts!")
+                break
+        except ValueError:
+            print("Please enter a valid number.")
+
+if __name__ == "__main__":
+    guess_the_number()`;
+                    features = ["Interactive Loop", "Input Handling", "Random Logic", "Error Handling"];
+                } else if (topicLower.includes("rock") || topicLower.includes("rps")) {
+                    code = `import random
+
+def rock_paper_scissors():
+    choices = ["rock", "paper", "scissors"]
+    print("Let's play Rock, Paper, Scissors!")
+    
+    while True:
+        user_choice = input("Enter rock, paper, or scissors (or 'quit'): ").lower()
+        if user_choice == 'quit':
+            break
+            
+        if user_choice not in choices:
+            print("Invalid choice, try again.")
+            continue
+            
+        computer_choice = random.choice(choices)
+        print(f"Computer chose: {computer_choice}")
+        
+        if user_choice == computer_choice:
+            print("It's a tie!")
+        elif (user_choice == "rock" and computer_choice == "scissors") or \\
+             (user_choice == "paper" and computer_choice == "rock") or \\
+             (user_choice == "scissors" and computer_choice == "paper"):
+            print("You win!")
+        else:
+            print("Computer wins!")
+
+if __name__ == "__main__":
+    rock_paper_scissors()`;
+                    features = ["Game Loop", "Conditional Logic", "List Management", "Input Validation"];
+                } else {
+                    // Generic Adventure Game
+                    code = `def text_adventure():
+    print("You find yourself in a dark room.")
+    print("There are doors to the left and right.")
+    
+    choice = input("Which way do you go? (left/right): ").lower()
+    
+    if choice == "left":
+        print("You found a treasure chest! You win!")
+    elif choice == "right":
+        print("Oh no! A dragon! Game Over.")
+    else:
+        print("You stumble around in the dark...")
+
+if __name__ == "__main__":
+    text_adventure()`;
+                    features = ["Branching Logic", "User Input", "Story Structure"];
+                }
+            } else if (topicLower.includes("random") || topicLower.includes("generator")) {
+                // RNG Tools
+                code = `import random
+import string
+
+def generate_password(length=12):
+    """Generates a secure random password."""
+    chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(chars) for _ in range(length))
+    return password
+
+def generate_random_list(size=10, start=1, end=100):
+    """Generates a list of random numbers."""
+    return [random.randint(start, end) for _ in range(size)]
+
+if __name__ == "__main__":
+    print(f"Random Password: {generate_password()}")
+    print(f"Random Numbers: {generate_random_list()}")`;
+                features = ["Random Module", "String Manipulation", "Functions", "List Comprehension"];
+            } else {
+                // Default Calculator
+                code = `def calculator():
+    print("Simple Python Calculator")
+    try:
+        num1 = float(input("Enter first number: "))
+        op = input("Enter operator (+, -, *, /): ")
+        num2 = float(input("Enter second number: "))
+        
+        if op == '+':
+            print(f"Result: {num1 + num2}")
+        elif op == '-':
+            print(f"Result: {num1 - num2}")
+        elif op == '*':
+            print(f"Result: {num1 * num2}")
+        elif op == '/':
+            if num2 != 0:
+                print(f"Result: {num1 / num2}")
+            else:
+                print("Error: Cannot divide by zero!")
+        else:
+            print("Invalid operator")
+    except ValueError:
+        print("Invalid input, please enter numbers.")
+
+if __name__ == "__main__":
+    calculator()`;
+                features = ["Arithmetic Operations", "Input Handling", "Error Handling"];
+            }
 
             return { code, lang: "python", features };
         }
@@ -3846,6 +4382,249 @@ if __name__ == "__main__":
             return { code: htmlCode, lang: "html", features };
         }
 
+        // V3.4: Professional JavaScript/Node.js Code Generation
+        function generateJSCode(topic, requirements = "") {
+            let capitalizedTopic = topic.charAt(0).toUpperCase() + topic.slice(1).replace(/[?.,!]/g, "");
+            let reqLower = requirements.toLowerCase();
+            let isNode = reqLower.includes("node") || reqLower.includes("backend") || reqLower.includes("server") || reqLower.includes("api");
+            let isReact = reqLower.includes("react") || reqLower.includes("jsx") || reqLower.includes("component") || reqLower.includes("hook");
+
+            let code = "";
+            let features = [];
+
+            if (isReact) {
+                // V3.7: React Component Generator
+                code = `/**
+ * ${capitalizedTopic} Component
+ * Generated by Guahh AI V3.7
+ */
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Bell, Settings, User } from 'lucide-react'; // Example icons
+
+const ${capitalizedTopic.replace(/\s+/g, '')} = ({ title = "${capitalizedTopic}", theme = "light" }) => {
+    // State Management
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [active, setActive] = useState(false);
+
+    // Effect Hook for initialization
+    useEffect(() => {
+        const loadData = async () => {
+             // Simulate API fetch
+             await new Promise(r => setTimeout(r, 1000));
+             setData({ status: "Ready", value: 42 });
+             setLoading(false);
+        };
+        loadData();
+    }, []);
+
+    // Event Handler
+    const handleAction = () => {
+        setActive(!active);
+        console.log("${capitalizedTopic} activated");
+    };
+
+    if (loading) return <div className="p-4 rounded-xl bg-gray-100 animate-pulse">Loading...</div>;
+
+    return (
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={\`p-6 rounded-2xl shadow-lg \${theme === 'dark' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}\`}
+        >
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+                    {title}
+                </h2>
+                <div className="flex gap-2">
+                    <button className="p-2 hover:bg-gray-200 rounded-full transition-colors"><Settings size={20} /></button>
+                </div>
+            </div>
+
+            <div className="mb-6 p-4 bg-opacity-10 bg-blue-500 rounded-xl border border-blue-500/20">
+                <h3 className="font-semibold mb-2">Status Dashboard</h3>
+                <p>Current State: {active ? "Active" : "Idle"}</p>
+                <p>Data Value: {data?.value}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <button 
+                    onClick={handleAction}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all transform hover:scale-105"
+                >
+                    Toggle State
+                </button>
+                <button className="px-4 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors">
+                    View Details
+                </button>
+            </div>
+        </motion.div>
+    );
+};
+
+export default ${capitalizedTopic.replace(/\s+/g, '')};`;
+
+                features = [
+                    "React Functional Component",
+                    "Hooks (useState, useEffect)",
+                    "Tailwind CSS Styling",
+                    "Framer Motion Animations",
+                    "Lucide React Icons",
+                    "Responsive & Dark Mode Ready"
+                ];
+
+            } else if (isNode) {
+                code = `/**
+ * ${capitalizedTopic} API Service
+ * Generated by Guahh AI V3.4 - Creative Engine
+ * 
+ * Stack: Node.js (Express)
+ */
+
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(helmet()); // Security headers
+app.use(cors()); // Enable CORS
+app.use(morgan('dev')); // Logger
+app.use(express.json());
+
+// Data Store (Simulated)
+const db = new Map();
+
+/**
+ * Core Logic for ${capitalizedTopic}
+ */
+class ${capitalizedTopic.split(' ')[0]}Controller {
+    static async process(data) {
+        // Simulated complex Async Logic
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const processed = {
+                    id: Date.now().toString(36),
+                    timestamp: new Date().toISOString(),
+                    result: "PROCESSED",
+                    meta: data
+                };
+                resolve(processed);
+            }, 100);
+        });
+    }
+}
+
+// Routes
+app.get('/', (req, res) => {
+    res.json({ 
+        service: "${capitalizedTopic}", 
+        status: "active", 
+        version: "1.0.0" 
+    });
+});
+
+app.post('/api/execute', async (req, res) => {
+    try {
+        const result = await ${capitalizedTopic.split(' ')[0]}Controller.process(req.body);
+        db.set(result.id, result);
+        res.status(201).json({ success: true, data: result });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.get('/api/stats', (req, res) => {
+    res.json({ 
+        totalProcessed: db.size, 
+        uptime: process.uptime() 
+    });
+});
+
+// Start Server
+app.listen(PORT, () => {
+    console.log(\`🚀 ${capitalizedTopic} Service running on port \${PORT}\`);
+});
+`;
+                features = [
+                    "Express.js REST API Structure",
+                    "Security Middleware (Helmet)",
+                    "Logging (Morgan)",
+                    "Async/Await Controller Pattern",
+                    "In-memory Data Persistence"
+                ];
+            } else {
+                // Client-side JS Utility
+                code = `/**
+ * ${capitalizedTopic} Client Module
+ * Generated by Guahh AI V3.4 - Creative Engine
+ */
+
+class ${capitalizedTopic.replace(/\s+/g, '')} {
+    constructor(config = {}) {
+        this.config = {
+            debug: false,
+            ...config
+        };
+        this.state = new Proxy({}, {
+            set: (target, key, value) => {
+                console.log(\`[State Update] \${key}: \${value}\`);
+                target[key] = value;
+                return true;
+            }
+        });
+        this.init();
+    }
+
+    init() {
+        if (this.config.debug) console.log("${capitalizedTopic} Initialized");
+        // Setup Event Listeners or Initial Logic
+    }
+
+    /**
+     * Executes primary logic
+     * @param {any} input 
+     * @returns {Promise<any>}
+     */
+    async execute(input) {
+        // High-performance logic simulation
+        return {
+            original: input,
+            transformed: JSON.stringify(input).toUpperCase(),
+            timestamp: Date.now()
+        };
+    }
+
+    render(elementId) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        el.innerHTML = \`<div class="guahh-widget">\${this.config.name || '${capitalizedTopic}'} Active</div>\`;
+    }
+}
+
+// Usage Example
+(async () => {
+    const module = new ${capitalizedTopic.replace(/\s+/g, '')}({ debug: true });
+    const result = await module.execute({ test: "data" });
+    console.log("Result:", result);
+})();
+`;
+                features = [
+                    "Modern ES6+ Class Structure",
+                    "Proxy-based State Management",
+                    "Async Execution Pattern",
+                    "JSDoc Documentation",
+                    "DOM Integration Stub"
+                ];
+            }
+
+            return { code, lang: "javascript", features };
+        }
+
         // V3: Universal Code Scaffolder
         async function generateCode(topic, requirements = "") {
             let reqLower = requirements.toLowerCase();
@@ -3856,22 +4635,30 @@ if __name__ == "__main__":
                 reqLower.includes("site") || reqLower.includes("page") ||
                 reqLower.includes("css") || reqLower.includes("landing");
 
-            const isPython = reqLower.includes("python") || reqLower.includes("script") ||
-                reqLower.includes("backend") || reqLower.includes("automation") ||
-                reqLower.includes("tool");
+            const isJS = reqLower.includes("javascript") || reqLower.includes("js") ||
+                reqLower.includes("node") || reqLower.includes("react") ||
+                reqLower.includes("express") || reqLower.includes("script");
 
-            if (isWeb && !reqLower.includes("python")) {
+            const isPython = reqLower.includes("python") || reqLower.includes("flask") ||
+                reqLower.includes("data") || reqLower.includes("calc");
+
+            if (isWeb && !reqLower.includes("python") && !reqLower.includes("node") && !reqLower.includes("react")) {
                 result = generateHTMLCode(topic, requirements);
-            } else if (isPython) {
-                result = generatePythonCode(topic, requirements);
+            } else if (isJS) {
+                result = generateJSCode(topic, requirements);
             } else {
                 // Default to Python if unclear, but try to be smart
-                result = generatePythonCode(topic, requirements);
+                // V3.8: Check for Games/Interactive requests
+                if (reqLower.includes("game") || reqLower.includes("random") || reqLower.includes("generator") || reqLower.includes("calc")) {
+                    result = generateInteractivePython(topic, requirements);
+                } else {
+                    result = generatePythonCode(topic, requirements);
+                }
             }
 
             let featureList = result.features.map(f => `- ${f}`).join('\n');
 
-            return `I've generated a professional **${result.lang.toUpperCase()}** project for you using my refined V3.3 execution engine!
+            return `I've generated a professional **${result.lang.toUpperCase()}** project for you using my refined V3.4 Creative Engine!
 
 **Implementation Features:**
 ${featureList}
@@ -4823,15 +5610,116 @@ ${result.code}
             }
 
             // 5. PRIORITY: ESSAY / HIGH-QUALITY WRITING (Priority 1)
-            if (cleanPrompt.includes("write an essay") || cleanPrompt.includes("write a paragraph") || (cleanPrompt.includes("write about") && !cleanPrompt.includes("story"))) {
+            // V3.4: Creative Engine Integration
+            // 5. PRIORITY: ESSAY / HIGH-QUALITY WRITING (Priority 1)
+            // V3.4: Creative Engine Integration - Expanded Triggers
+            if (cleanPrompt.includes("write an essay") || cleanPrompt.includes("write a paragraph") || (cleanPrompt.includes("write about") && !cleanPrompt.includes("story")) ||
+                cleanPrompt.includes("write a letter") || cleanPrompt.includes("letter on") || cleanPrompt.includes("persuasive letter")) {
+
                 let topic = cleanPrompt
-                    .replace(/^(can you |please |could you )?write (an |a )?(essay|paragraph)?\s*(about|on|for)?\s+/i, "")
+                    .replace(/^(can you |please |could you )?write (an |a )?(\w+\s+)?(essay|paragraph|letter)?\s*(about|to|on|for)?\s+/i, "")
+                    .replace(/[?.,!]/g, "")
+                    .trim();
+
+                // Extract Recipient for Letters (rough heuristic)
+                let recipient = "To Whom It May Concern";
+                if (cleanPrompt.includes("letter to")) {
+                    let match = cleanPrompt.match(/letter to\s+([\w\s]+?)\s+(about|convincing|asking|regarding)/i);
+                    if (match) recipient = match[1];
+                    // Fallback check: "letter to my parents" -> "parents"
+                    if (cleanPrompt.includes("my parents")) recipient = "Mom and Dad";
+                    if (cleanPrompt.includes("my boss")) recipient = "Boss";
+                    if (cleanPrompt.includes("my teacher")) recipient = "Teacher";
+                }
+
+                if (topic) {
+                    currentTopic = topic;
+
+                    // Route to Letter
+                    if (cleanPrompt.includes("letter")) {
+                        // Advanced NLP for Letter Topic Extraction
+                        // e.g. "letter to a guy named bill asking to borrow money"
+                        // recipient = "a guy named bill" (already extracted above)
+                        // topic currently = "to a guy named bill asking to borrow money" (roughly)
+
+                        // 1. Remove "letter to [Recipient]" from topic
+                        if (recipient !== "To Whom It May Concern") {
+                            // Create a regex to remove the recipient part, handling "to"
+                            let recipientRegex = new RegExp(`(write a )?letter to\\s+${recipient.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*`, 'i');
+                            topic = cleanPrompt.replace(recipientRegex, "").trim();
+                        }
+
+                        // 2. Clean leading "asking to", "about", "convincing", "for"
+                        topic = topic.replace(/^(asking|convincing|persuading|regarding|about|for|to)\s+(to\s+)?/i, "");
+
+                        // 3. Remove "write a letter" if it persists AND "on why i should"
+                        topic = topic.replace(/^(write a letter)\s+(to|about|for|on)?\s*/i, "");
+
+                        let style = "standard";
+                        if (topic.match(/^(on\s+)?why\s+i\s+should\s+(get|buy|have)\s+/i)) {
+                            style = "natural";
+                            topic = topic.replace(/^(on\s+)?why\s+i\s+should\s+(get|buy|have)\s+/i, ""); // Fix: "why i should get a..." -> "a..."
+                        }
+
+                        // 4. Special case: "borrow money" -> keep it simple
+                        if (topic.includes("borrow money")) topic = "borrowing money";
+
+                        // 5. Final clean: "a nintendo switch" -> "Getting a nintendo switch" (for nice reading)
+                        if ((topic.startsWith("a ") || topic.startsWith("an ")) && topic.length < 30) {
+                            topic = "getting " + topic;
+                        }
+
+                        return await CreativeEngine.generateLetter(topic, recipient, style);
+                    }
+
+                    if (cleanPrompt.includes("paragraph") || cleanPrompt.length < 30) {
+                        return await CreativeEngine.generateParagraph(topic);
+                    }
+                    return await generateEssay(topic);
+                }
+            }
+
+            // 5a. PERSUASIVE / CONVINCING TEXT (Creative Engine)
+            // 5a. PERSUASIVE / CONVINCING TEXT (Creative Engine)
+            // Updated to catch "convincing", "persuade", "argument" more robustly AND handle typos like "pursuasive"
+            if (cleanPrompt.includes("persuade") || cleanPrompt.includes("convinc") || cleanPrompt.includes("argument for") || cleanPrompt.includes("why i should") ||
+                cleanPrompt.includes("pursua") || cleanPrompt.includes("persua") || // Handle typos
+                (cleanPrompt.includes("make a") && cleanPrompt.includes("text") && cleanPrompt.includes("why"))) {
+
+                let topic = cleanPrompt
+                    .replace(/^(can you |please )?(make a |write a |generate a )?(pursuasive|persuasive|convincing)?\s*(text|essay|paragraph|argument)?\s*(on|about|for|why|that)?\s+/i, "")
+                    .replace(/[?.,!]/g, "")
+                    .trim();
+
+                // Fix for "why my parents should buy me a ps5" -> "buy me a ps5"
+                if (topic.includes("my parents should")) {
+                    topic = topic.replace("my parents should", "").trim();
+                }
+
+                // Fix for "convincing my parents to..." -> topic should be the action/object
+                if (topic.includes(" to ")) {
+                    let parts = topic.split(" to ");
+                    if (parts.length > 1) {
+                        topic = parts.slice(1).join(" to ");
+                    }
+                }
+
+                if (topic) {
+                    currentTopic = topic;
+                    return await CreativeEngine.generatePersuasive(topic);
+                }
+            }
+
+            // 5b. DEEP TALK / PHILOSOPHY (Creative Engine)
+            if (cleanPrompt.includes("deep talk") || cleanPrompt.includes("philosophize") || cleanPrompt.includes("philosophy about") || cleanPrompt.includes("deep conversation")) {
+                let topic = cleanPrompt
+                    .replace(/^(can we |lets |please )?(have a )?(deep talk|philosophize|chat)\s*(about|on)?\s+/i, "")
                     .replace(/[?.,!]/g, "")
                     .trim();
 
                 if (topic) {
                     currentTopic = topic;
-                    return await generateEssay(topic);
+                    return CreativeEngine.deepTalk(topic);
                 }
             }
 
@@ -4873,6 +5761,8 @@ ${result.code}
                 cleanPrompt.includes("what should i") || cleanPrompt.includes("need ideas") ||
                 cleanPrompt.includes("give me some ideas") || cleanPrompt.includes("creative ideas") ||
                 cleanPrompt.includes("suggest something") || cleanPrompt.includes("any ideas")) {
+
+                // V3.4: Route to Brainstorming
                 return brainstormIdeas(cleanPrompt, 5);
             }
 
@@ -5442,17 +6332,47 @@ ${result.code}
             return html;
         }
 
-        // V3.1: Utility for copying code
+        // V3.2: Robust Copy Utility
         function copyToClipboard(elementId, btn) {
-            let code = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                btn.innerText = "Copied!";
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.innerText = "Copy";
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
+            let codeText = document.getElementById(elementId).textContent; // Use textContent for raw text
+
+            // Try standard API first
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(codeText).then(() => {
+                    showCopyFeedback(btn);
+                }).catch(() => {
+                    fallbackCopy(codeText, btn);
+                });
+            } else {
+                fallbackCopy(codeText, btn);
+            }
+        }
+
+        function fallbackCopy(text, btn) {
+            let textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showCopyFeedback(btn);
+            } catch (err) {
+                btn.innerText = "Error";
+                setTimeout(() => btn.innerText = "Copy", 2000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyFeedback(btn) {
+            btn.innerText = "Copied!";
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerText = "Copy";
+                btn.classList.remove('copied');
+            }, 2000);
         }
 
         // Boot
@@ -5462,7 +6382,7 @@ ${result.code}
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 3.1</strong>";
+                intro.innerHTML = "<strong>Guahh AI 3.2</strong>";
                 chatWindow.appendChild(intro);
             }, 500);
         };
