@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI 2.7</title>
+    <title>Guahh AI 2.8</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -369,7 +369,7 @@
     </div>
 
     <header>
-        <h1>GUAHH AI 2.7</h1>
+        <h1>GUAHH AI 2.8</h1>
         <div class="status" id="model-status">Loading English Dictionary...</div>
         <button class="new-chat-btn" onclick="clearMemory()">+</button>
     </header>
@@ -1550,11 +1550,11 @@
         // Topic-based response templates for varied answers
         const RESPONSE_TEMPLATES = {
             greeting: [
-                "Hello! I'm Guahh AI v2.6, now with advanced sentence generation. What would you like to explore today?",
+                "Hello! I'm Guahh AI v2.8, now with advanced sentence generation. What would you like to explore today?",
                 "Hi there! I'm ready to chat, answer questions, and share knowledge. What's on your mind?",
                 "Hey! Great to see you. I can help with definitions, stories, facts, or just have a conversation. What interests you?",
                 "Hello! I'm here to help you learn and discover. Ask me anything!",
-                "Hi! Welcome to Guahh AI 2.6 with enhanced language understanding. Let's explore ideas together!"
+                "Hi! Welcome to Guahh AI 2.8 with enhanced language understanding. Let's explore ideas together!"
             ],
             howAreYou: [
                 "I'm functioning at optimal capacity! Thanks for asking. How can I help you today?",
@@ -2368,7 +2368,378 @@
             "soy sauce": "Soy sauce is a liquid condiment of Chinese origin, made from fermented soybeans, roasted grain, brine, and Aspergillus molds.",
             "condiment": "A condiment is a sauce, dressing, or seasoning added to food to enhance its flavor, such as ketchup, mustard, or mayonnaise.",
             "umami": "Umami is one of the five basic tastes, often described as savory or meaty, found in foods like aged cheese, soy sauce, and tomatoes.",
-            "monosodium glutamate": "Monosodium glutamate (MSG) is a flavor enhancer derived from glutamic acid, commonly used in Asian cuisine."
+            "monosodium glutamate": "Monosodium glutamate (MSG) is a flavor enhancer derived from glutamic acid, commonly used in Asian cuisine.",
+            "tahuarí amarillo": "Tahuarí amarillo is a tree species known for its yellow flowers and medicinal bark.",
+            "mirosław chojecki": "Mirosław Chojecki is a Polish publisher and social activist, prominent in the democratic opposition in the People's Republic of Poland.",
+            "st. john's literary institute": "St. John's Literary Institute is a historical educational institution.",
+            "ice hockey in africa": "Ice hockey in Africa is a growing sport with several national teams and regional competitions.",
+            "st john's literary institute": "St. John's Literary Institute (also known as St John's Literary Institute) is a historical educational institution.",
+            "solomon-modern locomotives": "Solomon-Modern Locomotives is a reference to historical or modern locomotive designs.",
+            "harry-edwards-healer": "Harry Edwards was a famous English spiritual healer.",
+            "ice hockey in oceania": "Ice hockey in Oceania is primarily played in Australia and New Zealand, which have national teams.",
+            "south indian immigration towards sri lanka": "The immigration of South Indians to Sri Lanka is a significant historical and demographic event.",
+            "hypnotiq (ewa sonnet album)": "Hypnotiq is a music album by Ewa Sonnet.",
+            "yael tal": "Yael Tal is a contemporary figure or researcher.",
+            "holding companies of switzerland": "Switzerland is home to many prominent international holding companies.",
+            "lancia ro (bus)": "The Lancia Ro was a versatile Italian bus/truck model produced in the 20th century.",
+            "xuanzang (fictional character)": "Xuanzang is a central character in the classic Chinese novel Journey to the West.",
+            "australia fh squad 2012 summer olympics": "The Australia men's national field hockey team competed in the 2012 Summer Olympics.",
+            "rté transmission network ltd": "RTÉ Transmission Network Ltd (now 2rn) is the provider of broadcast transmission services in Ireland.",
+            "all our love": "All Our Love is a title used for various artistic works or albums.",
+            "k. subramaniam": "K. Subramaniam was a significant figure in Indian film or public life.",
+            "ge dash 9 series": "The GE Dash 9 Series is a line of diesel-electric locomotives built by GE Transportation Systems.",
+            "beautiful rain": "Beautiful Rain is a title associated with music or drama.",
+            "fedatheemblemofjusticesnes": "Feda: The Emblem of Justice is a tactical role-playing game released for the SNES.",
+            "climatecars": "Climatecars was a London-based private hire car service using hybrid vehicles.",
+            "shams al-daula": "Shams al-Daula was a Buyid ruler of Hamadan in the 11th century.",
+            "marquessates in the peerage of ireland": "The Peerage of Ireland includes various historical and extant marquessates.",
+            "great britain fh squad 2012 summer olympics": "The Great Britain men's national field hockey team competed in the 2012 Summer Olympics.",
+            "vikram singh dhillon": "Vikram Singh Dhillon is a contemporary figure in public life or business.",
+            "sama' al-daula": "Sama' al-Daula was a Buyid ruler of Hamadan.",
+            "naval auxiliary air station jacksonville": "Naval Auxiliary Air Station Jacksonville was a United States Navy airfield during WWII.",
+            "consolidated pb4y-1": "The Consolidated PB4Y-1 Liberator was a maritime patrol aircraft used by the US Navy.",
+            "extinct marquessates in the peerage of ireland": "Many marquessates in the Peerage of Ireland have become extinct over time.",
+            "orlando colón": "Orlando Colón is a Puerto Rican professional wrestler.",
+            "walter neurath memorial lecture": "The Walter Neurath Memorial Lecture is an annual lecture on art history.",
+            "qawam al-daula": "Qawam al-Daula was a Buyid prince and governor of Kerman.",
+            "48, xxxy": "48, XXXY is a rare chromosomal condition in males.",
+            "anatole carignan": "Anatole Carignan was a Canadian politician from Quebec.",
+            "vyagrapada": "Vyagrapada was a legendary saint in Hindu mythology, known for his tiger feet.",
+            "list of biscuits": "There are hundreds of varieties of biscuits worldwide, including digestive, shortbread, and ginger nuts.",
+            "australoricus oculatus": "Australoricus oculatus is a species of Loricifera, tiny marine animals.",
+            "buyid dynasty": "The Buyid (or Buwayhid) dynasty was a Shi'a Iranian dynasty of Dailamite origin.",
+            "velma abbott": "Velma Abbott is a historical or public figure.",
+            "mount barker football club": "Mount Barker Football Club is an Australian rules football club in South Australia.",
+            "australasian business intelligence": "Australasian Business Intelligence is a source for regional business and economic data.",
+            "xxxy syndrome": "XXXY syndrome is a chromosomal variation where a male has two extra X chromosomes.",
+            "women's australian open 2012": "The 2012 Women's Australian Open was won by Victoria Azarenka.",
+            "irish squash federation": "Irish Squash (formerly the Irish Squash Federation) is the national governing body for squash in Ireland.",
+            "men's australian open 2012": "The 2012 Men's Australian Open was won by Novak Djokovic.",
+            "logo irish squash": "The logo of Irish Squash represents the national governing body of the sport in Ireland.",
+            "&me": "&ME is a German house music producer and DJ.",
+            "conflicts in 1726": "Several regional conflicts occurred in 1726, including tensions in the Baltic and India.",
+            "farnearfields-usp-4998112-2": "This is a reference to a specific patent or technical diagram in electromagnetics.",
+            "south africa fh squad 2012 summer olympics": "The South Africa men's national field hockey team competed in the 2012 Summer Olympics.",
+            "andriy hitchenko": "Andriy Hitchenko is a Ukrainian professional footballer.",
+            "hope farm, ellesmere port": "Hope Farm is a residential area in Ellesmere Port, Cheshire.",
+            "jjjssswiki": "Jjjssswiki is a username associated with Wikipedia contributions.",
+            "spain fh squad 2012 summer olympics": "The Spain men's national field hockey team competed in the 2012 Summer Olympics.",
+            "bahrani wikipedians": "Bahrani Wikipedians are a community of contributors originating from or living in Bahrain.",
+            "camlad": "The Camlad is a small river flowing through Shropshire and Wales.",
+            "theodore roosevelt high school (washington d.c.)": "Theodore Roosevelt High School is a public high school in Washington D.C.",
+            "stevo karapandža": "Stevo Karapandža is a famous Croatian chef known for his iconic cooking show.",
+            "fictional characters by behavior": "Wikipedia categorizes fictional characters by their traits, such as anti-heroes or villains.",
+            "kurdish national council": "The Kurdish National Council is a political organization for Kurds in Syria.",
+            "glazed (mystery machine album)": "Glazed is the debut album by the Canadian alternative rock band Mystery Machine.",
+            "belgium fh squad 2012 summer olympics": "The Belgium men's national field hockey team competed in the 2012 Summer Olympics.",
+            "kb (rapper)": "KB is an American Christian hip hop artist and songwriter.",
+            "education in chula vista, california": "Chula Vista has a diverse education system ranging from primary schools to community colleges.",
+            "belgium national field hockey team navigational boxes": "Navigation boxes for the Belgian national field hockey team on Wikipedia.",
+            "rearrest electrocardiogram": "ECG signals can demonstrate electrical activity during cardiac rearrest.",
+            "stevo karapandza": "Stevo Karapandza (also Stevo Karapandža) is a famous Croatian chef.",
+            "narbonne-portbou railway diagram": "A diagrammatic representation of the railway line between Narbonne and Portbou.",
+            "germany fh squad 2012 summer olympics": "The Germany men's national field hockey team competed in the 2012 Summer Olympics.",
+            "united nations general assembly resolution 43/176": "Resolution 43/176 (1988) affirmed the need for an international peace conference on the Middle East.",
+            "t&csd2tsscreenshot": "A screenshot related to Train & Car Simulator 2 or similar software.",
+            "education in el cajon, california": "El Cajon is served by various school districts and the Grossmont-Cuyamaca Community College District.",
+            "india fh squad 2012 summer olympics": "The India men's national field hockey team competed in the 2012 Summer Olympics.",
+            "conbravo!": "ConBravo! was an annual gaming and fan convention held in Hamilton, Ontario.",
+            "india national field hockey team navigational boxes": "Navigation boxes for the Indian national field hockey team on Wikipedia.",
+            "insidemylove": "Inside My Love is a classic soul song by Minnie Riperton.",
+            "stripe-headed brush finch": "The stripe-headed brush finch is a bird species found in South America.",
+            "javier oliete": "Javier Oliete is a retired Spanish footballer.",
+            "francisco javier oliete": "Francisco Javier Oliete Stabile is a Spanish former professional footballer.",
+            "william rygge": "William Rygge was a historical figure or academic.",
+            "netherlands fh squad 2012 summer olympics": "The Netherlands men's national field hockey team competed in the 2012 Summer Olympics.",
+            "southern cross feature film company": "The Southern Cross Feature Film Company was an early Australian film production company.",
+            "booty shorts": "Booty shorts are a style of very short trousers for women.",
+            "manchester interdisciplinary biocentre": "The Manchester Interdisciplinary Biocentre (MIB) is a research institute at the University of Manchester.",
+            "sterlingsharpeend2endscreenshot": "A screenshot associated with Sterling Sharpe: End2End or similar media.",
+            "conbravo": "ConBravo (ConBravo!) was a gaming convention in Canada.",
+            "zmnd": "ZMND is a technical or organizational acronym.",
+            "german submarine u-208": "U-208 was a German Type VIIC submarine built for WWII.",
+            "francesco massaro": "Francesco Massaro is an Italian film director and screenwriter.",
+            "adrien louis de bonnières, duke of guînes": "The Duke of Guînes was a French diplomat and general of the 18th century.",
+            "presidency building": "The term can refer to several government buildings, notably in Bosnia and Herzegovina.",
+            "henri de gondi, duke of retz": "Henri de Gondi was a French nobleman and cardinal in the early 17th century.",
+            "charles de gontaut, duke of biron": "Charles de Gontaut was a French soldier and diplomat who was executed for treason in 1602.",
+            "wikipedia:today's featured article/july 25, 2012": "The featured article on Wikipedia for July 25, 2012.",
+            "united states fiscal cliff": "The fiscal cliff was a situation in 2012 regarding tax increases and spending cuts.",
+            "london irish symphony orchestra": "The London Irish Symphony Orchestra is a musical ensemble based in London.",
+            "2012–13 canberra cavalry season": "The 2012–13 season was the Canberra Cavalry's third season in the Australian Baseball League.",
+            "campaign for social science": "The Campaign for Social Science promotes the value of social sciences in public life in the UK.",
+            "françois de neufville, duke of villeroi": "The Duke of Villeroi was a French general and courtier.",
+            "john chambers (1839?-1903)": "John Chambers was a New Zealand engineer and businessman.",
+            "vidurashwaththa": "Vidurashwatha is a historical village in Karnataka, India, associated with the freedom struggle.",
+            "olympics football": "Football has been a part of the Summer Olympic Games as a medal sport at every edition except 1896 and 1932.",
+            "camille d'hostun, duke of tallard": "The Duke of Tallard was a French general and diplomat of the 18th century.",
+            "south korea fh squad 2012 summer olympics": "The South Korea men's national field hockey team competed in the 2012 Summer Olympics.",
+            "south korea national field hockey team navigational boxes": "Navigation boxes for the South Korean national field hockey team on Wikipedia.",
+            "jireček": "Jireček is a surname associated with prominent Czech historians and politicians.",
+            "k17ha": "K17HA is a low-power television station or technical identifier.",
+            "tomorrow never knows (beatles album)": "Tomorrow Never Knows is a compilation album and a famous song by the Beatles.",
+            "k29az-d": "K29AZ-D is a digital television station identifier.",
+            "fiscal cliff crisis": "The fiscal cliff crisis was a 2012 budgetary impasse in the United States.",
+            "tbf5 protein domain": "Tbf5 is a protein domain found in molecular biology.",
+            "the beatles - tomorrow never knows cover": "The cover art associated with the Beatles' album or song Tomorrow Never Knows.",
+            "venturicidin": "Venturicidin is an antibiotic used in biochemical research.",
+            "italian squash federation": "The Italian Squash Federation (FIGS) is the governing body for squash in Italy.",
+            "logo federazione italiana giuoco squash": "The logo of the Italian Squash Federation.",
+            "projectobx": "ProjectOBX is a contemporary project or technical initiative.",
+            "l'orient le jour": "L'Orient-Le Jour is the leading French-language daily newspaper in Lebanon.",
+            "laraghbryan": "Laraghbryan is a townland in County Kildare, Ireland.",
+            "plaza rakyat office tower": "The Plaza Rakyat office tower is a skyscraper project in Kuala Lumpur, Malaysia.",
+            "körber paperlink": "Körber PaperLink is a company providing solutions for the tissue and paper industry.",
+            "ifttt": "IFTTT (If This Then That) is a web-based service that allows users to create chains of conditional statements.",
+            "chairmen of the kursk oblast duma": "The leaders of the regional parliament in Kursk Oblast, Russia.",
+            "belgium fhw squad 2012 summer olympics": "The Belgium women's national field hockey team competed in the 2012 Summer Olympics.",
+            "k50fd-d": "K50FD-D is a television station identifier.",
+            "bensheim-auerbach station": "Bensheim-Auerbach is a railway station in Hesse, Germany.",
+            "china fhw squad 2012 summer olympics": "The China women's national field hockey team competed in the 2012 Summer Olympics.",
+            "china national field hockey team navigational boxes": "Navigation boxes for the Chinese national field hockey team on Wikipedia.",
+            "squash in ireland": "Squash is a popular indoor racket sport in Ireland with a competitive national circuit.",
+            "k36dp-d": "K36DP-D is a television station identifier.",
+            "viacom television stations": "Viacom Television Stations was a group of broadcast stations owned by Viacom.",
+            "claude victor perrin, duke of belluno": "Claude Victor Perrin was a Marshal of the Empire during the Napoleonic Wars.",
+            "henry knight (rugby league)": "Henry Knight was a rugby league player in the 20th century.",
+            "syrian media coverage of the 2011–2012 syrian uprising": "The portrayal of the Syrian uprising in national and international media.",
+            "lqfb": "LQFB (LiquidFeedback) is a software for political opinion formation and decision-making.",
+            "chelidonic acid": "Chelidonic acid is a chemical compound found in plants like Chelidonium majus.",
+            "united states invitational young physicists tournament": "The USIYPT is an annual physics competition for high school students.",
+            "julie goerges": "Julia (Julie) Görges is a retired German professional tennis player.",
+            "great britain fhw squad 2012 summer olympics": "The Great Britain women's national field hockey team competed in the 2012 Summer Olympics.",
+            "bolshoye murashkino": "Bolshoye Murashkino is an urban-type settlement in Nizhny Novgorod Oblast, Russia.",
+            "ali karimi (born 1993)": "Ali Karimi is an Iranian professional footballer born in 1993.",
+            "c7h4o6": "C7H4O6 is the molecular formula for Chelidonic acid.",
+            "white roding, essex": "White Roding is a village in the Uttlesford district of Essex.",
+            "margaret roding, essex": "Margaret Roding is a village in the Uttlesford district of Essex.",
+            "emirate of mosul": "The Emirate of Mosul was a historical state in northern Iraq.",
+            "leaden roding, essex": "Leaden Roding is a village in the Uttlesford district of Essex.",
+            "parotosuchus": "Parotosuchus is an extinct genus of capitosaurid temnospondyl amphibian from the Triassic.",
+            "history of mosul": "Mosul is one of the oldest cities in the world, with a rich history spanning millennia.",
+            "il padiglione delle meraviglie": "Il padiglione delle meraviglie is a play by the Italian writer Ettore Petrolini.",
+            "k48mp-d": "K48MP-D is a television station identifier.",
+            "ccfd-terre solidaire": "CCFD-Terre Solidaire is a prominent French international development NGO.",
+            "thomas craule": "Thomas Craule was a 15th-century clergyman and diplomat.",
+            "josep montserrat i torrents": "Josep Montserrat i Torrents is a Spanish philosopher and historian.",
+            "international reactions to the 2011–2012 syrian uprising": "The global diplomatic response to the early stages of the Syrian civil war.",
+            "john c. hitt library": "The John C. Hitt Library is the main library at the University of Central Florida.",
+            "bol'shemurashkinsky district": "Bol'shemurashkinsky District is a municipal district in Nizhny Novgorod Oblast.",
+            "japan fhw squad 2012 summer olympics": "The Japan women's national field hockey team competed in the 2012 Summer Olympics.",
+            "antwerp roller derby": "Antwerp Roller Derby is a flat-track roller derby league in Antwerp, Belgium.",
+            "tensai (wrestler)": "Tensai is a ring name of American professional wrestler Matt Bloom.",
+            "bolshemurashkinsky raion": "Bolshemurashkinsky District is an administrative division in Russia.",
+            "russia's role in the syrian uprising": "Russia provided significant diplomatic and military support to the Syrian government.",
+            "k46ak-d": "K46AK-D is a television station identifier.",
+            "artemisiospiza belli": "Artemisiospiza belli is the scientific name for the Bell's sparrow.",
+            "la fórmula (album)": "La Fórmula is a studio album by Zion & Lennox and various artists.",
+            "joe ironside": "Joe Ironside is an English professional footballer who plays as a striker.",
+            "jo jo the dog faced boy": "Jo-Jo the Dog-Faced Boy was a famous Russian sideshow performer.",
+            "olrd": "OLRD is an acronym for specific regional or technical entities.",
+            "java pacific film": "Java Pacific Film was a film production company in colonial Indonesia.",
+            "artemisiospiza": "Artemisiospiza is a genus of birds in the Passerellidae family.",
+            "bolshemurashkinskaya": "Bolshemurashkinskaya refers to something originating from Bolshoye Murashkino.",
+            "francisco salva campillo": "Francisco Salvá Campillo was a Spanish physician and physicist who pioneered the electric telegraph.",
+            "cliidae": "Cliidae is a family of sea butterflies, which are small marine gastropods.",
+            "el paso ysleta port of entry": "The Ysleta Port of Entry is one of the major ports of entry between El Paso and Ciudad Juárez.",
+            "alphonse sisca": "Alphonse Sisca was a historical figure in criminal or public history.",
+            "gabre gabric-calvesi": "Gabre Gabric-Calvesi was a Croatian-born Italian discus thrower.",
+            "human rights violations during the syrian uprising": "Numerous reports detailed systemic rights abuses during the conflict.",
+            "vladan giljen": "Vladan Giljen is a Montenegrin professional football goalkeeper.",
+            "novels set in richmond, virginia": "Many notable works of fiction are set in the historic capital of Virginia.",
+            "shane gray (camp rock)": "Shane Gray is a main character in the Disney Channel movie Camp Rock.",
+            "netherlands fhw squad 2012 summer olympics": "The Netherlands women's national field hockey team won gold at the 2012 Olympics.",
+            "route de quiers": "Route de Quiers is a location or road in France.",
+            "j. douglas cunningham": "J. Douglas Cunningham was a member of the Ontario Superior Court of Justice.",
+            "the world economy (journal)": "The World Economy is a peer-reviewed academic journal covering international economics.",
+            "indian number system": "The Indian number system uses lakhs and crores to denote large numbers.",
+            "k36hv-d": "K36HV-D is a television station identifier.",
+            "buturlino": "Buturlino is an urban-type settlement in Nizhny Novgorod Oblast, Russia.",
+            "bhargavi chirmule": "Bhargavi Chirmule is an Indian actress who works in Marathi cinema.",
+            "wildfly": "WildFly (formerly JBoss AS) is a free and open-source application server authored by JBoss.",
+            "jboss application server": "JBoss AS is a runtime for Java EE applications, now known as WildFly.",
+            "ottoz family": "The Ottoz family is a prominent Italian family of athletes.",
+            "south korea fhw squad 2012 summer olympics": "The South Korea women's national field hockey team competed in the 2012 Summer Olympics.",
+            "lorković-vokić coup": "The Lorković–Vokić coup was a 1944 plot to switch Croatia to the Allied side in WWII.",
+            "knockmoyle transmitting station": "Knockmoyle is a broadcast transmission site in Northern Ireland.",
+            "william talbot, bt.": "William Talbot was a baronet in the Peerage of Ireland.",
+            "beverage brands": "Beverage Brands was a British company known for producing RTD alcoholic drinks like WKD.",
+            "syrian reactions to the 2011–2012 syrian uprising": "The varied response within Syrian society to the early protests and conflict.",
+            "green, green grass of home (album)": "Green, Green Grass of Home is a studio album by Tom Jones.",
+            "oxford realism": "Oxford realism refers to several schools of thought in philosophy or law associated with Oxford.",
+            "analyte health, inc.": "Analyte Health is a healthcare technology company specializing in online diagnostics.",
+            "narbonne–portbou railway": "The Narbonne–Portbou railway is an important international link between France and Spain.",
+            "buturlinsky district": "Buturlinsky District is a municipal district in Nizhny Novgorod Oblast.",
+            "living the secret": "Living the Secret is a title of an artistic or self-help work.",
+            "kake 10": "KAKE 10 is an ABC-affiliated television station in Wichita, Kansas.",
+            "homelandtvseries": "Homeland is an American spy thriller television series developed by Howard Gordon and Alex Gansa.",
+            "refugees of the 2011–2012 syrian uprising": "Millions of Syrians were displaced internally and internationally by the conflict.",
+            "caitlyn gellar (camp rock)": "Caitlyn Gellar is a character in the Disney Channel movie Camp Rock.",
+            "argentina fhw squad 2012 summer olympics": "The Argentina women's national field hockey team (Las Leonas) won silver at the 2012 Olympics.",
+            "heterophobia": "Heterophobia refers to the irrational fear or dislike of heterosexual people.",
+            "buffy the musical": "Once More, with Feeling is the musical episode of the series Buffy the Vampire Slayer.",
+            "sectarianism in the 2011–2012 syrian uprising": "The conflict increasingly took on sectarian dimensions as it escalated.",
+            "valdiviezo": "Valdiviezo is a Spanish-language surname.",
+            "k48ma-d": "K48MA-D is a television station identifier.",
+            "shake it up: made in japan (film)": "Shake It Up: Made in Japan is a television film based on the Disney Channel series.",
+            "kennesrin": "Kennesrin (or Qenneshrin) was a major Christian center in northern Syria.",
+            "sabina jeschke": "Sabina Jeschke is a German professor of mechanical engineering.",
+            "valdma": "Valdma is an Estonian surname.",
+            "vasilyevsky district": "Several administrative districts in Russia bear the name Vasilyevsky.",
+            "valdobrev": "Valdobrev is a surname or Bulgarian name variation.",
+            "indradyumna": "Indradyumna was a legendary king of the Malava kingdom in Hindu mythology.",
+            "kurdish participation in the 2011–2012 syrian uprising": "Kurdish groups played a complex role in the early and middle stages of the Syrian conflict.",
+            "albomycin": "Albomycins are a group of sideromycin antibiotics.",
+            "valdor": "Valdor is a surname or place name.",
+            "valdov": "Valdov is a surname variation.",
+            "tcl1 mtcp1 protein domain": "TCL1 and MTCP1 are protein domains involved in T-cell leukemia.",
+            "vălean": "Vălean is a Romanian surname.",
+            "k35hu-d": "K35HU-D is a television station identifier.",
+            "taliyara": "Taliyara is a community or geographical identifier.",
+            "valebrokk": "Valebrokk is a Norwegian surname.",
+            "valeeva": "Valeeva is a common Tatar or Russian surname.",
+            "valega": "Valega is a surname or location in Portugal.",
+            "calmasuchus": "Calmasuchus is an extinct genus of capitosaurid temnospondyl from the Triassic of Spain.",
+            "valeika": "Valeika is a surname.",
+            "stegocephali": "Stegocephali is a general name for the earliest tetrapods and their extinct relatives.",
+            "germany fhw squad 2012 summer olympics": "The Germany women's national field hockey team competed in the 2012 Summer Olympics.",
+            "roskilde gasworks": "Roskilde Gasworks is a historical industrial site in Denmark.",
+            "facundo campazzo": "Facundo Campazzo is an Argentine professional basketball player.",
+            "valek": "Valek is a surname of Slavic origin.",
+            "k44av-d": "K44AV-D is a television station identifier.",
+            "válek": "Válek is a Czech surname.",
+            "váleková": "Váleková is the feminine form of the Czech surname Válek.",
+            "clio (gastropod)": "Clio is a genus of small, floating sea snails, also known as sea butterflies.",
+            "south africa fhw squad 2012 summer olympics": "The South Africa women's national field hockey team competed in the 2012 Summer Olympics.",
+            "roman army mutiny in 342 bc": "A historical mutiny of soldiers in the Roman Republic.",
+            "svrg": "SVRG can refer to several regional or technical organizations.",
+            "tereza čapková": "Tereza Čapková is a Czech distance runner.",
+            "tereza capkova": "Tereza Capkova (also Tereza Čapková) is a Czech distance runner.",
+            "roller derby leagues in belgium": "Belgium has a vibrant roller derby scene with multiple competing leagues.",
+            "united states fhw squad 2012 summer olympics": "The US women's national field hockey team competed in the 2012 Summer Olympics.",
+            "richard alexander rodgers": "Richard Alexander Rodgers is a name often associated with legal or business figures.",
+            "true law titles": "True Law is a reference to historical or legal documents.",
+            "marko špica": "Marko Špica is a Serbian professional basketball player.",
+            "prof. green": "Professor Green is an English rapper, singer, and songwriter.",
+            "doubochinski's microphysics quantum effect": "Doubochinski's effect is a phenomenon in non-linear oscillation.",
+            "business and industry award recipients": "Recognition for excellence in the commercial and industrial sectors.",
+            "ncr 21": "NCR 21 is a historical computer model produced by NCR.",
+            "scottish communities league cup": "The Scottish Communities League Cup was the name of the Scottish League Cup for the 2011–2013 seasons.",
+            "graciele herrmann": "Graciele Herrmann is a Brazilian competitive swimmer.",
+            "k34ke-d": "K34KE-D is a television station identifier.",
+            "elpistostege": "Elpistostege is an extinct genus of tetrapodomorph fish from the Late Devonian.",
+            "jean de boyssières": "Jean de Boyssières was a French poet of the late 16th century.",
+            "elpistostegidae": "Elpistostegidae is an extinct family of tetrapodomorph fish.",
+            "b and m": "B&M (B&M European Value Retail S.A.) is a variety store chain operating in the United Kingdom.",
+            "muslim brotherhood conspiracy theories": "Various theories regarding the influence and goals of the Muslim Brotherhood.",
+            "b1438 road": "The B1438 is a road in Suffolk, England.",
+            "k25ks-d": "K25KS-D is a television station identifier.",
+            "novels set in charlotte, north carolina": "Several notable novels are set in North Carolina's largest city.",
+            "frame construction": "Frame construction is a building technique based on a structural frame of timber or metal.",
+            "chuffie alexander": "Chuffy Alexander was a historical or sporting figure.",
+            "izzy the islander": "Izzy the Islander is the mascot of Texas A&M University–Corpus Christi.",
+            "chuffy alexander": "Chuffy Alexander (also Chuffie Alexander) was a figures in sports or history.",
+            "casualties of the syrian civil war": "Hundreds of thousands of people have been killed since the conflict began in 2011.",
+            "caesar de choiseul, duke of choiseul": "César de Choiseul was a French general and diplomat of the 17th century.",
+            "boston caucus": "The Boston Caucus was a political organization in colonial Boston.",
+            "timeline of leipzig": "Leipzig has a rich history as a trade city and center of music and education.",
+            "louis de rouvroy, duke of saint-simon": "The Duke of Saint-Simon was a famous French diplomat and writer of memoirs.",
+            "grenada college": "Grenada College was a historical educational institution in Mississippi.",
+            "pernikoff brothers": "The Pernikoff Brothers are an American indie folk-rock duo.",
+            "john rossant": "John Rossant is an American journalist and event organizer, founder of the New Cities Foundation.",
+            "geography of the czh republic by region": "The Czech Republic is divided into 14 administrative regions, each with distinct geography.",
+            "bréhon tower": "Bréhon Tower is a 19th-century fortification on Bréhon rock in the Channel Islands.",
+            "inpp4b": "INPP4B is a protein-coding gene associated with several types of cancer.",
+            "popstars: der weg ist das ziel": "Popstars: Der Weg ist das Ziel was a season of the German talent show Popstars.",
+            "yalobusha female institute": "The Yalobusha Female Institute was a 19th-century educational institution for women.",
+            "james holmes (mass murderer)": "James Holmes is an American mass murderer responsible for the 2012 Aurora shooting.",
+            "wheelock college faculty": "Notable educators who have served at Wheelock College in Boston.",
+            "k26fv-d": "K26FV-D is a television station identifier.",
+            "emma mercer institute": "The Emma Mercer Institute was a historical educational facility.",
+            "old move": "Old Move is a technical term or reference on Wikipedia.",
+            "augie wolf": "Augie Wolf is an American former track and field athlete.",
+            "grenada female college": "Grenada Female College was a historical college in Mississippi.",
+            "mpa": "MPA can refer to Megapascal (unit of pressure) or various organizations.",
+            "beach heat miami": "Beach Heat Miami is a television drama series.",
+            "geechie meredith": "Geechie Meredith was an American baseball player in the Negro Leagues.",
+            "buildings and structures in the central bohemian region": "The Central Bohemian Region of the Czech Republic features numerous historic castles and churches.",
+            "tourist attractions in the central bohemian region": "Popular sites include Karlštejn Castle and the town of Kutná Hora.",
+            "buford meredith": "Buford Meredith was an American athlete or public figure.",
+            "buildings and structures in the czech republic by region": "Architectural landmarks organized by the administrative regions of the Czech Republic.",
+            "tourist attractions in the czech republic by region": "Significant landmarks found across the different regions of the Czech Republic.",
+            "rhode island rampage": "The Rhode Island Rampage was a soccer team in the USL Premier Development League.",
+            "columbus cranes": "The Columbus Cranes was an ultimate frisbee team.",
+            "detroit mechanix": "The Detroit Mechanix is a professional ultimate team based in Pontiac, Michigan.",
+            "indianapolis alleycats": "The Indianapolis AlleyCats is a professional ultimate team in the AUDL.",
+            "historic house museums in the czech republic": "Many former aristocratic residences in the Czech Republic are now open to the public as museums.",
+            "buffalo hunters": "Buffalo hunters were individuals who hunted American bison in the 19th century.",
+            "k46fl-d": "K46FL-D is a television station identifier.",
+            "rural localities in the altai republic": "The Altai Republic in Russia has numerous small villages (auls) in its mountainous terrain.",
+            "gérard desbois": "Gérard Desbois is a French aviation engineer and author.",
+            "fraternities and sororities at georgia institute of technology": "Georgia Tech has a large and active Greek life community.",
+            "history museums in the czech republic": "The country has a wealth of museums dedicated to its complex and storied past.",
+            "olympics handball team navigational boxes": "Navigation boxes for Olympic handball teams on Wikipedia.",
+            "2012 summer olympics handball squad navigational boxes": "Squad lists for handball teams at the 2012 London Olympics.",
+            "charbel": "Saint Charbel Makhlouf was a Maronite monk and priest from Lebanon.",
+            "entrezgene = 8821": "EntrezGene 8821 refers to the NFE2L2 gene in the human genome.",
+            "primer conquista del desierto": "The Conquest of the Desert was a military campaign in Argentina in the 1870s.",
+            "k28mj-d": "K28MJ-D is a television station identifier.",
+            "crystal dashboard design": "Crystal is a design language or theme for software dashboards.",
+            "computer machine learning": "Machine learning is a field of AI that focuses on building systems that learn from data.",
+            "abbé goujet": "Claude-Pierre Goujet (Abbé Goujet) was a French historian and cleric of the 18th century.",
+            "scorporo": "Scorporo was a mixed electoral system used in Italy between 1993 and 2005.",
+            "sean furey": "Sean Furey is an American javelin thrower and Olympian.",
+            "indian staff college": "The Defence Services Staff College (DSSC) is a tri-service training institution in India.",
+            "charles zomphier": "Charles Zomphier is a contemporary figure in sports or public life.",
+            "ivan opačak": "Ivan Opačak is a Bosnian professional basketball player.",
+            "tayyar al-tawhid": "The Arab Unification Party (Tayyar al-Tawhid) is a political party in Lebanon.",
+            "weaam wahhab": "Wiam Wahhab is a Lebanese politician and leader of the Arab Unification Party.",
+            "argentina handball squad 2012 summer olympics": "The Argentina men's national handball team competed in the 2012 Summer Olympics.",
+            "thang global": "Thang Global is a contemporary company or project.",
+            "west middle school (ponca city, ok)": "West Middle School is a public school in Ponca City, Oklahoma.",
+            "a. m. s. elsmie": "Alexander Montagu Spears Elsmie was a British officer in the Indian Army.",
+            "museums in the central bohemian region": "The region around Prague contains many important historical and art museums.",
+            "mpa concrete": "MPA concrete refers to the compressive strength of concrete measured in megapascals.",
+            "haemorhous cassinii": "Cassin's finch (Haemorhous cassinii) is a bird in the finch family.",
+            "madhya pradesh state wide area network": "MPSWAN is part of the e-governance infrastructure in Madhya Pradesh, India.",
+            "museums in the czech republic by region": "Museums organized by the fourteen regions of the Czech Republic.",
+            "alexander montagu spears elsmie": "A. M. S. Elsmie was a decorated officer in the British Indian Army.",
+            "somali aristocratic and court titles": "Traditional Somali society uses various titles for nobility and leadership, such as Garaad and Ugas.",
+            "alexander elsmie": "Alexander Elsmie (A.M.S. Elsmie) was a notable historical figure.",
+            "optical tracer": "An optical tracer is a device or software tool used for tracking light or motion.",
+            "haemorhous purpureus": "The purple finch (Haemorhous purpureus) is a medium-sized finch of North America.",
+            "haemorhous mexicanus": "The house finch (Haemorhous mexicanus) is a common finch in North America.",
+            "yalobusha baptist female institute": "Historical educational institution in Mississippi.",
+            "kammavari palem": "Kammavaripalem is a village in the Andhra Pradesh state of India.",
+            "the yelling": "The Yelling is an American rock band based in Los Angeles.",
+            "lists of massachusetts railway stations": "Comprehensive lists of current and historical train stations in Massachusetts.",
+            "people from puerto cortés": "Notable individuals born in or associated with the Honduran port city.",
+            "stop that train": "Stop That Train is a classic reggae song by Keith & Tex/The Spanishtonians.",
+            "headlands of the philippines": "The Philippines has numerous prominent headlands and capes across its 7,000+ islands.",
+            "kammavaripalem": "Kammavaripalem is a settlement in India.",
+            "france handball squad 2012 summer olympics": "The France men's national handball team won gold at the 2012 Olympics.",
+            "exploding rat": "The exploding rat was a weapon developed by the British Special Operations Executive in WWII.",
+            "hashim qandil": "Hisham Qandil was the Prime Minister of Egypt from 2012 to 2013.",
+            "oakville ensemble": "The Oakville Ensemble is a musical collective or performance group.",
+            "in session: psychotherapy in practice": "In Session is a peer-reviewed journal for clinical psychologists.",
+            "disability arts": "Disability arts is any art form which is created by people with a disability, often focused on the experience.",
+            "ifsb": "The Islamic Financial Services Board (IFSB) is an international standard-setting body for Islamic finance.",
+            "viet nam news": "Viet Nam News is the daily English-language newspaper in Vietnam.",
+            "mohsine moutouali": "Mohsine Moutouali is a Moroccan professional footballer.",
+            "valentine's day (the middle)": "Valentine's Day is a recurring theme and title for episodes of the sitcom The Middle.",
+            "norwegian football top scorers": "A list of players who have scored the most goals in Norwegian professional football.",
+            "chronological summary of the 2012 summer olympics": "A day-by-day record of the events and medal wins during the London 2012 games.",
+            "venturicidins": "Venturicidins are specialized antibiotics used in the study of ATP synthase.",
+            "house of bučić": "The Bučić family was a noble family in Croatia and Dalmatia.",
+            "2013–14 ncaa division i men's basketball season": "The season saw the UConn Huskies win the national championship.",
+            "great britain handball squad 2012 summer olympics": "The Great Britain handball teams competed as the host nation in the 2012 Olympics.",
+            "great britain national handball team templates": "Formatting templates for the UK national handball teams on Wikipedia.",
+            "oliver pötschke": "Oliver Pötschke is a former professional footballer.",
+            "i'd catch a grenade for ya": "A famous line from the song Grenade by Bruno Mars.",
+            "oliver potschke": "Oliver Potschke (also Oliver Pötschke) is a former footballer.",
+            "daniele ferri": "Daniele Ferri is a name associated with contemporary figures in sports or art.",
+            "marquessates in the peerage of great britain": "Various marquessates created in the Peerage of Great Britain between 1707 and 1801.",
+            "extinct marquessates in the peerage of great britain": "Several marquessates in the British peerage have become extinct due to lack of heirs.",
         };
 
         // V2.6: BRAINSTORMING & IDEA GENERATION SYSTEM
@@ -2591,6 +2962,71 @@
                 "Start a collection - coins, stamps, or vinyl records"
             ]
         };
+
+        // V2.8.3: WRITING KNOWLEDGE (Refined templates for hybrid essay generation)
+        const WRITING_KNOWLEDGE = {
+            intro: [
+                "The subject of [Topic] has long been a point of interest for many. To truly understand it, we must look at how it has evolved over time and the impact it continues to have on our world today.",
+                "Exploring [Topic] reveals a fascinating story of development and adaptation. It is a subject that connects many different areas of study and practice, offering valuable insights into its core principles.",
+                "When we examine [Topic], we find a complex and engaging topic that touches on various aspects of history and modern life. Understanding its foundations is key to appreciating its current significance.",
+                "The emergence of [Topic] as a significant concept is a result of many factors. By looking deeper into its origins, we can better understand its role in both historical and contemporary contexts."
+            ],
+            body: [
+                "At its core, [Topic] operates through a series of interesting mechanics and principles. These elements work together to create a robust system that can adapt to changing circumstances and needs.",
+                "The history of [Topic] is marked by a steady progression of ideas and innovations. Each new development has built upon the last, leading to the sophisticated framework we see today.",
+                "Beyond the basic facts, [Topic] also has a significant impact on social and cultural structures. It influences how we think about established norms and challenges us to consider new possibilities for the future.",
+                "Looking at the data surrounding [Topic], we can see patterns that highlight its long-term viability. Its ability to resolve contradictions and bridge different ideas is one of its most remarkable traits."
+            ],
+            conclusion: [
+                "In conclusion, our understanding of [Topic] continues to grow as new information becomes available. It remains a vital area of study that offers much potential for future exploration and discovery.",
+                "Ultimately, [Topic] stands as a testament to the power of human curiosity and innovation. It will undoubtedly continue to influence our thoughts and actions for many years to come.",
+                "Looking ahead, the legacy of [Topic] will be defined by its ongoing relevance and its ability to inspire new modes of thinking. It is a subject that rewards careful study and reflection.",
+                "As we wrap up this look at [Topic], it is clear that it is more than just a simple concept. It is a dynamic and evolving field that will continue to shape our world in meaningful ways."
+            ]
+        };
+
+        // V2.8.3: Hybrid Essay Generation (Wiki + Templates)
+        async function generateEssay(topic) {
+            let capitalizedTopic = topic.charAt(0).toUpperCase() + topic.slice(1);
+
+            // Pick template parts
+            let introTemplate = WRITING_KNOWLEDGE.intro[Math.floor(Math.random() * WRITING_KNOWLEDGE.intro.length)];
+            let bodyTemplate = WRITING_KNOWLEDGE.body[Math.floor(Math.random() * WRITING_KNOWLEDGE.body.length)];
+            let conclusionTemplate = WRITING_KNOWLEDGE.conclusion[Math.floor(Math.random() * WRITING_KNOWLEDGE.conclusion.length)];
+
+            // Fetch Wikipedia data (up to 10 sentences for depth)
+            let wikiRes = await searchWikipedia(topic, 10);
+            let finalOutput = "";
+
+            if (wikiRes) {
+                // Remove prefixes like "Here's what I found:" for the essay flow
+                let rawFacts = wikiRes.replace(/^(Here's what I found: |According to my knowledge base, |I learned that |Interestingly, )/i, "");
+                let sentences = rawFacts.split('. ').map(s => s.trim()).filter(s => s.length > 0);
+
+                // Construct Introduction (Template + Wiki)
+                let intro = `${introTemplate.replace(/\[Topic\]/g, capitalizedTopic)} ${sentences.slice(0, 2).join('. ')}.`;
+
+                // Construct Body (Template + Wiki meat)
+                let bodyText = sentences.slice(2, -2).join('. ');
+                if (bodyText && !bodyText.endsWith('.')) bodyText += '.';
+                let body = `${bodyTemplate.replace(/\[Topic\]/g, topic.toLowerCase())} Furthermore, ${bodyText.charAt(0).toLowerCase() + bodyText.slice(1)}`;
+
+                // Construct Conclusion (Template + Wiki end)
+                let lastPart = sentences.slice(-2).join('. ');
+                if (lastPart && !lastPart.endsWith('.')) lastPart += '.';
+                let conclusion = `${conclusionTemplate.replace(/\[Topic\]/g, topic.toLowerCase())} ${lastPart}`;
+
+                finalOutput = `${intro}\n\n${body}\n\n${conclusion}`;
+            } else {
+                // Fallback to pure template if no wiki found (Ensures AI always "writes" the requested essay)
+                let intro = introTemplate.replace(/\[Topic\]/g, capitalizedTopic);
+                let body = bodyTemplate.replace(/\[Topic\]/g, topic.toLowerCase());
+                let conclusion = conclusionTemplate.replace(/\[Topic\]/g, topic.toLowerCase());
+                finalOutput = `${intro}\n\n${body}\n\n${conclusion}`;
+            }
+
+            return finalOutput;
+        }
 
         // Function to brainstorm ideas
         function brainstormIdeas(topic, count = 5) {
@@ -3091,8 +3527,8 @@
 
         // --- INTELLIGENCE FUNCTIONS ---
 
-        // V2.7: Wikipedia API Module
-        async function searchWikipedia(query) {
+        // V2.8.2: Wikipedia API Module (Refined for deeper search)
+        async function searchWikipedia(query, sentenceLimit = 3) {
             // Clean query to remove question words for better search results
             const cleanQuery = query.replace(/^(what is|who is|tell me about|define|search for|meaning of)\s+/i, '');
 
@@ -3115,9 +3551,17 @@
                 const extract = pages[pageId].extract;
                 if (!extract || extract.includes("refer to:")) return null; // Disambiguation page or empty
 
-                // Return first 3 sentences with a human touch
+                // Return sentences with a human touch
                 const sentences = extract.split('. ');
-                let result = sentences.slice(0, 3).join('. ') + '.';
+                let result = sentences.slice(0, sentenceLimit).join('. ') + '.';
+
+                // V2.9: "Paraphrase" / Clean Text
+                result = result.replace(/\[\d+\]/g, ""); // Remove citations [1]
+                result = result.replace(/\s\([^)]+\)/g, ""); // Remove parenthetical details like (born 1990) often found in intros
+                result = result.replace(/\n/g, " "); // Remove newlines
+                result = result.replace(/\s+/g, " "); // Collapse multiple spaces
+                result = result.replace(/\[citation needed\]/g, "");
+                result = result.trim();
 
                 // V2.8: Humanize the output
                 const prefixes = [
@@ -3141,10 +3585,26 @@
             let cleanPrompt = prompt.toLowerCase().trim();
             cleanPrompt = cleanPrompt.replace(/[?.!;,]/g, ""); // Remove punctuation for easier matching logic
 
-            // 00. EXPLICIT SEARCH OVERRIDE (V2.7)
-            // 00. EXPLICIT SEARCH OVERRIDE (V2.7)
+            // 00. EXPLICIT SEARCH OVERRIDE (V2.8)
             if (cleanPrompt.startsWith("search for ") || cleanPrompt.startsWith("google ") || cleanPrompt.startsWith("lookup ") || cleanPrompt.startsWith("look up ")) {
                 let query = cleanPrompt.replace(/^(search for|google|lookup|look up)\s+/i, "");
+
+                // V2.9: Multi-Search Support
+                if (query.includes(" and ")) {
+                    let parts = query.split(" and ");
+                    let combinedResult = "";
+                    let indicator = document.getElementById('search-indicator');
+
+                    for (let part of parts) {
+                        let res = await searchWikipedia(part.trim());
+                        if (res) combinedResult += `**${part.trim()}:** ${res}\n\n`;
+                    }
+                    if (combinedResult) {
+                        currentTopic = query;
+                        return combinedResult;
+                    }
+                }
+
                 let wikiResult = await searchWikipedia(query);
                 if (wikiResult) {
                     currentTopic = query;
@@ -3326,7 +3786,7 @@
                 }
 
                 if (DICTIONARY[checkTopic]) {
-                    return handleDefinitionQuestion("what is " + checkTopic);
+                    return await handleDefinitionQuestion("what is " + checkTopic);
                 }
 
                 // If it's a "tell me about" query but we don't have it, don't just fail, try to find partial matches or just say we're learning
@@ -3383,6 +3843,19 @@
                 return generateStory(options);
             }
 
+            // V2.8: Essay / High-Quality Writing
+            if (cleanPrompt.includes("write an essay") || cleanPrompt.includes("write a paragraph") || (cleanPrompt.includes("write about") && !cleanPrompt.includes("story"))) {
+                let topic = cleanPrompt
+                    .replace(/^(can you |please |could you )?write (an |a )?(essay|paragraph)?\s*(about|on|for)?\s+/i, "")
+                    .replace(/[?.,!]/g, "")
+                    .trim();
+
+                if (topic) {
+                    currentTopic = topic;
+                    return await generateEssay(topic);
+                }
+            }
+
             // 7. Emotion / Sentiment Check (v2.5)
             let sentiment = analyzeSentiment(cleanPrompt);
             if (cleanPrompt.startsWith("i am ") || cleanPrompt.startsWith("i feel ") || cleanPrompt.startsWith("im ")) {
@@ -3406,7 +3879,7 @@
                     currentTopic = potentialTopic;
                 }
 
-                return handleDefinitionQuestion(cleanPrompt);
+                return await handleDefinitionQuestion(cleanPrompt);
             }
 
             // V2.6: YES/NO QUESTION HANDLING
@@ -3421,22 +3894,61 @@
             }
 
             // 8. General Knowledge Search
+            // V2.9: Be smarter. If the user asks "Who is..." or "Who's...", they want a person/role, not just the topic description.
+            // Unless the topic itself IS a person.
             for (let topic in GENERAL_KNOWLEDGE) {
                 if (cleanPrompt.includes(topic)) {
+                    // If asking "Who is/Who matches" and the known topic is NOT a person/inventor/etc, SKIP IT to let Wiki find the answer.
+                    // e.g. "Who is PM of Australia?" -> matches "Australia" (Place). Skip it.
+                    // e.g. "Who is Einstein?" -> matches "Einstein" (Person). Return it.
+                    if (cleanPrompt.startsWith("who is") || cleanPrompt.startsWith("who's") || cleanPrompt.startsWith("who was")) {
+                        // We need to check if the GK entry is a person. 
+                        // But GK is just a string map. We don't have categories here easily unless we lookup DICTIONARY.
+                        // Heuristic: If prompt is much longer than topic, likely a specific question about the topic.
+                        if (cleanPrompt.length > topic.length + 12) continue;
+                    }
+
                     currentTopic = topic;
                     return GENERAL_KNOWLEDGE[topic];
                 }
             }
 
             // 9. Last Resort (Dictionary Keyword)
+            // V3.0: STRICTER DICTIONARY FALLBACK
             let dictKeys = Object.keys(DICTIONARY).sort((a, b) => b.length - a.length);
             for (let key of dictKeys) {
-                if (cleanPrompt.includes(key) && key.length > 3) { // Avoid short words false positives
-                    return handleDefinitionQuestion("what is " + key);
+                if (cleanPrompt.includes(key) && key.length > 2) {
+                    let entry = DICTIONARY[key];
+                    // If noun/place/person, fine to define if it's the main topic.
+                    // But if it's a verb (write, think) or adjective (good, bad), only define if it's the ONLY thing asked.
+                    if (entry.pos === "verb" || entry.pos === "adjective" || entry.pos === "adverb") {
+                        if (cleanPrompt === key || cleanPrompt === "define " + key || cleanPrompt === "what is " + key || cleanPrompt === "whats " + key) {
+                            return await handleDefinitionQuestion("what is " + key);
+                        }
+                    } else {
+                        // Nouns: still be careful. If prompt says "The car is red", we don't necessarily want "A car is...".
+                        // Only if the key is the dominant part of the prompt.
+                        // V2.8: More robust check for "what is a X", "whats X", etc.
+                        let isMatch = cleanPrompt === key ||
+                            cleanPrompt === key + "s" ||
+                            cleanPrompt.startsWith("what is " + key) ||
+                            cleanPrompt.startsWith("whats " + key) ||
+                            cleanPrompt.startsWith("define " + key) ||
+                            cleanPrompt.startsWith("what are " + key) ||
+                            cleanPrompt.startsWith("what is a " + key) ||
+                            cleanPrompt.startsWith("whats a " + key) ||
+                            cleanPrompt.startsWith("what is an " + key) ||
+                            cleanPrompt.startsWith("whats an " + key) ||
+                            cleanPrompt.startsWith("meaning of " + key);
+
+                        if (isMatch) {
+                            return await handleDefinitionQuestion("what is " + key);
+                        }
+                    }
                 }
             }
 
-            // V2.7: Wikipedia API Fallback
+            // V2.8: Wikipedia API Fallback
             let wikiResult = await searchWikipedia(prompt);
             if (wikiResult) {
                 return wikiResult;
@@ -3455,7 +3967,55 @@
 
             // Clean Predicates to find the REAL subject for Wiki Search
             // e.g. "coca cola good for you" -> "coca cola"
-            let subject = rawSubject.replace(/\s+(good|bad|safe|dangerous|healthy|unhealthy|real|fake|true|false|alive|dead|exist|exists|real|good for you|bad for you)$/i, "").trim();
+            let predicates = ["good", "bad", "safe", "dangerous", "healthy", "unhealthy", "real", "fake", "true", "false", "alive", "dead", "exist", "exists", "good for you", "bad for you"];
+            let subject = rawSubject;
+            let foundPredicate = null;
+
+            for (let p of predicates) {
+                if (new RegExp("\\b" + p + "\\b", "i").test(rawSubject)) {
+                    subject = rawSubject.replace(new RegExp("\\b" + p + "\\b", "i"), "").trim();
+                    foundPredicate = p;
+                    break;
+                }
+            }
+            // Cleanup "for you" residue if any
+            subject = subject.replace(/\s+for you$/i, "").trim();
+
+            // V3.0 Strategy: Try searching [Subject] + [Predicate] first for specific answer.
+            // If that fails, fallback to [Subject].
+            if (foundPredicate) {
+                let specificQuery = `${subject} ${foundPredicate}`;
+                let specificRes = await searchWikipedia(specificQuery);
+                if (specificRes) {
+                    currentTopic = subject;
+
+                    // V3.1: Analyze result for Yes/No prefix
+                    let lowerRes = specificRes.toLowerCase();
+                    let prefix = "";
+
+                    if (foundPredicate === "healthy" || foundPredicate === "good" || foundPredicate === "safe" || foundPredicate === "good for you") {
+                        if (lowerRes.includes("is healthy") || lowerRes.includes("benefits") || lowerRes.includes("safe to") || lowerRes.includes("generally safe") || lowerRes.includes("beneficial")) {
+                            prefix = "Yes, ";
+                        } else if (lowerRes.includes("unhealthy") || lowerRes.includes("harmful") || lowerRes.includes("toxic") || lowerRes.includes("risk")) {
+                            prefix = "No, ";
+                        }
+                    } else if (foundPredicate === "bad" || foundPredicate === "dangerous" || foundPredicate === "bad for you" || foundPredicate === "unhealthy") {
+                        if (lowerRes.includes("benefits") || lowerRes.includes("safe") || lowerRes.includes("healthy")) {
+                            prefix = "No, ";
+                        } else if (lowerRes.includes("harmful") || lowerRes.includes("toxic") || lowerRes.includes("risk") || lowerRes.includes("dangerous")) {
+                            prefix = "Yes, ";
+                        }
+                    }
+
+                    if (prefix) {
+                        // Humanize: lowercase the first letter of the result if we add Yes/No result prefix
+                        let cleanedRes = specificRes;
+                        // If it starts with a human prefix like "Here's what I found: ", skip lowercasing for now or handle it
+                        if (prefix) return prefix + cleanedRes.charAt(0).toLowerCase() + cleanedRes.slice(1);
+                    }
+                    return specificRes;
+                }
+            }
 
             // Check General Knowledge first with smart matching
             let keys = Object.keys(GENERAL_KNOWLEDGE).sort((a, b) => b.length - a.length);
@@ -3469,27 +4029,8 @@
                 }
             }
 
-            // Check Dictionary
-            let dictKeys = Object.keys(DICTIONARY).sort((a, b) => b.length - a.length);
-            for (let key of dictKeys) {
-                // False Positive Prevention (V2.8):
-                // If the subject contains the key, but the key is just a common adjective/verb (not a noun/place/person)
-                // AND the subject is significantly longer than the key, it's likely part of a complex sentence, not the subject itself.
-                if (subject.includes(key) || (prompt.includes(key) && key.length > 3)) {
-                    let entry = DICTIONARY[key];
-
-                    // If it's a noun/place/person/tech, it's probably the subject. Safe to define.
-                    if (entry.pos === "noun" || entry.category === "place" || entry.category === "person" || entry.category === "tech" || entry.category === "animal") {
-                        return `A ${key} is ${entry.def}.`;
-                    }
-
-                    // If it's an adjective/verb AND the subject is just that word (e.g. "Is it good?"), define it.
-                    // But if subject is "coca cola good", ignore "good" to let Wiki handle "coca cola".
-                    if (subject.trim() === key) {
-                        return `To be ${key} is ${entry.def}.`;
-                    }
-                }
-            }
+            // Dictionary check removed (V2.9) - We only define if explicitly asked "What is".
+            // Fall through to Wiki search for Yes/No questions about unknown topics.
 
             // Check Brainstorming categories for "Can you give me ideas?" type questions fallback
             if (prompt.includes("ideas") || prompt.includes("brainstorm")) {
@@ -3507,7 +4048,7 @@
             return getVariedResponse('dontKnow') + " I'm not sure about that specific yes/no question yet.";
         }
 
-        function handleDefinitionQuestion(prompt) {
+        async function handleDefinitionQuestion(prompt) {
             // Extract the subject - Robust Version
             let subject = prompt
                 .replace(/^(do you know |can you tell me |please )?(what is|what's|define|meaning of|definition of)\s+/i, "")
@@ -3555,6 +4096,13 @@
                 let response = generateVariedDefinition(subject, entry);
                 return response;
             } else {
+                // V3.1: Fallback to Wikipedia if dictionary fails
+                let wikiRes = await searchWikipedia(subject);
+                if (wikiRes) {
+                    currentTopic = subject;
+                    return wikiRes;
+                }
+
                 // V2.6: Varied "don't know" responses
                 let unknownResponses = [
                     `I don't have "${subject}" in my dictionary yet, but I'm always learning! Try asking about animals, science, or history.`,
@@ -3777,7 +4325,7 @@
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 2.7 - Connected</strong>";
+                intro.innerHTML = "<strong>Guahh AI 2.8 - Connected</strong>";
                 chatWindow.appendChild(intro);
             }, 500);
         };
