@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guahh AI 2.5</title>
+    <title>Guahh AI 2.6</title>
     <!-- Inter Tight Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -205,13 +205,103 @@
             background: #333;
             border-radius: 4px;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            header h1 {
+                font-size: 1.2rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .status {
+                font-size: 10px;
+                order: 2;
+            }
+
+            .new-chat-btn {
+                order: 3;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            #chat-window {
+                padding: 15px;
+                padding-bottom: 100px;
+            }
+
+            .msg {
+                max-width: 95%;
+                font-size: 14px;
+            }
+
+            #input-area {
+                padding: 10px;
+            }
+
+            form {
+                padding: 3px;
+            }
+
+            input {
+                padding: 10px;
+                font-size: 16px;
+                /* Prevents zoom on iOS */
+            }
+
+            button {
+                padding: 0 15px;
+                min-width: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1rem;
+            }
+
+            .msg {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            #chat-window {
+                padding: 10px;
+                padding-bottom: 90px;
+            }
+
+            input {
+                padding: 8px;
+            }
+        }
+
+        /* Touch improvements */
+        @media (hover: none) and (pointer: coarse) {
+            button {
+                min-height: 44px;
+            }
+
+            input {
+                min-height: 44px;
+            }
+
+            .new-chat-btn {
+                min-height: 36px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <header>
-        <h1>GUAHH AI 2.5</h1>
+        <h1>GUAHH AI 2.6</h1>
         <div class="status" id="model-status">Loading English Dictionary...</div>
         <button class="new-chat-btn" onclick="clearMemory()">New Chat</button>
     </header>
@@ -1180,26 +1270,486 @@
             "spoon": { pos: "noun", def: "an implement consisting of a small, shallow oval or round bowl on a long handle", category: "tool" },
             "knife": { pos: "noun", def: "an instrument composed of a blade fixed into a handle, used for cutting or as a weapon", category: "tool" },
             "plate": { pos: "noun", def: "a flat dish, typically circular and made of china, from which food is eaten or served", category: "object" },
-            "cup": { pos: "noun", def: "a small bowl-shaped container for drinking from", category: "object" }
+            "cup": { pos: "noun", def: "a small bowl-shaped container for drinking from", category: "object" },
+
+            // V2.6 WIKIPEDIA EXPANSION - Countries & Places
+            "country": { pos: "noun", def: "a nation with its own government, occupying a particular territory", category: "place" },
+            "continent": { pos: "noun", def: "any of the world's main continuous expanses of land (Africa, Antarctica, Asia, Australia, Europe, North America, South America)", category: "place" },
+            "capital": { pos: "noun", def: "the most important city or town of a country or region, usually its seat of government", category: "place" },
+            "empire": { pos: "noun", def: "an extensive group of states or countries under a single supreme authority, historically an emperor", category: "place" },
+            "civilization": { pos: "noun", def: "the stage of human social and cultural development and organization that is considered most advanced", category: "abstract" },
+            "democracy": { pos: "noun", def: "a system of government by the whole population, typically through elected representatives", category: "abstract" },
+            "monarchy": { pos: "noun", def: "a form of government with a monarch at the head, such as a king, queen, or emperor", category: "abstract" },
+            "republic": { pos: "noun", def: "a state in which supreme power is held by the people and their elected representatives", category: "abstract" },
+
+            // Historical Terms
+            "philosopher": { pos: "noun", def: "a person engaged or learned in philosophy, especially as an academic discipline", category: "person" },
+            "emperor": { pos: "noun", def: "a sovereign ruler of great power and rank, especially one ruling an empire", category: "person" },
+            "president": { pos: "noun", def: "the elected head of a republican state", category: "person" },
+            "inventor": { pos: "noun", def: "a person who invented a particular process or device or who invents things as an occupation", category: "person" },
+            "physicist": { pos: "noun", def: "an expert in or student of physics", category: "person" },
+            "mathematician": { pos: "noun", def: "an expert in or student of mathematics", category: "person" },
+            "polymath": { pos: "noun", def: "a person of wide-ranging knowledge or learning in many different subjects", category: "person" },
+
+            // Scientific Terms
+            "element": { pos: "noun", def: "each of more than one hundred substances that cannot be chemically broken down into simpler substances", category: "science" },
+            "molecule": { pos: "noun", def: "a group of atoms bonded together, representing the smallest fundamental unit of a chemical compound", category: "science" },
+            "particle": { pos: "noun", def: "a minute portion of matter, especially a subatomic particle like an electron or proton", category: "science" },
+            "radiation": { pos: "noun", def: "the emission of energy as electromagnetic waves or as moving subatomic particles", category: "science" },
+            "genome": { pos: "noun", def: "the complete set of genes or genetic material present in a cell or organism", category: "science" },
+            "theory": { pos: "noun", def: "a supposition or a system of ideas intended to explain something, based on general principles", category: "abstract" },
+            "hypothesis": { pos: "noun", def: "a proposed explanation for a phenomenon, made as a starting point for further investigation", category: "abstract" },
+            "experiment": { pos: "noun", def: "a scientific procedure undertaken to make a discovery, test a hypothesis, or demonstrate a known fact", category: "science" },
+
+            // Computing Terms
+            "programming": { pos: "noun", def: "the process of writing computer programs; coding", category: "tech" },
+            "software": { pos: "noun", def: "the programs and other operating information used by a computer", category: "tech" },
+            "hardware": { pos: "noun", def: "the physical components of a computer system", category: "tech" },
+            "database": { pos: "noun", def: "a structured set of data held in a computer, especially one that is accessible in various ways", category: "tech" },
+            "encryption": { pos: "noun", def: "the process of converting information into a code to prevent unauthorized access", category: "tech" },
+            "network": { pos: "noun", def: "a group of interconnected computers or devices that can communicate with each other", category: "tech" },
+
+            // Philosophy & Abstract
+            "philosophy": { pos: "noun", def: "the study of the fundamental nature of knowledge, reality, and existence", category: "abstract" },
+            "ethics": { pos: "noun", def: "moral principles that govern a person's behavior or the conducting of an activity", category: "abstract" },
+            "logic": { pos: "noun", def: "reasoning conducted or assessed according to strict principles of validity", category: "abstract" },
+            "metaphysics": { pos: "noun", def: "the branch of philosophy that deals with the first principles of things, including abstract concepts", category: "abstract" },
+            "consciousness": { pos: "noun", def: "the state of being awake and aware of one's surroundings", category: "abstract" },
+            "existence": { pos: "noun", def: "the fact or state of living or having objective reality", category: "abstract" },
+
+            // More Animals for Wikipedia Topics
+            "frog": { pos: "noun", def: "a small tailless amphibian with a short squat body, moist smooth skin, and very long hind legs for leaping", category: "animal" },
+            "toad": { pos: "noun", def: "a tailless amphibian with a short stout body and short legs, typically having dry warty skin", category: "animal" },
+            "salamander": { pos: "noun", def: "a newt-like amphibian that typically has bright markings, once thought to be able to endure fire", category: "animal" },
+            "aardvark": { pos: "noun", def: "a nocturnal burrowing mammal from Africa with a long snout that feeds on ants and termites", category: "animal" },
+            "albatross": { pos: "noun", def: "a very large ocean bird with long narrow wings, found mainly in the southern oceans", category: "animal" },
+            "anaconda": { pos: "noun", def: "one of the largest snakes in the world, native to South America, living in or near water", category: "animal" },
+
+            // V2.6 GENERAL VOCABULARY EXPANSION
+            // Common Verbs
+            "think": { pos: "verb", def: "to use one's mind to consider or reason about something", category: "action" },
+            "believe": { pos: "verb", def: "to accept something as true or feel sure of its truth", category: "action" },
+            "understand": { pos: "verb", def: "to perceive the intended meaning of words, a language, or a speaker", category: "action" },
+            "remember": { pos: "verb", def: "to have in or be able to bring to one's mind an awareness of something learned or experienced", category: "action" },
+            "forget": { pos: "verb", def: "to fail to remember; to be unable to recall", category: "action" },
+            "decide": { pos: "verb", def: "to come to a resolution in the mind as a result of consideration", category: "action" },
+            "choose": { pos: "verb", def: "to pick out or select someone or something as being the best or most appropriate", category: "action" },
+            "create": { pos: "verb", def: "to bring something into existence; to cause something new to happen", category: "action" },
+            "discover": { pos: "verb", def: "to find unexpectedly or during a search", category: "action" },
+            "explore": { pos: "verb", def: "to travel through an unfamiliar area in order to learn about it", category: "action" },
+
+            // Common Nouns
+            "idea": { pos: "noun", def: "a thought or suggestion as to a possible course of action", category: "abstract" },
+            "question": { pos: "noun", def: "a sentence worded or expressed so as to elicit information", category: "abstract" },
+            "answer": { pos: "noun", def: "a thing said or done in reaction to a question or situation", category: "abstract" },
+            "problem": { pos: "noun", def: "a matter or situation regarded as unwelcome or harmful and needing to be dealt with", category: "abstract" },
+            "solution": { pos: "noun", def: "a means of solving a problem or dealing with a difficult situation", category: "abstract" },
+            "reason": { pos: "noun", def: "a cause, explanation, or justification for an action or event", category: "abstract" },
+            "purpose": { pos: "noun", def: "the reason for which something is done or created or for which something exists", category: "abstract" },
+            "goal": { pos: "noun", def: "the object of a person's ambition or effort; an aim or desired result", category: "abstract" },
+            "dream": { pos: "noun", def: "a series of thoughts, images, and sensations occurring in a person's mind during sleep, or a cherished aspiration", category: "abstract" },
+            "memory": { pos: "noun", def: "the faculty by which the mind stores and remembers information", category: "abstract" },
+            "experience": { pos: "noun", def: "practical contact with and observation of facts or events", category: "abstract" },
+            "knowledge": { pos: "noun", def: "facts, information, and skills acquired through experience or education", category: "abstract" },
+            "wisdom": { pos: "noun", def: "the quality of having experience, knowledge, and good judgment", category: "abstract" },
+            "truth": { pos: "noun", def: "the quality or state of being true; that which is in accordance with fact or reality", category: "abstract" },
+            "freedom": { pos: "noun", def: "the state of being free; the power or right to act, speak, or think freely", category: "abstract" },
+            "peace": { pos: "noun", def: "freedom from disturbance; tranquility", category: "abstract" },
+            "happiness": { pos: "noun", def: "the state of being happy; a feeling of pleasure or contentment", category: "emotion" },
+            "sadness": { pos: "noun", def: "the quality or state of being sad; unhappiness or sorrow", category: "emotion" },
+            "fear": { pos: "noun", def: "an unpleasant emotion caused by the threat of danger, pain, or harm", category: "emotion" },
+            "anger": { pos: "noun", def: "a strong feeling of annoyance, displeasure, or hostility", category: "emotion" },
+            "surprise": { pos: "noun", def: "an unexpected or astonishing event, fact, or thing", category: "emotion" },
+            "hope": { pos: "noun", def: "a feeling of expectation and desire for a certain thing to happen", category: "emotion" },
+
+            // Descriptive Adjectives  
+            "beautiful": { pos: "adjective", def: "pleasing the senses or mind aesthetically", category: "description" },
+            "interesting": { pos: "adjective", def: "arousing curiosity or holding attention", category: "description" },
+            "important": { pos: "adjective", def: "of great significance or value; likely to have a profound effect", category: "description" },
+            "difficult": { pos: "adjective", def: "needing much effort or skill to accomplish, deal with, or understand", category: "description" },
+            "simple": { pos: "adjective", def: "easily understood or done; presenting no difficulty", category: "description" },
+            "complex": { pos: "adjective", def: "consisting of many different and connected parts; not easy to analyze", category: "description" },
+            "strange": { pos: "adjective", def: "unusual or surprising in a way that is unsettling or hard to understand", category: "description" },
+            "wonderful": { pos: "adjective", def: "inspiring delight, pleasure, or admiration; extremely good", category: "description" },
+            "terrible": { pos: "adjective", def: "extremely bad or serious; causing great harm or suffering", category: "description" },
+            "amazing": { pos: "adjective", def: "causing great surprise or wonder; astonishing", category: "description" },
+
+            // Time and Place
+            "moment": { pos: "noun", def: "a very brief period of time; an instant", category: "time" },
+            "future": { pos: "noun", def: "the time or a period of time following the moment of speaking or writing", category: "time" },
+            "past": { pos: "noun", def: "the time before the present; events that have already happened", category: "time" },
+            "present": { pos: "noun", def: "the period of time now occurring; the current moment", category: "time" },
+            "place": { pos: "noun", def: "a particular position, point, or area in space; a location", category: "place" },
+            "home": { pos: "noun", def: "the place where one lives permanently, especially as a member of a family", category: "place" },
+            "world": { pos: "noun", def: "the earth, together with all of its countries and peoples", category: "place" },
+            "space": { pos: "noun", def: "a continuous area or expanse that is free, available, or unoccupied", category: "place" }
+        };
+
+        // --- V2.6 MARKOV CHAIN SENTENCE GENERATOR ---
+        // This system builds sentences word-by-word, knowing what comes next
+
+        // Word transition chains - maps what words typically follow other words
+        const WORD_CHAINS = {
+            // Sentence starters
+            "_START_": ["I", "The", "A", "This", "That", "There", "It", "We", "You", "They", "What", "How", "When", "If", "My", "Your", "One", "Some", "Many", "Here", "Now", "Today", "In", "On", "At", "These", "Those", "All", "Every", "Each", "Most", "Life", "People", "Things", "The world", "Nature", "Science", "Art", "Music", "Knowledge", "Happiness", "Love", "Time", "Space", "Learning", "Creativity", "Curiosity", "Wisdom", "Understanding", "Imagination", "Dreams"],
+
+            // Common word transitions
+            "I": ["am", "think", "believe", "know", "understand", "feel", "want", "need", "have", "can", "will", "would", "should", "could", "might", "love", "like", "enjoy", "hope", "wish", "find", "see", "hear", "remember", "imagine", "wonder", "appreciate", "value", "consider", "recognize"],
+            "The": ["world", "universe", "sky", "sun", "moon", "stars", "ocean", "mountains", "forest", "river", "earth", "nature", "beauty", "wonder", "mystery", "power", "truth", "answer", "question", "secret", "key", "path", "journey", "adventure", "story", "meaning", "purpose", "future", "past", "present", "best", "most", "greatest", "only", "first", "last"],
+            "A": ["great", "wonderful", "beautiful", "mysterious", "powerful", "simple", "complex", "small", "large", "new", "old", "young", "wise", "brave", "kind", "gentle", "strong", "curious", "creative", "thoughtful", "careful", "clever", "person", "thing", "place", "time", "way", "day", "night", "moment", "chance", "dream", "hope", "wish", "question", "journey", "story", "world", "life"],
+            "This": ["is", "means", "shows", "demonstrates", "illustrates", "reveals", "proves", "suggests", "indicates", "explains", "could", "might", "will", "would", "should", "can", "may"],
+            "That": ["is", "means", "shows", "was", "could", "would", "should", "can", "may", "might", "will", "has", "makes", "gives", "brings", "creates", "leads"],
+            "There": ["is", "are", "was", "were", "exists", "lies", "stands", "remains", "appears", "seems", "comes", "goes", "lives", "grows", "shines", "waits"],
+            "It": ["is", "was", "has", "can", "will", "would", "could", "should", "might", "may", "means", "shows", "represents", "symbolizes", "demonstrates", "reveals", "brings", "takes", "makes", "gives", "creates", "helps", "allows", "enables", "provides", "offers", "contains", "holds", "carries", "holds", "requires", "needs", "depends"],
+            "We": ["can", "should", "must", "will", "would", "could", "might", "may", "all", "often", "sometimes", "always", "never", "have", "need", "want", "like", "love", "enjoy", "learn", "grow", "change", "evolve", "adapt", "discover", "explore", "understand", "create", "build", "share", "connect", "communicate"],
+            "You": ["can", "should", "must", "will", "would", "could", "might", "may", "are", "have", "need", "want", "like", "love", "might", "know", "understand", "see", "feel", "think", "believe", "find", "discover", "learn", "grow", "become", "achieve", "reach", "create", "make", "build"],
+            "They": ["are", "have", "can", "will", "would", "could", "should", "might", "may", "often", "sometimes", "always", "never", "say", "think", "believe", "know", "understand", "create", "build", "make", "bring", "give", "take", "show", "demonstrate", "represent"],
+
+            // Adjective to noun patterns
+            "great": ["power", "wisdom", "knowledge", "beauty", "strength", "courage", "love", "joy", "wonder", "mystery", "adventure", "journey", "discovery", "achievement", "success", "importance", "significance", "impact", "change", "potential", "minds", "ideas", "things", "people", "moments", "experiences", "possibilities", "opportunities"],
+            "wonderful": ["things", "experiences", "moments", "discoveries", "adventures", "journeys", "places", "people", "ideas", "creations", "achievements", "feelings", "memories", "dreams", "possibilities", "opportunities", "surprises", "gifts", "stories", "lessons"],
+            "beautiful": ["things", "places", "moments", "experiences", "ideas", "creations", "stories", "dreams", "visions", "memories", "feelings", "thoughts", "words", "music", "art", "nature", "world", "universe", "complexity", "simplicity"],
+            "mysterious": ["ways", "forces", "powers", "energies", "depths", "secrets", "wonders", "phenomena", "patterns", "connections", "universe", "cosmos", "nature", "world", "life", "existence", "realms", "dimensions"],
+            "powerful": ["forces", "ideas", "thoughts", "emotions", "feelings", "memories", "experiences", "tools", "technologies", "minds", "connections", "bonds", "relationships", "moments", "truths", "insights", "realizations"],
+
+            // Verb continuations
+            "is": ["a", "the", "an", "one", "very", "truly", "really", "quite", "always", "often", "sometimes", "never", "what", "how", "why", "where", "when", "found", "made", "created", "built", "known", "understood", "seen", "felt", "considered", "important", "essential", "crucial", "vital", "necessary", "beautiful", "wonderful", "amazing", "incredible", "fascinating", "mysterious"],
+            "are": ["the", "a", "many", "few", "some", "all", "very", "truly", "really", "quite", "always", "often", "sometimes", "never", "what", "how", "why", "important", "essential", "beautiful", "wonderful", "amazing", "incredible", "fascinating", "mysterious", "everywhere", "connected", "related", "similar", "different", "unique", "special"],
+            "can": ["be", "do", "make", "create", "find", "discover", "learn", "grow", "change", "evolve", "adapt", "help", "bring", "give", "take", "show", "lead", "guide", "inspire", "motivate", "encourage", "empower", "enable", "allow", "open", "unlock", "reveal", "transform", "transcend", "achieve", "accomplish", "reach", "become", "understand", "appreciate", "experience"],
+            "will": ["be", "do", "make", "create", "find", "discover", "learn", "grow", "change", "bring", "give", "take", "show", "lead", "guide", "open", "reveal", "transform", "always", "never", "often", "sometimes", "continue", "remain", "stay", "last", "endure"],
+            "have": ["the", "a", "many", "great", "powerful", "beautiful", "wonderful", "unique", "special", "been", "always", "never", "often", "sometimes", "found", "discovered", "learned", "understood", "seen", "experienced", "achieved", "created", "built", "made"],
+            "think": ["about", "of", "that", "this", "deeply", "carefully", "critically", "creatively", "clearly", "differently", "outside", "beyond", "before", "ahead", "big", "positively", "optimistically"],
+            "believe": ["in", "that", "this", "everything", "deeply", "strongly", "firmly", "truly", "genuinely", "wholeheartedly", "passionately", "completely"],
+            "know": ["that", "this", "how", "what", "why", "when", "where", "everything", "nothing", "much", "little", "enough", "well", "better", "best", "more", "deeply", "truly", "certainly"],
+            "understand": ["that", "this", "how", "what", "why", "when", "where", "everything", "nothing", "much", "better", "deeply", "truly", "fully", "completely", "clearly", "perfectly"],
+            "feel": ["that", "this", "like", "deeply", "strongly", "passionately", "intensely", "truly", "genuinely", "connected", "inspired", "motivated", "energized", "alive", "grateful", "blessed", "happy", "joyful", "peaceful", "calm", "confident", "hopeful"],
+            "want": ["to", "the", "a", "more", "less", "better", "something", "everything", "nothing", "deeply", "truly", "really", "desperately", "badly", "genuinely"],
+            "need": ["to", "the", "a", "more", "less", "something", "everything", "nothing", "time", "space", "help", "support", "guidance", "understanding", "patience", "love", "care", "attention"],
+            "love": ["the", "a", "to", "how", "what", "this", "that", "learning", "exploring", "discovering", "creating", "building", "sharing", "helping", "growing", "everything", "life", "nature", "beauty", "art", "music", "science", "knowledge", "wisdom", "people", "deeply", "truly", "passionately", "unconditionally"],
+            "like": ["to", "the", "a", "how", "what", "this", "that", "learning", "exploring", "discovering", "creating", "building", "sharing", "helping", "growing", "it", "them", "this", "that", "everything"],
+
+            // Knowledge and learning
+            "Knowledge": ["is", "comes", "grows", "expands", "evolves", "transforms", "empowers", "enables", "opens", "unlocks", "leads", "guides", "illuminates", "enriches", "deepens", "broadens", "strengthens"],
+            "Learning": ["is", "comes", "happens", "occurs", "takes", "requires", "involves", "includes", "enables", "empowers", "transforms", "opens", "never", "always", "continuously", "constantly"],
+            "Understanding": ["is", "comes", "grows", "deepens", "expands", "develops", "emerges", "requires", "involves", "leads", "enables", "empowers", "transforms", "brings", "opens", "unlocks", "the"],
+            "Wisdom": ["is", "comes", "grows", "develops", "emerges", "requires", "involves", "teaches", "shows", "reveals", "guides", "leads", "empowers", "transforms", "the", "lies", "resides"],
+            "Creativity": ["is", "comes", "flows", "grows", "expands", "flourishes", "thrives", "enables", "empowers", "transforms", "opens", "unlocks", "leads", "connects", "brings", "requires", "involves", "the", "lies"],
+            "Imagination": ["is", "creates", "enables", "empowers", "transforms", "opens", "unlocks", "leads", "takes", "brings", "allows", "lets", "helps", "the", "knows", "has", "boundless", "limitless", "infinite"],
+
+            // Concept transitions  
+            "Life": ["is", "has", "brings", "gives", "takes", "teaches", "shows", "reveals", "offers", "presents", "challenges", "rewards", "transforms", "evolves", "continues", "goes", "moves", "flows", "comes", "finds"],
+            "Love": ["is", "has", "brings", "gives", "heals", "transforms", "connects", "unites", "strengthens", "empowers", "inspires", "motivates", "guides", "leads", "opens", "creates", "builds", "grows", "never", "always", "the", "a", "true", "real", "deep", "pure", "unconditional"],
+            "Time": ["is", "has", "brings", "takes", "heals", "reveals", "teaches", "shows", "passes", "flies", "moves", "flows", "runs", "waits", "stops", "never", "always", "the", "a", "precious", "valuable", "limited", "infinite"],
+            "The world": ["is", "has", "needs", "deserves", "awaits", "watches", "changes", "evolves", "grows", "transforms", "becomes", "contains", "holds", "offers", "presents", "full", "filled"],
+            "Nature": ["is", "has", "shows", "teaches", "reveals", "provides", "offers", "gives", "creates", "designs", "builds", "works", "operates", "follows", "obeys", "knows", "understands", "heals", "restores", "the", "a", "beautiful", "wonderful", "amazing", "mysterious", "powerful"],
+            "Science": ["is", "has", "shows", "teaches", "reveals", "explains", "understands", "discovers", "explores", "investigates", "studies", "analyzes", "tests", "proves", "demonstrates", "the", "a", "helps", "enables", "empowers"],
+
+            // Ending patterns
+            "important": ["for", "to", "in", "because", "as", "part", "aspect", "role", "factor", "element", "component", "step", "lesson", "thing", "truth", "principle", "concept", "idea", ".", "and", "but", "yet", "so", "therefore", "however"],
+            "beautiful": ["way", "thing", "experience", "moment", "journey", "story", "truth", "reality", "world", "universe", ".", "and", "but", "yet", "so", "therefore"],
+            "amazing": ["way", "thing", "experience", "discovery", "journey", "story", "fact", "truth", "reality", "world", "how", "what", ".", "and", "but", "yet"],
+            "incredible": ["way", "thing", "experience", "discovery", "journey", "power", "ability", "potential", "capacity", "how", "what", ".", "and", "but"],
+            "fascinating": ["way", "thing", "aspect", "element", "topic", "subject", "field", "area", "how", "what", ".", "and", "but"],
+
+            // Connectors
+            "and": ["the", "a", "this", "that", "it", "they", "we", "you", "I", "so", "yet", "also", "even", "especially", "particularly", "most", "all", "every", "each", "many", "some", "few", "often", "always", "never", "sometimes", "perhaps", "maybe", "possibly"],
+            "but": ["the", "a", "this", "that", "it", "they", "we", "you", "I", "also", "even", "still", "yet", "rather", "instead", "sometimes", "often", "always", "never", "perhaps", "maybe", "there", "here", "now", "then"],
+            "because": ["the", "a", "this", "that", "it", "they", "we", "you", "I", "of", "every", "each", "all", "nothing", "something", "everything", "life", "love", "knowledge", "understanding", "wisdom", "learning", "there", "here", "now"],
+            "so": ["the", "a", "this", "that", "it", "they", "we", "you", "I", "much", "many", "very", "deeply", "truly", "really", "always", "often", "sometimes", "never", "what", "how", "why", "be", "do", "make", "let", "keep"],
+            "that": ["is", "are", "was", "were", "has", "have", "can", "will", "would", "could", "should", "might", "may", "the", "a", "we", "you", "they", "I", "everything", "nothing", "something", "it", "this", "leads", "brings", "makes", "creates", "helps", "allows", "enables", "opens", "shows"],
+            "which": ["is", "are", "was", "were", "has", "have", "can", "will", "would", "could", "should", "might", "may", "means", "shows", "demonstrates", "leads", "brings", "makes", "creates", "helps", "allows", "enables", "opens"],
+            "when": ["we", "you", "they", "I", "it", "the", "a", "life", "things", "people", "time", "everything", "nothing", "something", "there", "here", "this", "that"],
+            "where": ["the", "a", "we", "you", "they", "I", "it", "life", "things", "people", "everything", "nothing", "something", "there", "here", "knowledge", "wisdom", "truth", "beauty", "love", "dreams", "ideas", "possibilities"],
+            "how": ["the", "a", "we", "you", "they", "I", "it", "life", "things", "people", "everything", "nothing", "something", "much", "many", "deeply", "truly", "really", "important", "beautiful", "wonderful", "amazing", "incredible", "fascinating"],
+            "what": ["the", "a", "we", "you", "they", "I", "it", "life", "makes", "creates", "brings", "gives", "matters", "counts", "is", "was", "has", "can", "will", "would", "could", "should", "might", "truly", "really", "essentially"],
+
+            // Deeper philosophical chains
+            "truth": ["is", "lies", "exists", "remains", "stands", "prevails", "endures", "transcends", "reveals", "illuminates", "guides", "sets", "frees", "heals", "transforms", "the", "in", "about", "behind", "beyond", "within", "of", "that", "and", "but"],
+            "beauty": ["is", "lies", "exists", "surrounds", "fills", "inspires", "transforms", "heals", "connects", "unites", "reveals", "reflects", "emanates", "radiates", "the", "in", "of", "around", "within", "everywhere", "and", "but"],
+            "power": ["is", "lies", "comes", "flows", "grows", "builds", "transforms", "enables", "empowers", "creates", "destroys", "shapes", "molds", "the", "of", "in", "within", "behind", "to", "and", "but"],
+            "change": ["is", "comes", "happens", "occurs", "begins", "starts", "requires", "takes", "transforms", "creates", "brings", "leads", "the", "in", "of", "from", "within", "to", "and", "but", "inevitable", "constant", "continuous", "necessary", "possible"],
+            "growth": ["is", "comes", "happens", "occurs", "requires", "takes", "begins", "starts", "leads", "the", "in", "of", "from", "through", "to", "and", "but", "personal", "continuous", "constant", "never-ending", "exponential"],
+            "success": ["is", "comes", "happens", "requires", "takes", "begins", "starts", "leads", "the", "in", "of", "from", "through", "to", "and", "but", "true", "real", "meaningful", "lasting", "sustainable"],
+            "happiness": ["is", "comes", "flows", "grows", "spreads", "radiates", "requires", "takes", "begins", "starts", "the", "in", "of", "from", "within", "through", "to", "and", "but", "true", "real", "genuine", "lasting", "sustainable", "found", "discovered", "created"],
+            "peace": ["is", "comes", "flows", "grows", "spreads", "radiates", "requires", "begins", "starts", "the", "in", "of", "from", "within", "through", "to", "and", "but", "inner", "true", "real", "lasting", "sustainable", "found", "discovered", "created"],
+
+            // Ending completers
+            ".": ["_END_"],
+            "!": ["_END_"],
+            "?": ["_END_"]
+        };
+
+        // Topic-based response templates for varied answers
+        const RESPONSE_TEMPLATES = {
+            greeting: [
+                "Hello! I'm Guahh AI v2.6, now with advanced sentence generation. What would you like to explore today?",
+                "Hi there! I'm ready to chat, answer questions, and share knowledge. What's on your mind?",
+                "Hey! Great to see you. I can help with definitions, stories, facts, or just have a conversation. What interests you?",
+                "Hello! I'm here to help you learn and discover. Ask me anything!",
+                "Hi! Welcome to Guahh AI 2.6 with enhanced language understanding. Let's explore ideas together!"
+            ],
+            howAreYou: [
+                "I'm functioning at optimal capacity! Thanks for asking. How can I help you today?",
+                "I'm doing great, always ready to learn and share knowledge! What would you like to know?",
+                "I'm excellent! My neural pathways are firing perfectly. What's on your mind?",
+                "I'm wonderful, thank you! Ready to dive into any topic you're curious about.",
+                "I'm great! Every conversation helps me understand language better. What shall we explore?"
+            ],
+            thanks: [
+                "You're welcome! Happy to help anytime.",
+                "My pleasure! Feel free to ask anything else.",
+                "Glad I could help! I'm here whenever you need me.",
+                "You're very welcome! Knowledge is meant to be shared.",
+                "Anytime! That's what I'm here for."
+            ],
+            goodbye: [
+                "Goodbye! Come back anytime you want to learn something new!",
+                "See you later! I'll be here when you need me.",
+                "Take care! Looking forward to our next conversation.",
+                "Bye for now! Remember, curiosity is the key to knowledge!",
+                "Farewell! May your day be filled with discovery!"
+            ],
+            dontKnow: [
+                "That's an interesting question that stretches my current knowledge. I'm always learning though!",
+                "I don't have specific information about that yet, but I'd love to learn more about it.",
+                "That topic is outside my current knowledge base, but feel free to ask about science, history, nature, or language!",
+                "I'm not sure about that one, but I know a lot about other subjects. What else interests you?",
+                "That's beyond what I currently know, but every question helps me understand what to learn next!"
+            ],
+            thinkingPhrases: [
+                "That's a fascinating question. Let me think about this...",
+                "Interesting topic! Here's what I know...",
+                "Great question! Let me share my understanding...",
+                "I love exploring ideas like this! Here's my perspective...",
+                "What a thought-provoking question! Consider this..."
+            ]
+        };
+
+        // Generate a sentence using the Markov chain
+        function generateMarkovSentence(topic = null, maxWords = 25) {
+            let sentence = [];
+            let currentWord = "_START_";
+            let attempts = 0;
+            const maxAttempts = maxWords * 3;
+
+            // If topic provided, try to start with it or include it
+            if (topic && WORD_CHAINS[topic]) {
+                currentWord = topic;
+                sentence.push(topic);
+            }
+
+            while (sentence.length < maxWords && attempts < 100) { // SAFETY: Hard limit 100 iterations
+                attempts++;
+
+                let possibleNext = WORD_CHAINS[currentWord];
+
+                if (!possibleNext || possibleNext.length === 0) {
+                    // Try to recover gracefully
+                    // 1. Try case-insensitive lookup
+                    let lowerKey = Object.keys(WORD_CHAINS).find(k => k.toLowerCase() === currentWord.toLowerCase());
+                    if (lowerKey) {
+                        possibleNext = WORD_CHAINS[lowerKey];
+                    }
+                }
+
+                if (!possibleNext || possibleNext.length === 0) {
+                    // Still no chain found, end efficiently
+                    // If sentence is short, add a generic ending
+                    if (sentence.length < 3) {
+                        sentence.push("is");
+                        sentence.push("very");
+                        sentence.push("interesting");
+                    }
+                    if (!sentence[sentence.length - 1].match(/[.!?]/)) {
+                        sentence.push(".");
+                    }
+                    break;
+                }
+
+                // Pick random next word with some intelligence
+                let nextWord = possibleNext[Math.floor(Math.random() * possibleNext.length)];
+
+                // Avoid immediate repetition
+                if (nextWord === currentWord && possibleNext.length > 1) {
+                    nextWord = possibleNext[Math.floor(Math.random() * possibleNext.length)];
+                }
+
+                if (nextWord === "_END_") {
+                    break;
+                }
+
+                sentence.push(nextWord);
+                currentWord = nextWord; // Update current word key
+
+                // If the next word isn't a key in our chain, we might get stuck next loop if we don't have a transition FOR that word.
+                // But our logic handles empty possibleNext above.
+
+                // Natural sentence length with punctuation
+                if (sentence.length >= 8 && Math.random() > 0.8) {
+                    if (!sentence[sentence.length - 1].match(/[.!?,]/)) {
+                        sentence.push(".");
+                        break;
+                    }
+                }
+            }
+
+            // Ensure sentence ends properly
+            let result = sentence.filter(w => w !== "_START_" && w !== "_END_").join(" ");
+            if (result && !result.match(/[.!?]$/)) {
+                result += ".";
+            }
+
+            // Capitalize first letter
+            if (result.length > 0) {
+                result = result.charAt(0).toUpperCase() + result.slice(1);
+            }
+
+            return result;
+        }
+
+        // Generate contextual filler/insight based on topic
+        function generateInsight(topic) {
+            const insights = {
+                science: [
+                    "Science illuminates the mysteries of our universe through observation and experimentation.",
+                    "The scientific method has transformed our understanding of reality.",
+                    "Every scientific discovery opens doors to new questions and possibilities.",
+                    "Science teaches us that curiosity is the foundation of all knowledge."
+                ],
+                nature: [
+                    "Nature operates with elegant simplicity and breathtaking complexity.",
+                    "The natural world is full of patterns waiting to be discovered.",
+                    "Every living thing is connected in the great web of life.",
+                    "Nature teaches patience, adaptation, and the beauty of diversity."
+                ],
+                technology: [
+                    "Technology amplifies human capability in ways our ancestors couldn't imagine.",
+                    "Innovation happens when creativity meets necessity.",
+                    "Every technology starts as a dream before becoming reality.",
+                    "The best technology serves humanity without replacing human connection."
+                ],
+                philosophy: [
+                    "Philosophy asks the questions that shape how we understand ourselves.",
+                    "The examined life leads to deeper wisdom and understanding.",
+                    "Great thinkers throughout history have pondered the same fundamental questions.",
+                    "Philosophy bridges the gap between knowledge and wisdom."
+                ],
+                life: [
+                    "Life is a journey of continuous learning and growth.",
+                    "Every experience teaches us something valuable if we're open to learning.",
+                    "The meaning of life is often found in connection and purpose.",
+                    "Life rewards those who embrace change with courage and curiosity."
+                ],
+                learning: [
+                    "Learning is a lifelong adventure that enriches the soul.",
+                    "Every question is a doorway to new understanding.",
+                    "The joy of learning comes from the journey, not just the destination.",
+                    "True learning transforms not just what we know, but who we are."
+                ],
+                creativity: [
+                    "Creativity flows when we give ourselves permission to explore.",
+                    "Every creative act builds on the ideas of those who came before.",
+                    "Imagination is the playground where innovation is born.",
+                    "Creativity thrives at the intersection of different ideas and perspectives."
+                ],
+                general: [
+                    "Every question deserves a thoughtful answer.",
+                    "Knowledge grows when shared and discussed.",
+                    "The more we learn, the more we realize how much there is to discover.",
+                    "Understanding comes from curiosity and open-minded exploration.",
+                    "Great ideas often emerge from simple observations.",
+                    "The universe is full of wonders waiting to be understood."
+                ]
+            };
+
+            let categoryInsights = insights[topic] || insights.general;
+            return categoryInsights[Math.floor(Math.random() * categoryInsights.length)];
+        }
+
+        // Smart response variability - picks a random template response
+        function getVariedResponse(category) {
+            if (RESPONSE_TEMPLATES[category]) {
+                let responses = RESPONSE_TEMPLATES[category];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+            return null;
+        }
+
+        // Generate a unique thinking lead-in
+        function getThinkingPhrase() {
+            return RESPONSE_TEMPLATES.thinkingPhrases[Math.floor(Math.random() * RESPONSE_TEMPLATES.thinkingPhrases.length)];
+        }
+
+        // Build a varied, intelligent response about a topic
+        function buildIntelligentResponse(topic, baseInfo) {
+            // Get variety in how we present information
+            const openers = [
+                `${baseInfo}`,
+                `Here's what I know: ${baseInfo}`,
+                `${getThinkingPhrase()} ${baseInfo}`,
+                `${baseInfo} ${generateInsight(detectCategory(topic))}`,
+                `That's a great topic! ${baseInfo}`
+            ];
+
+            // Sometimes add an additional insight
+            if (Math.random() > 0.6) {
+                let insight = generateInsight(detectCategory(topic));
+                return openers[Math.floor(Math.random() * openers.length)] + " " + insight;
+            }
+
+            return openers[Math.floor(Math.random() * openers.length)];
+        }
+
+        // Detect the category of a topic for contextual responses
+        function detectCategory(topic) {
+            const scienceWords = ["atom", "molecule", "cell", "dna", "energy", "gravity", "quantum", "physics", "chemistry", "biology", "evolution", "photosynthesis", "electron", "proton", "neutron", "universe", "galaxy", "star", "planet", "sun", "moon", "mars", "jupiter", "saturn", "earth"];
+            const natureWords = ["animal", "plant", "tree", "flower", "forest", "ocean", "river", "mountain", "weather", "rain", "snow", "wind", "bird", "fish", "mammal", "reptile", "insect", "ecosystem"];
+            const techWords = ["computer", "internet", "software", "hardware", "programming", "algorithm", "ai", "artificial intelligence", "machine learning", "robot", "technology", "digital"];
+            const philosophyWords = ["meaning", "purpose", "existence", "consciousness", "truth", "wisdom", "knowledge", "ethics", "morality", "reality", "mind", "soul", "philosophy"];
+            const lifeWords = ["life", "love", "happiness", "success", "growth", "change", "purpose", "meaning", "friendship", "family", "relationship"];
+            const learningWords = ["learn", "study", "education", "knowledge", "skill", "understanding", "discovery", "curiosity", "question", "answer"];
+            const creativityWords = ["art", "music", "creativity", "imagination", "design", "creation", "innovation", "idea", "inspiration"];
+
+            let lowerTopic = topic.toLowerCase();
+
+            if (scienceWords.some(w => lowerTopic.includes(w))) return "science";
+            if (natureWords.some(w => lowerTopic.includes(w))) return "nature";
+            if (techWords.some(w => lowerTopic.includes(w))) return "technology";
+            if (philosophyWords.some(w => lowerTopic.includes(w))) return "philosophy";
+            if (lifeWords.some(w => lowerTopic.includes(w))) return "life";
+            if (learningWords.some(w => lowerTopic.includes(w))) return "learning";
+            if (creativityWords.some(w => lowerTopic.includes(w))) return "creativity";
+
+            return "general";
+        }
+
+        // V2.6 Enhanced conversational responses with variety
+        const CONVERSATIONAL_V26 = {
+            greetings: ["hi", "hello", "hey", "sup", "yo", "greetings", "howdy"],
+            howAreYou: ["how are you", "how do you feel", "how are you doing", "hows it going", "whats up", "how have you been"],
+            thanks: ["thanks", "thank you", "thx", "ty", "appreciate it", "much appreciated"],
+            goodbye: ["bye", "goodbye", "see you", "later", "farewell", "cya", "gtg", "gotta go"]
         };
 
         // --- 2. GRAMMAR & KNOWLEDGE BASE ---
 
         // CONVERSATIONAL RESPONSES - Handle greetings and casual chat
         const CONVERSATIONAL_RESPONSES = {
-            "hi": "Hello! I'm Guahh AI. I can define words, answer questions, and share knowledge. What would you like to know?",
-            "hello": "Hi there! I'm Guahh AI with English language understanding. Ask me to define a word or explain a concept!",
-            "hey": "Hey! I'm here to help you understand English words and general knowledge. What can I explain for you?",
-            "how are you": "I'm functioning perfectly! As an AI, I'm always ready to help you learn. What would you like to know about?",
-            "what can you do": "I can define over 850 English words, explain their meanings, answer questions about general knowledge including science, history, geography, and technology, and write creative short stories! Try asking 'What is a dolphin?', 'Tell me about black holes', or 'Write a story about a cat'!",
-            "who are you": "I am Guahh AI version 2.5, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
-            "what are you": "I am Guahh AI version 2.5, a language model with dictionary knowledge and semantic understanding running locally in your browser.",
+            "hi": () => getVariedResponse('greeting'),
+            "hello": () => getVariedResponse('greeting'),
+            "hello there": () => getVariedResponse('greeting'),
+            "hey": () => getVariedResponse('greeting'),
+            "how are you": () => getVariedResponse('howAreYou'),
+            "what can you do": "I can define over 1000 English words, generate insightful sentences word-by-word, answer questions about science, history, geography, and technology, write creative stories, and give you a different response every time you ask! Try 'What is a dolphin?', 'Tell me about black holes', 'Write a story about a cat', or just chat with me!",
+            "who are you": "I am Guahh AI version 2.6, an intelligent language model with Markov chain sentence generation and semantic understanding running locally in your browser.",
+            "what are you": "I am Guahh AI version 2.6 - I use word chains to build sentences intelligently, knowing what word should come next. I understand context and give varied responses!",
             "who made you": "I was created by Guahh, an Australian technology company based in Melbourne.",
-            "what is your name": "My name is Guahh AI, and I'm version 2.5 of this language understanding system.",
-            "thanks": "You're welcome! Feel free to ask me anything else.",
-            "thank you": "Happy to help! Let me know if you have more questions.",
-            "bye": "Goodbye! Come back anytime you want to learn something new!",
-            "goodbye": "See you later! I'll be here whenever you need me."
+            "what is your name": "My name is Guahh AI, and I'm version 2.6 with advanced sentence generation capabilities.",
+            "are you smart": "Yes, I'm smart! I can define over 1000 English words, generate insightful sentences word-by-word, answer questions about science, history, geography, and technology, write creative stories, and give you a different response every time you ask!",
+            "thanks": () => getVariedResponse('thanks'),
+            "thank you": () => getVariedResponse('thanks'),
+            "bye": () => getVariedResponse('goodbye'),
+            "goodbye": () => getVariedResponse('goodbye')
         };
 
 
@@ -1450,8 +2000,785 @@
             "to kill a mockingbird": "To Kill a Mockingbird is a novel by the American author Harper Lee. It was published in 1960 and was instantly successful.",
             "the great gatsby": "The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, the novel depicts narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby.",
             "pride and prejudice": "Pride and Prejudice is an 1813 romantic novel of manners written by Jane Austen.",
-            "moby dick": "Moby-Dick; or, The Whale is an 1851 novel by American writer Herman Melville. The book is the sailor Ishmael's narrative of the obsessive quest of Ahab."
+            "moby dick": "Moby-Dick; or, The Whale is an 1851 novel by American writer Herman Melville. The book is the sailor Ishmael's narrative of the obsessive quest of Ahab.",
+
+            // V2.6 WIKIPEDIA EXPANSION - Historical Figures
+            "abraham lincoln": "Abraham Lincoln (1809-1865) was the 16th President of the United States, who led the nation through the Civil War and abolished slavery with the Emancipation Proclamation.",
+            "aristotle": "Aristotle (384-322 BC) was a Greek philosopher and polymath who made contributions to logic, metaphysics, biology, ethics, and virtually every field of knowledge existing in his time.",
+            "alexander the great": "Alexander the Great (356-323 BC) was a king of the ancient Greek kingdom of Macedon who created one of the largest empires in ancient history, stretching from Greece to northwestern India.",
+            "adolf hitler": "Adolf Hitler (1889-1945) was the dictator of Nazi Germany from 1933 to 1945, responsible for initiating World War II and the Holocaust.",
+            "albert einstein": "Albert Einstein (1879-1955) was a German-born theoretical physicist who developed the theory of relativity, one of the two pillars of modern physics. E=mc² is his famous equation.",
+            "alan turing": "Alan Turing (1912-1954) was a British mathematician and computer scientist, considered the father of theoretical computer science and artificial intelligence.",
+            "ada lovelace": "Ada Lovelace (1815-1852) was an English mathematician and writer, considered the first computer programmer for her work on Charles Babbage's Analytical Engine.",
+            "ayn rand": "Ayn Rand (1905-1982) was a Russian-American writer and philosopher known for developing Objectivism and writing novels like Atlas Shrugged and The Fountainhead.",
+            "andrew jackson": "Andrew Jackson (1767-1845) was the 7th President of the United States and founder of the Democratic Party.",
+            "alexander graham bell": "Alexander Graham Bell (1847-1922) was a Scottish-born inventor, scientist, and engineer who patented the first practical telephone in 1876.",
+            "alfred nobel": "Alfred Nobel (1833-1896) was a Swedish chemist, engineer, and industrialist who invented dynamite and established the Nobel Prizes.",
+            "albert schweitzer": "Albert Schweitzer (1875-1965) was a French-German theologian, organist, musicologist, philosopher, and physician who received the Nobel Peace Prize in 1952.",
+            "akira kurosawa": "Akira Kurosawa (1910-1998) was a Japanese filmmaker and painter, regarded as one of the most important and influential filmmakers in the history of cinema.",
+            "alfred hitchcock": "Alfred Hitchcock (1899-1980) was an English filmmaker, known as the 'Master of Suspense' for his innovative techniques in the thriller genre.",
+            "andy warhol": "Andy Warhol (1928-1987) was an American artist, film director, and producer who was a leading figure in the pop art movement.",
+            "agatha christie": "Agatha Christie (1890-1976) was an English writer known for her detective novels featuring Hercule Poirot and Miss Marple. She is the best-selling fiction writer of all time.",
+            "attila": "Attila the Hun (c. 406-453) was the ruler of the Huns from 434 until his death. He was a fearsome leader who invaded the Roman Empire.",
+            "augustus": "Augustus (63 BC - 14 AD) was the first Roman emperor, reigning from 27 BC until his death. He founded the Roman Principate.",
+            "avicenna": "Avicenna (980-1037) was a Persian polymath regarded as one of the most significant physicians, astronomers, thinkers and writers of the Islamic Golden Age.",
+            "archimedes": "Archimedes (c. 287-212 BC) was a Greek mathematician, physicist, engineer and astronomer. He discovered the principles of buoyancy and the lever.",
+
+            // Countries and Places
+            "afghanistan": "Afghanistan is a landlocked country in South and Central Asia. It has a rich history and has been at the crossroads of many civilizations for thousands of years.",
+            "albania": "Albania is a country in Southeastern Europe on the Adriatic and Ionian Seas. It has a rich history dating back to ancient Illyrian times.",
+            "algeria": "Algeria is a country in North Africa and the largest country in Africa by area. It became independent from France in 1962.",
+            "alaska": "Alaska is the largest U.S. state by area, located in the northwest extremity of North America. It was purchased from Russia in 1867.",
+            "amsterdam": "Amsterdam is the capital and most populous city of the Netherlands. It is known for its artistic heritage, elaborate canal system, and narrow houses.",
+            "ankara": "Ankara is the capital of Turkey, located in the central part of the country. It became the capital in 1923 after the Turkish War of Independence.",
+            "argentina": "Argentina is a country in the southern half of South America, known for its diverse landscapes ranging from the Andes mountains to glacial lakes.",
+            "armenia": "Armenia is a landlocked country in the South Caucasus region of Eurasia. It was the first country to adopt Christianity as a state religion in 301 AD.",
+            "azerbaijan": "Azerbaijan is a country in the South Caucasus region, known for its rich oil reserves and the ancient fire temples of Baku.",
+            "andorra": "Andorra is a tiny principality situated between France and Spain in the Pyrenees mountains. It is known for its ski resorts and tax-haven status.",
+            "anguilla": "Anguilla is a British overseas territory in the Caribbean, known for its spectacular beaches, coral reefs, and offshore banking.",
+            "antigua and barbuda": "Antigua and Barbuda is a country in the West Indies, known for its 365 beaches and English Harbour, once the headquarters of the British Royal Navy.",
+            "aruba": "Aruba is a Dutch Caribbean island known for white-sand beaches, blue waters, and a dry, sunny climate.",
+            "atlantic ocean": "The Atlantic Ocean is the second-largest ocean, separating the Americas from Europe and Africa. It covers approximately 20% of Earth's surface.",
+            "aegean sea": "The Aegean Sea is an arm of the Mediterranean Sea between Greece and Turkey, dotted with many islands including Crete and the Cyclades.",
+            "andes": "The Andes is the longest continental mountain range in the world, stretching along the western edge of South America for about 7,000 km.",
+            "alps": "The Alps are the highest and most extensive mountain range system in Europe, stretching across Austria, France, Germany, Italy, Switzerland and other countries.",
+            "aachen": "Aachen is a city in western Germany, known as the spa of kings and the city where Charlemagne was crowned Holy Roman Emperor in 800 AD.",
+            "athens": "Athens is the capital of Greece and one of the world's oldest cities, with a recorded history spanning over 3,400 years. It is the birthplace of democracy.",
+            "adelaide": "Adelaide is the capital city of South Australia, known for its festivals, wine regions, and parklands surrounding the city center.",
+
+            // Scientific Concepts
+            "algorithm": "An algorithm is a step-by-step procedure for solving a problem or accomplishing a task, especially by a computer.",
+            "atom": "An atom is the smallest unit of ordinary matter that forms a chemical element. Atoms consist of protons, neutrons, and electrons.",
+            "antimatter": "Antimatter is matter composed of antiparticles with the same mass as particles of ordinary matter but opposite charge and quantum spin.",
+            "asteroid": "An asteroid is a small rocky body orbiting the Sun. Most asteroids are found in the asteroid belt between Mars and Jupiter.",
+            "alloy": "An alloy is a mixture of metals or a metal combined with other elements to improve its properties like strength or corrosion resistance.",
+            "ammonia": "Ammonia (NH3) is a colorless gas with a pungent smell, used in fertilizers, cleaning products, and refrigeration systems.",
+            "amino acid": "Amino acids are organic molecules that combine to form proteins. There are 20 standard amino acids that serve as building blocks for proteins.",
+            "artificial intelligence": "Artificial Intelligence (AI) is the simulation of human intelligence by machines, especially computer systems, including learning, reasoning, and self-correction.",
+            "astronomy": "Astronomy is the scientific study of celestial objects, space, and the physical universe as a whole.",
+            "archaeology": "Archaeology is the study of human history and prehistory through the excavation of sites and the analysis of artifacts.",
+            "anthropology": "Anthropology is the study of human societies, cultures, and their development throughout history.",
+            "alchemy": "Alchemy was an ancient practice combining elements of chemistry, metallurgy, physics, and medicine, often focused on turning base metals into gold.",
+            "acoustics": "Acoustics is the branch of physics that deals with the study of sound, including its production, transmission, and effects.",
+            "anatomy": "Anatomy is the branch of biology concerned with the study of the structure of organisms and their parts.",
+            "algebra": "Algebra is a branch of mathematics dealing with symbols and the rules for manipulating those symbols to solve equations.",
+            "argon": "Argon is a chemical element with symbol Ar. It is a noble gas and the third-most abundant gas in Earth's atmosphere.",
+            "arsenic": "Arsenic is a chemical element with symbol As. It is a metalloid that occurs in many minerals, usually combined with sulfur and metals.",
+            "aluminium": "Aluminium (or aluminum) is a silvery-white, lightweight metal. It is the most abundant metal in Earth's crust.",
+            "axon": "An axon is the long threadlike part of a nerve cell that conducts electrical impulses away from the cell body.",
+            "antiparticle": "An antiparticle is a subatomic particle with the same mass as a given particle but with opposite electric charge or magnetic moment.",
+
+            // Philosophy and Literature
+            "anarchism": "Anarchism is a political philosophy that advocates for self-governed societies based on voluntary institutions and opposes hierarchical authority.",
+            "altruism": "Altruism is the principle or practice of concern for the welfare of others, often involving selfless acts for the benefit of others.",
+            "agnosticism": "Agnosticism is the view that the existence of God or the supernatural is unknown or unknowable.",
+            "animism": "Animism is the belief that objects, places, and creatures all possess a distinct spiritual essence or soul.",
+            "animal farm": "Animal Farm is a satirical allegorical novella by George Orwell, published in 1945, criticizing Stalin and Soviet Russia.",
+            "atlas shrugged": "Atlas Shrugged is a 1957 novel by Ayn Rand, her longest and last major work of fiction, exploring her philosophy of Objectivism.",
+            "a clockwork orange": "A Clockwork Orange is a 1962 dystopian satirical black comedy novel by Anthony Burgess about youth violence and state control.",
+
+            // Technology and Computing
+            "abacus": "The abacus is one of the earliest calculating tools, using beads on rods for arithmetic operations. It has been used for over 4,000 years.",
+            "ascii": "ASCII (American Standard Code for Information Interchange) is a character encoding standard for electronic communication.",
+            "assembly language": "Assembly language is a low-level programming language with a strong correspondence between its instructions and machine code.",
+            "applet": "An applet is a small application that performs a specific task and runs within the scope of a dedicated widget engine or a larger program.",
+            "apl": "APL (A Programming Language) is a programming language developed in the 1960s, known for its mathematical notation and array processing.",
+            "aes": "AES (Advanced Encryption Standard) is a specification for the encryption of electronic data established by the U.S. National Institute of Standards and Technology.",
+            "apollo 11": "Apollo 11 was the spaceflight that first landed humans on the Moon on July 20, 1969. Neil Armstrong and Buzz Aldrin walked on the lunar surface.",
+            "apollo program": "The Apollo program was a NASA spaceflight program that landed the first humans on the Moon between 1969 and 1972.",
+
+            // Arts and Culture
+            "anime": "Anime is a style of animation originating in Japan, characterized by colorful graphics, vibrant characters, and fantastical themes.",
+            "art": "Art is a diverse range of human activities involving creative expression and imagination, including visual arts, music, literature, and performing arts.",
+            "architecture": "Architecture is the art and science of designing buildings and other structures, considering both aesthetic and functional aspects.",
+            "accordion": "The accordion is a portable, freely-reeds musical instrument, played by compressing or expanding bellows while pressing buttons or keys.",
+            "aikido": "Aikido is a modern Japanese martial art developed by Morihei Ueshiba, focusing on harmony with the opponent rather than fighting force with force.",
+            "acrobatics": "Acrobatics is the performance of extraordinary human feats of balance, agility, and motor coordination.",
+
+            // Nature and Animals
+            "aardvark": "The aardvark is a medium-sized, burrowing, nocturnal mammal native to Africa. It has a long snout and feeds primarily on ants and termites.",
+            "aardwolf": "The aardwolf is a small, insectivorous mammal native to East and Southern Africa. It belongs to the hyena family but eats termites.",
+            "albatross": "Albatrosses are large seabirds with the longest wingspans of any bird, reaching up to 3.7 meters (12 feet).",
+            "amphibian": "Amphibians are cold-blooded vertebrates that typically live on land but breed in water. They include frogs, toads, salamanders, and newts.",
+            "alligator": "Alligators are large reptiles found in the southeastern United States and China. They differ from crocodiles by their wider, U-shaped snouts.",
+            "anaconda": "The anaconda is one of the largest snakes in the world, found in South America. The green anaconda is the heaviest snake species.",
+            "algae": "Algae are simple, typically aquatic, photosynthetic organisms ranging from single-celled forms to large seaweeds.",
+
+            // Medicine and Health
+            "aspirin": "Aspirin is a medication used to reduce pain, fever, or inflammation. It is also used long-term to help prevent heart attacks and strokes.",
+            "acupuncture": "Acupuncture is a form of alternative medicine involving the insertion of thin needles into the body at specific points.",
+            "alzheimer's disease": "Alzheimer's disease is a progressive neurodegenerative disease that causes memory loss and cognitive decline.",
+            "anxiety": "Anxiety is a feeling of worry, nervousness, or unease about something with an uncertain outcome.",
+            "antibiotic": "Antibiotics are medicines used to prevent and treat bacterial infections by killing bacteria or preventing their growth.",
+
+            // Music
+            "abba": "ABBA was a Swedish pop supergroup formed in 1972, known for hits like 'Dancing Queen', 'Mamma Mia', and 'Waterloo'.",
+
+            // V2.6 WIKIPEDIA EXPANSION PART 2 - Media & Entertainment
+            "cnn": "CNN (Cable News Network) is an American multinational news-based pay television channel founded in 1980 by Ted Turner and now owned by Warner Bros. Discovery.",
+            "abc": "ABC (American Broadcasting Company) is an American commercial broadcast television network and the flagship property of the Disney Entertainment division.",
+            "the wizard of oz": "The Wizard of Oz is a 1939 American musical fantasy film produced by Metro-Goldwyn-Mayer, based on L. Frank Baum's 1900 novel. It stars Judy Garland.",
+            "the great dictator": "The Great Dictator is a 1940 American political satire comedy film written, directed, produced, and starring Charlie Chaplin, satirizing Adolf Hitler and fascism.",
+            "mr smith goes to washington": "Mr. Smith Goes to Washington is a 1939 American political comedy-drama film directed by Frank Capra, starring James Stewart as an idealistic senator.",
+            "gone with the wind": "Gone with the Wind is a 1939 American epic historical romance film set in the American South during the Civil War and Reconstruction era.",
+            "casablanca": "Casablanca is a 1942 American romantic drama film directed by Michael Curtiz, set during World War II, starring Humphrey Bogart and Ingrid Bergman.",
+            "citizen kane": "Citizen Kane is a 1941 American drama film directed by Orson Welles, often cited as the greatest film ever made.",
+
+            // Historical Figures Part 2
+            "napoleon": "Napoleon Bonaparte (1769-1821) was a French military commander who rose to prominence during the French Revolution and led several successful campaigns during the Revolutionary Wars.",
+            "napoleon iii": "Napoleon III (1808-1873) was the first President of France and later Emperor of the French, nephew of Napoleon Bonaparte.",
+            "simone de beauvoir": "Simone de Beauvoir (1908-1986) was a French existentialist philosopher, writer, and feminist theorist, known for 'The Second Sex'.",
+            "man ray": "Man Ray (1890-1976) was an American visual artist who spent most of his career in Paris, a significant contributor to the Dada and Surrealist movements.",
+            "georges seurat": "Georges Seurat (1859-1891) was a French post-Impressionist artist, best known for devising the painting technique called pointillism.",
+            "nicolas poussin": "Nicolas Poussin (1594-1665) was a leading painter of the classical French Baroque style, known for clarity, logic, and order in his work.",
+            "gore vidal": "Gore Vidal (1925-2012) was an American writer and public intellectual known for his essays, novels, screenplays, and political commentary.",
+            "raymond burr": "Raymond Burr (1917-1993) was a Canadian-American actor, best known for his title roles in the Perry Mason TV series.",
+            "william wyler": "William Wyler (1902-1981) was an American film director, known for classics like Ben-Hur, Roman Holiday, and The Best Years of Our Lives.",
+            "alfred hitchcock": "Alfred Hitchcock (1899-1980) was an English filmmaker, known as the 'Master of Suspense' for his innovative techniques in the thriller genre.",
+            "willie mays": "Willie Mays (born 1931) is a retired American professional baseball center fielder, widely considered one of the greatest players in baseball history.",
+            "warren beatty": "Warren Beatty (born 1937) is an American actor, filmmaker, and activist, known for films like Bonnie and Clyde, Reds, and Bugsy.",
+            "michelle pfeiffer": "Michelle Pfeiffer (born 1958) is an American actress known for her versatile performances in films like Scarface, Batman Returns, and Dangerous Liaisons.",
+
+            // Places Part 2
+            "nantucket": "Nantucket is an island about 30 miles south of Cape Cod, Massachusetts, known for its beaches, lighthouses, and 18th-century whaling heritage.",
+            "martha's vineyard": "Martha's Vineyard is an island in Massachusetts, known as a popular summer destination with diverse towns and scenic beaches.",
+            "trafalgar square": "Trafalgar Square is a public square in central London, built around the area formerly known as Charing Cross, commemorating the Battle of Trafalgar.",
+            "pantheon": "The Panthéon is a famous building in Paris, originally built as a church dedicated to St. Genevieve, now functioning as a secular mausoleum.",
+            "notre dame": "Notre-Dame de Paris is a medieval Catholic cathedral on the Île de la Cité in Paris, considered one of the finest examples of French Gothic architecture.",
+            "salerno": "Salerno is a city in southern Italy, on the Gulf of Salerno, known for its medieval medical school and beautiful Amalfi Coast views.",
+            "modena": "Modena is a city in Italy's Emilia-Romagna region, known for its balsamic vinegar, opera houses, and as the home of Ferrari and Maserati.",
+            "trabzon": "Trabzon is a city on the Black Sea coast of northeastern Turkey, historically known as Trebizond, with a rich Byzantine heritage.",
+            "omsk": "Omsk is a city in southwestern Siberia, Russia, situated at the confluence of the Om and Irtysh rivers.",
+            "bendigo": "Bendigo is a city in Victoria, Australia, known for its ornate Victorian architecture and gold rush heritage.",
+            "blue mountains": "The Blue Mountains are a mountainous region in New South Wales, Australia, named for their distinctive blue haze caused by eucalyptus oil.",
+            "katoomba": "Katoomba is a town in the Blue Mountains of New South Wales, Australia, famous for the Three Sisters rock formation.",
+            "mackinac island": "Mackinac Island is an island in Lake Huron, Michigan, known for its historic Victorian architecture and ban on motor vehicles.",
+            "acadia national park": "Acadia National Park is a national park located on the coast of Maine, featuring rocky beaches, woodland, and granite peaks.",
+            "sable island": "Sable Island is a small Canadian island in the Atlantic Ocean, known for its wild horses and as the 'Graveyard of the Atlantic' due to shipwrecks.",
+            "baja california": "Baja California is a peninsula in Mexico that separates the Pacific Ocean from the Gulf of California, known for its desert landscapes and beaches.",
+
+            // Science & Nature Part 2
+            "stromatolite": "Stromatolites are layered sedimentary formations created by photosynthetic cyanobacteria, among the oldest evidence of life on Earth, dating back 3.5 billion years.",
+            "dinoflagellate": "Dinoflagellates are a group of single-celled organisms with two flagella, many of which are photosynthetic and some cause harmful algal blooms.",
+            "tardigrade": "Tardigrades, also known as water bears, are microscopic animals known for their remarkable ability to survive extreme conditions including space vacuum.",
+            "crinoid": "Crinoids, also called sea lilies, are marine animals that make up the class Crinoidea, related to starfish and sea urchins.",
+            "rotifer": "Rotifers are microscopic aquatic animals with a ring of cilia around their mouths used for feeding and locomotion.",
+            "polyploidy": "Polyploidy is the condition of having more than two complete sets of chromosomes, common in plants and important in evolution.",
+            "macaw": "Macaws are large, colorful New World parrots native to Central and South America, known for their bright plumage and long tails.",
+            "lovebird": "Lovebirds are small parrots of the genus Agapornis, known for their affectionate behavior and forming strong pair bonds.",
+            "dingo": "The dingo is a wild dog found in Australia, believed to have been introduced by humans thousands of years ago.",
+            "moa": "Moas were large flightless birds endemic to New Zealand that became extinct around 600 years ago due to overhunting.",
+            "guinea pig": "Guinea pigs are domesticated rodents native to South America, popular as pets and used extensively in scientific research.",
+
+            // Computing & Tech Part 2
+            "scada": "SCADA (Supervisory Control and Data Acquisition) is a control system architecture used to monitor and control industrial processes.",
+            "uunet": "UUNET was one of the largest Internet service providers in the world and a major backbone of the early internet.",
+            "algol 60": "ALGOL 60 is an influential programming language developed in the 1960s, which introduced many programming concepts still used today.",
+            "backus naur form": "Backus-Naur Form (BNF) is a notation technique for context-free grammars, often used to describe the syntax of programming languages.",
+            "lazy evaluation": "Lazy evaluation is a programming technique where expressions are not evaluated until their values are actually needed.",
+            "closure": "In programming, a closure is a function that captures variables from its enclosing scope, allowing them to persist after the outer function returns.",
+            "defensive programming": "Defensive programming is a form of design intended to ensure the continuing function of software under unforeseen circumstances.",
+
+            // History & Culture Part 2
+            "carolingian empire": "The Carolingian Empire was a large Frankish-dominated empire in western and central Europe during the early medieval period, founded by Charlemagne.",
+            "merovingian dynasty": "The Merovingian Dynasty was the ruling family of the Franks from the middle of the 5th century until 751, preceding the Carolingians.",
+            "house of bourbon": "The House of Bourbon is a European royal house of French origin, which has ruled France, Spain, and several Italian states.",
+            "house of valois": "The House of Valois was a cadet branch of the Capetian dynasty that ruled France from 1328 to 1589.",
+            "french revolution": "The French Revolution (1789-1799) was a period of radical political and societal change in France that began with the Estates General and ended with Napoleon's rise.",
+            "lidice massacre": "The Lidice Massacre was the complete destruction of the Czech village of Lidice by Nazi German forces in 1942 in retaliation for the assassination of Reinhard Heydrich.",
+            "american civil war": "The American Civil War (1861-1865) was a civil war fought between the Union (Northern states) and the Confederacy (Southern states) over slavery and states' rights.",
+            "american revolutionary war": "The American Revolutionary War (1775-1783) was the war in which the Thirteen Colonies won independence from Great Britain and became the United States.",
+
+            // Games & Sports
+            "checkers": "Checkers (or draughts) is a strategy board game for two players, played on an 8×8 board with 12 pieces per player.",
+            "alquerque": "Alquerque is a strategy board game that is thought to have originated in the Middle East, considered an ancestor of checkers.",
+            "preakness stakes": "The Preakness Stakes is an American thoroughbred horse race held annually in Baltimore, Maryland, and is the second leg of the Triple Crown.",
+            "belmont stakes": "The Belmont Stakes is an American thoroughbred horse race held in New York, the third and final leg of the Triple Crown.",
+
+            // V2.6 WIKIPEDIA EXPANSION PART 3 - Media & Pop Culture
+            "the amazing race": "The Amazing Race is an American reality competition show where teams of two race around the world, solving clues and completing challenges.",
+            "amazing race": "The Amazing Race is an reality tv show franchise where teams race across the globe. Seasons include The Amazing Race 1 through 36 and international versions.",
+            "frankie and johnny": "Frankie and Johnny is a 1966 musical film starring Elvis Presley, and also a 1991 romantic comedy film starring Al Pacino and Michelle Pfeiffer.",
+            "robots in disguise": "Transformers: Robots in Disguise is a name given to several Transformers animated series and toy lines, featuring Autobots and Decepticons.",
+            "kamen rider black": "Kamen Rider Black is a Japanese tokusatsu superhero television series, the eighth installment in the famous Kamen Rider franchise.",
+            "spinout": "Spinout is a 1966 American musical film starring Elvis Presley as a band singer and part-time race car driver.",
+            "paradise hawaiian style": "Paradise, Hawaiian Style is a 1966 musical comedy film starring Elvis Presley, set in the Hawaiian Islands.",
+            "emergency broadcast network": "Emergency Broadcast Network was an American multimedia performance group known for their satirical use of media samples.",
+            "the private life of sherlock holmes": "The Private Life of Sherlock Holmes is a 1970 film directed by Billy Wilder, exploring the personal life of the famous detective.",
+            "dracula x: rondo of blood": "Castlevania: Rondo of Blood (Dracula X) is a 1993 platform game developed by Konami, highly regarded in the Castlevania series.",
+            "michael jordan: chaos in the windy city": "Michael Jordan: Chaos in the Windy City is a 1994 video game featuring basketball legend Michael Jordan on a quest to save his teammates.",
+
+            // Music - Scraped Data
+            "yello": "Yello is a Swiss electronic music band formed in 1979, known for their singles 'Oh Yeah' and 'The Race'. Albums include 'Stella', 'Solid Pleasure', and 'Flag'.",
+            "stella": "Stella is the fourth studio album by Swiss electronic band Yello, released in 1985, featuring the hit song 'Oh Yeah'.",
+            "marvin gaye": "Marvin Gaye (1939-1984) was an American soul and R&B singer-songwriter, known as the 'Prince of Soul' for hits like 'What's Going On' and 'Sexual Healing'.",
+            "midnight love": "Midnight Love is the final studio album by Marvin Gaye, released in 1982, featuring the massive hit 'Sexual Healing'.",
+            "starflyer 59": "Starflyer 59 is an American alternative rock band from Riverside, California, founded in 1993 by Jason Martin.",
+            "gym class heroes": "Gym Class Heroes is an American rap rock band from Geneva, New York, best known for their hit 'Cupid's Chokehold'.",
+            "nic cester": "Nic Cester is an Australian musician and singer-songwriter, best known as the lead vocalist of the rock band Jet.",
+            "destiny's child": "Destiny's Child was an American girl group whose final and best-known line-up comprised Beyoncé Knowles, Kelly Rowland, and Michelle Williams.",
+            "clutch": "Clutch is an American rock band from Maryland, forming in 1991. Their albums include 'Transnational Speedway League', 'Blast Tyrant', and 'Robot Hive/Exodus'.",
+            "morcheeba": "Morcheeba are an English electronic band formed in the mid-1990s with vocalist Skye Edwards. Known for 'Big Calm' and 'The Antidote'.",
+            "reach out and touch": "Reach Out and Touch (Somebody's Hand) was Diana Ross's debut solo single, released in 1970.",
+            "the hurricane": "The Hurricane is a protest song by Bob Dylan about the imprisonment of boxer Rubin 'Hurricane' Carter.",
+            "mad capsule markets": "The Mad Capsule Markets were a Japanese band known for their experimental mix of punk, metal, and electronic music.",
+
+            // People - Scraped Data
+            "vinton cerf": "Vinton Gray Cerf is an American Internet pioneer and is recognized as one of 'the fathers of the Internet'.",
+            "philip powell": "Sir Philip Powell (1921-2015) was a British architect, known for his work with Hidalgo Moya and the Festival of Britain.",
+            "leonora o'reilly": "Leonora O'Reilly (1870-1927) was an American feminist and trade union organizer, a founding member of the Women's Trade Union League.",
+            "john williamson": "John Williamson was a British geologist who coined the term 'Jurassic' and makes appearances in the history of geology.",
+            "zandra rhodes": "Dame Zandra Rhodes is an English fashion designer known for her dramatic and colorful designs.",
+            "jonathan silverman": "Jonathan Silverman is an American actor, known for his role in the film 'Weekend at Bernie's'.",
+            "cecil b. moore": "Cecil B. Moore was a Philadelphia lawyer and civil rights activist who led the fight to integrate Girard College.",
+            "alfredo palacio": "Luis Alfredo Palacio González served as President of Ecuador from 2005 to 2007.",
+            "frankie crosetti": "Frankie Crosetti was an American MLB shortstop and coach for the New York Yankees.",
+            "jhenjiou": "Zhenjiu (or Jhenjiou) refers to Acupuncture and Moxibustion in Traditional Chinese Medicine.",
+            "wahb ibn munabbih": "Wahb ibn Munabbih was a Yemeni historian and transmitter of isra'iliyyat (Biblical traditions) in early Islam.",
+
+            // History & Events
+            "maji maji rebellion": "The Maji Maji Rebellion (1905-1907) was an armed rebellion against German colonial rule in German East Africa (modern-day Tanzania).",
+            "bloody code": "The Bloody Code is a term used to refer to the system of laws and punishments in England between 1688 and 1815, where many crimes were punishable by death.",
+            "battle of custoza": "The Battle of Custoza refers to two battles fought near Custoza, Italy (1848 and 1866) during the Italian Wars of Independence.",
+            "treaty of etaples": "The Treaty of Etaples was signed in 1492 between Henry VII of England and Charles VIII of France, ending an English invasion of France.",
+            "choele choel": "Choele Choel is a city in the Río Negro Province of Argentina, located on the island of the same name.",
+            "la pampa province": "La Pampa is a sparsely populated province in central Argentina, known for its vast pampas grasslands.",
+            "santiago del estero province": "Santiago del Estero is a province in northern Argentina, known for its hot climate and folk music traditions.",
+            "afc aldermaston": "A.F.C. Aldermaston is an English football club based in Aldermaston, Berkshire, nicknamed 'The Atom Men'.",
+            "colden common fc": "Colden Common F.C. is a football club based in Colden Common, near Winchester, England.",
+            "fleet spurs fc": "Fleet Spurs F.C. is a football club based in Fleet, Hampshire, England.",
+            "fleetlands fc": "Fleetlands F.C. is a football club based in Gosport, Hampshire, England.",
+            "laverstock and ford fc": "Laverstock & Ford F.C. is a football club based in Laverstock, near Salisbury, Wiltshire, England.",
+            "overton united fc": "Overton United F.C. is an English football club based in Overton, Hampshire.",
+            "paulsgrove fc": "Paulsgrove F.C. is a football club based in Portsmouth, Hampshire, England.",
+            "lighthouses of victoria": "There are several historic lighthouses in Victoria, Australia, including Cape Otway, Split Point, and Wilsons Promontory.",
+            "damodaran nair": "K.P.R. Damodaran Nair (1914-1996) was a prominent Kathakali artist and teacher from Kerala, India.",
+
+            // Scraped Data - Miscellaneous
+            "open secret": "An open secret is a concept or piece of information that is technically a secret but is in fact widely known.",
+            "tea ball": "A tea ball (or tea infuser) is a small mesh or perforated metal container used to hold tea leaves for brewing.",
+            "cambric": "Cambric is a lightweight, closely woven, plain cotton cloth, originally from the French commune of Cambrai.",
+            "soil liquefaction": "Soil liquefaction occurs when a saturated soil loses strength and stiffness in response to an applied stress, acting like a liquid.",
+            "quintuple double": "A quintuple-double in basketball is an extremely rare performance where a player accumulates a double-digit number in five statistical categories.",
+            "tui atua tupua tamasese efi": "Tui Atua Tupua Tamasese Efi is a Samoan politician who served as the Head of State of Samoa from 2007 to 2017.",
+            "count magnus stenbock": "Count Magnus Stenbock (1665–1717) was a Swedish field marshal and Royal Councillor during the Great Northern War.",
+            "dirty love": "Dirty Love is a 2005 comedy film written by and starring Jenny McCarthy, directed by John Mallory Asher.",
+            "pop": "P.O.P (Piece of Phantasm) is a 2001 album by the Japanese band The Mad Capsule Markets.",
+            "capsule soup": "Capsule Soup is the debut EP by The Mad Capsule Markets, released in 1990.",
+            "humanity": "Humanity is an album by The Mad Capsule Markets, released in 1999, featuring a mix of digital hardcore and punk.",
+            "critical rayleigh number": "The critical Rayleigh number is the minimum value of the Rayleigh number (a dimensionless number in fluid mechanics) required to trigger instability or convection.",
+
+            "novgorod": "Novgorod, or Veliky Novgorod, is one of the oldest and most important historic cities in Russia, founded in the 9th century.",
+            "kievan rus": "Kievan Rus' was a loose federation of East Slavic and Finnic peoples in Europe from the late 9th to the mid-13th century.",
+
+            // Science & Tech - Scraped Data
+            "picaxe": "PICAXE is a microcontroller system based on a range of Microchip PIC microcontrollers, designed to be easy to program for hobbyists and students.",
+            "intergraph": "Intergraph Corporation was an American software development and services company, now part of Hexagon AB.",
+            "neutron activation": "Neutron activation is the process in which neutron radiation induces radioactivity in materials, often used for chemical analysis.",
+            "hadron": "A hadron is a composite subatomic particle made of two or more quarks held together by the strong interaction.",
+            "gronwalls inequality": "Grönwall's inequality is a mathematical inequality used to bound solutions of differential equations, named after Thomas Hakon Grönwall.",
+
+            // Places
+            "larchmont": "Larchmont is a neighborhood in Los Angeles, California, known for its quaint village-like atmosphere and Larchmont Boulevard.",
+            "black mountain": "Black Mountain is the name of several summits, including the highest peak in Kentucky and a peak in California.",
+            "salem": "Salem is a city in Massachusetts famous for its 1692 witch trials. There are also Salems in Oregon and other states.",
+            "nassau county": "Nassau County is a suburban county on Long Island, east of New York City.",
+            "jurong bird park": "Jurong Bird Park was a famous aviary and tourist attraction in Singapore, home to thousands of birds from around the world.",
+
+            // Miscellaneous
+            "setback": "Setback (also known as Pitch or High Low Jack) is a trick-taking card game popular in the United States.",
+            "j c penney": "J.C. Penney is an American department store chain founded by James Cash Penney in 1902.",
+            "lego": "Lego is a Danish toy production company based in Billund, known for the manufacture of interlocking plastic bricks.",
+            "trustbuster": "Trustbuster is a term used to describe a person or entity that seeks to break up business trusts or monopolies, most famously Theodore Roosevelt.",
+            "belmont stakes": "The Belmont Stakes is an American thoroughbred horse race held in New York, the third and final leg of the Triple Crown.",
+            "kentucky derby": "The Kentucky Derby is an American thoroughbred horse race held annually in Louisville, Kentucky, the first leg of the Triple Crown.",
+            "secretariat": "Secretariat (1970-1989) was an American thoroughbred racehorse who won the Triple Crown in 1973, setting records that still stand today.",
+
+            // Food & Cooking
+            "custard": "Custard is a variety of culinary preparations based on sweetened milk, cheese, or cream cooked with egg or egg yolk to thicken it.",
+            "trifle": "Trifle is an English dessert made with fruit, a thin layer of sponge fingers soaked in sherry, and custard, usually topped with whipped cream.",
+            "soy sauce": "Soy sauce is a liquid condiment of Chinese origin, made from fermented soybeans, roasted grain, brine, and Aspergillus molds.",
+            "condiment": "A condiment is a sauce, dressing, or seasoning added to food to enhance its flavor, such as ketchup, mustard, or mayonnaise.",
+            "umami": "Umami is one of the five basic tastes, often described as savory or meaty, found in foods like aged cheese, soy sauce, and tomatoes.",
+            "monosodium glutamate": "Monosodium glutamate (MSG) is a flavor enhancer derived from glutamic acid, commonly used in Asian cuisine."
         };
+
+        // V2.6: BRAINSTORMING & IDEA GENERATION SYSTEM
+        const BRAINSTORM_IDEAS = {
+            app: [
+                "A mood tracking app that suggests activities based on how you're feeling",
+                "An AI-powered recipe generator based on ingredients you have",
+                "A virtual plant care assistant that reminds you to water plants",
+                "A language learning app focused on local slang and expressions",
+                "A habit tracker that gamifies daily routines with achievements",
+                "An app that connects neighbors for tool and item sharing",
+                "A meditation app that generates personalized guided sessions",
+                "A budget tracker that visualizes spending with artistic graphics",
+                "An app that helps you remember names and faces of people you meet",
+                "A collaborative playlist creator for road trips",
+                "A dream journal app with AI interpretation suggestions",
+                "An app that suggests random acts of kindness daily",
+                "A fitness app that creates workouts based on available equipment",
+                "A reading tracker that recommends books based on your mood",
+                "An app that helps you learn to cook with video tutorials"
+            ],
+            business: [
+                "Subscription box for local artisan products",
+                "Mobile car detailing service with eco-friendly products",
+                "Virtual interior design consulting via video calls",
+                "Personalized gift curation service for busy professionals",
+                "Urban micro-farming consulting for restaurants",
+                "Pet photography studio with themed sessions",
+                "Customized meal prep service for specific dietary needs",
+                "Tech support service specifically for seniors",
+                "Plant-sitting service for vacationers",
+                "Mobile bike repair and maintenance service",
+                "Corporate wellness workshop facilitation",
+                "Sustainable event planning and coordination",
+                "Personal shopping service for time-constrained individuals",
+                "Children's party entertainment with educational themes",
+                "Home organization and decluttering consulting"
+            ],
+            writing: [
+                "A story about someone who can hear plants communicate",
+                "A mystery set in a museum after hours",
+                "A tale of two strangers who keep finding the same lost item",
+                "A narrative exploring what happens after 'happily ever after'",
+                "A sci-fi story about the last library on Earth",
+                "A comedy about a cat who becomes a social media influencer",
+                "A thriller set during a power outage in a high-rise building",
+                "A story told entirely through text messages and emails",
+                "A narrative about a time-traveling chef",
+                "A tale of friendship between unlikely species in a forest",
+                "A story about a musician who can only compose in one key",
+                "A mystery involving a coded message in a famous painting",
+                "A romance that starts with a wrong number text",
+                "A story about the last person to use a dying language",
+                "A tale of an AI learning what it means to be creative"
+            ],
+            art: [
+                "Create a portrait using only geometric shapes",
+                "Design a city skyline from an imaginary civilization",
+                "Illustrate emotions as weather patterns",
+                "Draw your favorite song as an abstract piece",
+                "Create art using only found objects from nature",
+                "Design a new national flag for a fictional country",
+                "Paint a self-portrait as an animal you identify with",
+                "Create a comic strip with no dialogue",
+                "Design a poster for an event that doesn't exist",
+                "Illustrate a scene from a dream you remember",
+                "Create typography art using your favorite quote",
+                "Design a new constellation and its mythology",
+                "Paint what happiness would look like as a landscape",
+                "Create a pattern inspired by your cultural heritage",
+                "Design a book cover for your life story"
+            ],
+            science: [
+                "Research the potential of algae as a sustainable food source",
+                "Investigate how music affects plant growth",
+                "Study the mathematics behind animal migration patterns",
+                "Explore the science of bioluminescence in deep sea creatures",
+                "Research the psychological effects of color in interior design",
+                "Study how urban environments affect bird song evolution",
+                "Investigate the physics of soap bubble stability",
+                "Research the potential of fungi networks for communication",
+                "Explore the science behind ancient building techniques",
+                "Study the relationship between moon phases and animal behavior"
+            ],
+            tech: [
+                "Build a smart mirror that displays daily information",
+                "Create a voice-controlled home automation system",
+                "Develop a machine learning model to identify plants",
+                "Build a weather station with environmental sensors",
+                "Create a personal AI assistant using open-source tools",
+                "Develop a browser extension for productivity tracking",
+                "Build a retro gaming console from a Raspberry Pi",
+                "Create an automated garden watering system",
+                "Develop a mobile app to scan and organize receipts",
+                "Build a motion-activated wildlife camera"
+            ],
+            game: [
+                "A puzzle game where you rearrange memories to solve mysteries",
+                "A simulation game about running a space station",
+                "A cooperative board game about building a sustainable city",
+                "A card game based on philosophical debates",
+                "A role-playing game set in a world where music is magic",
+                "A strategy game about managing an ecosystem",
+                "A party game involving time-limited creative challenges",
+                "A narrative game where player choices affect a virtual pet's personality",
+                "A puzzle game based on optical illusions",
+                "A trivia game that generates questions based on current news"
+            ],
+            music: [
+                "Compose a song using only sounds from your kitchen",
+                "Create a melody inspired by the rhythm of your neighborhood",
+                "Write lyrics based on a conversation you overheard",
+                "Compose a lullaby for an imaginary creature",
+                "Create a mashup of two completely different genres",
+                "Write a protest song about a minor inconvenience",
+                "Compose music to accompany a sunrise or sunset",
+                "Create a song using only your voice and body percussion",
+                "Write a musical about an everyday mundane activity",
+                "Compose a theme song for your best friend"
+            ],
+            food: [
+                "Create a fusion dish combining two unexpected cuisines",
+                "Invent a new breakfast cereal with unusual flavors",
+                "Design a three-course meal using only one main ingredient",
+                "Create a dessert inspired by a famous painting",
+                "Develop a new smoothie recipe with vegetables as the star",
+                "Invent a new type of sandwich with global influence",
+                "Create a mocktail inspired by a favorite movie",
+                "Design a meal that tells a story through its courses",
+                "Develop a recipe using ingredients from the same color family",
+                "Create a comfort food dish from another culture"
+            ],
+            gift: [
+                "A custom photo book of shared memories",
+                "A personalized playlist with songs that represent your relationship",
+                "A handwritten letter explaining why they matter to you",
+                "A basket of their favorite snacks from around the world",
+                "A custom illustration of their pet or favorite place",
+                "A subscription to something they'd never buy themselves",
+                "A star map showing the sky on a meaningful date",
+                "A personalized crossword puzzle with inside jokes",
+                "A custom cookbook with family recipes",
+                "A memory jar filled with notes about good times together"
+            ],
+            fashion: [
+                "Try a monochromatic outfit in your favorite color",
+                "Mix casual and formal pieces - like sneakers with a blazer",
+                "Wear something with a bold pattern you've been hesitant about",
+                "Try layering different textures together",
+                "Go for a classic all-black outfit with one colorful accessory",
+                "Try the 'rule of thirds' - match 2 items, contrast the 3rd",
+                "Experiment with rolling or cuffing your sleeves and pants",
+                "Try a statement piece you haven't worn in a while",
+                "Mix prints if you're feeling bold - stripes and florals work!",
+                "Wear comfortable clothes but add one dressy element",
+                "Try wearing your hair differently and match your outfit to it",
+                "Go for earth tones for a natural, cohesive look",
+                "Try an unexpected color combination like mustard and navy",
+                "Accessorize with a scarf, hat, or interesting jewelry",
+                "Dress for your mood - what color represents how you feel?"
+            ],
+            lifestyle: [
+                "Start a morning routine with 10 minutes of stretching",
+                "Try a digital detox for one evening per week",
+                "Create a cozy reading corner in your home",
+                "Start a gratitude journal - write 3 things daily",
+                "Learn to make one new type of coffee drink at home",
+                "Organize one drawer or shelf per day for a week",
+                "Start a collection of something small you love",
+                "Plan themed movie nights for each week",
+                "Create a playlist for different daily activities",
+                "Try waking up 30 minutes earlier for 'me time'"
+            ],
+            date: [
+                "Have a picnic in a scenic spot with homemade food",
+                "Visit a museum or art gallery you've never been to",
+                "Take a cooking class together",
+                "Go stargazing away from city lights",
+                "Have a game night with board games or video games",
+                "Explore a new neighborhood or town together",
+                "Take a dance class - salsa, swing, or ballroom",
+                "Visit a farmers market and cook with what you find",
+                "Have a movie marathon with a theme",
+                "Go hiking or on a nature walk"
+            ],
+            workout: [
+                "Try a 20-minute HIIT workout at home",
+                "Go for a walk or jog in a new location",
+                "Try yoga - there are great free videos online",
+                "Do a dance workout to your favorite songs",
+                "Try a bodyweight circuit: pushups, squats, planks",
+                "Go swimming or try water aerobics",
+                "Take a bike ride through your neighborhood",
+                "Try rock climbing at an indoor gym",
+                "Follow along with a kickboxing video",
+                "Do stretching and mobility work for 15 minutes"
+            ],
+            travel: [
+                "Plan a day trip to a nearby town you've never visited",
+                "Create a bucket list of places you want to see",
+                "Try a 'staycation' exploring your own city like a tourist",
+                "Research hidden gems within a 2-hour drive",
+                "Plan a camping trip to a state or national park",
+                "Look up free walking tours in cities you want to visit",
+                "Create a savings plan for your dream destination",
+                "Try a road trip with no specific destination",
+                "Visit a local attraction you've always passed by",
+                "Plan a trip around a food or wine trail"
+            ],
+            hobby: [
+                "Try learning origami - start with simple animals",
+                "Pick up a musical instrument - ukulele is beginner-friendly",
+                "Start a small indoor herb garden",
+                "Try digital art with free software like Krita",
+                "Learn basic photography with your phone",
+                "Try journaling or bullet journaling",
+                "Start learning a new language with a free app",
+                "Try knitting or crocheting - scarves are easy starters",
+                "Learn card tricks or magic tricks",
+                "Start a collection - coins, stamps, or vinyl records"
+            ]
+        };
+
+        // Function to brainstorm ideas
+        function brainstormIdeas(topic, count = 5) {
+            let category = detectBrainstormCategory(topic);
+            let ideas = BRAINSTORM_IDEAS[category] || BRAINSTORM_IDEAS.lifestyle;
+
+            // Shuffle and pick random ideas
+            let shuffled = [...ideas].sort(() => Math.random() - 0.5);
+            let selected = shuffled.slice(0, Math.min(count, shuffled.length));
+
+            // More context-aware response header
+            let headers = {
+                app: "Here are some app ideas for you:",
+                business: "Here are some business ideas for you:",
+                writing: "Here are some story/writing ideas for you:",
+                art: "Here are some art ideas for you:",
+                science: "Here are some science project ideas:",
+                tech: "Here are some tech project ideas:",
+                game: "Here are some game ideas for you:",
+                music: "Here are some music ideas for you:",
+                food: "Here are some food/cooking ideas:",
+                gift: "Here are some gift ideas for you:",
+                fashion: "Here are some outfit/fashion ideas:",
+                lifestyle: "Here are some lifestyle ideas:",
+                date: "Here are some date ideas for you:",
+                workout: "Here are some workout ideas:",
+                travel: "Here are some travel ideas:",
+                hobby: "Here are some hobby ideas to try:"
+            };
+
+            let response = (headers[category] || `Here are some ${category} ideas for you:`) + "\n\n";
+            selected.forEach((idea, i) => {
+                response += `${i + 1}. ${idea}\n`;
+            });
+
+            // Add encouragement
+            let encouragements = [
+                "\n\nLet me know if you want more ideas or want to explore a specific direction!",
+                "\n\nWant me to brainstorm more ideas or focus on a particular type?",
+                "\n\nI can generate more ideas or help you develop any of these further!",
+                "\n\nAsk me to brainstorm more if you need additional inspiration!",
+                "\n\nFeel free to ask for ideas on any other topic!"
+            ];
+            response += encouragements[Math.floor(Math.random() * encouragements.length)];
+
+            return response;
+        }
+
+        // Detect brainstorming category from topic - V2.6 IMPROVED
+        function detectBrainstormCategory(topic) {
+            let lowerTopic = topic.toLowerCase();
+
+            // FASHION / CLOTHING - check first since "wear" is specific
+            if (lowerTopic.includes("wear") || lowerTopic.includes("outfit") || lowerTopic.includes("clothes") ||
+                lowerTopic.includes("dress") || lowerTopic.includes("fashion") || lowerTopic.includes("style") ||
+                lowerTopic.includes("clothing")) return "fashion";
+
+            // WORKOUT / FITNESS
+            if (lowerTopic.includes("workout") || lowerTopic.includes("exercise") || lowerTopic.includes("fitness") ||
+                lowerTopic.includes("gym") || lowerTopic.includes("training")) return "workout";
+
+            // DATE IDEAS
+            if (lowerTopic.includes("date") || lowerTopic.includes("romantic") || lowerTopic.includes("partner") ||
+                lowerTopic.includes("girlfriend") || lowerTopic.includes("boyfriend") || lowerTopic.includes("couple")) return "date";
+
+            // TRAVEL
+            if (lowerTopic.includes("travel") || lowerTopic.includes("trip") || lowerTopic.includes("vacation") ||
+                lowerTopic.includes("visit") || lowerTopic.includes("destination")) return "travel";
+
+            // HOBBY
+            if (lowerTopic.includes("hobby") || lowerTopic.includes("hobbies") || lowerTopic.includes("free time") ||
+                lowerTopic.includes("spare time") || lowerTopic.includes("pastime") || lowerTopic.includes("learn")) return "hobby";
+
+            // Original categories
+            if (lowerTopic.includes("app") || lowerTopic.includes("mobile") || lowerTopic.includes("phone")) return "app";
+            if (lowerTopic.includes("business") || lowerTopic.includes("startup") || lowerTopic.includes("company") || lowerTopic.includes("money") || lowerTopic.includes("income")) return "business";
+            if (lowerTopic.includes("writ") || lowerTopic.includes("story") || lowerTopic.includes("book") || lowerTopic.includes("novel") || lowerTopic.includes("plot")) return "writing";
+            if (lowerTopic.includes("draw") || lowerTopic.includes("paint") || lowerTopic.includes("sketch") || lowerTopic.includes("illustrat")) return "art";
+            if (lowerTopic.includes("science") || lowerTopic.includes("experiment") || lowerTopic.includes("research")) return "science";
+            if (lowerTopic.includes("tech") || lowerTopic.includes("code") || lowerTopic.includes("program") || lowerTopic.includes("build") || lowerTopic.includes("project")) return "tech";
+            if (lowerTopic.includes("game") || lowerTopic.includes("play")) return "game";
+            if (lowerTopic.includes("music") || lowerTopic.includes("song") || lowerTopic.includes("compose") || lowerTopic.includes("melody")) return "music";
+            if (lowerTopic.includes("food") || lowerTopic.includes("cook") || lowerTopic.includes("recipe") || lowerTopic.includes("eat") || lowerTopic.includes("meal") || lowerTopic.includes("dinner")) return "food";
+            if (lowerTopic.includes("gift") || lowerTopic.includes("present") || lowerTopic.includes("birthday") || lowerTopic.includes("anniversary")) return "gift";
+
+            // Art needs special handling to not trigger on "start" etc
+            if (lowerTopic.includes("art") && !lowerTopic.includes("start")) return "art";
+
+            // Default to lifestyle for general "what should I do" type questions
+            if (lowerTopic.includes("do today") || lowerTopic.includes("bored") || lowerTopic.includes("something to do")) return "lifestyle";
+
+            // Default to lifestyle for general requests
+            return "lifestyle";
+        }
+
+        // V2.6: FUN FACTS DATABASE - Random interesting facts to add variety
+        const FUN_FACTS = {
+            animal: [
+                "Did you know? Octopuses have three hearts and blue blood!",
+                "Fun fact: A group of flamingos is called a 'flamboyance'!",
+                "Interesting: Dolphins sleep with one eye open!",
+                "Amazing: Elephants are the only animals that can't jump!",
+                "Cool fact: A snail can sleep for up to 3 years!",
+                "Did you know? Koalas sleep up to 22 hours a day!",
+                "Fun fact: Sharks have been around longer than trees!",
+                "Interesting: Cows have best friends and get stressed when separated!",
+                "Amazing: A shrimp's heart is located in its head!",
+                "Cool fact: Butterflies taste with their feet!",
+                "Did you know? Penguins propose with pebbles!",
+                "Fun fact: A group of owls is called a 'parliament'!",
+                "Interesting: Cats have over 20 different vocalizations!",
+                "Amazing: Dogs can smell diseases in humans!",
+                "Cool fact: Hummingbirds can fly backwards!"
+            ],
+            science: [
+                "Did you know? Hot water freezes faster than cold water (the Mpemba effect)!",
+                "Fun fact: Lightning strikes Earth about 8 million times per day!",
+                "Interesting: A teaspoon of a neutron star would weigh 6 billion tons!",
+                "Amazing: Sound travels 4 times faster through water than air!",
+                "Cool fact: Honey never spoils - 3000-year-old honey was found edible!",
+                "Did you know? The human brain uses 20% of the body's energy!",
+                "Fun fact: Venus is the only planet that spins clockwise!",
+                "Interesting: Bananas are slightly radioactive!",
+                "Amazing: DNA in your body could stretch to Pluto and back!",
+                "Cool fact: Water can exist in three states simultaneously!"
+            ],
+            space: [
+                "Did you know? There are more stars than grains of sand on Earth!",
+                "Fun fact: A day on Venus is longer than its year!",
+                "Interesting: The footprints on the Moon will last 100 million years!",
+                "Amazing: Space is completely silent - there's no medium for sound!",
+                "Cool fact: Neutron stars can spin 600 times per second!",
+                "Did you know? The Sun makes up 99.86% of our solar system's mass!",
+                "Fun fact: You'd be 3cm taller in space due to spine expansion!",
+                "Interesting: There's a planet made of diamonds (55 Cancri e)!",
+                "Amazing: It takes 8 minutes for sunlight to reach Earth!",
+                "Cool fact: One million Earths could fit inside the Sun!"
+            ],
+            nature: [
+                "Did you know? Trees can communicate through underground fungal networks!",
+                "Fun fact: The Amazon produces 20% of Earth's oxygen!",
+                "Interesting: Some bamboo species can grow 35 inches in a single day!",
+                "Amazing: The world's oldest tree is over 5,000 years old!",
+                "Cool fact: Lightning creates temperatures hotter than the Sun's surface!",
+                "Did you know? Rainforests get about 80 inches of rain per year!",
+                "Fun fact: There are more trees on Earth than stars in the Milky Way!",
+                "Interesting: A cloud can weigh more than one million pounds!"
+            ],
+            body: [
+                "Did you know? Your brain generates enough electricity to power a small light bulb!",
+                "Fun fact: You have a unique tongue print, just like fingerprints!",
+                "Interesting: Your nose can detect over 1 trillion different scents!",
+                "Amazing: The human eye can distinguish about 10 million colors!",
+                "Cool fact: Your heart beats about 100,000 times per day!",
+                "Did you know? Humans share 60% of their DNA with bananas!",
+                "Fun fact: Your stomach gets a new lining every 3-4 days!",
+                "Interesting: Bones are stronger than steel pound for pound!"
+            ],
+            food: [
+                "Did you know? Carrots were originally purple, not orange!",
+                "Fun fact: Peanuts aren't nuts - they're legumes!",
+                "Interesting: Apples float because they're 25% air!",
+                "Amazing: Honey is the only food that doesn't spoil!",
+                "Cool fact: Strawberries aren't berries, but bananas are!",
+                "Did you know? Chocolate was once used as currency!",
+                "Fun fact: The fear of cooking is called 'mageirocophobia'!"
+            ],
+            history: [
+                "Did you know? Cleopatra lived closer to the Moon landing than to the pyramids!",
+                "Fun fact: Oxford University is older than the Aztec Empire!",
+                "Interesting: Vikings used to give kittens to new brides as gifts!",
+                "Amazing: The first computer programmer was a woman - Ada Lovelace!",
+                "Cool fact: Ancient Romans used urine as mouthwash (for whitening)!"
+            ],
+            tech: [
+                "Did you know? The first computer mouse was made of wood!",
+                "Fun fact: Email is older than the World Wide Web!",
+                "Interesting: The first website is still online since 1991!",
+                "Amazing: There are more mobile devices than people on Earth!",
+                "Cool fact: The first computer 'bug' was an actual bug in 1947!"
+            ],
+            general: [
+                "Knowledge is the treasure that follows its owner everywhere!",
+                "The more you learn, the more you discover there is to learn!",
+                "Every expert was once a beginner - keep asking questions!",
+                "Curiosity is the engine of achievement!",
+                "Learning is a gift, even when pain is your teacher!"
+            ],
+            geography: [
+                "Did you know? Russia spans 11 time zones!",
+                "Fun fact: Canada has more lakes than all other countries combined!",
+                "Interesting: Africa is the only continent in all four hemispheres!",
+                "Amazing: Vatican City is the world's smallest country at 0.44 km²!",
+                "Cool fact: The Amazon River has no bridges crossing it!",
+                "Did you know? Istanbul is the only city in the world on two continents!",
+                "Fun fact: Australia is wider than the Moon!",
+                "Interesting: The Sahara Desert is larger than the USA!",
+                "Amazing: There are more stars in the universe than grains of sand on all the Earth's beaches!",
+                "Fun fact: A day on Venus is longer than a year on Venus!"
+            ],
+            language: [
+                "Did you know? 'Pneumonoultramicroscopicsilicovolcanoconiosis' is the longest word in English!",
+                "Fun fact: The word 'set' has the most definitions in English - over 430!",
+                "Interesting: 'Bookkeeper' is the only word with three consecutive double letters!",
+                "Amazing: The sentence 'The quick brown fox jumps over the lazy dog' uses every letter!",
+                "Cool fact: There's a word for the day after tomorrow: 'overmorrow'!",
+                "Did you know? 'Dreamt' is the only English word ending in 'mt'!",
+                "Fun fact: A group of unicorns is called a 'blessing'!",
+                "Interesting: 'Dreamt' is one of the only English words that ends in 'mt'!",
+                "Did you know? There are over 7,000 languages spoken in the world today!"
+            ],
+            math: [
+                "Did you know? Zero is the only number that cannot be represented in Roman numerals!",
+                "Fun fact: A 'jiffy' is an actual unit of time - 1/100th of a second!",
+                "Interesting: If you shuffle a deck of cards properly, it's likely never been in that order before!",
+                "Amazing: 111,111,111 × 111,111,111 = 12,345,678,987,654,321!",
+                "Cool fact: The number 4 is the only one with the same amount of letters as its value!"
+            ],
+            music: [
+                "Did you know? 'Happy Birthday' was copyrighted until 2016!",
+                "Fun fact: The longest song ever recorded is over 13 hours long!",
+                "Interesting: Beethoven composed his best works while completely deaf!",
+                "Amazing: The world's oldest musical instrument is a 40,000-year-old flute!",
+                "Cool fact: Monaco's national orchestra is larger than its army!"
+            ],
+            movies: [
+                "Did you know? The first movie ever made was only 2 seconds long!",
+                "Fun fact: The 'Wilhelm Scream' has been used in over 400 movies!",
+                "Interesting: The Lion King was originally called 'King of the Jungle'!",
+                "Amazing: In Toy Story, the carpet in Sid's house is the same as The Shining!",
+                "Cool fact: E.T.'s face was modeled after Einstein, a pug, and Carl Sandburg!"
+            ],
+            weird: [
+                "Did you know? A flock of crows is called a 'murder'!",
+                "Fun fact: Humans are the only animals that blush!",
+                "Interesting: You can't hum while holding your nose!",
+                "Amazing: A bolt of lightning is 5 times hotter than the sun's surface!",
+                "Cool fact: It's impossible to tickle yourself!",
+                "Did you know? Your nose can remember 50,000 different scents!",
+                "Fun fact: Banging your head against a wall burns 150 calories per hour!",
+                "Interesting: The inventor of the Pringles can is buried in one!"
+            ]
+        };
+
+        // Get a random fun fact, optionally by category
+        function getRandomFunFact(category = null) {
+            if (category && FUN_FACTS[category]) {
+                let facts = FUN_FACTS[category];
+                return facts[Math.floor(Math.random() * facts.length)];
+            }
+            // Get from any category
+            let allCategories = Object.keys(FUN_FACTS);
+            let randomCat = allCategories[Math.floor(Math.random() * allCategories.length)];
+            let facts = FUN_FACTS[randomCat];
+            return facts[Math.floor(Math.random() * facts.length)];
+        }
 
         const QUESTION_WORDS = ["what", "who", "where", "when", "why", "how", "is", "are", "can", "does", "do", "define", "explain", "tell", "describe"];
 
@@ -1624,7 +2951,7 @@
             let storyCount = Object.keys(STORY_TEMPLATES).reduce((acc, k) => acc + STORY_TEMPLATES[k].length, 0);
             let total = dictCount + knowCount + storyCount;
             let status = document.getElementById('model-status');
-            status.innerText = `Guahh Data Points: ${total} | Model Loaded`;
+            status.innerText = `Data Points: ${total}`;
         }
 
         async function processPrompt() {
@@ -1654,7 +2981,15 @@
             // --- THINKING PROCESS ---
             let response = "";
 
-            response = generateIntelligentResponse(prompt);
+            try {
+                // Safety Timeout wrapper for generation (if async support existed, but helpful for logic errors)
+                response = generateIntelligentResponse(prompt);
+
+                if (!response) throw new Error("Empty response");
+            } catch (e) {
+                console.error("AI Error:", e);
+                response = "I'm sorry, my brain got a little stuck. Can you ask me that again or try something else?";
+            }
 
             // MEMORY: Push bot response to history and save
             conversationHistory.push({ role: "bot", content: response });
@@ -1662,6 +2997,9 @@
 
             // --- WRITING PROCESS ---
             let wordsToType = response.split(" ");
+
+            // Safety limit for typing loop
+            if (wordsToType.length > 500) wordsToType = wordsToType.slice(0, 500);
 
             for (let word of wordsToType) {
                 let textNode = document.createTextNode(word + " ");
@@ -1763,6 +3101,16 @@
                 return "I picked " + letters.charAt(Math.floor(Math.random() * letters.length));
             }
 
+            // V2.6: BRAINSTORMING / IDEA GENERATION
+            if (cleanPrompt.includes("brainstorm") || cleanPrompt.includes("give me ideas") ||
+                cleanPrompt.includes("suggest ideas") || cleanPrompt.includes("idea for") ||
+                cleanPrompt.includes("ideas for") || cleanPrompt.includes("help me think") ||
+                cleanPrompt.includes("what should i") || cleanPrompt.includes("need ideas") ||
+                cleanPrompt.includes("give me some ideas") || cleanPrompt.includes("creative ideas") ||
+                cleanPrompt.includes("suggest something") || cleanPrompt.includes("any ideas")) {
+                return brainstormIdeas(cleanPrompt, 5);
+            }
+
             // 1. MEMORY: Metadata Questions (History Check)
             if (conversationHistory.length > 0) {
                 if (cleanPrompt === "what did i just say" || cleanPrompt === "what was the last thing i said" || cleanPrompt === "what did i ask") {
@@ -1791,16 +3139,40 @@
             }
 
             // 4. Check for conversational responses
+            // V2.6: Check conversational patterns with variety
+            if (CONVERSATIONAL_V26.greetings.includes(cleanPrompt)) {
+                return getVariedResponse('greeting');
+            }
+            if (CONVERSATIONAL_V26.howAreYou.some(p => cleanPrompt.includes(p))) {
+                return getVariedResponse('howAreYou');
+            }
+            if (CONVERSATIONAL_V26.thanks.some(p => cleanPrompt.includes(p))) {
+                return getVariedResponse('thanks');
+            }
+            if (CONVERSATIONAL_V26.goodbye.some(p => cleanPrompt.includes(p))) {
+                return getVariedResponse('goodbye');
+            }
+
+            // Check static conversational responses
             if (CONVERSATIONAL_RESPONSES[cleanPrompt]) {
-                return CONVERSATIONAL_RESPONSES[cleanPrompt];
+                let response = CONVERSATIONAL_RESPONSES[cleanPrompt];
+                return typeof response === 'function' ? response() : response;
             }
 
             // 5. PRIORITY: Check "tell me about"
-            if (cleanPrompt.startsWith("tell me about")) {
-                let topic = cleanPrompt.replace("tell me about", "").trim();
+            // 5. PRIORITY: Check "tell me about" / General Inquiry
+            if (cleanPrompt.includes("tell me about") || cleanPrompt.includes("know about") || cleanPrompt.includes("information on")) {
+                let topic = cleanPrompt
+                    .replace(/^(can you |please )?(tell me about|do you know about|what do you know about|give me information on|info on)\s+/i, "")
+                    .replace(/[?.,!]/g, "")
+                    .trim();
+
                 currentTopic = topic;
 
-                for (let key in GENERAL_KNOWLEDGE) {
+                // Sort keys by length desc to prioritize longest specific match
+                let keys = Object.keys(GENERAL_KNOWLEDGE).sort((a, b) => b.length - a.length);
+
+                for (let key of keys) {
                     if (topic.includes(key) || key.includes(topic)) {
                         return GENERAL_KNOWLEDGE[key];
                     }
@@ -1813,7 +3185,10 @@
                 if (DICTIONARY[checkTopic]) {
                     return handleDefinitionQuestion("what is " + checkTopic);
                 }
-                return `I don't have specific information about "${topic}" in my knowledge base yet, but I'm learning new things every day!`;
+
+                // If it's a "tell me about" query but we don't have it, don't just fail, try to find partial matches or just say we're learning
+                // V2.6: Try to be helpful
+                return `I don't have specific information about "${topic}" in my knowledge base yet, but I'm constantly learning!`;
             }
 
             // 6. PRIORITY: Story (Refined v2.4+)
@@ -1878,14 +3253,22 @@
             }
 
             // 8. Definition / Meaning
-            if (cleanPrompt.startsWith("what is") || cleanPrompt.startsWith("what's") || cleanPrompt.startsWith("define")) {
-                let potentialTopic = cleanPrompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
+            if (cleanPrompt.includes("what is") || cleanPrompt.includes("what's") || cleanPrompt.includes("define") || cleanPrompt.includes("meaning of")) {
+                let potentialTopic = cleanPrompt
+                    .replace(/^(do you know |can you tell me |please )?(what is|what's|define|meaning of)\s+/i, "")
+                    .replace(/[?.,!]/g, "")
+                    .trim();
 
                 if (potentialTopic && !["it", "this", "that", "he", "she"].includes(potentialTopic)) {
                     currentTopic = potentialTopic;
                 }
 
                 return handleDefinitionQuestion(cleanPrompt);
+            }
+
+            // V2.6: YES/NO QUESTION HANDLING
+            if (/^(is|are|do|does|can|could|will|would|did|was|were)\s/.test(cleanPrompt)) {
+                return handleYesNoQuestion(cleanPrompt);
             }
 
             if (cleanPrompt.startsWith("what does") && cleanPrompt.includes("mean")) {
@@ -1903,69 +3286,245 @@
             }
 
             // 9. Last Resort (Dictionary Keyword)
-            let words = cleanPrompt.replace(/[?.,!]/g, "").split(" ");
-            let knownWords = words.filter(w => DICTIONARY[w]);
+            // ... (rest of function)
+        }
 
-            if (knownWords.length > 0) {
-                let skipWords = ["what", "is", "the", "a", "an", "tell", "me", "about", "write", "make", "story", "do", "you", "are", "who", "where", "when", "why", "how", "stories", "telling", "it", "that", "this"];
-                let keyWord = knownWords.find(w => !skipWords.includes(w));
+        // V2.6: Handle Yes/No Questions by finding the underlying fact
+        function handleYesNoQuestion(prompt) {
+            // Extract potential subject - naive approach first
+            // e.g. "Is Paris in France?" -> "Paris"
+            // Remove the starter verb strings
+            let subject = prompt.replace(/^(is|are|do|does|can|could|will|would|did|was|were)(\s+the|\s+a|\s+an)?\s+/i, "").replace(/[?.,!]/g, "").trim();
 
-                if (keyWord && !skipWords.includes(keyWord)) {
-                    currentTopic = keyWord;
-                    let entry = DICTIONARY[keyWord];
-                    if (entry.pos === "noun") {
-                        return `A ${keyWord} ${entry.def}.`;
-                    } else if (entry.pos === "verb") {
-                        return `To ${keyWord} means to ${entry.def}.`;
-                    } else if (entry.pos === "adjective") {
-                        return `${capitalizeFirst(keyWord)} means ${entry.def}.`;
-                    } else {
-                        return `${capitalizeFirst(keyWord)} ${entry.def}.`;
-                    }
+            // Check General Knowledge first with smart matching
+            let keys = Object.keys(GENERAL_KNOWLEDGE).sort((a, b) => b.length - a.length);
+            for (let key of keys) {
+                if (subject.includes(key) || prompt.includes(key)) {
+                    // Found a match!
+                    // We can't definitively say "Yes" or "No" without logic, but we can provide the fact.
+                    // Implicitly answering.
+                    // e.g. "Is Paris in Germany?" -> "Paris is the capital of France." (User infers No)
+                    return `${GENERAL_KNOWLEDGE[key]}`;
                 }
             }
 
-            return "I understand your question, but I don't have enough information to answer it accurately. Try asking me to define a word, or ask about science, history, or geography!";
+            // Check Dictionary
+            let dictKeys = Object.keys(DICTIONARY).sort((a, b) => b.length - a.length);
+            for (let key of dictKeys) {
+                if (subject.includes(key) || (prompt.includes(key) && key.length > 3)) { // Avoid short words false positives
+                    let entry = DICTIONARY[key];
+                    return `A ${key} is ${entry.def}.`;
+                }
+            }
+
+            // Check Brainstorming categories for "Can you give me ideas?" type questions fallback
+            if (prompt.includes("ideas") || prompt.includes("brainstorm")) {
+                return brainstormIdeas(prompt);
+            }
+
+            // Fallback
+            return getVariedResponse('dontKnow') + " I'm not sure about that specific yes/no question yet.";
         }
 
         function handleDefinitionQuestion(prompt) {
-            // Extract the subject
-            let subject = prompt.replace(/^(what is|what's|define)\s+/i, "").replace(/[?.,!]/g, "").trim();
+            // Extract the subject - Robust Version
+            let subject = prompt
+                .replace(/^(do you know |can you tell me |please )?(what is|what's|define|meaning of|definition of)\s+/i, "")
+                .replace(/[?.,!]/g, "")
+                .trim();
 
             // Handle articles
             subject = subject.replace(/^(a |an |the )/i, "");
 
             // Check general knowledge first for broader topics
             for (let topic in GENERAL_KNOWLEDGE) {
-                // Strict match: topic equals subject (allowing for case)
-                // OR topic contains subject (e.g. "planet mars" contains "mars"), but avoid pronouns
                 if (subject.toLowerCase() === topic || topic === subject.toLowerCase()) {
-                    return GENERAL_KNOWLEDGE[topic];
+                    // V2.6: Add variety to knowledge responses too
+                    let knowledgeOpeners = [
+                        "",
+                        "Great question! ",
+                        "Ah, that's interesting! ",
+                        "I love this topic! ",
+                        "Here's what I know: "
+                    ];
+                    let opener = knowledgeOpeners[Math.floor(Math.random() * knowledgeOpeners.length)];
+                    let base = GENERAL_KNOWLEDGE[topic];
+
+                    // Sometimes add an insight
+                    if (Math.random() > 0.6) {
+                        return opener + base + " " + generateInsight(detectCategory(topic));
+                    }
+                    return opener + base;
                 }
 
-                // Allow fuzzy match ONLY if subject is specific (not "it", "this", "that")
                 if (!["it", "this", "that", "he", "she"].includes(subject.toLowerCase())) {
                     if (topic.includes(subject.toLowerCase())) {
-                        return GENERAL_KNOWLEDGE[topic];
+                        let knowledgeOpeners = ["", "Great question! ", "Here's what I know: ", "Interesting topic! "];
+                        let opener = knowledgeOpeners[Math.floor(Math.random() * knowledgeOpeners.length)];
+                        return opener + GENERAL_KNOWLEDGE[topic];
                     }
                 }
             }
 
             if (DICTIONARY[subject]) {
                 let entry = DICTIONARY[subject];
+                currentTopic = subject;
 
-                if (entry.pos === "noun") {
-                    return `A ${subject} is ${entry.def}.`;
-                } else if (entry.pos === "verb") {
-                    return `To ${subject} means to ${entry.def}.`;
-                } else if (entry.pos === "adjective") {
-                    return `${capitalizeFirst(subject)} means ${entry.def}.`;
-                } else {
-                    return `${capitalizeFirst(subject)} is ${entry.def}.`;
-                }
+                // V2.6: MASSIVE VARIETY for definitions
+                let response = generateVariedDefinition(subject, entry);
+                return response;
             } else {
-                return `I don't have a definition for "${subject}" in my dictionary yet. Try asking about topics like science, space, history, or technology!`;
+                // V2.6: Varied "don't know" responses
+                let unknownResponses = [
+                    `I don't have "${subject}" in my dictionary yet, but I'm always learning! Try asking about animals, science, or history.`,
+                    `Hmm, "${subject}" isn't in my knowledge base. Ask me about something else!`,
+                    `I haven't learned about "${subject}" yet. ${generateMarkovSentence()}`,
+                    `That's not in my dictionary, but ${generateInsight('general').toLowerCase()}`,
+                    `I don't know "${subject}" specifically. ${getThinkingPhrase()} Maybe try a related topic?`
+                ];
+                return unknownResponses[Math.floor(Math.random() * unknownResponses.length)];
             }
+        }
+
+        // V2.6: Generate highly varied definition responses
+        function generateVariedDefinition(word, entry) {
+            let def = entry.def;
+            let category = entry.category || "general";
+            let pos = entry.pos;
+
+            // Different sentence structures based on part of speech
+            let templates = [];
+
+            if (pos === "noun") {
+                templates = [
+                    `A ${word} is ${def}.`,
+                    `The ${word} is ${def}.`,
+                    `${capitalizeFirst(word)} refers to ${def}.`,
+                    `In simple terms, a ${word} is ${def}.`,
+                    `A ${word} can be described as ${def}.`,
+                    `When we talk about a ${word}, we mean ${def}.`,
+                    `${capitalizeFirst(word)} - this is ${def}.`,
+                    `The term "${word}" describes ${def}.`,
+                    `A ${word}? That's ${def}.`,
+                    `Simply put, a ${word} is ${def}.`,
+                    `${capitalizeFirst(word)} is the word for ${def}.`,
+                    `You're asking about ${word}! It's ${def}.`,
+                    `Great question! A ${word} is ${def}.`,
+                    `Interesting! ${capitalizeFirst(word)} means ${def}.`
+                ];
+            } else if (pos === "verb") {
+                templates = [
+                    `To ${word} means to ${def}.`,
+                    `When you ${word}, you ${def}.`,
+                    `${capitalizeFirst(word)}ing refers to the act of ${def}.`,
+                    `The action of ${word}ing is to ${def}.`,
+                    `To ${word} is to ${def}.`,
+                    `If you ${word}, you're ${def}.`,
+                    `${capitalizeFirst(word)} - this means to ${def}.`,
+                    `The verb "${word}" means to ${def}.`,
+                    `When someone ${word}s, they ${def}.`,
+                    `To ${word} someone or something is to ${def}.`
+                ];
+            } else if (pos === "adjective") {
+                templates = [
+                    `${capitalizeFirst(word)} means ${def}.`,
+                    `Something that is ${word} is ${def}.`,
+                    `When something is ${word}, it is ${def}.`,
+                    `${capitalizeFirst(word)} describes something that is ${def}.`,
+                    `The word "${word}" means ${def}.`,
+                    `If something is ${word}, that means it's ${def}.`,
+                    `${capitalizeFirst(word)} is used to describe ${def}.`,
+                    `To be ${word} is to be ${def}.`,
+                    `${capitalizeFirst(word)}? That describes ${def}.`
+                ];
+            } else {
+                templates = [
+                    `${capitalizeFirst(word)} ${def}.`,
+                    `${capitalizeFirst(word)} is ${def}.`,
+                    `The word "${word}" means ${def}.`,
+                    `${capitalizeFirst(word)} refers to ${def}.`
+                ];
+            }
+
+            // Pick a random template
+            let response = templates[Math.floor(Math.random() * templates.length)];
+
+            // V2.6: Add extra information sometimes
+            let extras = [];
+
+            // Category-specific additions with FUN FACTS
+            if (category === "animal") {
+                extras = [
+                    ` They're fascinating creatures!`,
+                    ` Nature is full of amazing animals like this.`,
+                    ` Animals like this play an important role in their ecosystem.`,
+                    ` I find animals incredibly interesting.`,
+                    ` There's so much to learn about wildlife!`,
+                    ` ` + getRandomFunFact('animal'),
+                    ` ` + getRandomFunFact('animal'),
+                    ``
+                ];
+            } else if (category === "science" || category === "space") {
+                extras = [
+                    ` Science reveals so many wonders!`,
+                    ` The universe is full of mysteries like this.`,
+                    ` Scientific discovery helps us understand our world.`,
+                    ` There's always more to explore in science.`,
+                    ` ` + getRandomFunFact('science'),
+                    ` ` + getRandomFunFact('space'),
+                    ``
+                ];
+            } else if (category === "food") {
+                extras = [
+                    ` Food is such an important part of culture.`,
+                    ` Cuisines around the world are so diverse!`,
+                    ` ` + getRandomFunFact('food'),
+                    ``
+                ];
+            } else if (category === "emotion" || category === "abstract") {
+                extras = [
+                    ` Human emotions are complex and fascinating.`,
+                    ` These concepts shape our understanding of life.`,
+                    ` Philosophy often explores ideas like this.`,
+                    ` ` + generateMarkovSentence(),
+                    ``
+                ];
+            } else if (category === "place") {
+                extras = [
+                    ` The world has so many amazing places.`,
+                    ` Geography helps us understand our planet.`,
+                    ` ` + getRandomFunFact('nature'),
+                    ``
+                ];
+            } else if (category === "body") {
+                extras = [
+                    ` The human body is incredibly complex!`,
+                    ` ` + getRandomFunFact('body'),
+                    ``
+                ];
+            } else {
+                extras = [
+                    ` Language is fascinating!`,
+                    ` Words help us communicate ideas.`,
+                    ` Knowledge is power!`,
+                    ` ` + getRandomFunFact('general'),
+                    ``,
+                    ``,
+                    `` // More likely to have no extra
+                ];
+            }
+
+            // 50% chance to add extra info (increased from 40%)
+            if (Math.random() > 0.5 && extras.length > 0) {
+                response += extras[Math.floor(Math.random() * extras.length)];
+            }
+
+            // 25% chance to add a Markov insight (increased from 20%)
+            if (Math.random() > 0.75) {
+                response += " " + generateMarkovSentence();
+            }
+
+            return response;
         }
 
         function handleMeaningQuestion(prompt) {
@@ -1975,9 +3534,16 @@
                 let word = match[1].toLowerCase();
                 if (DICTIONARY[word]) {
                     let entry = DICTIONARY[word];
-                    return `${capitalizeFirst(word)} means ${entry.def}.`;
+                    // Use the same varied definition system
+                    return generateVariedDefinition(word, entry);
                 } else {
-                    return `I don't know what "${word}" means yet.`;
+                    let unknownResponses = [
+                        `I don't know what "${word}" means yet.`,
+                        `"${word}" isn't in my vocabulary yet!`,
+                        `I haven't learned "${word}" - try asking about something else!`,
+                        `That word isn't in my dictionary. ${generateInsight('learning')}`
+                    ];
+                    return unknownResponses[Math.floor(Math.random() * unknownResponses.length)];
                 }
             }
             return "I didn't understand your question. Try asking 'What does [word] mean?'";
@@ -2030,7 +3596,7 @@
             setTimeout(() => {
                 let intro = document.createElement('div');
                 intro.className = 'msg bot';
-                intro.innerHTML = "<strong>Guahh AI 2.5</strong>";
+                intro.innerHTML = "<strong>Guahh AI 2.6</strong> - Now with intelligent sentence generation!";
                 chatWindow.appendChild(intro);
             }, 500);
         };
