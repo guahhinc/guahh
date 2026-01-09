@@ -180,13 +180,8 @@
             transform: scale(1.02);
         }
 
-        /* PRODUCT SECTION (KANGAROO) */
+        /* GENERIC PRODUCT SECTION STYLES */
         .product-section {
-            /* 
-               UPDATED: Using RGBA of #BC9681 at 15% opacity fading to white. 
-               RGB(188, 150, 129)
-            */
-            background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
             padding: var(--section-padding);
             text-align: center;
             scroll-margin-top: 70px; 
@@ -200,7 +195,6 @@
         .app-icon {
             width: 120px;
             height: 120px;
-            /* Removed border-radius and hover effects */
             margin-bottom: 30px;
         }
 
@@ -236,6 +230,27 @@
         .link-arrow:hover {
             text-decoration: underline;
         }
+
+        /* 
+           SPECIFIC BACKGROUNDS 
+        */
+
+        /* Guahh AI: Blue -> Purple -> Yellow -> White */
+        #guahh-ai {
+            background: linear-gradient(
+                180deg, 
+                rgba(0, 113, 227, 0.12) 0%,    /* Blue */
+                rgba(189, 0, 255, 0.12) 35%,   /* Purple */
+                rgba(255, 221, 0, 0.12) 70%,   /* Yellow */
+                #ffffff 100%
+            );
+        }
+
+        /* Kangaroo: Earthy Tone -> White */
+        #kangaroo {
+            background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
+        }
+
 
         /* VENTURES / PARTNERS */
         .ventures-section {
@@ -555,6 +570,7 @@
                 <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
             </a>
             <div class="nav-links">
+                <a href="#guahh-ai">AI</a>
                 <a href="#kangaroo">Kangaroo</a>
                 <a href="#status">Status</a>
                 <a href="#blog">News</a>
@@ -569,7 +585,21 @@
         <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" class="hero-logo">
         <h1>Guahh</h1>
         <h2>Australian Technology Company.</h2>
-        <a href="#kangaroo" class="cta-button">Explore</a>
+        <a href="#guahh-ai" class="cta-button">Explore</a>
+    </section>
+
+    <!-- Product Showcase (Guahh AI) -->
+    <section id="guahh-ai" class="product-section">
+        <div class="product-container">
+            <!-- Guahh AI Logo -->
+            <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/guahhai.png" alt="Guahh AI Icon" class="app-icon">
+            
+            <h3 class="product-title">Guahh AI</h3>
+            <p class="product-desc">
+                Built from scratch. A new foundation model designed by Guahh for the next generation of intelligence.
+            </p>
+            <a href="https://guahhinc.github.io/guahh/ai.html" class="link-arrow">Try Guahh AI ></a>
+        </div>
     </section>
 
     <!-- Product Showcase (Kangaroo) -->
@@ -691,10 +721,11 @@
                 });
             }, observerOptions);
 
-            const kangarooTitle = document.querySelector('.product-title');
-            if (kangarooTitle) {
-                observer.observe(kangarooTitle);
-            }
+            // Updated to observe ALL product titles (Guahh AI, Kangaroo, etc.)
+            const productTitles = document.querySelectorAll('.product-title');
+            productTitles.forEach(title => {
+                observer.observe(title);
+            });
 
             // --- 2. ADVANCED STATUS CHECK (TIMEOUT + DIRECT) ---
             const statusDot = document.getElementById('status-dot');
