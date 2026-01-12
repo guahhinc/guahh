@@ -1199,8 +1199,117 @@
     <!-- Scripts -->
     <!-- Guahh Auth Widget (OAuth Popup) -->
     <!-- NOTE: For production, host these files on your own server or use a proper CDN like jsDelivr -->
-    <script src="guahh-auth.js"></script>
-    <script src="guahh-auth-api.js"></script>
+    <!-- Guahh Auth (Online Version - Self Contained) -->
+    <script src="https://cdn.jsdelivr.net/gh/guahhinc/fire@main/guahh-auth.js"></script>
+    <script>
+        /**
+         * Guahh Auth Simple API (Inlined for easy deployment)
+         */
+        (function (window) {
+            'use strict';
+            let isReady = false;
+            let readyCallbacks = [];
+
+            function initWhenReady() {
+                if (typeof window.GuahhAuth !== 'undefined') {
+                    isReady = true;
+                    // Initialize with GitHub Pages URL
+                    GuahhAuth.init({
+                        authPageUrl: 'https://guahhinc.github.io/fire/guahh-auth-page.html'
+                    });
+                    readyCallbacks.forEach(cb => cb());
+                    readyCallbacks = [];
+                } else {
+                    setTimeout(initWhenReady, 50);
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initWhenReady);
+            } else {
+                initWhenReady();
+            }
+
+            const GuahhAuthAPI = {
+                onReady: function (callback) {
+                    if (isReady) callback();
+                    else readyCallbacks.push(callback);
+                },
+                showLogin: function (options = {}) {
+                    const { serviceName, serviceUrl, onSuccess } = options;
+                    if (onSuccess) {
+                        GuahhAuth.onLogin((user, service) => {
+                            onSuccess(user, service);
+                        });
+                    }
+                    GuahhAuth.show({
+                        name: serviceName,
+                        url: serviceUrl
+                    });
+                },
+                getCurrentUser: function () {
+                    return GuahhAuth.getUser();
+                },
+                isLoggedIn: function () {
+                    return GuahhAuth.getUser() !== null;
+                },
+                logout: function (callback) {
+                    if (callback) GuahhAuth.onLogout(callback);
+                    GuahhAuth.logout();
+                },
+                onLogin: function (handler) {
+                    GuahhAuth.onLogin(handler);
+                },
+                onLogout: function (handler) {
+                    GuahhAuth.onLogout(handler);
+                },
+                updateElement: function (elementId, property = 'displayName') {
+                    const user = this.getCurrentUser();
+                    const element = document.getElementById(elementId);
+                    if (!element) return;
+                    if (!user) {
+                        element.textContent = '';
+                        return;
+                    }
+                    if (property === 'profilePictureUrl') {
+                        const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
+                        if (element.tagName === 'IMG') element.src = pfp;
+                        else element.style.backgroundImage = `url(${pfp})`;
+                    } else {
+                        element.textContent = user[property] || '';
+                    }
+                },
+                bindLoginButton: function (buttonId, options = {}) {
+                    const button = document.getElementById(buttonId);
+                    if (!button) return;
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showLogin(options);
+                    });
+                },
+                bindLogoutButton: function (buttonId) {
+                    const button = document.getElementById(buttonId);
+                    if (!button) return;
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.logout();
+                    });
+                },
+                toggleOnAuth: function (elementId, showWhenLoggedIn = true) {
+                    const element = document.getElementById(elementId);
+                    if (!element) return;
+                    const updateVisibility = () => {
+                        const isLoggedIn = this.isLoggedIn();
+                        element.style.display = (isLoggedIn === showWhenLoggedIn) ? '' : 'none';
+                    };
+                    updateVisibility();
+                    this.onLogin(updateVisibility);
+                    this.onLogout(updateVisibility);
+                }
+            };
+            window.GuahhAuthAPI = GuahhAuthAPI;
+        })(window);
+    </script>
     <script>
         // Initialize Guahh Auth Widget
         GuahhAuth.init();
