@@ -527,6 +527,55 @@
             white-space: pre-wrap;
         }
 
+        /* Connected Services */
+        .service-item {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .service-item:hover {
+            background: #fafafa;
+            border-color: var(--accent-color);
+        }
+
+        .service-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .service-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .service-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .service-url {
+            font-size: 12px;
+            color: var(--gray-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 250px;
+        }
+
+        .service-icon {
+            font-size: 20px;
+            color: var(--accent-color);
+        }
+
+
         /* VENTURES / PARTNERS */
         .ventures-section {
             background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
@@ -916,10 +965,8 @@
                 <a href="#terms">Terms</a>
 
                 <!-- Profile Ball Trigger -->
-                <div class="nav-profile-ball" onclick="openAuthModal()">
-                    <!-- DEFAULT: DiceBear Thumb -->
-                    <img id="nav-pfp-icon" src="https://api.dicebear.com/8.x/thumbs/svg?seed=GuahhGuest" alt="Profile"
-                        class="nav-profile-img">
+                <div class="nav-profile-ball" onclick="handleProfileClick()">
+                    <img id="nav-profile-img" src="" alt="Account" class="nav-profile-img" style="display:none;">
                 </div>
             </div>
         </div>
@@ -968,6 +1015,14 @@
                 <h3 id="user-displayname" class="profile-name"></h3>
                 <p id="user-username" class="profile-username"></p>
                 <p id="user-bio" class="profile-bio"></p>
+
+                <!-- Connected Services -->
+                <div id="connected-services-section"
+                    style="margin: 20px 0; padding: 15px; background: #f5f5f7; border-radius: 12px; display: none;">
+                    <p style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #1d1d1f;">🔗 Connected
+                        Services</p>
+                    <div id="connected-services-list"></div>
+                </div>
 
                 <div class="btn-group">
                     <button onclick="openEditProfile()" class="auth-btn secondary">Edit Profile</button>
@@ -1142,9 +1197,61 @@
     </footer>
 
     <!-- Scripts -->
+    <!-- Guahh Auth Widget (OAuth Popup) -->
+    <!-- NOTE: For production, host these files on your own server or use a proper CDN like jsDelivr -->
+    <script src="guahh-auth.js"></script>
+    <script src="guahh-auth-api.js"></script>
+    <script>
+        // Initialize Guahh Auth Widget
+        GuahhAuth.init();
+
+        // Handle login events
+        GuahhAuth.onLogin((user, service) => {
+            console.log('User logged in:', user);
+            updateNavbarProfile(user);
+        });
+
+        // Handle logout events
+        GuahhAuth.onLogout(() => {
+            console.log('User logged out');
+            updateNavbarProfile(null);
+        });
+
+        // Check if user is already logged in
+        const currentUser = GuahhAuth.getUser();
+        if (currentUser) {
+            updateNavbarProfile(currentUser);
+        }
+
+        function updateNavbarProfile(user) {
+            const navImg = document.getElementById('nav-profile-img');
+
+            if (user) {
+                const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
+                navImg.src = pfp;
+                navImg.style.display = 'block';
+            } else {
+                navImg.src = 'https://api.dicebear.com/8.x/thumbs/svg?seed=GuahhGuest';
+                navImg.style.display = 'block';
+            }
+        }
+
+        // Handle profile button click
+        function handleProfileClick() {
+            const user = GuahhAuth.getUser();
+            if (user) {
+                // User is logged in - show profile modal
+                openAuthModal();
+            } else {
+                // User not logged in - show auth popup
+                GuahhAuth.show({ name: 'Guahh Website', url: window.location.href });
+            }
+        }
+    </script>
+
     <script>
         // --- AUTH LOGIC (Guahh Accounts) ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxwDOeC1xeSRiWO6u82_G00jrG1lQLUP-REmRaJEK5Biwwgvr8v0jtEbP_qymct2s/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLwJH_xV8cTa0B5R75fNRSmohCWWTe2gbx6v9ihPYd_ED0GO1rqjNi_G3aNzY5dg86/exec';
         const DEFAULT_PFP = 'https://api.dicebear.com/8.x/thumbs/svg?seed=GuahhGuest';
 
         // Check local storage for session on load
@@ -1430,39 +1537,79 @@
         }
 
         function showProfileInModal(user) {
-            document.getElementById('auth-forms').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'block';
-
-            // Check verification status
+            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
             const isVerified = (user.isVerified === true || String(user.isVerified) === 'TRUE');
-            const verifiedBadge = isVerified ? '<span class="material-symbols-rounded" style="color:#1DA1F2; font-size:20px; vertical-align:-4px; margin-left:5px; font-variation-settings: \'FILL\' 1;">verified</span>' : '';
+            const verifiedBadge = isVerified ? '\u003cspan class="material-symbols-rounded" style="color:#1DA1F2; font-size:20px; vertical-align:-4px; margin-left:5px; font-variation-settings: \'FILL\' 1;">verified\u003c/span>' : '';
 
+            document.getElementById('user-pfp-large').src = pfp;
             document.getElementById('user-displayname').innerHTML = user.displayName + verifiedBadge;
             document.getElementById('user-username').textContent = '@' + user.username;
             document.getElementById('user-bio').textContent = user.description || '';
 
-            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
-            document.getElementById('user-pfp-large').src = pfp;
+            // Display connected services
+            const servicesSection = document.getElementById('connected-services-section');
+            const servicesList = document.getElementById('connected-services-list');
+
+            if (user.connectedServices && Array.isArray(user.connectedServices) && user.connectedServices.length > 0) {
+                // Clear existing list
+                servicesList.innerHTML = '';
+
+                // Add each service
+                user.connectedServices.forEach(service => {
+                    const serviceItem = document.createElement('div');
+                    serviceItem.className = 'service-item';
+
+                    const serviceInfo = document.createElement('div');
+                    serviceInfo.className = 'service-info';
+
+                    const serviceName = document.createElement('div');
+                    serviceName.className = 'service-name';
+                    serviceName.textContent = service.serviceName || service.name || 'Unknown Service';
+
+                    const serviceUrl = document.createElement('div');
+                    serviceUrl.className = 'service-url';
+                    serviceUrl.textContent = service.serviceUrl || service.url || '';
+
+                    serviceInfo.appendChild(serviceName);
+                    if (service.serviceUrl || service.url) {
+                        serviceInfo.appendChild(serviceUrl);
+                    }
+
+                    const icon = document.createElement('span');
+                    icon.className = 'material-symbols-rounded service-icon';
+                    icon.textContent = 'link';
+
+                    serviceItem.appendChild(serviceInfo);
+                    serviceItem.appendChild(icon);
+                    servicesList.appendChild(serviceItem);
+                });
+
+                servicesSection.style.display = 'block';
+            } else {
+                servicesSection.style.display = 'none';
+            }
+
+            // Show the profile view
+            document.getElementById('auth-forms').style.display = 'none';
+            document.getElementById('profile-view').style.display = 'block';
+            document.getElementById('edit-profile-view').style.display = 'none';
+
+            // Populate edit fields for when user clicks "Edit Profile"
+            document.getElementById('edit-displayname').value = user.displayName;
+            document.getElementById('edit-pfp-url').value = user.profilePictureUrl || '';
+            document.getElementById('edit-bio').value = user.description || '';
+
+            // Clear edit area msg
+            document.getElementById('edit-msg').textContent = '';
+            document.getElementById('edit-msg').className = 'auth-msg';
         }
 
         function handleLogout() {
-            localStorage.removeItem('guahh_user');
+            // Use GuahhAuth logout
+            GuahhAuth.logout();
 
-            // Reset Nav Icon to DiceBear Default
-            document.getElementById('nav-pfp-icon').src = DEFAULT_PFP;
-
-            // Reset Modal View
-            document.getElementById('auth-forms').style.display = 'block';
-            document.getElementById('profile-view').style.display = 'none';
-            document.getElementById('edit-profile-view').style.display = 'none';
-
-            // Reset forms
-            document.getElementById('login-form').reset();
-            document.getElementById('register-form').reset();
-            document.getElementById('auth-message').textContent = '';
-
-            // Default to login tab
-            switchAuthTab('login');
+            // Refresh the page
+            window.location.reload();
         }
 
 
