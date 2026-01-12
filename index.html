@@ -527,53 +527,7 @@
             white-space: pre-wrap;
         }
 
-        /* Connected Services */
-        .service-item {
-            background: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            transition: all 0.2s ease;
-        }
 
-        .service-item:hover {
-            background: #fafafa;
-            border-color: var(--accent-color);
-        }
-
-        .service-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .service-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .service-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1d1d1f;
-        }
-
-        .service-url {
-            font-size: 12px;
-            color: var(--gray-text);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 250px;
-        }
-
-        .service-icon {
-            font-size: 20px;
-            color: var(--accent-color);
-        }
 
 
         /* VENTURES / PARTNERS */
@@ -1016,13 +970,7 @@
                 <p id="user-username" class="profile-username"></p>
                 <p id="user-bio" class="profile-bio"></p>
 
-                <!-- Connected Services -->
-                <div id="connected-services-section"
-                    style="margin: 20px 0; padding: 15px; background: #f5f5f7; border-radius: 12px; display: none;">
-                    <p style="font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #1d1d1f;">🔗 Connected
-                        Services</p>
-                    <div id="connected-services-list"></div>
-                </div>
+
 
                 <div class="btn-group">
                     <button onclick="openEditProfile()" class="auth-btn secondary">Edit Profile</button>
@@ -1276,9 +1224,29 @@
         });
 
         // Modal Functions
+        function checkLoginStatus() {
+            // First check if GuahhAuth is available and can give us a fresh session
+            if (typeof GuahhAuth !== 'undefined' && typeof GuahhAuth.getUser === 'function') {
+                const sessionUser = GuahhAuth.getUser();
+                if (sessionUser) {
+                    console.log('GuahhAuth session found, refreshing data...');
+                    localStorage.setItem('guahh_user', JSON.stringify(sessionUser));
+                }
+            }
+
+            // Then proceed with standard local storage check
+            const storedUser = localStorage.getItem('guahh_user');
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                updateUIForLoggedInUser(user);
+
+                // If on auth page, redirect or show profile
+                // (Optional: Implement background refresh if specific API needed)
+            }
+        }
         function openAuthModal() {
             document.getElementById('auth-modal').classList.add('active');
-            // If logged in, show profile view immediately
+            // If logged in, show profile
             const storedUser = localStorage.getItem('guahh_user');
             if (storedUser) {
                 const user = JSON.parse(storedUser);
@@ -1573,53 +1541,7 @@
             document.getElementById('user-username').textContent = '@' + user.username;
             document.getElementById('user-bio').textContent = user.description || '';
 
-            // Display connected services
-            const servicesSection = document.getElementById('connected-services-section');
-            const servicesList = document.getElementById('connected-services-list');
 
-            console.log('Rendering profile for user:', user);
-            console.log('Connected services:', user.connectedServices);
-
-            if (user.connectedServices && Array.isArray(user.connectedServices) && user.connectedServices.length > 0) {
-                // Clear existing list
-                servicesList.innerHTML = '';
-
-                // Add each service
-                user.connectedServices.forEach(service => {
-                    const serviceItem = document.createElement('div');
-                    serviceItem.className = 'service-item';
-
-                    const serviceInfo = document.createElement('div');
-                    serviceInfo.className = 'service-info';
-
-                    const serviceName = document.createElement('div');
-                    serviceName.className = 'service-name';
-                    serviceName.textContent = service.serviceName || service.name || 'Unknown Service';
-
-                    const serviceUrl = document.createElement('div');
-                    serviceUrl.className = 'service-url';
-                    serviceUrl.textContent = service.serviceUrl || service.url || '';
-
-                    serviceInfo.appendChild(serviceName);
-                    if (service.serviceUrl || service.url) {
-                        serviceInfo.appendChild(serviceUrl);
-                    }
-
-                    const icon = document.createElement('span');
-                    icon.className = 'material-symbols-rounded service-icon';
-                    icon.textContent = 'link';
-
-                    serviceItem.appendChild(serviceInfo);
-                    serviceItem.appendChild(icon);
-                    servicesList.appendChild(serviceItem);
-                });
-
-                servicesSection.style.display = 'block';
-            } else {
-                // Show empty state so user knows the section works but is just empty
-                servicesList.innerHTML = '<div style="padding:15px; color:#86868b; font-size:13px; text-align:center;">No connected services found.</div>';
-                servicesSection.style.display = 'block';
-            }
 
             // Show the profile view
             document.getElementById('auth-forms').style.display = 'none';
