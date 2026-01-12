@@ -1555,10 +1555,12 @@
 
         function updateUIForLoggedInUser(user) {
             // Update the Nav Ball Icon
-            const navIcon = document.getElementById('nav-pfp-icon');
+            const navIcon = document.getElementById('nav-profile-img');
             const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
-            navIcon.src = pfp;
-            navIcon.style.filter = "invert(0)";
+            if (navIcon) {
+                navIcon.src = pfp;
+                navIcon.style.filter = "invert(0)";
+            }
         }
 
         function showProfileInModal(user) {
