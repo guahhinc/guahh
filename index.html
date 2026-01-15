@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guahh</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png">
 
-    <!-- Google Fonts: Inter Tight -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 
-    <!-- Google Material Icons -->
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         rel="stylesheet">
@@ -28,7 +25,7 @@
             --text-color: #1d1d1f;
             --accent-color: #0071e3;
             --accent-hover: #0077ed;
-            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.5); /* Transparent Navbar */
             --gray-text: #86868b;
             --card-bg: #ffffff;
             --border-color: #d2d2d7;
@@ -241,6 +238,20 @@
             margin-bottom: 30px;
         }
 
+        /* BANNER STYLE */
+        .app-banner {
+            width: 100%;
+            max-width: 800px;
+            
+            /* Desktop height */
+            height: 260px; 
+            object-fit: cover; 
+            
+            border-radius: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
         .product-title {
             font-size: 52px;
             font-weight: 700;
@@ -287,9 +298,7 @@
             background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
         }
 
-        /* 
-           MODAL / POPUP STYLES
-        */
+        /* MODAL / POPUP STYLES */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -526,9 +535,6 @@
             padding: 0 10px;
             white-space: pre-wrap;
         }
-
-
-
 
         /* VENTURES / PARTNERS */
         .ventures-section {
@@ -869,11 +875,23 @@
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 48px;
+                font-size: 56px; /* ZOOMED: Increased from 48px */
             }
 
             .hero h2 {
-                font-size: 22px;
+                font-size: 24px; /* ZOOMED: Increased from 22px */
+            }
+
+            .product-title {
+                font-size: 46px; /* ZOOMED: Adjusted for mobile impact */
+            }
+
+            .product-desc {
+                font-size: 21px; /* ZOOMED: Readable size */
+            }
+
+            .blog-content, .terms-content {
+                font-size: 16px; /* ZOOMED: Ensure body text is readable */
             }
 
             .ventures-grid {
@@ -894,13 +912,17 @@
             .nav-profile-ball {
                 margin-left: auto;
             }
+
+            /* MOBILE BANNER FIX: Keep full image visible */
+            .app-banner {
+                height: auto;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
     <nav>
         <div class="nav-content">
             <div class="nav-left">
@@ -918,7 +940,6 @@
                 <a href="#ventures">Ventures</a>
                 <a href="#terms">Terms</a>
 
-                <!-- Profile Ball Trigger -->
                 <div class="nav-profile-ball" onclick="handleProfileClick()">
                     <img id="nav-profile-img" src="" alt="Account" class="nav-profile-img" style="display:none;">
                 </div>
@@ -926,12 +947,10 @@
         </div>
     </nav>
 
-    <!-- AUTH MODAL / POPUP -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-card">
             <button class="close-modal-btn" onclick="closeAuthModal()">✕</button>
 
-            <!-- 1. Auth Forms (Login/Register) -->
             <div id="auth-forms">
                 <div class="auth-header">
                     <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh"
@@ -944,14 +963,12 @@
                     <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Sign Up</div>
                 </div>
 
-                <!-- Login Form -->
                 <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
                     <input type="text" id="login-username" class="auth-input" placeholder="Username" required>
                     <input type="password" id="login-password" class="auth-input" placeholder="Password" required>
                     <button type="submit" id="login-btn" class="auth-btn">Log In</button>
                 </form>
 
-                <!-- Register Form -->
                 <form id="register-form" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
                     <input type="text" id="reg-username" class="auth-input" placeholder="Username (Unique)" required>
                     <input type="text" id="reg-displayname" class="auth-input" placeholder="Display Name" required>
@@ -963,14 +980,11 @@
                 <div id="auth-message" class="auth-msg"></div>
             </div>
 
-            <!-- 2. Logged In View (Read Only) -->
             <div id="profile-view" class="profile-view">
                 <img id="user-pfp-large" src="" alt="Profile" class="profile-pic-large">
                 <h3 id="user-displayname" class="profile-name"></h3>
                 <p id="user-username" class="profile-username"></p>
                 <p id="user-bio" class="profile-bio"></p>
-
-
 
                 <div class="btn-group">
                     <button onclick="openEditProfile()" class="auth-btn secondary">Edit Profile</button>
@@ -979,7 +993,6 @@
                 </div>
             </div>
 
-            <!-- 3. Edit Profile View -->
             <div id="edit-profile-view" style="display: none;">
                 <div class="auth-header">
                     <h3 class="auth-title">Edit Profile</h3>
@@ -1010,7 +1023,6 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh"
             class="hero-logo">
@@ -1019,14 +1031,11 @@
         <a href="#guahh-ai" class="cta-button">Explore</a>
     </section>
 
-    <!-- Product Showcase (Guahh AI) -->
     <section id="guahh-ai" class="product-section">
         <div class="product-container">
-            <!-- Guahh AI Logo -->
-            <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/guahhai.png" alt="Guahh AI Icon"
-                class="app-icon">
+            <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/Guahh%20AI%20thumbnail.png" alt="Guahh AI Banner"
+                class="app-banner">
 
-            <h3 class="product-title">Guahh AI</h3>
             <p class="product-desc">
                 Built from scratch. A new foundation model designed by Guahh for the next generation of intelligence.
                 This model exceeds at writing essays, giving ideas and creative tasks.
@@ -1035,10 +1044,8 @@
         </div>
     </section>
 
-    <!-- Product Showcase (Kangaroo) -->
     <section id="kangaroo" class="product-section">
         <div class="product-container">
-            <!-- Kangaroo Logo -->
             <img src="https://raw.githubusercontent.com/guahhinc/fire/main/Kangaroo.png" alt="Kangaroo App Icon"
                 class="app-icon">
 
@@ -1053,7 +1060,6 @@
         </div>
     </section>
 
-    <!-- Status Section -->
     <section id="status" class="status-section">
         <div class="status-container">
             <div id="status-dot" class="status-dot"></div>
@@ -1064,25 +1070,21 @@
         </div>
     </section>
 
-    <!-- Blog Section (Google Sheets) -->
     <section id="blog" class="blog-section">
         <div class="blog-container">
             <h2 class="blog-section-title">Latest Updates</h2>
             <div id="blog-feed">
                 <p style="text-align:center; color:#86868b;">Loading news feed...</p>
             </div>
-            <!-- See More Button Container -->
             <div id="see-more-container" class="see-more-container" style="display: none;">
                 <button id="see-more-btn" class="see-more-btn">See More Updates</button>
             </div>
         </div>
     </section>
 
-    <!-- Ventures Section -->
     <section id="ventures" class="ventures-section">
         <div class="ventures-container">
             <div class="ventures-grid">
-                <!-- Companies Owned -->
                 <div class="venture-card">
                     <div class="venture-category">Companies We Own</div>
                     <ul class="venture-list">
@@ -1091,7 +1093,6 @@
                     </ul>
                 </div>
 
-                <!-- Partners -->
                 <div class="venture-card">
                     <div class="venture-category">Trusted Partners</div>
                     <ul class="venture-list">
@@ -1103,7 +1104,6 @@
         </div>
     </section>
 
-    <!-- Terms and Services -->
     <section id="terms" class="terms-section">
         <div class="terms-container">
             <h4 class="terms-title">Legal</h4>
@@ -1136,7 +1136,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <p>Copyright © 2026 Guahh Inc. All rights reserved.</p>
@@ -1144,15 +1143,10 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <!-- Guahh Auth Widget (OAuth Popup) -->
-    <!-- NOTE: For production, host these files on your own server or use a proper CDN like jsDelivr -->
-    <!-- Guahh Auth (Online Version) -->
     <script src="https://cdn.jsdelivr.net/gh/guahhinc/fire@main/guahh-auth.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/guahhinc/fire@main/guahh-auth-api.js"></script>
     <script>
-        // Initialize Guahh Auth Widget with GitHub Pages URL
-        // This ensures the popup opens the online page, not a local file
+        // Initialize Guahh Auth Widget
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof GuahhAuth !== 'undefined') {
                 GuahhAuth.init({
@@ -1165,17 +1159,13 @@
         window.addEventListener('load', () => {
             if (typeof GuahhAuth !== 'undefined') {
                 GuahhAuth.onLogin((user, service) => {
-                    console.log('User logged in:', user);
                     updateNavbarProfile(user);
                 });
 
-                // Handle logout events
                 GuahhAuth.onLogout(() => {
-                    console.log('User logged out');
                     updateNavbarProfile(null);
                 });
 
-                // Check if user is already logged in
                 const currentUser = GuahhAuth.getUser();
                 if (currentUser) {
                     updateNavbarProfile(currentUser);
@@ -1185,7 +1175,6 @@
 
         function updateNavbarProfile(user) {
             const navImg = document.getElementById('nav-profile-img');
-
             if (user) {
                 const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
                 navImg.src = pfp;
@@ -1196,14 +1185,11 @@
             }
         }
 
-        // Handle profile button click
         function handleProfileClick() {
             const user = GuahhAuth.getUser();
             if (user) {
-                // User is logged in - show profile modal
                 openAuthModal();
             } else {
-                // User not logged in - show auth popup
                 GuahhAuth.show({ name: 'Guahh Website', url: window.location.href });
             }
         }
@@ -1212,9 +1198,7 @@
     <script>
         // --- AUTH LOGIC (Guahh Accounts) ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLwJH_xV8cTa0B5R75fNRSmohCWWTe2gbx6v9ihPYd_ED0GO1rqjNi_G3aNzY5dg86/exec';
-        const DEFAULT_PFP = 'https://api.dicebear.com/8.x/thumbs/svg?seed=GuahhGuest';
 
-        // Check local storage for session on load
         window.addEventListener('load', () => {
             const storedUser = localStorage.getItem('guahh_user');
             if (storedUser) {
@@ -1223,36 +1207,13 @@
             }
         });
 
-        // Modal Functions
-        function checkLoginStatus() {
-            // First check if GuahhAuth is available and can give us a fresh session
-            if (typeof GuahhAuth !== 'undefined' && typeof GuahhAuth.getUser === 'function') {
-                const sessionUser = GuahhAuth.getUser();
-                if (sessionUser) {
-                    console.log('GuahhAuth session found, refreshing data...');
-                    localStorage.setItem('guahh_user', JSON.stringify(sessionUser));
-                }
-            }
-
-            // Then proceed with standard local storage check
-            const storedUser = localStorage.getItem('guahh_user');
-            if (storedUser) {
-                const user = JSON.parse(storedUser);
-                updateUIForLoggedInUser(user);
-
-                // If on auth page, redirect or show profile
-                // (Optional: Implement background refresh if specific API needed)
-            }
-        }
         function openAuthModal() {
             document.getElementById('auth-modal').classList.add('active');
-            // If logged in, show profile
             const storedUser = localStorage.getItem('guahh_user');
             if (storedUser) {
                 const user = JSON.parse(storedUser);
                 showProfileInModal(user);
             } else {
-                // Ensure edit view is hidden if we open and are not logged in
                 document.getElementById('edit-profile-view').style.display = 'none';
                 document.getElementById('auth-forms').style.display = 'block';
             }
@@ -1260,18 +1221,15 @@
 
         function closeAuthModal() {
             document.getElementById('auth-modal').classList.remove('active');
-            // Small delay to clear messages after transition
             setTimeout(() => {
                 document.getElementById('auth-message').textContent = '';
                 document.getElementById('edit-msg').textContent = '';
-                // Reset views if we were editing
                 if (localStorage.getItem('guahh_user')) {
                     cancelEditProfile();
                 }
             }, 300);
         }
 
-        // Close modal when clicking outside card
         document.getElementById('auth-modal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('auth-modal')) {
                 closeAuthModal();
@@ -1301,14 +1259,10 @@
             }
         }
 
-        // --- AUTH ACTIONS ---
-
         async function handleRegister(e) {
             e.preventDefault();
             const btn = document.getElementById('reg-btn');
             const msg = document.getElementById('auth-message');
-
-            // TRIM inputs to prevent whitespace errors
             const username = document.getElementById('reg-username').value.trim();
             const displayName = document.getElementById('reg-displayname').value.trim();
             const password = document.getElementById('reg-password').value.trim();
@@ -1323,22 +1277,11 @@
             btn.textContent = 'Creating Account...';
             msg.textContent = '';
 
-            // We send plain text password via HTTPS; Server handles hashing.
-            const payload = {
-                action: 'register',
-                username: username,
-                displayName: displayName,
-                password: password
-            };
+            const payload = { action: 'register', username, displayName, password };
 
             try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
                 const data = await response.json();
-
                 if (data.status === 'success') {
                     localStorage.setItem('guahh_user', JSON.stringify(data.user));
                     updateUIForLoggedInUser(data.user);
@@ -1349,9 +1292,7 @@
                     msg.textContent = data.message || 'Registration failed.';
                     msg.className = 'auth-msg error';
                 }
-
             } catch (error) {
-                console.error(error);
                 msg.textContent = 'Connection error. Please try again.';
                 msg.className = 'auth-msg error';
             } finally {
@@ -1364,8 +1305,6 @@
             e.preventDefault();
             const btn = document.getElementById('login-btn');
             const msg = document.getElementById('auth-message');
-
-            // TRIM inputs to prevent whitespace errors
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value.trim();
 
@@ -1373,49 +1312,22 @@
             btn.textContent = 'Logging In...';
             msg.textContent = '';
 
-            const payload = {
-                action: 'login',
-                username: username,
-                password: password
-            };
+            const payload = { action: 'login', username, password };
 
             try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
                 const data = await response.json();
-
                 if (data.status === 'success') {
                     localStorage.setItem('guahh_user', JSON.stringify(data.user));
                     updateUIForLoggedInUser(data.user);
                     showProfileInModal(data.user);
                     msg.textContent = 'Login successful!';
                     msg.className = 'auth-msg success';
-                } else if (data.message === 'ACCOUNT_BANNED') {
-                    // Handle Ban
-                    const ban = data.banDetails;
-                    let banMsg = `Account Suspended.\nReason: ${ban.reason}`;
-                    if (ban.endDate && ban.endDate !== 'permanent') {
-                        const date = new Date(ban.endDate).toLocaleString();
-                        banMsg += `\nLifted: ${date}`;
-                    } else {
-                        banMsg += `\nDuration: Permanent`;
-                    }
-                    msg.textContent = banMsg;
-                    msg.className = 'auth-msg error';
-                    msg.style.whiteSpace = 'pre-wrap'; // Allow newlines
-                } else if (data.message === 'SERVER_OUTAGE') {
-                    msg.textContent = 'Login unavailable due to server outage. Please try again later.';
-                    msg.className = 'auth-msg error';
                 } else {
                     msg.textContent = data.message || 'Login failed.';
                     msg.className = 'auth-msg error';
                 }
-
             } catch (error) {
-                console.error(error);
                 msg.textContent = 'Login error. Check connection.';
                 msg.className = 'auth-msg error';
             } finally {
@@ -1424,19 +1336,13 @@
             }
         }
 
-        // --- PROFILE EDITING ACTIONS ---
-
         function openEditProfile() {
             const storedUser = localStorage.getItem('guahh_user');
             if (!storedUser) return;
             const user = JSON.parse(storedUser);
-
-            // Populate form
             document.getElementById('edit-displayname').value = user.displayName || '';
             document.getElementById('edit-pfp-url').value = user.profilePictureUrl || '';
             document.getElementById('edit-bio').value = user.description || '';
-
-            // Switch views
             document.getElementById('profile-view').style.display = 'none';
             document.getElementById('edit-profile-view').style.display = 'block';
         }
@@ -1455,14 +1361,12 @@
 
             const btn = document.getElementById('save-profile-btn');
             const msg = document.getElementById('edit-msg');
-
             const newDisplayName = document.getElementById('edit-displayname').value.trim();
             const newPfpUrl = document.getElementById('edit-pfp-url').value.trim();
             const newBio = document.getElementById('edit-bio').value.trim();
 
             btn.disabled = true;
             btn.textContent = 'Saving...';
-            msg.textContent = '';
 
             const payload = {
                 action: 'updateProfile',
@@ -1473,45 +1377,22 @@
             };
 
             try {
-                // Note: Apps Script Web Apps must be deployed as "Anyone" (even anonymous) 
-                // to allow CORS requests from external sites without auth headers.
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Network error: ${response.status} ${response.statusText}`);
-                }
-
-                let data;
-                try {
-                    data = await response.json();
-                } catch (parseError) {
-                    console.error('Failed to parse response JSON:', parseError);
-                    throw new Error('Server returned invalid data. Check script deployment.');
-                }
-
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const data = await response.json();
                 if (data.status === 'success') {
-                    // Update Local Storage
                     user.displayName = newDisplayName;
                     user.profilePictureUrl = newPfpUrl;
                     user.description = newBio;
                     localStorage.setItem('guahh_user', JSON.stringify(user));
-
-                    // Update UI
                     updateUIForLoggedInUser(user);
                     showProfileInModal(user);
-
-                    // Switch back
                     cancelEditProfile();
                 } else {
                     msg.textContent = data.message || 'Update failed.';
                     msg.className = 'auth-msg error';
                 }
             } catch (error) {
-                console.error('Update Profile Error:', error);
-                msg.textContent = 'Error: ' + (error.message || 'Unknown error occurred.');
+                msg.textContent = 'Error updating profile.';
                 msg.className = 'auth-msg error';
             } finally {
                 btn.disabled = false;
@@ -1519,10 +1400,7 @@
             }
         }
 
-        // --- UI HELPERS ---
-
         function updateUIForLoggedInUser(user) {
-            // Update the Nav Ball Icon
             const navIcon = document.getElementById('nav-profile-img');
             const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
             if (navIcon) {
@@ -1534,82 +1412,50 @@
         function showProfileInModal(user) {
             const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
             const isVerified = (user.isVerified === true || String(user.isVerified) === 'TRUE');
-            const verifiedBadge = isVerified ? '\u003cspan class="material-symbols-rounded" style="color:#1DA1F2; font-size:20px; vertical-align:-4px; margin-left:5px; font-variation-settings: \'FILL\' 1;">verified\u003c/span>' : '';
+            const verifiedBadge = isVerified ? '<span class="material-symbols-rounded" style="color:#1DA1F2; font-size:20px; vertical-align:-4px; margin-left:5px; font-variation-settings: \'FILL\' 1;">verified</span>' : '';
 
             document.getElementById('user-pfp-large').src = pfp;
             document.getElementById('user-displayname').innerHTML = user.displayName + verifiedBadge;
             document.getElementById('user-username').textContent = '@' + user.username;
             document.getElementById('user-bio').textContent = user.description || '';
 
-
-
-            // Show the profile view
             document.getElementById('auth-forms').style.display = 'none';
             document.getElementById('profile-view').style.display = 'block';
             document.getElementById('edit-profile-view').style.display = 'none';
-
-            // Populate edit fields for when user clicks "Edit Profile"
-            document.getElementById('edit-displayname').value = user.displayName;
-            document.getElementById('edit-pfp-url').value = user.profilePictureUrl || '';
-            document.getElementById('edit-bio').value = user.description || '';
-
-            // Clear edit area msg
-            document.getElementById('edit-msg').textContent = '';
-            document.getElementById('edit-msg').className = 'auth-msg';
         }
 
         function handleLogout() {
-            // Use GuahhAuth logout
             GuahhAuth.logout();
-
-            // Refresh the page
+            localStorage.removeItem('guahh_user');
             window.location.reload();
         }
 
-
-        // --- EXISTING WEBSITE LOGIC (Status, Blog, Animations) ---
+        // --- STATUS & BLOG LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
-
             const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5nNm_vphbxU5Fh29LtrkR7FzsqfPhtaru4gFFkz9jIclxcPOADbLuYv12jmsYY_TxqrRNSoFrZBiO/pub";
 
-            // Scroll Animations
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.5
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('animate-shimmer');
-                        observer.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.5 });
 
-            const productTitles = document.querySelectorAll('.product-title');
-            productTitles.forEach(title => {
-                observer.observe(title);
-            });
+            document.querySelectorAll('.product-title').forEach(title => observer.observe(title));
 
-            // Advanced Status Check
             const statusDot = document.getElementById('status-dot');
             const statusText = document.getElementById('status-text');
             const statusSub = document.getElementById('status-sub');
             const blogSection = document.getElementById('blog');
 
-            const serverSheetUrl = baseSheetUrl + "?gid=474676757&single=true&output=tsv";
-
             function setStatusUI(state, customMsg = null) {
                 statusDot.className = 'status-dot';
                 let bgStartColor = '#e3f9e5';
-
                 if (state === 'green') {
                     statusDot.classList.add('status-operational');
                     statusText.textContent = "All Systems Operational";
                     statusSub.textContent = customMsg || "Services are running normally.";
-                    bgStartColor = '#e3f9e5';
                 } else if (state === 'red') {
                     statusDot.classList.add('status-outage');
                     statusText.textContent = "System Outage";
@@ -1621,112 +1467,47 @@
                     statusSub.textContent = customMsg || "Some systems may be slow.";
                     bgStartColor = '#fff9e1';
                 }
-
-                if (blogSection) {
-                    blogSection.style.background = `linear-gradient(180deg, ${bgStartColor} 0%, #ffffff 100%)`;
-                }
+                if (blogSection) blogSection.style.background = `linear-gradient(180deg, ${bgStartColor} 0%, #ffffff 100%)`;
             }
 
-            function pingServer(url) {
-                if (!url) {
-                    setStatusUI('red', 'Configuration Error: No URL found.');
-                    return;
-                }
-
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-                fetch(url, { mode: 'no-cors', signal: controller.signal })
-                    .then(() => {
-                        clearTimeout(timeoutId);
-                        setStatusUI('green');
-                    })
-                    .catch(error => {
-                        clearTimeout(timeoutId);
-                        if (error.name === 'AbortError') {
-                            setStatusUI('red', 'Connection timed out. Please refresh.');
-                        } else {
-                            console.error("Ping Failed:", error);
-                            setStatusUI('red');
-                        }
-                    });
-            }
-
-            fetch(serverSheetUrl)
-                .then(res => {
-                    if (!res.ok) throw new Error("Sheet Network Error");
-                    return res.text();
-                })
+            fetch(baseSheetUrl + "?gid=474676757&single=true&output=tsv")
+                .then(res => res.text())
                 .then(data => {
                     const rows = data.split('\n');
                     if (rows.length < 2) return;
-
                     const cols = rows[1].split('\t');
-                    const appScriptUrl = cols[0] ? cols[0].trim() : "";
-                    const customStatus = cols[1] ? cols[1].trim().toUpperCase() : "";
+                    const customStatus = (cols[1] || "").trim().toUpperCase();
+                    if (customStatus === 'UP') setStatusUI('green');
+                    else if (customStatus === 'DOWN') setStatusUI('red');
+                    else if (customStatus === 'DEGRADED') setStatusUI('yellow');
+                    else setStatusUI('green');
+                }).catch(() => setStatusUI('red', 'Status Server Unreachable'));
 
-                    if (customStatus === 'UP') {
-                        setStatusUI('green', 'Services are running normally.');
-                    } else if (customStatus === 'DOWN') {
-                        setStatusUI('red', 'Critical services are down.');
-                    } else if (customStatus === 'DEGRADED') {
-                        setStatusUI('yellow', 'Some systems may be slow.');
-                    } else {
-                        statusSub.textContent = "Pinging Servers...";
-                        pingServer(appScriptUrl);
-                    }
-                })
-                .catch(err => {
-                    console.error("Failed to fetch control sheet:", err);
-                    setStatusUI('red', 'Status Server Unreachable');
-                });
-
-
-            // Blog Fetch
             const blogFeed = document.getElementById('blog-feed');
             const seeMoreContainer = document.getElementById('see-more-container');
             const seeMoreBtn = document.getElementById('see-more-btn');
 
-            const blogSheetUrl = baseSheetUrl + "?gid=0&single=true&output=tsv";
-
-            const authorImages = {
-                'Taj': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEb6t5KjmUlku5V611M3uU_f8CUqiY9ljfvuE-X3FuJA&s=10',
-                'Guahh': 'https://avatars.githubusercontent.com/u/232163324?v=4',
-                'Default': 'https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png'
-            };
-
-            fetch(blogSheetUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Blog Network Error");
-                    return response.text();
-                })
+            fetch(baseSheetUrl + "?gid=0&single=true&output=tsv")
+                .then(res => res.text())
                 .then(data => {
-                    const allRows = data.split('\n');
+                    // Filter out empty lines and reverse order so newest is first
+                    const contentRows = data.split('\n').slice(1).filter(r => r.trim() !== '').reverse();
+                    
                     blogFeed.innerHTML = '';
-
-                    let contentRows = allRows.slice(1).filter(r => r.trim() !== '');
-                    contentRows.reverse();
-
+                    
                     contentRows.forEach((row, index) => {
                         const cols = row.split('\t');
-                        const author = cols[0] || 'Guahh Team';
+                        const author = cols[0] || 'Guahh';
                         const content = cols[1] || '';
                         const date = cols[2] || '';
 
-                        let avatarUrl = authorImages[author] || authorImages['Default'];
-
                         const card = document.createElement('div');
                         card.className = 'blog-card';
+                        if (index >= 3) card.classList.add('hidden-post');
 
-                        if (index >= 3) {
-                            card.classList.add('hidden-post');
-                        } else {
-                            card.style.animationDelay = `${index * 0.1}s`;
-                        }
-
+                        // Updated InnerHTML: removed the <img class="author-pfp">
                         card.innerHTML = `
                             <div class="blog-header">
-                                <img src="${avatarUrl}" alt="${author}" class="author-pfp">
                                 <div class="blog-meta">
                                     <span class="blog-author">${author}</span>
                                     <span class="blog-date">${date}</span>
