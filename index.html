@@ -13,28 +13,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        rel="stylesheet">
-
     <style>
-        /* CSS VARIABLES - LIGHT MODE */
         :root {
             --bg-color: #ffffff;
-            --section-bg: #f5f5f7;
             --text-color: #1d1d1f;
             --accent-color: #0071e3;
             --accent-hover: #0077ed;
-            --glass-bg: rgba(255, 255, 255, 0.5); /* Transparent Navbar */
+            --glass-bg: rgba(255, 255, 255, 0.5);
             --gray-text: #86868b;
-            --card-bg: #ffffff;
-            --border-color: #d2d2d7;
             --section-padding: 120px 20px;
-
-            /* Status Colors */
-            --status-green: #34c759;
-            --status-red: #ff3b30;
-            --status-yellow: #ffcc00;
         }
 
         * {
@@ -86,16 +73,24 @@
             align-items: center;
         }
 
-        .nav-logo img {
-            height: 22px;
-            width: auto;
-            display: block;
-            opacity: 0.9;
-            transition: opacity 0.3s ease;
-            filter: invert(1);
+        .nav-logo-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
         }
 
-        .nav-logo img:hover {
+        .nav-logo-btn img {
+            height: 22px;
+            width: auto;
+            filter: invert(1);
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .nav-logo-btn:hover img {
             opacity: 1;
         }
 
@@ -104,44 +99,23 @@
             align-items: center;
         }
 
-        .nav-links a {
+        /* Style for the text links in the nav */
+        .nav-links a, .nav-text-btn {
             color: #424245;
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
             margin-left: 24px;
             transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #000;
-        }
-
-        /* PROFILE BALL (Top Right) */
-        .nav-profile-ball {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-left: 24px;
+            background: none;
+            border: none;
+            font-family: inherit;
             cursor: pointer;
-            overflow: hidden;
-            background-color: #f5f5f7;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
         }
 
-        .nav-profile-ball:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-profile-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .nav-links a:hover, .nav-text-btn:hover {
+            color: #000;
         }
 
         /* HERO SECTION */
@@ -155,8 +129,6 @@
             padding: 120px 20px 60px 20px;
             background: #ffffff;
             animation: fadeIn 0.5s ease-out forwards;
-            transform: translateZ(0);
-            will-change: transform, opacity;
         }
 
         .hero-logo {
@@ -165,18 +137,8 @@
             filter: invert(1);
         }
 
-        /* SHARED GRADIENT STYLES */
-        .hero h1,
-        .product-title {
-            background: linear-gradient(135deg,
-                    #1d1d1f 0%,
-                    #1d1d1f 30%,
-                    #ff0055 35%,
-                    #ffdd00 45%,
-                    #00ffff 55%,
-                    #bd00ff 65%,
-                    #1d1d1f 70%,
-                    #1d1d1f 100%);
+        .hero h1, .product-title {
+            background: linear-gradient(135deg, #1d1d1f 0%, #1d1d1f 30%, #ff0055 35%, #ffdd00 45%, #00ffff 55%, #bd00ff 65%, #1d1d1f 70%, #1d1d1f 100%);
             background-size: 800% 100%;
             background-position: 100% 0;
             -webkit-background-clip: text;
@@ -184,7 +146,6 @@
             background-clip: text;
             color: transparent;
             line-height: 1.1;
-            padding-bottom: 0.1em;
         }
 
         .hero h1 {
@@ -200,8 +161,6 @@
             font-weight: 500;
             color: var(--gray-text);
             margin-bottom: 40px;
-            max-width: 600px;
-            letter-spacing: -0.01em;
         }
 
         .cta-button {
@@ -220,7 +179,7 @@
             transform: scale(1.02);
         }
 
-        /* GENERIC PRODUCT SECTION STYLES */
+        /* PRODUCT SECTIONS */
         .product-section {
             padding: var(--section-padding);
             text-align: center;
@@ -233,45 +192,25 @@
         }
 
         .app-icon {
-            width: 120px;
-            height: 120px;
+            max-width: 140px;
+            height: auto;
             margin-bottom: 30px;
-        }
-
-        /* BANNER STYLE */
-        .app-banner {
-            width: 100%;
-            max-width: 800px;
-            
-            /* Desktop height */
-            height: 260px; 
-            object-fit: cover; 
-            
-            border-radius: 24px;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .product-title {
             font-size: 52px;
             font-weight: 700;
-            letter-spacing: -0.02em;
             margin-bottom: 15px;
-            color: #1d1d1f;
-        }
-
-        .product-title.animate-shimmer {
-            animation: textShimmer 1.1s ease-out 0.2s 1 forwards;
         }
 
         .product-desc {
             font-size: 22px;
-            line-height: 1.4;
-            font-weight: 400;
             color: var(--gray-text);
             max-width: 600px;
             margin: 0 auto 30px auto;
-            letter-spacing: -0.01em;
         }
 
         .link-arrow {
@@ -285,504 +224,36 @@
             text-decoration: underline;
         }
 
-        /* SPECIFIC BACKGROUNDS */
-        #daydream {
-            /* Updated to Blue Ventures Gradient */
-            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
-        }
-
-        #kangaroo {
-            background: linear-gradient(180deg, rgba(188, 150, 129, 0.15) 0%, #ffffff 100%);
-        }
-
-        /* MODAL / POPUP STYLES */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 440px;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            position: relative;
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-
-        .close-modal-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #f5f5f7;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 18px;
-            color: #666;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-            z-index: 2;
-        }
-
-        .close-modal-btn:hover {
-            background: #e5e5ea;
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .auth-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-top: 10px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-            background: #f5f5f7;
-            padding: 4px;
-            border-radius: 98px;
-            display: inline-flex;
-            width: 100%;
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 8px 0;
-            border-radius: 98px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--gray-text);
-        }
-
-        .auth-tab.active {
-            background: #fff;
-            color: #000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: #fbfbfd;
-            font-size: 16px;
-            font-family: inherit;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .auth-textarea {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: #fbfbfd;
-            font-size: 16px;
-            font-family: inherit;
-            transition: all 0.2s ease;
-            outline: none;
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .auth-input:focus,
-        .auth-textarea:focus {
-            border-color: var(--accent-color);
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
-        }
-
-        .auth-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            margin-top: 10px;
-        }
-
-        .auth-btn:hover {
-            transform: scale(1.02);
-            background: var(--accent-hover);
-        }
-
-        .auth-btn.secondary {
-            background: #f5f5f7;
-            color: #1d1d1f;
-        }
-
-        .auth-btn.secondary:hover {
-            background: #e5e5ea;
-        }
-
-        .auth-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-group button {
-            flex: 1;
-            margin-top: 0;
-        }
-
-        .auth-msg {
-            margin-top: 20px;
-            font-size: 14px;
-            min-height: 20px;
-            text-align: center;
-        }
-
-        .auth-msg.error {
-            color: var(--status-red);
-        }
-
-        .auth-msg.success {
-            color: var(--status-green);
-        }
-
-        /* Profile View inside Modal */
-        .profile-view {
-            display: none;
-            text-align: center;
-            padding-top: 10px;
-        }
-
-        .profile-pic-large {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            background: #eee;
-            object-fit: cover;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .profile-username {
-            font-size: 16px;
-            color: var(--gray-text);
-            margin-bottom: 10px;
-        }
-
-        .profile-bio {
-            font-size: 14px;
-            color: #424245;
-            margin-bottom: 30px;
-            padding: 0 10px;
-            white-space: pre-wrap;
-        }
-
-        /* VENTURES / PARTNERS */
-        .ventures-section {
-            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
-            padding: var(--section-padding);
-            scroll-margin-top: 70px;
-        }
-
-        .ventures-container {
-            max-width: 980px;
-            margin: 0 auto;
-        }
-
-        .ventures-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 20px;
-        }
-
-        .venture-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .venture-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .venture-category {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gray-text);
-            margin-bottom: 24px;
-            font-weight: 700;
-        }
-
-        .venture-list {
-            list-style: none;
-        }
-
-        .venture-list li {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            margin-bottom: 15px;
-            color: var(--text-color);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            padding-bottom: 15px;
-        }
-
-        .venture-list li:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        /* STATUS SECTION */
-        .status-section {
-            background-color: #ffffff;
-            padding: 80px 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .status-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-        }
-
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--gray-text);
-            position: relative;
-        }
-
-        @keyframes pulse-green {
-            0% {
-                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 6px rgba(52, 199, 89, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
-            }
-        }
-
-        @keyframes pulse-red {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
-            }
-        }
-
-        @keyframes pulse-yellow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 6px rgba(255, 204, 0, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 204, 0, 0);
-            }
-        }
-
-        .status-operational {
-            background-color: var(--status-green);
-            animation: pulse-green 2s infinite;
-        }
-
-        .status-outage {
-            background-color: var(--status-red);
-            animation: pulse-red 2s infinite;
-        }
-
-        .status-degraded {
-            background-color: var(--status-yellow);
-            animation: pulse-yellow 2s infinite;
-        }
-
-        .status-text {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .status-sub {
-            font-size: 13px;
-            color: var(--gray-text);
-            margin-top: 2px;
-        }
+        #webfarm { background: linear-gradient(180deg, rgba(76, 175, 80, 0.08) 0%, #ffffff 100%); }
 
         /* BLOG SECTION */
         .blog-section {
-            /* Default: Green Gradient -> White */
-            background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%);
             padding: 80px 20px;
-            scroll-margin-top: 70px;
-            transition: background 1s ease;
+            background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%);
         }
 
-        .blog-container {
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .blog-section-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 40px;
-            color: var(--text-color);
-        }
-
+        .blog-container { max-width: 680px; margin: 0 auto; }
+        
         .blog-card {
             background: #ffffff;
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: left;
             transition: transform 0.3s ease;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out forwards;
         }
 
-        .blog-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
+        .blog-card.hidden-post { display: none; }
 
-        .blog-card.hidden-post {
-            display: none;
-        }
+        .blog-author { font-weight: 600; font-size: 16px; }
+        .blog-date { color: var(--gray-text); font-size: 13px; display: block; margin-bottom: 15px; }
+        .blog-content { font-size: 17px; color: #333; white-space: pre-wrap; }
 
-        .blog-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 15px;
-        }
-
-        .author-pfp {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-            background-color: #eee;
-        }
-
-        .blog-meta {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .blog-author {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .blog-date {
-            font-size: 13px;
-            color: var(--gray-text);
-        }
-
-        .blog-content {
-            font-size: 17px;
-            line-height: 1.6;
-            color: #333;
-            white-space: pre-wrap;
-        }
-
-        .see-more-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
+        .see-more-container { text-align: center; margin-top: 20px; }
         .see-more-btn {
             background: transparent;
-            border: 1px solid var(--border-color);
+            border: 1px solid #d2d2d7;
             padding: 12px 24px;
             border-radius: 98px;
             font-size: 14px;
@@ -792,128 +263,23 @@
             transition: all 0.2s ease;
         }
 
-        .see-more-btn:hover {
-            background: #e5e5ea;
-            transform: scale(1.02);
-        }
+        .see-more-btn:hover { background: #e5e5ea; transform: scale(1.02); }
 
-        /* TERMS */
-        .terms-section {
-            background-color: #ffffff;
-            padding: 80px 20px;
-            color: var(--gray-text);
-            scroll-margin-top: 70px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .terms-container {
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .terms-title {
-            color: var(--text-color);
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: -0.01em;
-        }
-
-        .terms-content {
-            font-size: 13px;
-            line-height: 1.6;
-            text-align: justify;
-        }
-
-        .terms-content p {
-            margin-bottom: 15px;
-        }
-
-        /* FOOTER */
         footer {
             background-color: #f5f5f7;
             padding: 40px 20px;
             font-size: 12px;
             color: #86868b;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        .footer-content {
-            max-width: 980px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes textShimmer { 0% { background-position: 100% 0; } 100% { background-position: 0% 0; } }
 
-        /* ANIMATIONS */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes textShimmer {
-            0% {
-                background-position: 100% 0;
-            }
-
-            100% {
-                background-position: 0% 0;
-            }
-        }
-
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 56px; /* ZOOMED: Increased from 48px */
-            }
-
-            .hero h2 {
-                font-size: 24px; /* ZOOMED: Increased from 22px */
-            }
-
-            .product-title {
-                font-size: 46px; /* ZOOMED: Adjusted for mobile impact */
-            }
-
-            .product-desc {
-                font-size: 21px; /* ZOOMED: Readable size */
-            }
-
-            .blog-content, .terms-content {
-                font-size: 16px; /* ZOOMED: Ensure body text is readable */
-            }
-
-            .ventures-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-
-            .nav-links a {
-                display: none;
-            }
-
-            /* Hide text links on mobile, keep logo & profile */
-            .nav-profile-ball {
-                margin-left: auto;
-            }
-
-            /* MOBILE BANNER FIX: Keep full image visible */
-            .app-banner {
-                height: auto;
-            }
+            .hero h1 { font-size: 52px; }
+            .product-title { font-size: 42px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
@@ -923,162 +289,40 @@
     <nav>
         <div class="nav-content">
             <div class="nav-left">
-                <a href="#" class="nav-logo">
-                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png"
-                        alt="Guahh Logo">
-                </a>
+                <button class="nav-logo-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
+                </button>
             </div>
-
             <div class="nav-links">
-                <a href="#daydream">Daydream</a>
-                <a href="#kangaroo">Kangaroo</a>
-                <a href="#status">Status</a>
+                <button class="nav-text-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Guahh</button>
+                <a href="#webfarm">Web Farm</a>
                 <a href="#blog">News</a>
-                <a href="#ventures">Ventures</a>
-                <a href="#terms">Terms</a>
-
-                <div class="nav-profile-ball" onclick="handleProfileClick()">
-                    <img id="nav-profile-img" src="" alt="Account" class="nav-profile-img" style="display:none;">
-                </div>
             </div>
         </div>
     </nav>
 
-    <div id="auth-modal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-modal-btn" onclick="closeAuthModal()">✕</button>
-
-            <div id="auth-forms">
-                <div class="auth-header">
-                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh"
-                        style="width: 50px; margin-bottom: 10px; filter: invert(1);">
-                    <h3 class="auth-title">Guahh Account</h3>
-                </div>
-
-                <div class="auth-tabs">
-                    <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Log In</div>
-                    <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Sign Up</div>
-                </div>
-
-                <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
-                    <input type="text" id="login-username" class="auth-input" placeholder="Username" required>
-                    <input type="password" id="login-password" class="auth-input" placeholder="Password" required>
-                    <button type="submit" id="login-btn" class="auth-btn">Log In</button>
-                </form>
-
-                <form id="register-form" class="auth-form" style="display: none;" onsubmit="handleRegister(event)">
-                    <input type="text" id="reg-username" class="auth-input" placeholder="Username (Unique)" required>
-                    <input type="text" id="reg-displayname" class="auth-input" placeholder="Display Name" required>
-                    <input type="password" id="reg-password" class="auth-input" placeholder="Password (Min 4 chars)"
-                        required>
-                    <button type="submit" id="reg-btn" class="auth-btn">Create Account</button>
-                </form>
-
-                <div id="auth-message" class="auth-msg"></div>
-            </div>
-
-            <div id="profile-view" class="profile-view">
-                <img id="user-pfp-large" src="" alt="Profile" class="profile-pic-large">
-                <h3 id="user-displayname" class="profile-name"></h3>
-                <p id="user-username" class="profile-username"></p>
-                <p id="user-bio" class="profile-bio"></p>
-
-                <div class="btn-group">
-                    <button onclick="openEditProfile()" class="auth-btn secondary">Edit Profile</button>
-                    <button onclick="handleLogout()" class="auth-btn" style="background-color: var(--status-red);">Sign
-                        Out</button>
-                </div>
-            </div>
-
-            <div id="edit-profile-view" style="display: none;">
-                <div class="auth-header">
-                    <h3 class="auth-title">Edit Profile</h3>
-                </div>
-                <form id="edit-profile-form" class="auth-form" onsubmit="handleUpdateProfile(event)">
-                    <label
-                        style="font-size: 12px; color: var(--gray-text); margin-bottom: -10px; margin-left: 5px;">Display
-                        Name</label>
-                    <input type="text" id="edit-displayname" class="auth-input" placeholder="Display Name" required>
-
-                    <label
-                        style="font-size: 12px; color: var(--gray-text); margin-bottom: -10px; margin-left: 5px;">Profile
-                        Picture URL</label>
-                    <input type="text" id="edit-pfp-url" class="auth-input" placeholder="Image URL (e.g. Imgur link)">
-
-                    <label
-                        style="font-size: 12px; color: var(--gray-text); margin-bottom: -10px; margin-left: 5px;">Bio</label>
-                    <textarea id="edit-bio" class="auth-textarea" placeholder="Tell us about yourself..."></textarea>
-
-                    <div class="btn-group">
-                        <button type="button" onclick="cancelEditProfile()" class="auth-btn secondary">Cancel</button>
-                        <button type="submit" id="save-profile-btn" class="auth-btn">Save Changes</button>
-                    </div>
-                </form>
-                <div id="edit-msg" class="auth-msg"></div>
-            </div>
-
-        </div>
-    </div>
-
-    <section class="hero">
-        <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh"
-            class="hero-logo">
+    <section class="hero" id="top">
+        <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" class="hero-logo">
         <h1>Guahh</h1>
         <h2>Australian Technology Company.</h2>
-        <a href="#daydream" class="cta-button">Explore</a>
+        <a href="#webfarm" class="cta-button">Explore</a>
     </section>
 
-    <!-- UPDATED: Guahh Daydream with Blue Gradient & Logo -->
-    <section id="daydream" class="product-section">
+    <section id="webfarm" class="product-section">
         <div class="product-container">
-            <!-- Changed from banner class to app-icon class -->
-            <img src="https://raw.githubusercontent.com/guahhinc/guahh/main/guahhdaydreamlogo.png" alt="Guahh Daydream Logo"
-                class="app-icon">
-
-            <h3 class="product-title animate-shimmer">Guahh Daydream</h3>
-
-            <p class="product-desc">
-                Pioneering the future of neural network architecture. Daydream is our dedicated research division advancing deep learning, generative models, and the next frontier of artificial intelligence.
-            </p>
-            
-            <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                <a href="https://daydream.guahh.net" class="link-arrow">View Research ></a>
-                <a href="https://ai.guahh.net" class="cta-button">Try Guahh AI</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="kangaroo" class="product-section">
-        <div class="product-container">
-            <img src="https://raw.githubusercontent.com/guahhinc/fire/main/Kangaroo.png" alt="Kangaroo App Icon"
-                class="app-icon">
-
-            <h3 class="product-title"
-                style="animation: none; background: #1d1d1f; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                Kangaroo</h3>
-            <p class="product-desc">
-                Your freedom from the social media ban. Connect with the world on a platform designed for speed,
-                community, and free speech.
-            </p>
-            <a href="https://kangaroo.guahh.net" class="link-arrow">Open Kangaroo ></a>
-        </div>
-    </section>
-
-    <section id="status" class="status-section">
-        <div class="status-container">
-            <div id="status-dot" class="status-dot"></div>
-            <div style="text-align: left;">
-                <div id="status-text" class="status-text">Checking System Status...</div>
-                <div id="status-sub" class="status-sub">Initializing...</div>
-            </div>
+            <img src="https://raw.githubusercontent.com/guahhinc/webfarm/main/carrot.png" alt="Web Farm"
+                class="app-icon" style="transform: scaleX(-1);">
+            <h3 class="product-title" style="background: #1d1d1f; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Web Farm</h3>
+            <p class="product-desc">A simple online farming game where you grow crops and build your own farm.</p>
+            <a href="https://farm.guahh.net" class="link-arrow">Play Web Farm ></a>
         </div>
     </section>
 
     <section id="blog" class="blog-section">
         <div class="blog-container">
-            <h2 class="blog-section-title">Latest Updates</h2>
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 32px;">Latest Updates</h2>
             <div id="blog-feed">
-                <p style="text-align:center; color:#86868b;">Loading news feed...</p>
+                <p style="text-align:center; color:#86868b;">Loading news...</p>
             </div>
             <div id="see-more-container" class="see-more-container" style="display: none;">
                 <button id="see-more-btn" class="see-more-btn">See More Updates</button>
@@ -1086,448 +330,43 @@
         </div>
     </section>
 
-    <section id="ventures" class="ventures-section">
-        <div class="ventures-container">
-            <div class="ventures-grid">
-                <div class="venture-card">
-                    <div class="venture-category">Companies We Own</div>
-                    <ul class="venture-list">
-                        <li>Guahh Daydream</li>
-                        <li>Jumble Development</li>
-                    </ul>
-                </div>
-
-                <div class="venture-card">
-                    <div class="venture-category">Trusted Partners</div>
-                    <ul class="venture-list">
-                        <li>macbooksuck</li>
-                        <li>TLS Aces</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="terms" class="terms-section">
-        <div class="terms-container">
-            <h4 class="terms-title">Legal</h4>
-            <div class="terms-content">
-                <p>
-                    <strong>Terms of Service, Terms of Use and Privacy Policy</strong>
-                </p>
-                <p>
-                    Guahh (hereafter “we,” “us,” “our/ours,” “the company” and “the corporation”) can access the user’s
-                    (hereafter “you,” “your/yours,”) information provided to our services by you on our servers. We do
-                    not accept responsibility for any data breaches or any personal harm derivative of our services.
-                </p>
-                <p>
-                    Your files will not be stored by Guahh or any third party, and as such we are not responsible for
-                    any loss or miscommunication of data. Your account may be terminated without your consent or
-                    notification. We can and will use your personal information and data to improve advertising and our
-                    platform.
-                </p>
-                <p>
-                    Your status as online/offline may be collected as data used to track our website’s popularity or
-                    other metrics. Your messages will be stored as encrypted data held by Google/Alphabet. Your email or
-                    login details will not be collected and as such we are not responsible for such data.
-                </p>
-                <p>
-                    Hate speech and inflammatory content is not allowed and depending on severity your account may be
-                    terminated. By clicking “I agree” you agree and submit to all the terms listed above. These are
-                    subject to change and you will be notified.
-                </p>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <div class="footer-content">
-            <p>Copyright © 2026 Guahh Inc. All rights reserved.</p>
-            <p>Designed in Australia</p>
-        </div>
+        <p>Copyright © 2026 Guahh Inc. All rights reserved.</p>
+        <p>Designed in Australia</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/gh/guahhinc/fire@main/guahh-auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/guahhinc/fire@main/guahh-auth-api.js"></script>
     <script>
-        // Initialize Guahh Auth Widget
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof GuahhAuth !== 'undefined') {
-                GuahhAuth.init({
-                    authPageUrl: 'https://guahhinc.github.io/fire/guahh-auth-page.html'
-                });
-            }
-        });
-
-        // Handle login events
-        window.addEventListener('load', () => {
-            if (typeof GuahhAuth !== 'undefined') {
-                GuahhAuth.onLogin((user, service) => {
-                    updateNavbarProfile(user);
-                });
-
-                GuahhAuth.onLogout(() => {
-                    updateNavbarProfile(null);
-                });
-
-                const currentUser = GuahhAuth.getUser();
-                if (currentUser) {
-                    updateNavbarProfile(currentUser);
-                }
-            }
-        });
-
-        function updateNavbarProfile(user) {
-            const navImg = document.getElementById('nav-profile-img');
-            if (user) {
-                const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
-                navImg.src = pfp;
-                navImg.style.display = 'block';
-            } else {
-                navImg.src = 'https://api.dicebear.com/8.x/thumbs/svg?seed=GuahhGuest';
-                navImg.style.display = 'block';
-            }
-        }
-
-        function handleProfileClick() {
-            const user = GuahhAuth.getUser();
-            if (user) {
-                openAuthModal();
-            } else {
-                GuahhAuth.show({ name: 'Guahh Website', url: window.location.href });
-            }
-        }
-    </script>
-
-    <script>
-        // --- AUTH LOGIC (Guahh Accounts) ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLwJH_xV8cTa0B5R75fNRSmohCWWTe2gbx6v9ihPYd_ED0GO1rqjNi_G3aNzY5dg86/exec';
-
-        window.addEventListener('load', () => {
-            const storedUser = localStorage.getItem('guahh_user');
-            if (storedUser) {
-                const user = JSON.parse(storedUser);
-                updateUIForLoggedInUser(user);
-            }
-        });
-
-        function openAuthModal() {
-            document.getElementById('auth-modal').classList.add('active');
-            const storedUser = localStorage.getItem('guahh_user');
-            if (storedUser) {
-                const user = JSON.parse(storedUser);
-                showProfileInModal(user);
-            } else {
-                document.getElementById('edit-profile-view').style.display = 'none';
-                document.getElementById('auth-forms').style.display = 'block';
-            }
-        }
-
-        function closeAuthModal() {
-            document.getElementById('auth-modal').classList.remove('active');
-            setTimeout(() => {
-                document.getElementById('auth-message').textContent = '';
-                document.getElementById('edit-msg').textContent = '';
-                if (localStorage.getItem('guahh_user')) {
-                    cancelEditProfile();
-                }
-            }, 300);
-        }
-
-        document.getElementById('auth-modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('auth-modal')) {
-                closeAuthModal();
-            }
-        });
-
-        function switchAuthTab(tab) {
-            const loginForm = document.getElementById('login-form');
-            const regForm = document.getElementById('register-form');
-            const tabLogin = document.getElementById('tab-login');
-            const tabReg = document.getElementById('tab-register');
-            const msg = document.getElementById('auth-message');
-
-            msg.textContent = '';
-            msg.className = 'auth-msg';
-
-            if (tab === 'login') {
-                loginForm.style.display = 'flex';
-                regForm.style.display = 'none';
-                tabLogin.classList.add('active');
-                tabReg.classList.remove('active');
-            } else {
-                loginForm.style.display = 'none';
-                regForm.style.display = 'flex';
-                tabLogin.classList.remove('active');
-                tabReg.classList.add('active');
-            }
-        }
-
-        async function handleRegister(e) {
-            e.preventDefault();
-            const btn = document.getElementById('reg-btn');
-            const msg = document.getElementById('auth-message');
-            const username = document.getElementById('reg-username').value.trim();
-            const displayName = document.getElementById('reg-displayname').value.trim();
-            const password = document.getElementById('reg-password').value.trim();
-
-            if (password.length < 4) {
-                msg.textContent = "Password must be at least 4 characters long.";
-                msg.className = 'auth-msg error';
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Creating Account...';
-            msg.textContent = '';
-
-            const payload = { action: 'register', username, displayName, password };
-
-            try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const data = await response.json();
-                if (data.status === 'success') {
-                    localStorage.setItem('guahh_user', JSON.stringify(data.user));
-                    updateUIForLoggedInUser(data.user);
-                    showProfileInModal(data.user);
-                    msg.textContent = 'Account created successfully!';
-                    msg.className = 'auth-msg success';
-                } else {
-                    msg.textContent = data.message || 'Registration failed.';
-                    msg.className = 'auth-msg error';
-                }
-            } catch (error) {
-                msg.textContent = 'Connection error. Please try again.';
-                msg.className = 'auth-msg error';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Account';
-            }
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            const btn = document.getElementById('login-btn');
-            const msg = document.getElementById('auth-message');
-            const username = document.getElementById('login-username').value.trim();
-            const password = document.getElementById('login-password').value.trim();
-
-            btn.disabled = true;
-            btn.textContent = 'Logging In...';
-            msg.textContent = '';
-
-            const payload = { action: 'login', username, password };
-
-            try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const data = await response.json();
-                if (data.status === 'success') {
-                    localStorage.setItem('guahh_user', JSON.stringify(data.user));
-                    updateUIForLoggedInUser(data.user);
-                    showProfileInModal(data.user);
-                    msg.textContent = 'Login successful!';
-                    msg.className = 'auth-msg success';
-                } else {
-                    msg.textContent = data.message || 'Login failed.';
-                    msg.className = 'auth-msg error';
-                }
-            } catch (error) {
-                msg.textContent = 'Login error. Check connection.';
-                msg.className = 'auth-msg error';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Log In';
-            }
-        }
-
-        function openEditProfile() {
-            const storedUser = localStorage.getItem('guahh_user');
-            if (!storedUser) return;
-            const user = JSON.parse(storedUser);
-            document.getElementById('edit-displayname').value = user.displayName || '';
-            document.getElementById('edit-pfp-url').value = user.profilePictureUrl || '';
-            document.getElementById('edit-bio').value = user.description || '';
-            document.getElementById('profile-view').style.display = 'none';
-            document.getElementById('edit-profile-view').style.display = 'block';
-        }
-
-        function cancelEditProfile() {
-            document.getElementById('edit-profile-view').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'block';
-            document.getElementById('edit-msg').textContent = '';
-        }
-
-        async function handleUpdateProfile(e) {
-            e.preventDefault();
-            const storedUser = localStorage.getItem('guahh_user');
-            if (!storedUser) return;
-            const user = JSON.parse(storedUser);
-
-            const btn = document.getElementById('save-profile-btn');
-            const msg = document.getElementById('edit-msg');
-            const newDisplayName = document.getElementById('edit-displayname').value.trim();
-            const newPfpUrl = document.getElementById('edit-pfp-url').value.trim();
-            const newBio = document.getElementById('edit-bio').value.trim();
-
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
-
-            const payload = {
-                action: 'updateProfile',
-                userId: user.userId,
-                displayName: newDisplayName,
-                profilePictureUrl: newPfpUrl,
-                description: newBio
-            };
-
-            try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-                const data = await response.json();
-                if (data.status === 'success') {
-                    user.displayName = newDisplayName;
-                    user.profilePictureUrl = newPfpUrl;
-                    user.description = newBio;
-                    localStorage.setItem('guahh_user', JSON.stringify(user));
-                    updateUIForLoggedInUser(user);
-                    showProfileInModal(user);
-                    cancelEditProfile();
-                } else {
-                    msg.textContent = data.message || 'Update failed.';
-                    msg.className = 'auth-msg error';
-                }
-            } catch (error) {
-                msg.textContent = 'Error updating profile.';
-                msg.className = 'auth-msg error';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Save Changes';
-            }
-        }
-
-        function updateUIForLoggedInUser(user) {
-            const navIcon = document.getElementById('nav-profile-img');
-            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
-            if (navIcon) {
-                navIcon.src = pfp;
-                navIcon.style.filter = "invert(0)";
-            }
-        }
-
-        function showProfileInModal(user) {
-            const pfp = user.profilePictureUrl || `https://api.dicebear.com/8.x/thumbs/svg?seed=${user.username}`;
-            const isVerified = (user.isVerified === true || String(user.isVerified) === 'TRUE');
-            const verifiedBadge = isVerified ? '<span class="material-symbols-rounded" style="color:#1DA1F2; font-size:20px; vertical-align:-4px; margin-left:5px; font-variation-settings: \'FILL\' 1;">verified</span>' : '';
-
-            document.getElementById('user-pfp-large').src = pfp;
-            document.getElementById('user-displayname').innerHTML = user.displayName + verifiedBadge;
-            document.getElementById('user-username').textContent = '@' + user.username;
-            document.getElementById('user-bio').textContent = user.description || '';
-
-            document.getElementById('auth-forms').style.display = 'none';
-            document.getElementById('profile-view').style.display = 'block';
-            document.getElementById('edit-profile-view').style.display = 'none';
-        }
-
-        function handleLogout() {
-            GuahhAuth.logout();
-            localStorage.removeItem('guahh_user');
-            window.location.reload();
-        }
-
-        // --- STATUS & BLOG LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5nNm_vphbxU5Fh29LtrkR7FzsqfPhtaru4gFFkz9jIclxcPOADbLuYv12jmsYY_TxqrRNSoFrZBiO/pub";
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-shimmer');
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            document.querySelectorAll('.product-title').forEach(title => observer.observe(title));
-
-            const statusDot = document.getElementById('status-dot');
-            const statusText = document.getElementById('status-text');
-            const statusSub = document.getElementById('status-sub');
-            const blogSection = document.getElementById('blog');
-
-            function setStatusUI(state, customMsg = null) {
-                statusDot.className = 'status-dot';
-                let bgStartColor = '#e3f9e5';
-                if (state === 'green') {
-                    statusDot.classList.add('status-operational');
-                    statusText.textContent = "All Systems Operational";
-                    statusSub.textContent = customMsg || "Services are running normally.";
-                } else if (state === 'red') {
-                    statusDot.classList.add('status-outage');
-                    statusText.textContent = "System Outage";
-                    statusSub.textContent = customMsg || "Critical services are down.";
-                    bgStartColor = '#ffe5e5';
-                } else if (state === 'yellow') {
-                    statusDot.classList.add('status-degraded');
-                    statusText.textContent = "Degraded Performance";
-                    statusSub.textContent = customMsg || "Some systems may be slow.";
-                    bgStartColor = '#fff9e1';
-                }
-                if (blogSection) blogSection.style.background = `linear-gradient(180deg, ${bgStartColor} 0%, #ffffff 100%)`;
-            }
-
-            fetch(baseSheetUrl + "?gid=474676757&single=true&output=tsv")
-                .then(res => res.text())
-                .then(data => {
-                    const rows = data.split('\n');
-                    if (rows.length < 2) return;
-                    const cols = rows[1].split('\t');
-                    const customStatus = (cols[1] || "").trim().toUpperCase();
-                    if (customStatus === 'UP') setStatusUI('green');
-                    else if (customStatus === 'DOWN') setStatusUI('red');
-                    else if (customStatus === 'DEGRADED') setStatusUI('yellow');
-                    else setStatusUI('green');
-                }).catch(() => setStatusUI('red', 'Status Server Unreachable'));
-
-            const blogFeed = document.getElementById('blog-feed');
-            const seeMoreContainer = document.getElementById('see-more-container');
-            const seeMoreBtn = document.getElementById('see-more-btn');
 
             fetch(baseSheetUrl + "?gid=0&single=true&output=tsv")
                 .then(res => res.text())
                 .then(data => {
-                    // Filter out empty lines and reverse order so newest is first
-                    const contentRows = data.split('\n').slice(1).filter(r => r.trim() !== '').reverse();
+                    const rows = data.split('\n').slice(1).filter(r => r.trim() !== '').reverse();
+                    const feed = document.getElementById('blog-feed');
+                    const seeMoreContainer = document.getElementById('see-more-container');
+                    const seeMoreBtn = document.getElementById('see-more-btn');
                     
-                    blogFeed.innerHTML = '';
+                    feed.innerHTML = '';
                     
-                    contentRows.forEach((row, index) => {
+                    rows.forEach((row, index) => {
                         const cols = row.split('\t');
-                        const author = cols[0] || 'Guahh';
-                        const content = cols[1] || '';
-                        const date = cols[2] || '';
-
                         const card = document.createElement('div');
                         card.className = 'blog-card';
                         if (index >= 3) card.classList.add('hidden-post');
 
-                        // Updated InnerHTML: removed the <img class="author-pfp">
                         card.innerHTML = `
-                            <div class="blog-header">
-                                <div class="blog-meta">
-                                    <span class="blog-author">${author}</span>
-                                    <span class="blog-date">${date}</span>
-                                </div>
-                            </div>
-                            <div class="blog-content">${content}</div>
+                            <span class="blog-author">${cols[0] || 'Guahh'}</span>
+                            <span class="blog-date">${cols[2] || ''}</span>
+                            <div class="blog-content">${cols[1] || ''}</div>
                         `;
-                        blogFeed.appendChild(card);
+                        feed.appendChild(card);
                     });
 
-                    if (contentRows.length > 3) {
+                    if (rows.length > 3) {
                         seeMoreContainer.style.display = 'block';
-
                         seeMoreBtn.addEventListener('click', () => {
-                            const hiddenPosts = document.querySelectorAll('.hidden-post');
-                            hiddenPosts.forEach(post => {
+                            document.querySelectorAll('.hidden-post').forEach(post => {
                                 post.classList.remove('hidden-post');
                                 post.style.animation = 'fadeIn 0.5s ease-out forwards';
                             });
@@ -1535,16 +374,14 @@
                         });
                     }
 
-                    if (contentRows.length === 0) {
-                        blogFeed.innerHTML = '<p style="text-align:center;">No updates found.</p>';
+                    if (rows.length === 0) {
+                        feed.innerHTML = '<p style="text-align:center;">No updates found.</p>';
                     }
                 })
                 .catch(err => {
-                    console.error('Error loading blog:', err);
-                    blogFeed.innerHTML = '<p style="text-align:center; color:red;">Failed to load updates. Ensure sheet is published.</p>';
+                    document.getElementById('blog-feed').innerHTML = '<p style="text-align:center; color:red;">Failed to load updates.</p>';
                 });
         });
     </script>
 </body>
-
 </html>
