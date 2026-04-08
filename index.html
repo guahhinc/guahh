@@ -100,7 +100,8 @@
         }
 
         /* Style for the text links in the nav */
-        .nav-links a, .nav-text-btn {
+        .nav-links a,
+        .nav-text-btn {
             color: #424245;
             text-decoration: none;
             font-size: 13px;
@@ -114,7 +115,8 @@
             padding: 0;
         }
 
-        .nav-links a:hover, .nav-text-btn:hover {
+        .nav-links a:hover,
+        .nav-text-btn:hover {
             color: #000;
         }
 
@@ -137,7 +139,8 @@
             filter: invert(1);
         }
 
-        .hero h1, .product-title {
+        .hero h1,
+        .product-title {
             background: linear-gradient(135deg, #1d1d1f 0%, #1d1d1f 30%, #ff0055 35%, #ffdd00 45%, #00ffff 55%, #bd00ff 65%, #1d1d1f 70%, #1d1d1f 100%);
             background-size: 800% 100%;
             background-position: 100% 0;
@@ -224,7 +227,9 @@
             text-decoration: underline;
         }
 
-        #webfarm { background: linear-gradient(180deg, rgba(76, 175, 80, 0.08) 0%, #ffffff 100%); }
+        #webfarm {
+            background: linear-gradient(180deg, rgba(76, 175, 80, 0.08) 0%, #ffffff 100%);
+        }
 
         /* BLOG SECTION */
         .blog-section {
@@ -232,8 +237,11 @@
             background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%);
         }
 
-        .blog-container { max-width: 680px; margin: 0 auto; }
-        
+        .blog-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
         .blog-card {
             background: #ffffff;
             border-radius: 20px;
@@ -244,13 +252,33 @@
             transition: transform 0.3s ease;
         }
 
-        .blog-card.hidden-post { display: none; }
+        .blog-card.hidden-post {
+            display: none;
+        }
 
-        .blog-author { font-weight: 600; font-size: 16px; }
-        .blog-date { color: var(--gray-text); font-size: 13px; display: block; margin-bottom: 15px; }
-        .blog-content { font-size: 17px; color: #333; white-space: pre-wrap; }
+        .blog-author {
+            font-weight: 600;
+            font-size: 16px;
+        }
 
-        .see-more-container { text-align: center; margin-top: 20px; }
+        .blog-date {
+            color: var(--gray-text);
+            font-size: 13px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .blog-content {
+            font-size: 17px;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .see-more-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
         .see-more-btn {
             background: transparent;
             border: 1px solid #d2d2d7;
@@ -263,7 +291,10 @@
             transition: all 0.2s ease;
         }
 
-        .see-more-btn:hover { background: #e5e5ea; transform: scale(1.02); }
+        .see-more-btn:hover {
+            background: #e5e5ea;
+            transform: scale(1.02);
+        }
 
         footer {
             background-color: #f5f5f7;
@@ -273,13 +304,40 @@
             text-align: center;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes textShimmer { 0% { background-position: 100% 0; } 100% { background-position: 0% 0; } }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes textShimmer {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: 0% 0;
+            }
+        }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 52px; }
-            .product-title { font-size: 42px; }
-            .nav-links { display: none; }
+            .hero h1 {
+                font-size: 52px;
+            }
+
+            .product-title {
+                font-size: 42px;
+            }
+
+            .nav-links {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -290,19 +348,22 @@
         <div class="nav-content">
             <div class="nav-left">
                 <button class="nav-logo-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh Logo">
+                    <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png"
+                        alt="Guahh Logo">
                 </button>
             </div>
             <div class="nav-links">
                 <button class="nav-text-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Guahh</button>
                 <a href="#webfarm">Web Farm</a>
                 <a href="#blog">News</a>
+                <a href="#terms">Terms</a>
             </div>
         </div>
     </nav>
 
     <section class="hero" id="top">
-        <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" class="hero-logo">
+        <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh"
+            class="hero-logo">
         <h1>Guahh</h1>
         <h2>Australian Technology Company.</h2>
         <a href="#webfarm" class="cta-button">Explore</a>
@@ -312,7 +373,9 @@
         <div class="product-container">
             <img src="https://raw.githubusercontent.com/guahhinc/webfarm/main/carrot.png" alt="Web Farm"
                 class="app-icon" style="transform: scaleX(-1);">
-            <h3 class="product-title" style="background: #1d1d1f; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Web Farm</h3>
+            <h3 class="product-title"
+                style="background: #1d1d1f; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Web
+                Farm</h3>
             <p class="product-desc">A simple online farming game where you grow crops and build your own farm.</p>
             <a href="https://farm.guahh.net" class="link-arrow">Play Web Farm ></a>
         </div>
@@ -326,6 +389,98 @@
             </div>
             <div id="see-more-container" class="see-more-container" style="display: none;">
                 <button id="see-more-btn" class="see-more-btn">See More Updates</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="terms" class="product-section" style="text-align: left; background: #fafafa;">
+        <div class="product-container" style="max-width: 800px;">
+            <div style="margin-bottom: 80px;">
+                <h1 style="font-size: 48px; margin-bottom: 20px;">Privacy Policy</h1>
+                <p style="color: var(--gray-text); margin-bottom: 30px;">Last Updated: April 8, 2026</p>
+                <div style="font-size: 18px; line-height: 1.6; color: #333;">
+                    <p style="margin-bottom: 20px;">Betterblox Launcher ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our launcher.</p>
+                    
+                    <h3 style="margin: 30px 0 15px 0;">1. Information We Collect</h3>
+                    <p>When you use the "Sign in with Roblox" feature, we receive the following information via the Roblox Open Cloud API:</p>
+                    <ul style="margin: 15px 0 15px 30px;">
+                        <li><strong>Public Profile Information:</strong> Your Roblox username and profile avatar.</li>
+                        <li><strong>Unique Identifier:</strong> A unique ID provided by Roblox to verify your account.</li>
+                    </ul>
+
+                    <h3 style="margin: 30px 0 15px 0;">2. How We Use Your Information</h3>
+                    <p>We use this information solely to:</p>
+                    <ul style="margin: 15px 0 15px 30px;">
+                        <li>Display your profile within the launcher.</li>
+                        <li>Enable the account-switching functionality.</li>
+                        <li>Personalize your user experience (e.g., greetings).</li>
+                    </ul>
+
+                    <h3 style="margin: 30px 0 15px 0;">3. Data Storage</h3>
+                    <p><strong>Betterblox Launcher is a client-side application.</strong> We do not own or maintain any external servers to store your personal data.</p>
+                    <ul style="margin: 15px 0 15px 30px;">
+                        <li>All account information, favorites, and settings are stored locally on your device using your browser's <strong>Local Storage</strong>.</li>
+                        <li>We do not have access to your Roblox passwords or private account details.</li>
+                    </ul>
+
+                    <h3 style="margin: 30px 0 15px 0;">4. Third-Party Services</h3>
+                    <p>We use the official <strong>Roblox OAuth2 API</strong> for authentication. Your interactions with Roblox are governed by the <a href="https://www.roblox.com/info/privacy" style="color: var(--accent-color);">Roblox Privacy Policy</a>.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">5. Security</h3>
+                    <p>By storing data only on your local device, we minimize the risk of data breaches. However, you are responsible for maintaining the security of your own device.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">6. Changes to This Policy</h3>
+                    <p>We may update this Privacy Policy from time to time. Any changes will be reflected by the "Last Updated" date at the top of this page.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">7. Contact Us</h3>
+                    <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:taj@guahh.net" style="color: var(--accent-color);">taj@guahh.net</a>.</p>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 80px 0;">
+
+            <div>
+                <h1 style="font-size: 48px; margin-bottom: 20px;">Terms of Service</h1>
+                <p style="color: var(--gray-text); margin-bottom: 30px;">Effective Date: April 8, 2026</p>
+                <div style="font-size: 18px; line-height: 1.6; color: #333;">
+                    <p style="margin-bottom: 20px;">By using the Betterblox Launcher ("the Launcher"), you agree to be bound by the following terms. Please read them carefully.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">1. Acceptance of Terms</h3>
+                    <p>By accessing or using the Launcher, you agree to comply with these Terms of Service and all applicable laws and regulations.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">2. Relationship to Roblox</h3>
+                    <p>Betterblox Launcher is an independent, third-party application. It is <strong>not</strong> an official product of Roblox Corporation. Your use of Roblox services through this Launcher remains subject to the <a href="https://www.roblox.com/info/terms" style="color: var(--accent-color);">Roblox Terms of Use</a>.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">3. User Accounts</h3>
+                    <ul style="margin: 15px 0 15px 30px;">
+                        <li>The Launcher allows you to connect your Roblox account using official OAuth2 methods.</li>
+                        <li>You are responsible for maintaining the confidentiality of your account credentials on the Roblox platform.</li>
+                        <li>Betterblox does not collect or store your passwords.</li>
+                    </ul>
+
+                    <h3 style="margin: 30px 0 15px 0;">4. Permitted Use</h3>
+                    <p>The Launcher is provided for personal, non-commercial use. You agree not to:</p>
+                    <ul style="margin: 15px 0 15px 30px;">
+                        <li>Use the Launcher for any illegal purpose.</li>
+                        <li>Attempt to reverse engineer or interfere with the functionality of the Launcher.</li>
+                        <li>Use the Launcher to violate Roblox's community standards or anti-cheat policies.</li>
+                    </ul>
+
+                    <h3 style="margin: 30px 0 15px 0;">5. Disclaimer of Warranties</h3>
+                    <p>The Launcher is provided "as is" and "as available" without any warranties of any kind. We do not guarantee that the Launcher will always be error-free or uninterrupted.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">6. Limitation of Liability</h3>
+                    <p>In no event shall the creators of Betterblox Launcher be liable for any damages (including, without limitation, loss of data or account bans on third-party platforms) arising out of the use or inability to use the Launcher.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">7. Modifications to the Service</h3>
+                    <p>We reserve the right to modify or discontinue the Launcher at any time without notice.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">8. Governing Law</h3>
+                    <p>These terms are governed by the laws of the jurisdiction in which the developer resides.</p>
+
+                    <h3 style="margin: 30px 0 15px 0;">9. Contact</h3>
+                    <p>For any legal inquiries or support, please contact <a href="mailto:taj@guahh.net" style="color: var(--accent-color);">taj@guahh.net</a>.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -346,9 +501,9 @@
                     const feed = document.getElementById('blog-feed');
                     const seeMoreContainer = document.getElementById('see-more-container');
                     const seeMoreBtn = document.getElementById('see-more-btn');
-                    
+
                     feed.innerHTML = '';
-                    
+
                     rows.forEach((row, index) => {
                         const cols = row.split('\t');
                         const card = document.createElement('div');
@@ -384,4 +539,5 @@
         });
     </script>
 </body>
+
 </html>
