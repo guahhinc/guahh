@@ -1,1 +1,2666 @@
-<h1>Coming soon</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --muted: #666666;
+            --border: #333333;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #editor-screen {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 300;
+            user-select: none;
+        }
+
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar-middle {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            margin: auto 0;
+            color: var(--text);
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            width: 100%;
+            text-align: center;
+        }
+
+        .sidebar-middle::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .icon-btn {
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-family: 'Material Symbols Sharp';
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 5px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card {
+            border: 1px solid var(--border);
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+
+
+        /* UPLOAD SCREEN */
+        #upload-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        #upload-screen h1 {
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: -1px;
+            font-size: 2.5rem;
+        }
+
+        #upload-screen p {
+            color: var(--muted);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .upload-btn {
+            background: var(--text);
+            color: var(--bg);
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .upload-btn:hover {
+            background: var(--muted);
+            color: var(--bg);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* EDITOR SCREEN */
+        #editor-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        canvas {
+            margin: auto;
+            background: var(--bg);
+            max-width: 95vw;
+            max-height: 95vh;
+            transition: width 0.1s, height 0.1s;
+        }
+
+        /* CENTER TYPING OVERLAY (Inverted Effect) */
+        #type-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12vw;
+            font-weight: 900;
+
+            /* The inversion magic */
+            color: #ffffff;
+            background: transparent;
+            mix-blend-mode: difference;
+
+            pointer-events: none;
+            z-index: 100;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.1s;
+            letter-spacing: -2px;
+            line-height: 1.2;
+            word-break: break-all;
+            max-width: 90vw;
+            text-shadow: none;
+        }
+
+        /* GUIDE BUTTON */
+        #guide-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: transparent;
+            color: var(--text);
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            z-index: 200;
+            transition: color 0.2s;
+        }
+
+        #guide-btn:hover {
+            color: var(--muted);
+        }
+
+        /* GUIDE MODAL */
+        #guide-modal {
+            position: fixed;
+            bottom: 70px;
+            right: 85px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid var(--border);
+            padding: 20px;
+            z-index: 150;
+            max-height: 85vh;
+            width: 600px;
+            max-width: 90vw;
+            overflow-y: hidden;
+            display: none;
+            flex-direction: column;
+        }
+
+        #guide-modal.active {
+            display: flex;
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .guide-header h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .guide-header p {
+            margin: 0 0 10px 0;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        #help-search {
+            width: calc(100% - 20px);
+            padding: 10px;
+            background: #111;
+            color: #fff;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #help-search:focus {
+            border-color: var(--text);
+        }
+
+        .guide-grid-container {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px 12px;
+            font-size: 0.75rem;
+            color: var(--text);
+            text-transform: uppercase;
+        }
+
+        .guide-grid div span {
+            font-weight: bold;
+            color: var(--bg);
+            background: var(--text);
+            padding: 1px 4px;
+            margin-right: 6px;
+            display: inline-block;
+            min-width: 26px;
+            text-align: center;
+        }
+
+        .controls-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            line-height: 1.8;
+            text-align: center;
+            color: var(--text);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .controls-info div {
+            background: #111;
+            padding: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .controls-info b {
+            color: var(--bg);
+            background: var(--text);
+            padding: 2px 6px;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .guide-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .controls-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="upload-screen">
+        <label class="upload-btn">
+            Load Image
+            <input type="file" id="upload" accept=".jpg,.jpeg,.png,.webp,.gif,.bmp,.tiff,image/*">
+        </label>
+    </div>
+
+    <div id="editor-screen">
+        <canvas id="canvas"></canvas>
+        <div id="type-overlay"></div>
+    </div>
+
+    <div id="sidebar">
+        <div class="sidebar-top">
+            <div class="icon-btn" id="btn-export" title="Export">save</div>
+            <div class="icon-btn" id="btn-load-new" title="Load New Image">add</div>
+            <div class="icon-btn" id="btn-render" title="Render Full-Res">photo_camera</div>
+        </div>
+        <div class="sidebar-middle" id="active-effects-list">
+        </div>
+        <div class="sidebar-bottom">
+            <div class="icon-btn" id="btn-help" title="Help">help</div>
+        </div>
+    </div>
+
+    <!-- Render Modal -->
+    <div id="render-modal"
+        style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:500; align-items:center; justify-content:center; cursor:pointer; flex-direction:column;">
+        <img id="render-img" src=""
+            style="max-width:95vw; max-height:95vh; object-fit:contain; box-shadow: 0 0 20px rgba(255,255,255,0.2);">
+        <div
+            style="position:absolute; bottom:20px; color:#fff; font-size:1.2rem; pointer-events:none; text-shadow: 1px 1px 2px #000;">
+            Click anywhere to close</div>
+    </div>
+
+
+
+    <div id="guide-modal">
+        <div class="guide-header">
+            <h3>Help Menu</h3>
+            <p>Type numbers/binds separated by spaces & press ENTER</p>
+            <input type="text" id="help-search" placeholder="Search effects... (Press ENTER to close)"
+                autocomplete="off">
+        </div>
+
+        <div class="guide-grid-container">
+            <div class="guide-grid" id="guide-grid">
+                <div><span>0</span> Digital Melt</div>
+                <div><span>1</span> RGB Glitch</div>
+                <div><span>2</span> Pixel Jitter</div>
+                <div><span>3</span> Box Blur</div>
+                <div><span>4</span> Dither 1-bit</div>
+                <div><span>5</span> Pixelate</div>
+                <div><span>6</span> Color Slices</div>
+                <div><span>7</span> Random Scatter</div>
+                <div><span>8</span> Deep Fry</div>
+                <div><span>9</span> Glitch Slice</div>
+                <div><span>10</span> Spectral Decay</div>
+                <div><span>11</span> Invert</div>
+                <div><span>12</span> Sine Wobble</div>
+                <div><span>13</span> Psychedelic</div>
+                <div><span>14</span> Static Noise</div>
+                <div><span>15</span> CRT Scanlines</div>
+                <div><span>16</span> Chaos</div>
+                <div><span>17</span> Grayscale</div>
+                <div><span>18</span> Sepia</div>
+                <div><span>19</span> Posterize</div>
+                <div><span>20</span> Threshold</div>
+                <div><span>21</span> Sharpen</div>
+                <div><span>22</span> Edge Detect</div>
+                <div><span>23</span> Emboss</div>
+                <div><span>24</span> Vignette</div>
+                <div><span>25</span> Solarize</div>
+                <div><span>26</span> Brighten</div>
+                <div><span>27</span> Darken</div>
+                <div><span>28</span> Contrast Boost</div>
+                <div><span>29</span> Bloom</div>
+                <div><span>30</span> Kaleidoscope</div>
+                <div><span>31</span> Vert Mirror</div>
+                <div><span>32</span> Horiz Mirror</div>
+                <div><span>33</span> Swirl</div>
+                <div><span>34</span> Noise Melt</div>
+                <div><span>35</span> Scanline Warp</div>
+                <div><span>36</span> Half-Invert</div>
+                <div><span>37</span> Channel Swap</div>
+                <div><span>38</span> Quad Split</div>
+                <div><span>39</span> RGB Spread</div>
+                <div><span>40</span> Static Crush</div>
+                <div><span>41</span> Row Inversion</div>
+                <div><span>42</span> Wave Warp Y</div>
+                <div><span>43</span> Block Corrupt</div>
+                <div><span>44</span> Checkerboard</div>
+                <div><span>45</span> Earthquake</div>
+                <div><span>46</span> Chroma Melt</div>
+                <div><span>47</span> Bitcrush</div>
+                <div><span>48</span> Red Invert</div>
+                <div><span>49</span> Green Invert</div>
+                <div><span>50</span> Blue Invert</div>
+                <div><span>51</span> Nuclear Flash</div>
+                <div><span>52</span> Void Holes</div>
+                <div><span>53</span> Scramble</div>
+                <div><span>54</span> Heavy Blur</div>
+                <div><span>55</span> Motion Blur H</div>
+                <div><span>56</span> Motion Blur V</div>
+                <div><span>57</span> Zoom Blur</div>
+                <div><span>58</span> Radial Blur</div>
+                <div><span>59</span> Frost Blur</div>
+                <div><span>60</span> Glass Distort</div>
+                <div><span>61</span> Water Ripples</div>
+                <div><span>62</span> Scanline Disp.</div>
+                <div><span>63</span> Thermal Vision</div>
+                <div><span>64</span> Night Vision</div>
+                <div><span>65</span> Halftone</div>
+                <div><span>66</span> Color Pop</div>
+                <div><span>67</span> Infrared</div>
+                <div><span>68</span> Pixel Sort H</div>
+                <div><span>69</span> Pixel Sort V</div>
+                <div><span>70</span> Edge Glow</div>
+                <div><span>71</span> Chromatic Aber.</div>
+                <div><span>72</span> Neon Negative</div>
+                <div><span>73</span> Fractal Tear</div>
+                <div><span>74</span> Chromatic Smear</div>
+                <div><span>75</span> Deep Space</div>
+                <div><span>76</span> Ghost Trails</div>
+                <div><span>77</span> Erosion (Dark)</div>
+                <div><span>78</span> Dilation (Light)</div>
+                <div><span>79</span> Starburst Flare</div>
+                <div><span>80</span> CGA Palette</div>
+                <div><span>81</span> CRT Subpixel</div>
+                <div><span>82</span> Glass Tiles</div>
+                <div><span>83</span> Sin City Red</div>
+                <div><span>84</span> Line Drop</div>
+                <div><span>85</span> Solar Shift</div>
+                <div><span>86</span> Matrix Rain</div>
+                <div><span>87</span> 3D Anaglyph</div>
+                <div><span>88</span> VHS Tracking</div>
+                <div><span>89</span> Eclipse Burn</div>
+                <div><span>90</span> Pencil Sketch</div>
+                <div><span>91</span> Datamosh</div>
+                <div><span>92</span> Acid Trip</div>
+                <div><span>93</span> Luma Key Black</div>
+                <div><span>94</span> Chroma Key Grn</div>
+                <div><span>95</span> Neon Edges</div>
+                <div><span>96</span> Pop Art Grid</div>
+                <div><span>97</span> Pointillism</div>
+                <div><span>98</span> Crosshatch</div>
+                <div><span>99</span> Wavy Blur</div>
+                <div><span>100</span> 8-Bit Quantize</div>
+                <div><span>101</span> Sepia Glitch</div>
+                <div><span>102</span> Abs. Chaos</div>
+                <div><span>103</span> Tri-Tone Filter</div>
+                <div><span>104</span> Thermal Melt</div>
+                <div><span>105</span> CRT Bulge</div>
+                <div><span>106</span> Ghosting Horiz.</div>
+                <div><span>107</span> Strobe Flash</div>
+                <div><span>108</span> Vertical RGB</div>
+                <div><span>109</span> Color Emboss</div>
+                <div><span>110</span> Noise Grain</div>
+                <div><span>111</span> Thresh. Invert</div>
+                <div><span>112</span> White Halo</div>
+                <div><span>113</span> Row Shifter</div>
+                <div><span>114</span> Cyan/Red 3D</div>
+                <div><span>115</span> Xtreme Contrast</div>
+                <div><span>116</span> Glitch Art</div>
+                <div><span>117</span> Red Wash</div>
+                <div><span>118</span> Green Wash</div>
+                <div><span>119</span> Blue Wash</div>
+                <div><span>120</span> Block Scanlines</div>
+                <div><span>121</span> Diagonal Shift</div>
+                <div><span>122</span> Mirror Quad</div>
+                <div><span>123</span> LSD Wash</div>
+                <div><span>124</span> Vaporwave</div>
+                <div><span>125</span> Pixel Melt</div>
+                <div><span>126</span> CRT Sync Loss</div>
+                <div><span>127</span> Blacklight</div>
+                <div><span>128</span> Oil Painting</div>
+                <div><span>129</span> Edge Bleed</div>
+                <div><span>130</span> Rainbow Grain</div>
+                <div><span>131</span> Kaleido-Quad</div>
+                <div><span>132</span> Luma Threshold</div>
+                <div><span>133</span> Chromatic Pulse</div>
+                <div><span>134</span> Block Offset</div>
+                <div><span>135</span> Grid Overlay</div>
+                <div><span>136</span> Lens Flare</div>
+                <div><span>137</span> Abyssal Void</div>
+                <div><span>138</span> Shadow Deepen</div>
+                <div><span>139</span> Light Wash</div>
+                <div><span>140</span> Saturation Max</div>
+                <div><span>141</span> Saturation Min</div>
+                <div><span>142</span> Ghost Blur</div>
+                <div><span>143</span> Red Boost</div>
+                <div><span>144</span> Green Boost</div>
+                <div><span>145</span> Blue Boost</div>
+                <div><span>146</span> Cyan Tint</div>
+                <div><span>147</span> Magenta Tint</div>
+                <div><span>148</span> Yellow Tint</div>
+                <div><span>149</span> Bubble Warp</div>
+                <div><span>150</span> Fractal Melt</div>
+                <div><span>151</span> Neon Dream</div>
+                <div><span>152</span> Glitch Block</div>
+                <div><span>153</span> CRT Phosphor</div>
+                <div><span>154</span> X-Ray</div>
+                <div><span>155</span> RGB Shift</div>
+                <div><span>156</span> Wavy Mirror</div>
+                <div><span>157</span> Color Crush</div>
+                <div><span>158</span> Horizontal Tear</div>
+                <div><span>159</span> Sine Wave Colors</div>
+                <div><span>160</span> Bleach Bypass</div>
+                <div><span>161</span> Grid Glitch</div>
+                <div><span>162</span> Deep Dream Distort</div>
+                <div><span>163</span> Cyberpunk Pulse</div>
+                <div><span>164</span> Dimension Slice</div>
+                <div><span>165</span> Vortex Warp</div>
+                <div><span>166</span> Chroma Corrupt</div>
+                <div><span>167</span> Pixel Melt Down</div>
+                <div><span>168</span> Bright Invert</div>
+                <div><span>169</span> Burn Contrast</div>
+                <div><span>170</span> Mirror X</div>
+                <div><span>171</span> H-Scanlines</div>
+                <div><span>172</span> V-Scanlines</div>
+                <div><span>173</span> Bright Ceil</div>
+                <div><span>174</span> Bright Floor</div>
+                <div><span>175</span> 4-bit Crush</div>
+                <div><span>176</span> Red Dust</div>
+                <div><span>177</span> Green Dust</div>
+                <div><span>178</span> Blue Dust</div>
+                <div><span>179</span> Wavy Shift X</div>
+                <div><span>180</span> Wavy Shift Y</div>
+                <div><span>181</span> Exp Darken</div>
+                <div><span>182</span> Root Brighten</div>
+                <div><span>183</span> Checker Invert</div>
+                <div><span>184</span> XOR 85</div>
+                <div><span>185</span> XOR 170</div>
+                <div><span>186</span> Aggro Warm</div>
+                <div><span>187</span> Aggro Cool</div>
+                <div><span>188</span> Threshold R</div>
+                <div><span>189</span> Threshold G</div>
+                <div><span>190</span> Threshold B</div>
+                <div><span>191</span> Luma R</div>
+                <div><span>192</span> Luma G</div>
+                <div><span>193</span> Luma B</div>
+                <div><span>194</span> Quad Split RGB</div>
+                <div><span>195</span> Quad Merge RGB</div>
+                <div><span>196</span> Tri Split H</div>
+                <div><span>197</span> Tri Merge H</div>
+                <div><span>198</span> Pixel Smash</div>
+                <div><span>199</span> Entropy Burn</div>
+                <div><span>200</span> Mirror Storm</div>
+            </div>
+        </div>
+
+        <div class="controls-info">
+            <div><b>Z</b> Undo Action (Requires ENTER)</div>
+            <div><b>R</b> Reset Base (Requires ENTER)</div>
+            <div><b>D</b> or <b>SAVE</b> Download Image</div>
+            <div><b>?</b> or <b>HELP</b> Toggle Menu</div>
+            <div><b>+</b> Zoom In (Requires ENTER)</div>
+            <div><b>-</b> Zoom Out (Requires ENTER)</div>
+            <div><b>NUKE</b> Random destruction (Requires ENTER)</div>
+            <div><b>ENTER</b> Execute typed buffer</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const upload = document.getElementById('upload');
+        const uploadScreen = document.getElementById('upload-screen');
+        const editorScreen = document.getElementById('editor-screen');
+        const typeOverlay = document.getElementById('type-overlay');
+        const sidebar = document.getElementById('sidebar');
+        const guideModal = document.getElementById('guide-modal');
+        const helpSearch = document.getElementById('help-search');
+        const guideItems = document.querySelectorAll('#guide-grid div');
+
+        let originalImageObj = null;
+        let originalImageData = null;
+        let masterCommandHistory = [];
+        let historyUndoStack = [];
+        let undoStack = [];
+        let dmgStack = [];
+        let buffer = "";
+        let justEntered = false;
+        let damageMultiplier = 1;
+        let zoomLevel = 1;
+        const MAX_UNDO = 25;
+
+        function updateActiveEffects() {
+            const list = document.getElementById('active-effects-list');
+            if (list) {
+                let txt = buffer.replace(/\s+/g, '');
+                list.innerHTML = txt ? txt.split('').join('<br>') : '';
+            }
+        }
+
+        // UI Interactions
+        function toggleGuide() {
+            guideModal.classList.toggle('active');
+            if (guideModal.classList.contains('active')) {
+                helpSearch.focus();
+            } else {
+                helpSearch.blur();
+                helpSearch.value = "";
+                helpSearch.dispatchEvent(new Event('input')); // Reset search filter
+                justEntered = true; // Prevents the enter press from triggering buffer immediately
+                buffer = "";
+                typeOverlay.style.opacity = 0;
+            }
+        }
+
+        document.getElementById('btn-help').addEventListener('click', function () { toggleGuide(); });
+        document.getElementById('btn-export').addEventListener('click', function () { downloadImage(); });
+        document.getElementById('btn-load-new').addEventListener('click', function () {
+            localStorage.removeItem('foto_saved_image');
+            localStorage.removeItem('foto_command_history');
+            location.reload();
+        });
+
+        document.getElementById('btn-render').addEventListener('click', function () {
+            if (originalImageData && originalImageObj) {
+                flashMessage("RENDERING");
+                setTimeout(() => {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = originalImageObj.width;
+                    tempCanvas.height = originalImageObj.height;
+                    const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+                    tempCtx.drawImage(originalImageObj, 0, 0);
+
+                    if (masterCommandHistory.length > 0) {
+                        let imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+                        let tempArray = new Uint8ClampedArray(imgData.data);
+
+                        for (let act of masterCommandHistory) {
+                            applyEffect(act.id, imgData.data, tempArray, tempCanvas.width, tempCanvas.height, act.dmg);
+                            tempArray.set(imgData.data);
+                        }
+                        tempCtx.putImageData(imgData, 0, 0);
+                    }
+
+                    const renderModal = document.getElementById('render-modal');
+                    const renderImg = document.getElementById('render-img');
+                    renderImg.src = tempCanvas.toDataURL('image/png', 1.0);
+                    renderModal.style.display = 'flex';
+                }, 50);
+            }
+        });
+
+        document.getElementById('render-modal').addEventListener('click', function () {
+            this.style.display = 'none';
+            document.getElementById('render-img').src = '';
+        });
+
+
+
+        window.addEventListener('click', (e) => {
+            if (guideModal.classList.contains('active')) {
+                // If it's a click outside the modal and outside the help button
+                if (!guideModal.contains(e.target) && e.target.id !== 'btn-help') {
+                    toggleGuide();
+                }
+            }
+        });
+
+        // Search Filter logic
+        helpSearch.addEventListener('input', (e) => {
+            const filter = e.target.value.toLowerCase();
+            guideItems.forEach(item => {
+                if (item.textContent.toLowerCase().includes(filter)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        upload.addEventListener('click', function () { this.blur(); });
+
+        upload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    originalImageObj = img;
+                    let w = img.width, h = img.height;
+                    const maxDim = 2500; // Optimal render limit
+                    if (w > maxDim || h > maxDim) {
+                        const ratio = Math.min(maxDim / w, maxDim / h);
+                        w = Math.floor(w * ratio); h = Math.floor(h * ratio);
+                    }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+
+                    originalImageData = ctx.getImageData(0, 0, w, h);
+                    undoStack = [];
+                    dmgStack = [];
+                    masterCommandHistory = [];
+                    historyUndoStack = [];
+                    updateActiveEffects();
+
+                    uploadScreen.style.display = 'none';
+                    editorScreen.style.display = 'flex';
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // --- LOCALSTORAGE PERSISTENCE ---
+        function saveToStorage() {
+            try {
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                localStorage.setItem('foto_saved_image', dataUrl);
+                localStorage.setItem('foto_command_history', JSON.stringify(masterCommandHistory));
+                localStorage.setItem('foto_damage', damageMultiplier.toString());
+            } catch(e) { /* storage full */ }
+        }
+
+        function loadFromStorage() {
+            const saved = localStorage.getItem('foto_saved_image');
+            if (!saved) return false;
+            const img = new Image();
+            img.onload = () => {
+                originalImageObj = img;
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                originalImageData = ctx.getImageData(0, 0, img.width, img.height);
+                try {
+                    const hist = localStorage.getItem('foto_command_history');
+                    if (hist) masterCommandHistory = JSON.parse(hist);
+                    const dmg = localStorage.getItem('foto_damage');
+                    if (dmg) damageMultiplier = parseFloat(dmg);
+                } catch(e) {}
+                uploadScreen.style.display = 'none';
+                editorScreen.style.display = 'flex';
+                updateActiveEffects();
+            };
+            img.src = saved;
+            return true;
+        }
+
+        // Try restore on startup
+        loadFromStorage();
+
+        // --- ZOOM & DOWNLOAD ACTIONS ---
+        function applyZoom() {
+            if (zoomLevel === 1) {
+                canvas.style.maxWidth = '95vw';
+                canvas.style.maxHeight = '95vh';
+                canvas.style.width = 'auto';
+                canvas.style.height = 'auto';
+            } else {
+                canvas.style.maxWidth = 'none';
+                canvas.style.maxHeight = 'none';
+
+                let fitRatio = Math.min((window.innerWidth * 0.95) / canvas.width, (window.innerHeight * 0.95) / canvas.height);
+                if (fitRatio > 1) fitRatio = 1;
+
+                let baseWidth = canvas.width * fitRatio;
+                let baseHeight = canvas.height * fitRatio;
+
+                canvas.style.width = (baseWidth * zoomLevel) + 'px';
+                canvas.style.height = (baseHeight * zoomLevel) + 'px';
+            }
+        }
+
+        function downloadImage() {
+            if (originalImageData && originalImageObj) {
+                flashMessage("SAVING");
+                setTimeout(() => {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = originalImageObj.width;
+                    tempCanvas.height = originalImageObj.height;
+                    const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+                    tempCtx.drawImage(originalImageObj, 0, 0);
+
+                    if (masterCommandHistory.length > 0) {
+                        let imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+                        let tempArray = new Uint8ClampedArray(imgData.data);
+
+                        for (let act of masterCommandHistory) {
+                            applyEffect(act.id, imgData.data, tempArray, tempCanvas.width, tempCanvas.height, act.dmg);
+                            tempArray.set(imgData.data);
+                        }
+                        tempCtx.putImageData(imgData, 0, 0);
+                    }
+
+                    const link = document.createElement('a');
+                    link.download = 'Foto_Export.png';
+                    link.href = tempCanvas.toDataURL('image/png', 1.0);
+                    link.click();
+                    flashMessage("SAVED");
+                }, 50);
+            }
+        }
+
+        function flashMessage(msg) {
+            typeOverlay.textContent = msg;
+            typeOverlay.style.fontSize = '5vw';
+            typeOverlay.style.opacity = 1;
+            setTimeout(() => {
+                if (typeOverlay.textContent === msg) {
+                    typeOverlay.style.opacity = 0;
+                    setTimeout(() => {
+                        if (typeOverlay.textContent === msg) {
+                            typeOverlay.textContent = buffer;
+                            typeOverlay.style.fontSize = '14vw';
+                        }
+                    }, 100);
+                }
+            }, 400);
+        }
+
+        // --- KEYBOARD LISTENER ---
+        window.addEventListener('keydown', (e) => {
+            if (!originalImageData || e.ctrlKey || e.metaKey || e.altKey) return;
+
+            // Handle if typing inside the Help Search input
+            if (e.target.tagName === 'INPUT' && e.target.id === 'help-search') {
+                if (e.key === 'Escape' || e.key === 'Enter') {
+                    toggleGuide();
+                    e.preventDefault();
+                }
+                return; // Normal typing allowed in search box without triggering buffer
+            }
+
+            const key = e.key;
+
+            if (key === "Enter") {
+                typeOverlay.style.opacity = 0;
+                if (buffer.trim().length > 0) {
+                    executeBuffer();
+                    justEntered = true;
+                }
+                return;
+            }
+
+            if (key === "Backspace") {
+                buffer = buffer.slice(0, -1);
+                typeOverlay.textContent = buffer;
+                typeOverlay.style.fontSize = '14vw';
+                updateActiveEffects();
+                typeOverlay.style.opacity = buffer.length > 0 ? 1 : 0;
+                justEntered = false;
+                return;
+            }
+
+            // Buffer Entry Check (Alphanumeric and symbols)
+            if (/^[a-zA-Z0-9 \?\+\-\=]$/.test(key)) {
+                if (key === ' ') e.preventDefault();
+
+                if (justEntered) {
+                    buffer = "";
+                    justEntered = false;
+                }
+                buffer += key.toUpperCase();
+                typeOverlay.textContent = buffer;
+                typeOverlay.style.fontSize = '14vw';
+                updateActiveEffects();
+                typeOverlay.style.opacity = 1;
+            }
+        });
+
+        function saveState() {
+            undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            dmgStack.push(damageMultiplier);
+            historyUndoStack.push([...masterCommandHistory]);
+            if (undoStack.length > MAX_UNDO) { undoStack.shift(); dmgStack.shift(); historyUndoStack.shift(); }
+        }
+
+        function undo() {
+            if (undoStack.length > 0) {
+                const prevState = undoStack.pop();
+                damageMultiplier = dmgStack.pop();
+                masterCommandHistory = historyUndoStack.pop();
+                ctx.putImageData(prevState, 0, 0);
+                flashMessage("UNDO");
+                updateActiveEffects();
+            }
+        }
+
+        function reset() {
+            saveState(); // Saves current state BEFORE resetting, allowing you to undo a reset!
+            ctx.putImageData(originalImageData, 0, 0);
+            damageMultiplier = 1;
+            masterCommandHistory = [];
+            flashMessage("RESET");
+            updateActiveEffects();
+        }
+
+        function executeBuffer() {
+            const commands = buffer.trim().toUpperCase().split(/\s+/);
+            if (commands.length === 0 || commands[0] === "") return;
+
+            for (let i = 0; i < commands.length; i++) {
+                let cmd = commands[i];
+
+                if (cmd === 'Z') undo();
+                else if (cmd === 'R') reset();
+                else if (cmd === 'SAVE' || cmd === 'D') downloadImage();
+                else if (cmd === 'HELP' || cmd === '?') toggleGuide();
+                else if (cmd === '+' || cmd === '=') { zoomLevel += 0.5; applyZoom(); flashMessage("ZOOM +"); }
+                else if (cmd === '-') { zoomLevel = Math.max(0.5, zoomLevel - 0.5); applyZoom(); flashMessage("ZOOM -"); }
+                else if (cmd === 'O') { zoomLevel = 1; applyZoom(); flashMessage("ZOOM RESET"); }
+                else if (cmd === 'NUKE') {
+                    if (i === 0 || commands[i - 1] !== 'NUKE') saveState();
+                    const w = canvas.width, h = canvas.height;
+                    let imgData = ctx.getImageData(0, 0, w, h);
+                    let temp = new Uint8ClampedArray(imgData.data);
+                    for (let j = 0; j < 15; j++) {
+                        let randCmd = Math.floor(Math.random() * 198).toString();
+                        let randDmg = damageMultiplier + Math.random() * 5;
+                        applyEffect(randCmd, imgData.data, temp, w, h, randDmg);
+                        temp.set(imgData.data);
+                        masterCommandHistory.push({ id: randCmd, dmg: randDmg });
+                    }
+                    ctx.putImageData(imgData, 0, 0);
+                    damageMultiplier += 5;
+                    flashMessage("NUKE");
+                }
+                else if (cmd === 'TAJ') {
+                    if (i === 0 || commands[i - 1] !== 'TAJ') saveState();
+                    const w = canvas.width, h = canvas.height;
+                    let imgData = ctx.getImageData(0, 0, w, h);
+                    let temp = new Uint8ClampedArray(imgData.data);
+                    for (let j = 0; j < 15; j++) {
+                        let bDmg = damageMultiplier * 1.5;
+                        applyEffect('152', imgData.data, temp, w, h, bDmg);
+                        temp.set(imgData.data);
+                        masterCommandHistory.push({ id: '152', dmg: bDmg });
+                    }
+                    ctx.putImageData(imgData, 0, 0);
+                    damageMultiplier += 2.5;
+                    flashMessage("TAJED");
+                }
+                else if (/^[0-9]+$/.test(cmd)) {
+                    if (i === 0 || !/^[0-9]+$/.test(commands[i - 1])) saveState();
+
+                    const w = canvas.width, h = canvas.height;
+                    let imgData = ctx.getImageData(0, 0, w, h);
+                    let temp = new Uint8ClampedArray(imgData.data);
+
+                    applyEffect(cmd, imgData.data, temp, w, h, damageMultiplier);
+                    masterCommandHistory.push({ id: cmd, dmg: damageMultiplier });
+
+                    ctx.putImageData(imgData, 0, 0);
+                    damageMultiplier += 0.5;
+                    saveToStorage();
+                }
+            }
+            updateActiveEffects();
+        }
+
+        // ==========================================
+        // EFFECTS ENGINE
+        // ==========================================
+        function applyEffect(cmdId, data, temp, w, h, dmg) {
+            // Remap user-facing IDs to internal switch IDs
+            const idMap = {
+                '0': '3', '1': '1', '2': '8', '3': '14', '4': '62', '5': '29', '6': '18', '7': '197',
+                '8': '5', '9': '47', '10': '202', '11': '0', '12': '2', '13': '4', '14': '6', '15': '7',
+                '16': '9', '17': '10', '18': '11', '19': '12', '20': '13', '21': '15', '22': '16', '23': '17',
+                '24': '19', '25': '20', '26': '21', '27': '22', '28': '23', '29': '24', '30': '25', '31': '26',
+                '32': '27', '33': '28', '34': '30', '35': '31', '36': '32', '37': '33', '38': '34', '39': '35',
+                '40': '36', '41': '37', '42': '38', '43': '39', '44': '40', '45': '41', '46': '42', '47': '43',
+                '48': '44', '49': '45', '50': '46', '51': '48', '52': '49', '53': '50', '54': '51', '55': '52',
+                '56': '53', '57': '54', '58': '55', '59': '56', '60': '57', '61': '58', '62': '59', '63': '60',
+                '64': '61', '65': '63', '66': '64', '67': '65', '68': '66', '69': '67', '70': '68', '71': '69',
+                '72': '70', '73': '71', '74': '72', '75': '73', '76': '74', '77': '75', '78': '76', '79': '77',
+                '80': '78', '81': '79', '82': '80', '83': '81', '84': '82', '85': '83', '86': '84', '87': '85',
+                '88': '86', '89': '87', '90': '88', '91': '89', '92': '90', '93': '91', '94': '92', '95': '93',
+                '96': '94', '97': '95', '98': '96', '99': '97', '100': '98', '101': '99', '102': '100', '103': '101',
+                '104': '102', '105': '103', '106': '104', '107': '105', '108': '106', '109': '107', '110': '108', '111': '109',
+                '112': '110', '113': '111', '114': '112', '115': '113', '116': '114', '117': '115', '118': '116', '119': '117',
+                '120': '118', '121': '119', '122': '120', '123': '121', '124': '122', '125': '123', '126': '124', '127': '125',
+                '128': '126', '129': '127', '130': '128', '131': '129', '132': '130', '133': '131', '134': '132', '135': '133',
+                '136': '134', '137': '135', '138': '137', '139': '138', '140': '139', '141': '140', '142': '141', '143': '142',
+                '144': '143', '145': '144', '146': '145', '147': '146', '148': '147', '149': '148', '150': '149', '151': '150',
+                '152': '151', '153': '152', '154': '153', '155': '154', '156': '155', '157': '156', '158': '158', '159': '159',
+                '160': '160', '161': '161', '162': '162', '163': '163', '164': '164', '165': '165', '166': '166', '167': '167',
+                '168': '169', '169': '170', '170': '173', '171': '174', '172': '175', '173': '176', '174': '177', '175': '178',
+                '176': '179', '177': '180', '178': '181', '179': '182', '180': '183', '181': '184', '182': '185', '183': '186',
+                '184': '187', '185': '188', '186': '189', '187': '190', '188': '191', '189': '192', '190': '193', '191': '194',
+                '192': '195', '193': '196', '194': '198', '195': '199', '196': '200', '197': '201',
+                '198': '203', '199': '204', '200': '205'
+            };
+            if (idMap[cmdId] !== undefined) cmdId = idMap[cmdId];
+            const len = data.length;
+            let safeDmg = Math.min(dmg, 5000) * 0.5;
+
+            switch (cmdId) {
+                case '0': for (let i = 0; i < len; i += 4) { data[i] = 255 - data[i]; data[i + 1] = 255 - data[i + 1]; data[i + 2] = 255 - data[i + 2]; } break;
+                case '1':
+                    let off1 = Math.min(len - 4, Math.floor(4 * 12 * safeDmg));
+                    for (let i = 0; i < len; i += 4) {
+                        if (i + off1 < len) data[i] = temp[i + off1];
+                        if (i - off1 >= 0) data[i + 2] = temp[i - off1 + 2];
+                    } break;
+                case '2':
+                    for (let y = 0; y < h; y++) {
+                        let shiftX = Math.floor(Math.sin(y * 0.05) * 10 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shiftX));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '3':
+                    let meltChance = Math.max(0.02, 1 - (0.9 / (safeDmg * 1.5)));
+                    for (let y = 1; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if (Math.random() < meltChance) {
+                                let i = (y * w + x) * 4; let up = ((y - 1) * w + x) * 4;
+                                data[i] = data[up]; data[i + 1] = data[up + 1]; data[i + 2] = data[up + 2];
+                            }
+                        }
+                    } break;
+                case '4':
+                    for (let i = 0; i < len; i += 4) { let r = data[i], g = data[i + 1], b = data[i + 2]; data[i] = g; data[i + 1] = b; data[i + 2] = r; } break;
+                case '5':
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, (data[i] - 128) * (1.5 * safeDmg) + 128 + (30 * safeDmg));
+                        data[i + 1] = Math.min(255, (data[i + 1] - 128) * (1.5 * safeDmg) + 128 + (15 * safeDmg));
+                        data[i + 2] = Math.max(0, (data[i + 2] - 128) * (1.5 * safeDmg) + 128 - (20 * safeDmg));
+                    } break;
+                case '6':
+                    for (let i = 0; i < len; i += 4) {
+                        let noise = (Math.random() - 0.5) * 75 * safeDmg;
+                        data[i] += noise; data[i + 1] += noise; data[i + 2] += noise;
+                    } break;
+                case '7':
+                    let scanInt = Math.max(2, Math.floor(2 * safeDmg));
+                    for (let y = 0; y < h; y += scanInt) {
+                        for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; data[i] *= 0.6; data[i + 1] *= 0.85; data[i + 2] *= 0.6; }
+                    } break;
+                case '8':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if (Math.random() > 0.7) {
+                                let shift = Math.floor(Math.random() * 15 * safeDmg) - (7 * safeDmg);
+                                let sx = Math.max(0, Math.min(w - 1, x + shift));
+                                let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '9':
+                    for (let i = 0; i < len; i += 4) {
+                        if (Math.random() > 0.97 / safeDmg) data[i] = 255;
+                        if (Math.random() > 0.97 / safeDmg) data[i + 1] = 0;
+                        if (Math.random() > 0.97 / safeDmg) data[i + 2] ^= 255;
+                    } break;
+                case '10':
+                    for (let i = 0; i < len; i += 4) { let avg = data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11; data[i] = avg; data[i + 1] = avg; data[i + 2] = avg; } break;
+                case '11':
+                    for (let i = 0; i < len; i += 4) {
+                        let r = data[i], g = data[i + 1], b = data[i + 2];
+                        data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+                        data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+                        data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+                    } break;
+                case '12':
+                    let levels = Math.max(1, 224 - (safeDmg * 5));
+                    for (let i = 0; i < len; i += 4) { data[i] &= levels; data[i + 1] &= levels; data[i + 2] &= levels; } break;
+                case '13':
+                    let thresh = 128 + (Math.random() * 10 * safeDmg - 5 * safeDmg);
+                    for (let i = 0; i < len; i += 4) {
+                        let v = (data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11) > thresh ? 255 : 0;
+                        data[i] = v; data[i + 1] = v; data[i + 2] = v;
+                    } break;
+                case '14':
+                    let bRange = Math.min(50, Math.floor(3 * safeDmg));
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            let rx = Math.max(0, Math.min(w - 1, x + Math.floor(Math.random() * bRange * 2) - bRange));
+                            let ry = Math.max(0, Math.min(h - 1, y + Math.floor(Math.random() * bRange * 2) - bRange));
+                            let si = (ry * w + rx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '15':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                let val = temp[i + c] * (5 * safeDmg) - temp[((y - 1) * w + x) * 4 + c] * safeDmg - temp[((y + 1) * w + x) * 4 + c] * safeDmg - temp[(y * w + x - 1) * 4 + c] * safeDmg - temp[(y * w + x + 1) * 4 + c] * safeDmg;
+                                data[i + c] = Math.min(255, Math.max(0, val));
+                            }
+                        }
+                    } break;
+                case '16':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                let val = temp[i + c] * (8 * safeDmg) - temp[((y - 1) * w + x) * 4 + c] * safeDmg - temp[((y + 1) * w + x) * 4 + c] * safeDmg - temp[(y * w + x - 1) * 4 + c] * safeDmg - temp[(y * w + x + 1) * 4 + c] * safeDmg
+                                    - temp[((y - 1) * w + x - 1) * 4 + c] * safeDmg - temp[((y - 1) * w + x + 1) * 4 + c] * safeDmg - temp[((y + 1) * w + x - 1) * 4 + c] * safeDmg - temp[((y + 1) * w + x + 1) * 4 + c] * safeDmg;
+                                data[i + c] = Math.min(255, Math.max(0, val));
+                            }
+                        }
+                    } break;
+                case '17':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                let val = 128 + (temp[i + c] - temp[((y - 1) * w + x - 1) * 4 + c]) * safeDmg;
+                                data[i + c] = Math.min(255, Math.max(0, val));
+                            }
+                        }
+                    } break;
+                case '18':
+                    for (let y = 0; y < h; y++) {
+                        let offset = Math.floor((Math.random() * 20 * safeDmg) - (10 * safeDmg));
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let sx = Math.max(0, Math.min(w - 1, x + offset)); let si = (y * w + sx) * 4;
+                            data[i] = temp[si];
+                        }
+                    } break;
+                case '19':
+                    let cx = w / 2, cy = h / 2; let maxDist = Math.sqrt(cx * cx + cy * cy);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let d = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+                            let dark = 1 - (d / maxDist) * (0.6 * Math.min(1.2, safeDmg));
+                            let i = (y * w + x) * 4; data[i] *= dark; data[i + 1] *= dark; data[i + 2] *= dark;
+                        }
+                    } break;
+                case '20':
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = data[i] > 127 ? 255 - data[i] : data[i];
+                        data[i + 1] = data[i + 1] > 127 ? 255 - data[i + 1] : data[i + 1];
+                        data[i + 2] = data[i + 2] > 127 ? 255 - data[i + 2] : data[i + 2];
+                    } break;
+                case '21': for (let i = 0; i < len; i += 4) { data[i] += 20 * safeDmg; data[i + 1] += 20 * safeDmg; data[i + 2] += 20 * safeDmg; } break;
+                case '22': for (let i = 0; i < len; i += 4) { data[i] -= 20 * safeDmg; data[i + 1] -= 20 * safeDmg; data[i + 2] -= 20 * safeDmg; } break;
+                case '23':
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = (data[i] - 128) * (1.2 * safeDmg) + 128;
+                        data[i + 1] = (data[i + 1] - 128) * (1.2 * safeDmg) + 128;
+                        data[i + 2] = (data[i + 2] - 128) * (1.2 * safeDmg) + 128;
+                    } break;
+                case '24':
+                    let bThresh = Math.max(50, 180 - (safeDmg * 5));
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = data[i] * 0.3 + data[i + 1] * 0.59 + data[i + 2] * 0.11;
+                        if (luma > bThresh) { data[i] += 30 * safeDmg; data[i + 1] += 30 * safeDmg; data[i + 2] += 30 * safeDmg; }
+                    } break;
+                case '25':
+                    let hw = Math.floor(w / 2), hh = Math.floor(h / 2);
+                    for (let y = 0; y < hh; y++) {
+                        for (let x = 0; x < hw; x++) {
+                            let iTL = (y * w + x) * 4; let iTR = (y * w + (w - 1 - x)) * 4;
+                            let iBL = ((h - 1 - y) * w + x) * 4; let iBR = ((h - 1 - y) * w + (w - 1 - x)) * 4;
+                            let r = temp[iTL], g = temp[iTL + 1], b = temp[iTL + 2];
+                            data[iTR] = r; data[iTR + 1] = g; data[iTR + 2] = b;
+                            data[iBL] = r; data[iBL + 1] = g; data[iBL + 2] = b;
+                            data[iBR] = r; data[iBR + 1] = g; data[iBR + 2] = b;
+                        }
+                    } break;
+                case '26':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w / 2; x++) {
+                            let i1 = (y * w + x) * 4; let i2 = (y * w + (w - 1 - x)) * 4;
+                            data[i2] = temp[i1]; data[i2 + 1] = temp[i1 + 1]; data[i2 + 2] = temp[i1 + 2];
+                        }
+                    } break;
+                case '27':
+                    for (let y = 0; y < h / 2; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i1 = (y * w + x) * 4; let i2 = ((h - 1 - y) * w + x) * 4;
+                            data[i2] = temp[i1]; data[i2 + 1] = temp[i1 + 1]; data[i2 + 2] = temp[i1 + 2];
+                        }
+                    } break;
+                case '28':
+                    let scx = w / 2, scy = h / 2;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let dx = x - scx, dy = y - scy; let angle = Math.atan2(dy, dx); let radius = Math.sqrt(dx * dx + dy * dy);
+                            let newAngle = angle + (radius * 0.002 * safeDmg);
+                            let sx = Math.floor(scx + Math.cos(newAngle) * radius); let sy = Math.floor(scy + Math.sin(newAngle) * radius);
+                            if (sx >= 0 && sx < w && sy >= 0 && sy < h) {
+                                let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '29':
+                    let pSize = Math.max(2, Math.min(500, Math.floor(6 * safeDmg)));
+                    for (let y = 0; y < h; y += pSize) {
+                        for (let x = 0; x < w; x += pSize) {
+                            let i = (y * w + x) * 4; let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                            for (let dy = 0; dy < pSize && y + dy < h; dy++) {
+                                for (let dx = 0; dx < pSize && x + dx < w; dx++) {
+                                    let di = ((y + dy) * w + (x + dx)) * 4; data[di] = r; data[di + 1] = g; data[di + 2] = b;
+                                }
+                            }
+                        }
+                    } break;
+                case '30':
+                    for (let x = 0; x < w; x++) {
+                        let dropY = 0;
+                        for (let y = 0; y < h; y++) {
+                            if (Math.random() > Math.max(0.02, 0.98 / safeDmg)) dropY = y;
+                            let i = (y * w + x) * 4; let si = (dropY * w + x) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '31':
+                    for (let y = 0; y < h; y++) {
+                        let shift = Math.floor(Math.sin(y * 0.1) * 8 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '32':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w / 2; x++) {
+                            let i = (y * w + x) * 4; data[i] = 255 - data[i]; data[i + 1] = 255 - data[i + 1]; data[i + 2] = 255 - data[i + 2];
+                        }
+                    } break;
+                case '33':
+                    for (let i = 0; i < len; i += 4) { let r = data[i], g = data[i + 1], b = data[i + 2]; data[i] = b; data[i + 1] = r; data[i + 2] = g; } break;
+                case '34':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let si = (((y * 2) % h) * w + ((x * 2) % w)) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '35':
+                    let rOff = Math.min(len - 4, Math.floor(4 * 15 * safeDmg));
+                    let bOff = Math.min(len - 4, Math.floor(w * 4 * 5 * safeDmg));
+                    for (let i = 0; i < len; i += 4) {
+                        if (i + rOff < len) data[i] = temp[i + rOff];
+                        if (i - bOff >= 0) data[i + 2] = temp[i - bOff + 2];
+                    } break;
+                case '36':
+                    let threshCrush = 0.25 / Math.min(10, safeDmg);
+                    for (let i = 0; i < len; i += 4) {
+                        let rnd = Math.random();
+                        if (rnd < threshCrush) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                        else if (rnd > 1 - threshCrush) { data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; }
+                    } break;
+                case '37':
+                    let rowBand = Math.max(1, Math.floor(40 / safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        if (Math.floor(y / rowBand) % 2 === 0) {
+                            for (let x = 0; x < w; x++) {
+                                let i = (y * w + x) * 4; data[i] = 255 - data[i]; data[i + 1] = 255 - data[i + 1]; data[i + 2] = 255 - data[i + 2];
+                            }
+                        }
+                    } break;
+                case '38':
+                    for (let x = 0; x < w; x++) {
+                        for (let y = 0; y < h; y++) {
+                            let sy = Math.max(0, Math.min(h - 1, y + Math.floor(Math.sin(x * 0.05) * 10 * safeDmg)));
+                            let i = (y * w + x) * 4; let si = (sy * w + x) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '39':
+                    let blocks = Math.floor(5 * safeDmg);
+                    for (let b = 0; b < blocks; b++) {
+                        let bw = Math.floor(Math.random() * 80 + 10); let bh = Math.floor(Math.random() * 80 + 10);
+                        let sx = Math.floor(Math.random() * (w - bw)); let sy = Math.floor(Math.random() * (h - bh));
+                        let dx = Math.floor(Math.random() * (w - bw)); let dy = Math.floor(Math.random() * (h - bh));
+                        for (let y = 0; y < bh; y++) {
+                            for (let x = 0; x < bw; x++) {
+                                let i = ((dy + y) * w + (dx + x)) * 4; let si = ((sy + y) * w + (sx + x)) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '40':
+                    let cSize = Math.max(5, Math.floor(80 / Math.min(10, safeDmg)));
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if ((Math.floor(x / cSize) + Math.floor(y / cSize)) % 2 === 0) {
+                                let sx = w - 1 - x; let sy = h - 1 - y;
+                                let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '41':
+                    for (let y = 0; y < h; y++) {
+                        let shift = Math.floor((Math.random() - 0.5) * 15 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '42':
+                    let chromThresh = 400 - (safeDmg * 5);
+                    for (let y = h - 2; y >= 0; y--) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            if (data[i] + data[i + 1] + data[i + 2] > chromThresh) {
+                                let down = ((y + 1) * w + x) * 4;
+                                data[down] = data[i]; data[down + 1] = data[i + 1]; data[down + 2] = data[i + 2];
+                            }
+                        }
+                    } break;
+                case '43':
+                    let bitStep = Math.max(2, Math.min(128, 8 * safeDmg));
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.round(data[i] / bitStep) * bitStep;
+                        data[i + 1] = Math.round(data[i + 1] / bitStep) * bitStep;
+                        data[i + 2] = Math.round(data[i + 2] / bitStep) * bitStep;
+                    } break;
+                case '44': for (let i = 0; i < len; i += 4) data[i] = 255 - data[i]; break;
+                case '45': for (let i = 0; i < len; i += 4) data[i + 1] = 255 - data[i + 1]; break;
+                case '46': for (let i = 0; i < len; i += 4) data[i + 2] = 255 - data[i + 2]; break;
+                case '47':
+                    let slices = Math.floor(3 * safeDmg);
+                    for (let s = 0; s < slices; s++) {
+                        let sy = Math.floor(Math.random() * h); let sH = Math.floor(Math.random() * 20 + 5);
+                        let sShift = Math.floor((Math.random() - 0.5) * 100 * safeDmg);
+                        for (let y = sy; y < Math.min(h, sy + sH); y++) {
+                            for (let x = 0; x < w; x++) {
+                                let sx = Math.max(0, Math.min(w - 1, x + sShift));
+                                let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '48': for (let i = 0; i < len; i += 4) { data[i] += 50 * safeDmg; data[i + 1] += 40 * safeDmg; data[i + 2] += 30 * safeDmg; } break;
+                case '49':
+                    let holes = Math.floor(2 * safeDmg);
+                    for (let hNum = 0; hNum < holes; hNum++) {
+                        let hx = Math.floor(Math.random() * w); let hy = Math.floor(Math.random() * h);
+                        let hr = Math.floor(Math.random() * 20 * safeDmg);
+                        for (let y = Math.max(0, hy - hr); y < Math.min(h, hy + hr); y++) {
+                            for (let x = Math.max(0, hx - hr); x < Math.min(w, hx + hr); x++) {
+                                if ((x - hx) ** 2 + (y - hy) ** 2 < hr * hr) {
+                                    let i = (y * w + x) * 4; data[i] = 0; data[i + 1] = 0; data[i + 2] = 0;
+                                }
+                            }
+                        }
+                    } break;
+                case '50':
+                    let sRange = Math.floor(5 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + Math.floor((Math.random() - 0.5) * sRange)));
+                            let sy = Math.max(0, Math.min(h - 1, y + Math.floor((Math.random() - 0.5) * sRange)));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '51':
+                    let hb = Math.min(100, Math.floor(6 * safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let rx = Math.max(0, Math.min(w - 1, x + Math.floor(Math.random() * hb * 2) - hb));
+                            let ry = Math.max(0, Math.min(h - 1, y + Math.floor(Math.random() * hb * 2) - hb));
+                            let si = (ry * w + rx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '52':
+                    let mbh = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let r = 0, g = 0, b = 0, c = 0;
+                            for (let o = 0; o < mbh && x + o < w; o++) {
+                                let si = (y * w + (x + o)) * 4; r += temp[si]; g += temp[si + 1]; b += temp[si + 2]; c++;
+                            }
+                            data[i] = r / c; data[i + 1] = g / c; data[i + 2] = b / c;
+                        }
+                    } break;
+                case '53':
+                    let mbv = Math.floor(10 * safeDmg);
+                    for (let x = 0; x < w; x++) {
+                        for (let y = 0; y < h; y++) {
+                            let i = (y * w + x) * 4; let r = 0, g = 0, b = 0, c = 0;
+                            for (let o = 0; o < mbv && y + o < h; o++) {
+                                let si = ((y + o) * w + x) * 4; r += temp[si]; g += temp[si + 1]; b += temp[si + 2]; c++;
+                            }
+                            data[i] = r / c; data[i + 1] = g / c; data[i + 2] = b / c;
+                        }
+                    } break;
+                case '54':
+                    let zcx = w / 2, zcy = h / 2; let zb = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let dx = (x - zcx) / zb, dy = (y - zcy) / zb;
+                            let r = 0, g = 0, b = 0;
+                            for (let k = 0; k < zb; k++) {
+                                let sx = Math.max(0, Math.min(w - 1, Math.floor(x - dx * k)));
+                                let sy = Math.max(0, Math.min(h - 1, Math.floor(y - dy * k)));
+                                let si = (sy * w + sx) * 4; r += temp[si]; g += temp[si + 1]; b += temp[si + 2];
+                            }
+                            data[i] = r / zb; data[i + 1] = g / zb; data[i + 2] = b / zb;
+                        }
+                    } break;
+                case '55':
+                    let rcx = w / 2, rcy = h / 2; let rbInt = 0.02 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let r = 0, g = 0, b = 0;
+                            let angle = Math.atan2(y - rcy, x - rcx); let dist = Math.sqrt((x - rcx) ** 2 + (y - rcy) ** 2);
+                            for (let k = 0; k < 5; k++) {
+                                let a = angle + (k * rbInt);
+                                let sx = Math.max(0, Math.min(w - 1, Math.floor(rcx + Math.cos(a) * dist)));
+                                let sy = Math.max(0, Math.min(h - 1, Math.floor(rcy + Math.sin(a) * dist)));
+                                let si = (sy * w + sx) * 4; r += temp[si]; g += temp[si + 1]; b += temp[si + 2];
+                            }
+                            data[i] = r / 5; data[i + 1] = g / 5; data[i + 2] = b / 5;
+                        }
+                    } break;
+                case '56':
+                    let fb = Math.floor(8 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let rx = Math.max(0, Math.min(w - 1, x + Math.floor(Math.random() * fb - fb / 2)));
+                            let ry = Math.max(0, Math.min(h - 1, y + Math.floor(Math.random() * fb - fb / 2)));
+                            let si = (ry * w + rx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '57':
+                    let gdFreq = 0.05 * safeDmg; let gdAmp = 10 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + Math.floor(Math.sin(y * gdFreq) * gdAmp)));
+                            let sy = Math.max(0, Math.min(h - 1, y + Math.floor(Math.cos(x * gdFreq) * gdAmp)));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '58':
+                    let wcx = w / 2, wcy = h / 2;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let dist = Math.sqrt((x - wcx) ** 2 + (y - wcy) ** 2);
+                            let amount = Math.sin(dist * 0.1) * 5 * safeDmg;
+                            let sx = Math.max(0, Math.min(w - 1, Math.floor(x + (x - wcx) / dist * amount)));
+                            let sy = Math.max(0, Math.min(h - 1, Math.floor(y + (y - wcy) / dist * amount)));
+                            if (dist === 0) { sx = x; sy = y; }
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '59':
+                    let sd = Math.floor(8 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        let shift = (y % 4 === 0) ? sd : -sd;
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '60':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma < 85) { data[i] = 0; data[i + 1] = luma * 3; data[i + 2] = 255; }
+                        else if (luma < 170) { data[i] = (luma - 85) * 3; data[i + 1] = 255; data[i + 2] = 255 - (luma - 85) * 3; }
+                        else { data[i] = 255; data[i + 1] = 255 - (luma - 170) * 3; data[i + 2] = 0; }
+                    } break;
+                case '61':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let noise = (Math.random() - 0.5) * 50;
+                        data[i] = 0; data[i + 1] = Math.min(255, luma * 1.5 + noise); data[i + 2] = 0;
+                    } break;
+                case '62':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let val = luma + (Math.random() - 0.5) * 128 > 128 ? 255 : 0;
+                        data[i] = val; data[i + 1] = val; data[i + 2] = val;
+                    } break;
+                case '63':
+                    let htSize = Math.max(3, Math.floor(4 * safeDmg));
+                    for (let y = 0; y < h; y += htSize) {
+                        for (let x = 0; x < w; x += htSize) {
+                            let si = (y * w + x) * 4; let luma = temp[si] * 0.3 + temp[si + 1] * 0.59 + temp[si + 2] * 0.11;
+                            let radius = (luma / 255) * (htSize / 1.5);
+                            for (let dy = 0; dy < htSize && y + dy < h; dy++) {
+                                for (let dx = 0; dx < htSize && x + dx < w; dx++) {
+                                    let i = ((y + dy) * w + (x + dx)) * 4;
+                                    let dist = Math.sqrt((dx - htSize / 2) ** 2 + (dy - htSize / 2) ** 2);
+                                    let val = dist < radius ? 255 : 0;
+                                    data[i] = val; data[i + 1] = val; data[i + 2] = val;
+                                }
+                            }
+                        }
+                    } break;
+                case '64':
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                        if (r > g * 1.5 && r > b * 1.5) { data[i] = r; data[i + 1] = g; data[i + 2] = b; }
+                        else { let luma = r * 0.3 + g * 0.59 + b * 0.11; data[i] = luma; data[i + 1] = luma; data[i + 2] = luma; }
+                    } break;
+                case '65':
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                        data[i] = Math.min(255, g * 1.5); data[i + 1] = b; data[i + 2] = r;
+                    } break;
+                case '66':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            if (temp[i] > 128 && Math.random() > 0.5 && x > 4) {
+                                let si = (y * w + (x - 4)) * 4; data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '67':
+                    for (let x = 0; x < w; x++) {
+                        for (let y = 0; y < h; y++) {
+                            let i = (y * w + x) * 4;
+                            if (temp[i + 1] > 128 && Math.random() > 0.5 && y > 4) {
+                                let si = ((y - 4) * w + x) * 4; data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '68':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            let diff = Math.abs(temp[i] - temp[((y - 1) * w + (x - 1)) * 4]);
+                            data[i] = 0; data[i + 1] = diff * 2 * safeDmg; data[i + 2] = diff * safeDmg;
+                        }
+                    } break;
+                case '69':
+                    let caX = Math.floor(5 * safeDmg); let caY = Math.floor(3 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let sRx = Math.max(0, x - caX); let sBx = Math.min(w - 1, x + caX);
+                            let sRy = Math.max(0, y - caY); let sBy = Math.min(h - 1, y + caY);
+                            data[i] = temp[(sRy * w + sRx) * 4]; data[i + 1] = temp[i + 1]; data[i + 2] = temp[(sBy * w + sBx) * 4 + 2];
+                        }
+                    } break;
+                case '70':
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = 255 - Math.min(255, temp[i] * 1.5);
+                        data[i + 1] = 255 - temp[i + 1];
+                        data[i + 2] = 255 - Math.min(255, temp[i + 2] * 1.5);
+                    } break;
+                case '71':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sx = x + Math.sin(y * 0.1) * Math.cos(x * 0.1) * 10 * safeDmg;
+                            let sy = y + Math.cos(x * 0.1) * Math.sin(y * 0.1) * 10 * safeDmg;
+                            sx = Math.max(0, Math.min(w - 1, Math.floor(sx))); sy = Math.max(0, Math.min(h - 1, Math.floor(sy)));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '72':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let sx = Math.max(0, x - Math.floor(15 * safeDmg));
+                            let bx = Math.min(w - 1, x + Math.floor(15 * safeDmg));
+                            data[i] = temp[(y * w + sx) * 4]; data[i + 2] = temp[(y * w + bx) * 4 + 2];
+                        }
+                    } break;
+                case '73':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma < 40 && Math.random() > 0.98) { data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; }
+                        else if (luma < 40) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 20; }
+                    } break;
+                case '74':
+                    let gx = Math.floor(20 * safeDmg); let gy = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let sx = Math.max(0, x - gx); let sy = Math.max(0, y - gy);
+                            let si = (sy * w + sx) * 4;
+                            data[i] = temp[i] * 0.5 + temp[si] * 0.5;
+                            data[i + 1] = temp[i + 1] * 0.5 + temp[si + 1] * 0.5;
+                            data[i + 2] = temp[i + 2] * 0.5 + temp[si + 2] * 0.5;
+                        }
+                    } break;
+                case '75':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                data[i + c] = Math.min(temp[i + c], temp[((y - 1) * w + x) * 4 + c], temp[((y + 1) * w + x) * 4 + c], temp[(y * w + x - 1) * 4 + c], temp[(y * w + x + 1) * 4 + c]);
+                            }
+                        }
+                    } break;
+                case '76':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                data[i + c] = Math.max(temp[i + c], temp[((y - 1) * w + x) * 4 + c], temp[((y + 1) * w + x) * 4 + c], temp[(y * w + x - 1) * 4 + c], temp[(y * w + x + 1) * 4 + c]);
+                            }
+                        }
+                    } break;
+                case '77':
+                    let flareL = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y += 2) {
+                        for (let x = 0; x < w; x += 2) {
+                            let i = (y * w + x) * 4;
+                            let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                            if (luma > 220) {
+                                for (let f = 1; f < flareL; f++) {
+                                    if (x + f < w) { let iR = (y * w + x + f) * 4; data[iR] += 50; data[iR + 1] += 50; data[iR + 2] += 50; }
+                                    if (x - f >= 0) { let iL = (y * w + x - f) * 4; data[iL] += 50; data[iL + 1] += 50; data[iL + 2] += 50; }
+                                    if (y + f < h) { let iD = ((y + f) * w + x) * 4; data[iD] += 50; data[iD + 1] += 50; data[iD + 2] += 50; }
+                                    if (y - f >= 0) { let iU = ((y - f) * w + x) * 4; data[iU] += 50; data[iU + 1] += 50; data[iU + 2] += 50; }
+                                }
+                            }
+                        }
+                    } break;
+                case '78':
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                        let luma = r * 0.3 + g * 0.59 + b * 0.11;
+                        if (luma < 64) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                        else if (luma > 192) { data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; }
+                        else if (r > g && r > b) { data[i] = 255; data[i + 1] = 85; data[i + 2] = 255; }
+                        else { data[i] = 85; data[i + 1] = 255; data[i + 2] = 255; }
+                    } break;
+                case '79':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let mod = x % 3;
+                            if (mod === 0) { data[i + 1] *= 0.2; data[i + 2] *= 0.2; }
+                            else if (mod === 1) { data[i] *= 0.2; data[i + 2] *= 0.2; }
+                            else { data[i] *= 0.2; data[i + 1] *= 0.2; }
+                        }
+                    } break;
+                case '80':
+                    let gtSize = Math.max(5, Math.floor(20 / Math.min(5, safeDmg)));
+                    for (let y = 0; y < h; y += gtSize) {
+                        for (let x = 0; x < w; x += gtSize) {
+                            let ox = Math.floor((Math.random() - 0.5) * 10 * safeDmg);
+                            let oy = Math.floor((Math.random() - 0.5) * 10 * safeDmg);
+                            for (let dy = 0; dy < gtSize && y + dy < h; dy++) {
+                                for (let dx = 0; dx < gtSize && x + dx < w; dx++) {
+                                    let sx = Math.max(0, Math.min(w - 1, x + dx + ox));
+                                    let sy = Math.max(0, Math.min(h - 1, y + dy + oy));
+                                    let i = ((y + dy) * w + (x + dx)) * 4; let si = (sy * w + sx) * 4;
+                                    data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                                }
+                            }
+                        }
+                    } break;
+                case '81':
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                        if (r > g * 1.2 + 20 && r > b * 1.2 + 20) { data[i] = r; data[i + 1] = g; data[i + 2] = b; }
+                        else { let l = r * 0.3 + g * 0.59 + b * 0.11; data[i] = l; data[i + 1] = l; data[i + 2] = l; }
+                    } break;
+                case '82':
+                    let lineChance = 0.05 * Math.min(2, safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        if (Math.random() < lineChance) {
+                            for (let x = 0; x < w; x++) {
+                                let i = (y * w + x) * 4; data[i] = 0; data[i + 1] = 0; data[i + 2] = 0;
+                            }
+                        }
+                    } break;
+                case '83':
+                    let sShiftAmt = Math.floor(100 * safeDmg);
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = (temp[i] + sShiftAmt) % 256;
+                        data[i + 1] = (temp[i + 1] + sShiftAmt) % 256;
+                        data[i + 2] = (temp[i + 2] + sShiftAmt) % 256;
+                    } break;
+                case '84':
+                    for (let x = 0; x < w; x++) {
+                        let drop = Math.random() < (0.01 * safeDmg);
+                        for (let y = 0; y < h; y++) {
+                            let i = (y * w + x) * 4;
+                            if (drop && Math.random() > 0.8) data[i + 1] = Math.min(255, temp[i + 1] + 100);
+                            else data[i + 1] = Math.min(255, temp[i + 1] * 1.2);
+                            data[i] *= 0.2; data[i + 2] *= 0.2;
+                        }
+                    } break;
+                case '85':
+                    let anaOff = Math.floor(5 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let leftX = Math.max(0, x - anaOff);
+                            let rightX = Math.min(w - 1, x + anaOff);
+                            data[i] = temp[(y * w + leftX) * 4];
+                            data[i + 1] = temp[(y * w + rightX) * 4 + 1];
+                            data[i + 2] = temp[(y * w + rightX) * 4 + 2];
+                        }
+                    } break;
+                case '86':
+                    let trackH = Math.floor(20 * safeDmg);
+                    let trackY = Math.floor(Math.random() * (h - trackH));
+                    for (let y = trackY; y < trackY + trackH; y++) {
+                        let shift = Math.floor((Math.random() - 0.5) * 40 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si] + (Math.random() - 0.5) * 100;
+                            data[i + 1] = temp[si + 1] + (Math.random() - 0.5) * 100;
+                            data[i + 2] = temp[si + 2] + (Math.random() - 0.5) * 100;
+                        }
+                    } break;
+                case '87':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma > 200 - (safeDmg * 5)) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                        else if (luma > 150 - (safeDmg * 5)) { data[i] = 255; data[i + 1] = 255; data[i + 2] = 150; }
+                    } break;
+                case '88':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            let val = temp[i] * 8 - temp[((y - 1) * w + x) * 4] - temp[((y + 1) * w + x) * 4] - temp[(y * w + x - 1) * 4] - temp[(y * w + x + 1) * 4] - temp[((y - 1) * w + x - 1) * 4] - temp[((y - 1) * w + x + 1) * 4] - temp[((y + 1) * w + x - 1) * 4] - temp[((y + 1) * w + x + 1) * 4];
+                            let inv = 255 - Math.min(255, Math.max(0, val));
+                            data[i] = inv; data[i + 1] = inv; data[i + 2] = inv;
+                        }
+                    } break;
+                case '89':
+                    let dbSize = Math.max(4, Math.floor(16 / Math.min(4, safeDmg)));
+                    for (let y = dbSize; y < h; y += dbSize) {
+                        for (let x = 0; x < w; x += dbSize) {
+                            if (Math.random() < 0.2) {
+                                for (let dy = 0; dy < dbSize && y + dy < h; dy++) {
+                                    for (let dx = 0; dx < dbSize && x + dx < w; dx++) {
+                                        let i = ((y + dy) * w + (x + dx)) * 4;
+                                        let copyI = ((y - dbSize + dy) * w + (x + dx)) * 4;
+                                        data[i] = data[copyI]; data[i + 1] = data[copyI + 1]; data[i + 2] = data[copyI + 2];
+                                    }
+                                }
+                            }
+                        }
+                    } break;
+                case '90':
+                    let atFreq = 0.02 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            data[i] = Math.min(255, temp[i] * (1 + Math.sin(x * atFreq)));
+                            data[i + 1] = Math.min(255, temp[i + 1] * (1 + Math.cos(y * atFreq)));
+                            data[i + 2] = Math.min(255, temp[i + 2] * (1 + Math.sin((x + y) * atFreq)));
+                        }
+                    } break;
+                case '91':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma < 100) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                    } break;
+                case '92':
+                    for (let i = 0; i < len; i += 4) {
+                        if (temp[i + 1] > temp[i] * 1.2 && temp[i + 1] > temp[i + 2] * 1.2) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                    } break;
+                case '93':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            let val = temp[i] * 8 - temp[((y - 1) * w + x) * 4] - temp[((y + 1) * w + x) * 4] - temp[(y * w + x - 1) * 4] - temp[(y * w + x + 1) * 4] - temp[((y - 1) * w + x - 1) * 4] - temp[((y - 1) * w + x + 1) * 4] - temp[((y + 1) * w + x - 1) * 4] - temp[((y + 1) * w + x + 1) * 4];
+                            let cVal = Math.min(255, Math.max(0, val));
+                            data[i] = cVal; data[i + 1] = cVal * 0.2; data[i + 2] = 255 - cVal;
+                        }
+                    } break;
+                case '94':
+                    let qX = w / 2, qY = h / 2;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                            if (x < qX && y < qY) { data[i] = g; data[i + 1] = b; data[i + 2] = r; }
+                            else if (x >= qX && y < qY) { data[i] = 255 - r; data[i + 1] = g; data[i + 2] = b; }
+                            else if (x < qX && y >= qY) { data[i] = r; data[i + 1] = 255 - g; data[i + 2] = b; }
+                            else { data[i] = r; data[i + 1] = g; data[i + 2] = 255 - b; }
+                        }
+                    } break;
+                case '95':
+                    let ptSize = Math.floor(6 * safeDmg);
+                    for (let y = 0; y < h; y += ptSize) {
+                        for (let x = 0; x < w; x += ptSize) {
+                            let ox = Math.floor((Math.random() - 0.5) * ptSize);
+                            let oy = Math.floor((Math.random() - 0.5) * ptSize);
+                            let srcX = Math.max(0, Math.min(w - 1, x + ox));
+                            let srcY = Math.max(0, Math.min(h - 1, y + oy));
+                            let si = (srcY * w + srcX) * 4;
+                            for (let dy = 0; dy < ptSize && y + dy < h; dy++) {
+                                for (let dx = 0; dx < ptSize && x + dx < w; dx++) {
+                                    if (dx * dx + dy * dy <= ptSize * ptSize) {
+                                        let di = ((y + dy) * w + (x + dx)) * 4;
+                                        data[di] = temp[si]; data[di + 1] = temp[si + 1]; data[di + 2] = temp[si + 2];
+                                    }
+                                }
+                            }
+                        }
+                    } break;
+                case '96':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                            if (luma < 128 && (x + y) % 5 === 0) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                            if (luma < 64 && (x - y) % 5 === 0) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                        }
+                    } break;
+                case '97':
+                    let wbAmt = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let r = 0, g = 0, b = 0;
+                            for (let k = 0; k < wbAmt; k++) {
+                                let sx = Math.max(0, Math.min(w - 1, x + Math.floor(Math.sin(y * 0.1) * k)));
+                                let si = (y * w + sx) * 4;
+                                r += temp[si]; g += temp[si + 1]; b += temp[si + 2];
+                            }
+                            data[i] = r / wbAmt; data[i + 1] = g / wbAmt; data[i + 2] = b / wbAmt;
+                        }
+                    } break;
+                case '98':
+                    let bitQ = Math.max(1, Math.floor(64 / Math.min(8, safeDmg)));
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.floor(temp[i] / bitQ) * bitQ;
+                        data[i + 1] = Math.floor(temp[i + 1] / bitQ) * bitQ;
+                        data[i + 2] = Math.floor(temp[i + 2] / bitQ) * bitQ;
+                    } break;
+                case '99':
+                    for (let y = 0; y < h; y++) {
+                        let shift = Math.random() > 0.9 ? Math.floor((Math.random() - 0.5) * 50 * safeDmg) : 0;
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            let tr = temp[si], tg = temp[si + 1], tb = temp[si + 2];
+                            data[i] = Math.min(255, (tr * 0.393) + (tg * 0.769) + (tb * 0.189));
+                            data[i + 1] = Math.min(255, (tr * 0.349) + (tg * 0.686) + (tb * 0.168));
+                            data[i + 2] = Math.min(255, (tr * 0.272) + (tg * 0.534) + (tb * 0.131));
+                        }
+                    } break;
+                case '100':
+                    for (let i = 0; i < len; i += 4) {
+                        let pick = Math.floor(Math.random() * 4);
+                        if (pick === 0) { data[i] = 255 - temp[i]; data[i + 1] = 255 - temp[i + 1]; data[i + 2] = 255 - temp[i + 2]; }
+                        else if (pick === 1) { data[i] = temp[i + 1]; data[i + 1] = temp[i + 2]; data[i + 2] = temp[i]; }
+                        else if (pick === 2) { data[i] = Math.min(255, temp[i] * 2); data[i + 1] = Math.min(255, temp[i + 1] * 2); }
+                        else { data[i] = 0; data[i + 1] = temp[i + 1]; data[i + 2] = temp[i + 2]; }
+                    } break;
+                case '101':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma < 85) { data[i] = 0; data[i + 1] = luma; data[i + 2] = luma * 2; }
+                        else if (luma < 170) { data[i] = luma; data[i + 1] = 0; data[i + 2] = luma; }
+                        else { data[i] = 255; data[i + 1] = 255; data[i + 2] = luma * 0.5; }
+                    } break;
+                case '102':
+                    let tmChance = Math.max(0.05, 1 - (0.8 / safeDmg));
+                    for (let y = 1; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            if (Math.random() < tmChance) {
+                                let up = ((y - 1) * w + x) * 4;
+                                data[i] = data[up]; data[i + 1] = data[up + 1]; data[i + 2] = data[up + 2];
+                            } else {
+                                let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                                if (luma < 85) { data[i] = 0; data[i + 1] = luma * 3; data[i + 2] = 255; }
+                                else if (luma < 170) { data[i] = (luma - 85) * 3; data[i + 1] = 255; data[i + 2] = 255 - (luma - 85) * 3; }
+                                else { data[i] = 255; data[i + 1] = 255 - (luma - 170) * 3; data[i + 2] = 0; }
+                            }
+                        }
+                    } break;
+                case '103':
+                    let cxB = w / 2, cyB = h / 2;
+                    let radB = Math.min(w, h) / 2;
+                    let bulgeAmt = 0.5 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let dx = x - cxB, dy = y - cyB;
+                            let dist = Math.sqrt(dx * dx + dy * dy);
+                            let i = (y * w + x) * 4;
+                            if (dist < radB) {
+                                let amt = Math.pow(dist / radB, bulgeAmt);
+                                let sx = Math.max(0, Math.min(w - 1, Math.floor(cxB + dx * amt)));
+                                let sy = Math.max(0, Math.min(h - 1, Math.floor(cyB + dy * amt)));
+                                let si = (sy * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                            if (y % 3 === 0) { data[i] *= 0.7; data[i + 1] *= 0.7; data[i + 2] *= 0.7; }
+                        }
+                    } break;
+                case '104':
+                    let gOff = Math.floor(15 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let s1 = Math.max(0, x - gOff); let s2 = Math.max(0, x - (gOff * 2));
+                            data[i] = temp[i] * 0.4 + temp[(y * w + s1) * 4] * 0.3 + temp[(y * w + s2) * 4] * 0.3;
+                            data[i + 1] = temp[i + 1] * 0.4 + temp[(y * w + s1) * 4 + 1] * 0.3 + temp[(y * w + s2) * 4 + 1] * 0.3;
+                            data[i + 2] = temp[i + 2] * 0.4 + temp[(y * w + s1) * 4 + 2] * 0.3 + temp[(y * w + s2) * 4 + 2] * 0.3;
+                        }
+                    } break;
+                case '105':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let val = luma > 128 - (safeDmg * 10) ? 255 : 0;
+                        data[i] = val; data[i + 1] = val; data[i + 2] = val;
+                    } break;
+                case '106':
+                    let vOff = Math.min(len - 4, Math.floor(w * 4 * 6 * safeDmg));
+                    for (let i = 0; i < len; i += 4) {
+                        if (i + vOff < len) data[i] = temp[i + vOff];
+                        if (i - vOff >= 0) data[i + 2] = temp[i - vOff + 2];
+                    } break;
+                case '107':
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let i = (y * w + x) * 4;
+                            for (let c = 0; c < 3; c++) {
+                                let val = temp[i + c] + (temp[i + c] - temp[((y - 1) * w + x - 1) * 4 + c]) * safeDmg;
+                                data[i + c] = Math.min(255, Math.max(0, val));
+                            }
+                        }
+                    } break;
+                case '108':
+                    for (let i = 0; i < len; i += 4) {
+                        let n = (Math.random() - 0.5) * 100 * safeDmg;
+                        data[i] = Math.min(255, Math.max(0, temp[i] + n));
+                        data[i + 1] = Math.min(255, Math.max(0, temp[i + 1] + n));
+                        data[i + 2] = Math.min(255, Math.max(0, temp[i + 2] + n));
+                    } break;
+                case '109':
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma > 128) { data[i] = 255 - data[i]; data[i + 1] = 255 - data[i + 1]; data[i + 2] = 255 - data[i + 2]; }
+                    } break;
+                case '110':
+                    let hwCx = w / 2, hwCy = h / 2; let hMaxDist = Math.sqrt(hwCx * hwCx + hwCy * hwCy);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let d = Math.sqrt((x - hwCx) ** 2 + (y - hwCy) ** 2);
+                            let light = (d / hMaxDist) * (0.8 * Math.min(2, safeDmg));
+                            let i = (y * w + x) * 4;
+                            data[i] = Math.min(255, temp[i] + 255 * light);
+                            data[i + 1] = Math.min(255, temp[i + 1] + 255 * light);
+                            data[i + 2] = Math.min(255, temp[i + 2] + 255 * light);
+                        }
+                    } break;
+                case '111':
+                    for (let y = 0; y < h; y++) {
+                        let shift = Math.floor((Math.random() - 0.5) * 30 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '112':
+                    let crOff = Math.floor(10 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let leftX = Math.max(0, x - crOff); let rightX = Math.min(w - 1, x + crOff);
+                            data[i] = temp[(y * w + leftX) * 4];
+                            data[i + 1] = temp[(y * w + rightX) * 4 + 1];
+                            data[i + 2] = temp[(y * w + rightX) * 4 + 2];
+                        }
+                    } break;
+                case '113':
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, Math.max(0, (temp[i] - 128) * (5 * safeDmg) + 128));
+                        data[i + 1] = Math.min(255, Math.max(0, (temp[i + 1] - 128) * (5 * safeDmg) + 128));
+                        data[i + 2] = Math.min(255, Math.max(0, (temp[i + 2] - 128) * (5 * safeDmg) + 128));
+                    } break;
+                case '114':
+                    let gaBlocks = Math.floor(10 * safeDmg);
+                    for (let b = 0; b < gaBlocks; b++) {
+                        let bw = Math.floor(Math.random() * 100 + 20); let bh = Math.floor(Math.random() * 50 + 10);
+                        let sx = Math.floor(Math.random() * (w - bw)); let sy = Math.floor(Math.random() * (h - bh));
+                        let dx = Math.floor(Math.random() * (w - bw)); let dy = Math.floor(Math.random() * (h - bh));
+                        for (let y = 0; y < bh; y++) {
+                            for (let x = 0; x < bw; x++) {
+                                let i = ((dy + y) * w + (dx + x)) * 4; let si = ((sy + y) * w + (sx + x)) * 4;
+                                data[i] = 255 - temp[si + 1]; data[i + 1] = temp[si + 2]; data[i + 2] = temp[si];
+                            }
+                        }
+                    } break;
+                case '115':
+                    for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, temp[i] + 50 * safeDmg); data[i + 1] = temp[i + 1] * 0.8; data[i + 2] = temp[i + 2] * 0.8; } break;
+                case '116':
+                    for (let i = 0; i < len; i += 4) { data[i] = temp[i] * 0.8; data[i + 1] = Math.min(255, temp[i + 1] + 50 * safeDmg); data[i + 2] = temp[i + 2] * 0.8; } break;
+                case '117':
+                    for (let i = 0; i < len; i += 4) { data[i] = temp[i] * 0.8; data[i + 1] = temp[i + 1] * 0.8; data[i + 2] = Math.min(255, temp[i + 2] + 50 * safeDmg); } break;
+                case '118':
+                    let bScan = Math.max(4, Math.floor(8 * safeDmg));
+                    for (let y = 0; y < h; y += bScan * 2) {
+                        for (let x = 0; x < w; x++) {
+                            for (let dy = 0; dy < bScan && y + dy < h; dy++) {
+                                let i = ((y + dy) * w + x) * 4; data[i] *= 0.3; data[i + 1] *= 0.3; data[i + 2] *= 0.3;
+                            }
+                        }
+                    } break;
+                case '119':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let shift = Math.floor(15 * safeDmg);
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let sy = Math.max(0, Math.min(h - 1, y + shift));
+                            let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '120':
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sx = x < w / 2 ? x : w - 1 - x;
+                            let sy = y < h / 2 ? y : h - 1 - y;
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+
+                // ==========================
+                // NEWEST (121 - 135)
+                // ==========================
+                case '121': // LSD Wash
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, Math.max(0, temp[i] + Math.sin(temp[i + 1] * 0.05 * safeDmg) * 100));
+                        data[i + 1] = Math.min(255, Math.max(0, temp[i + 1] + Math.cos(temp[i + 2] * 0.05 * safeDmg) * 100));
+                        data[i + 2] = Math.min(255, Math.max(0, temp[i + 2] + Math.sin(temp[i] * 0.05 * safeDmg) * 100));
+                    } break;
+                case '122': // Vaporwave
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, temp[i] * 0.8 + 50 * safeDmg);
+                        data[i + 1] = temp[i + 1] * 0.8;
+                        data[i + 2] = Math.min(255, temp[i + 2] * 1.2 + 50 * safeDmg);
+                    } break;
+                case '123': // Pixel Melt
+                    let pmChance = Math.max(0.05, 1 - (0.7 / safeDmg));
+                    for (let y = 1; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4; let up = ((y - 1) * w + x) * 4;
+                            let lumaI = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                            let lumaUp = temp[up] * 0.3 + temp[up + 1] * 0.59 + temp[up + 2] * 0.11;
+                            if (lumaI < lumaUp && Math.random() < pmChance) {
+                                data[i] = data[up]; data[i + 1] = data[up + 1]; data[i + 2] = data[up + 2];
+                            }
+                        }
+                    } break;
+                case '124': // CRT Sync Loss
+                    let syncAmt = 50 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        let shift = Math.floor(Math.sin(y * 0.02) * syncAmt);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + shift));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '125': // Blacklight
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let invLuma = 255 - luma;
+                        let ratio = invLuma / (luma + 1);
+                        data[i] = Math.min(255, temp[i] * ratio);
+                        data[i + 1] = Math.min(255, temp[i + 1] * ratio);
+                        data[i + 2] = Math.min(255, temp[i + 2] * ratio);
+                    } break;
+                case '126': // Oil Painting (Fast Box Max)
+                    let oilR = Math.max(1, Math.floor(3 * safeDmg));
+                    for (let y = oilR; y < h - oilR; y += oilR) {
+                        for (let x = oilR; x < w - oilR; x += oilR) {
+                            let maxR = 0, maxG = 0, maxB = 0;
+                            for (let dy = 0; dy < oilR; dy++) {
+                                for (let dx = 0; dx < oilR; dx++) {
+                                    let si = ((y + dy) * w + (x + dx)) * 4;
+                                    if (temp[si] > maxR) maxR = temp[si];
+                                    if (temp[si + 1] > maxG) maxG = temp[si + 1];
+                                    if (temp[si + 2] > maxB) maxB = temp[si + 2];
+                                }
+                            }
+                            for (let dy = 0; dy < oilR; dy++) {
+                                for (let dx = 0; dx < oilR; dx++) {
+                                    let i = ((y + dy) * w + (x + dx)) * 4;
+                                    data[i] = maxR; data[i + 1] = maxG; data[i + 2] = maxB;
+                                }
+                            }
+                        }
+                    } break;
+                case '127': // Edge Bleed
+                    for (let y = 0; y < h; y++) {
+                        for (let x = w - 1; x >= 0; x--) {
+                            let i = (y * w + x) * 4;
+                            if (x < w - 1 && Math.random() < 0.8 * Math.min(1.2, safeDmg)) {
+                                let diff = Math.abs(temp[i] - temp[i + 4]);
+                                if (diff > 30) {
+                                    let right = i + 4;
+                                    data[i] = data[right]; data[i + 1] = data[right + 1]; data[i + 2] = data[right + 2];
+                                }
+                            }
+                        }
+                    } break;
+                case '128': // Rainbow Grain
+                    let rn = 100 * safeDmg;
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, Math.max(0, temp[i] + (Math.random() - 0.5) * rn));
+                        data[i + 1] = Math.min(255, Math.max(0, temp[i + 1] + (Math.random() - 0.5) * rn));
+                        data[i + 2] = Math.min(255, Math.max(0, temp[i + 2] + (Math.random() - 0.5) * rn));
+                    } break;
+                case '129': // Kaleido-Quad
+                    let hx = Math.floor(w / 2), hy = Math.floor(h / 2);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sx = x < hx ? x : w - 1 - x;
+                            let sy = y < hy ? y : h - 1 - y;
+                            if (x > hx && y < hy) { let t = sx; sx = sy; sy = t; }
+                            sx = Math.max(0, Math.min(w - 1, sx)); sy = Math.max(0, Math.min(h - 1, sy));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '130': // Luma Threshold
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let v = luma < 85 ? 0 : (luma < 170 ? 128 : 255);
+                        data[i] = v; data[i + 1] = v; data[i + 2] = v;
+                    } break;
+                case '131': // Chromatic Pulse
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let dist = Math.sqrt((x - w / 2) ** 2 + (y - h / 2) ** 2);
+                            let p = dist * 0.05 * safeDmg;
+                            data[i] = Math.min(255, temp[i] * (1 + Math.sin(p)));
+                            data[i + 1] = Math.min(255, temp[i + 1] * (1 + Math.cos(p)));
+                            data[i + 2] = Math.min(255, temp[i + 2] * (1 + Math.sin(p + Math.PI)));
+                        }
+                    } break;
+                case '132': // Block Offset
+                    let bSize = Math.max(10, Math.floor(40 * safeDmg));
+                    for (let y = 0; y < h; y += bSize) {
+                        for (let x = 0; x < w; x += bSize) {
+                            let ox = Math.floor((Math.random() - 0.5) * bSize);
+                            let oy = Math.floor((Math.random() - 0.5) * bSize);
+                            for (let dy = 0; dy < bSize && y + dy < h; dy++) {
+                                for (let dx = 0; dx < bSize && x + dx < w; dx++) {
+                                    let sx = Math.max(0, Math.min(w - 1, x + dx + ox));
+                                    let sy = Math.max(0, Math.min(h - 1, y + dy + oy));
+                                    let i = ((y + dy) * w + (x + dx)) * 4; let si = (sy * w + sx) * 4;
+                                    data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                                }
+                            }
+                        }
+                    } break;
+                case '133': // Grid Overlay
+                    let gSpace = Math.max(5, Math.floor(20 / safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if (x % gSpace === 0 || y % gSpace === 0) {
+                                let i = (y * w + x) * 4;
+                                data[i] = 0; data[i + 1] = 255; data[i + 2] = 0;
+                            }
+                        }
+                    } break;
+                case '134': // Lens Flare
+                    let lcx = w / 2, lcy = h / 2; let maxD = Math.sqrt(lcx * lcx + lcy * lcy);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let d = Math.sqrt((x - lcx) ** 2 + (y - lcy) ** 2);
+                            let flare = Math.max(0, 1 - d / (maxD * 0.5)) * 150 * safeDmg;
+                            data[i] = Math.min(255, temp[i] + flare);
+                            data[i + 1] = Math.min(255, temp[i + 1] + flare * 0.8);
+                            data[i + 2] = Math.min(255, temp[i + 2] + flare * 0.5);
+                        }
+                    } break;
+                case '135': // Abyssal Void
+                    let vThresh = 100 * Math.min(2, safeDmg);
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma < vThresh) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; }
+                        else { data[i] = temp[i] * 0.2; data[i + 1] = temp[i + 1] * 0.2; data[i + 2] = Math.min(255, temp[i + 2] * 1.5); }
+                    } break;
+                case '137': // Shadow Deepen
+                    for (let i = 0; i < len; i += 4) { let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11; if (luma < 80) { data[i] /= 2; data[i + 1] /= 2; data[i + 2] /= 2; } } break;
+                case '138': // Light Wash
+                    for (let i = 0; i < len; i += 4) { let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11; if (luma > 180) { data[i] = Math.min(255, data[i] * 1.2); data[i + 1] = Math.min(255, data[i + 1] * 1.2); data[i + 2] = Math.min(255, data[i + 2] * 1.2); } } break;
+                case '139': // Saturation Max
+                    for (let i = 0; i < len; i += 4) { let max = Math.max(temp[i], temp[i + 1], temp[i + 2]); if (max == temp[i]) data[i] = 255; else if (max == temp[i + 1]) data[i + 1] = 255; else data[i + 2] = 255; } break;
+                case '140': // Saturation Min
+                    for (let i = 0; i < len; i += 4) { let min = Math.min(temp[i], temp[i + 1], temp[i + 2]); if (min == temp[i]) data[i] = 0; else if (min == temp[i + 1]) data[i + 1] = 0; else data[i + 2] = 0; } break;
+                case '141': // Ghost Blur
+                    for (let i = 0; i < len; i += 4) { data[i] = data[i] * 0.8 + temp[i] * 0.2; data[i + 1] = data[i + 1] * 0.8 + temp[i + 1] * 0.2; data[i + 2] = data[i + 2] * 0.8 + temp[i + 2] * 0.2; } break;
+                case '142': // Red Boost
+                    for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, temp[i] * 1.5); } break;
+                case '143': // Green Boost
+                    for (let i = 0; i < len; i += 4) { data[i + 1] = Math.min(255, temp[i + 1] * 1.5); } break;
+                case '144': // Blue Boost
+                    for (let i = 0; i < len; i += 4) { data[i + 2] = Math.min(255, temp[i + 2] * 1.5); } break;
+                case '145': // Cyan Tint
+                    for (let i = 0; i < len; i += 4) { data[i + 1] = Math.min(255, temp[i + 1] * 1.2); data[i + 2] = Math.min(255, temp[i + 2] * 1.2); } break;
+                case '146': // Magenta Tint
+                    for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, temp[i] * 1.2); data[i + 2] = Math.min(255, temp[i + 2] * 1.2); } break;
+                case '147': // Yellow Tint
+                    for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, temp[i] * 1.2); data[i + 1] = Math.min(255, temp[i + 1] * 1.2); } break;
+                case '148': // Bubble Warp
+                    let bWcx = w / 2, bWcy = h / 2; let bWrad = Math.min(w, h) * 0.4;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let dx = x - bWcx, dy = y - bWcy; let dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < bWrad && dist > 0) {
+                                let amt = Math.sin((dist / bWrad) * Math.PI) * 20 * safeDmg;
+                                let sx = Math.max(0, Math.min(w - 1, Math.floor(x - (dx / dist) * amt)));
+                                let sy = Math.max(0, Math.min(h - 1, Math.floor(y - (dy / dist) * amt)));
+                                let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                            }
+                        }
+                    } break;
+                case '149': // Fractal Melt
+                    for (let y = 1; y < h; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            if (Math.random() < 0.1 * Math.min(2, safeDmg)) {
+                                let i = (y * w + x) * 4;
+                                let upRight = ((y - 1) * w + (x + 1)) * 4;
+                                let upLeft = ((y - 1) * w + (x - 1)) * 4;
+                                data[i] = temp[upRight]; data[i + 1] = temp[upLeft + 1]; data[i + 2] = temp[upRight + 2];
+                            }
+                        }
+                    } break;
+                case '150': // Neon Dream
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, temp[i] * 0.8 + temp[i + 2] * 0.5 + 40 * safeDmg);
+                        data[i + 1] = Math.max(0, temp[i + 1] * 1.5 - 50 * safeDmg);
+                        data[i + 2] = Math.min(255, temp[i + 2] * 1.2 + temp[i] * 0.4 + 20 * safeDmg);
+                    } break;
+                case '151': // Glitch Block
+                    let gSize = Math.max(10, Math.floor(50 * safeDmg));
+                    for (let y = 0; y < h; y += gSize) {
+                        for (let x = 0; x < w; x += gSize) {
+                            if (Math.random() < 0.1) {
+                                let xOff = Math.floor((Math.random() - 0.5) * gSize * 3);
+                                let yOff = Math.floor((Math.random() - 0.5) * gSize * 3);
+                                for (let dy = 0; dy < gSize && y + dy < h; dy++) {
+                                    for (let dx = 0; dx < gSize && x + dx < w; dx++) {
+                                        let sx = Math.max(0, Math.min(w - 1, x + dx + xOff));
+                                        let sy = Math.max(0, Math.min(h - 1, y + dy + yOff));
+                                        let i = ((y + dy) * w + (x + dx)) * 4; let si = (sy * w + sx) * 4;
+                                        data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                                    }
+                                }
+                            }
+                        }
+                    } break;
+                case '152': // CRT Phosphor
+                    for (let y = 0; y < h; y++) {
+                        let isEven = (y % 2 === 0);
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            if (isEven) { data[i + 1] *= 0.8; data[i + 2] *= 0.8; }
+                            else { data[i] *= 0.8; data[i + 1] *= 0.8; }
+                        }
+                    } break;
+                case '153': // X-Ray
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let invLuma = 255 - luma;
+                        data[i] = invLuma * 0.3; data[i + 1] = invLuma * 0.8; data[i + 2] = invLuma;
+                    } break;
+                case '154': // RGB Shift
+                    let sR = Math.floor(8 * safeDmg); let sG = Math.floor(4 * safeDmg); let sB = Math.floor(12 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let ixR = (y * w + Math.max(0, Math.min(w - 1, x + sR))) * 4;
+                            let ixG = (y * w + Math.max(0, Math.min(w - 1, x - sG))) * 4;
+                            let ixB = (y * w + Math.max(0, Math.min(w - 1, x + sB))) * 4;
+                            data[i] = temp[ixR]; data[i + 1] = temp[ixG + 1]; data[i + 2] = temp[ixB + 2];
+                        }
+                    } break;
+                case '155': // Wavy Mirror
+                    for (let y = 0; y < h; y++) {
+                        let swing = Math.floor(Math.sin(y * 0.05) * 20 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = x < w / 2 ? x + swing : w - 1 - x - swing;
+                            sx = Math.max(0, Math.min(w - 1, sx));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '156': // Color Crush
+                    let ccAmt = Math.max(1, Math.floor(64 / safeDmg));
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.floor(temp[i] / ccAmt) * ccAmt;
+                        data[i + 1] = Math.floor(temp[i + 1] / ccAmt) * ccAmt;
+                        data[i + 2] = Math.floor(temp[i + 2] / ccAmt) * ccAmt;
+                    } break;
+                case '158': // Horizontal Tear
+                    for (let y = 0; y < h; y++) {
+                        let tear = Math.random() < 0.1 ? Math.floor((Math.random() - 0.5) * 100 * safeDmg) : 0;
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + tear));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    } break;
+                case '159': // Sine Wave Colors
+                    for (let i = 0; i < len; i += 4) {
+                        data[i] = Math.min(255, temp[i] * (1.2 + Math.sin(temp[i] * 0.05 * safeDmg) * 0.5));
+                        data[i + 1] = Math.min(255, temp[i + 1] * (1.2 + Math.cos(temp[i + 1] * 0.05 * safeDmg) * 0.5));
+                        data[i + 2] = Math.min(255, temp[i + 2] * (1.2 + Math.sin(temp[i + 2] * 0.05 * safeDmg) * 0.5));
+                    } break;
+                case '160': // Bleach Bypass
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        let r = temp[i], g = temp[i + 1], b = temp[i + 2];
+                        let blend = Math.min(1, safeDmg * 0.5);
+                        data[i] = r * (1 - blend) + (luma < 128 ? (2 * r * luma / 255) : (255 - 2 * (255 - r) * (255 - luma) / 255)) * blend;
+                        data[i + 1] = g * (1 - blend) + (luma < 128 ? (2 * g * luma / 255) : (255 - 2 * (255 - g) * (255 - luma) / 255)) * blend;
+                        data[i + 2] = b * (1 - blend) + (luma < 128 ? (2 * b * luma / 255) : (255 - 2 * (255 - b) * (255 - luma) / 255)) * blend;
+                    } break;
+                case '161': // Grid Glitch
+                    let grSize = Math.max(10, Math.floor(40 * safeDmg));
+                    for (let y = 0; y < h; y += grSize) {
+                        for (let x = 0; x < w; x += grSize) {
+                            if (Math.random() < 0.2) {
+                                for (let dy = 0; dy < grSize && y + dy < h; dy++) {
+                                    for (let dx = 0; dx < grSize && x + dx < w; dx++) {
+                                        let i = ((y + dy) * w + (x + dx)) * 4;
+                                        data[i] = 255 - temp[i]; data[i + 1] = 0; data[i + 2] = 255 - temp[i + 2];
+                                    }
+                                }
+                            }
+                        }
+                    } break;
+                case '162': // Deep Dream Distort
+                    let dr = Math.floor(20 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        let yDistort = Math.sin(y * 0.05) * dr;
+                        for (let x = 0; x < w; x++) {
+                            let xDistort = Math.cos(x * 0.05) * dr;
+                            let sx = Math.max(0, Math.min(w - 1, Math.floor(x + xDistort)));
+                            let sy = Math.max(0, Math.min(h - 1, Math.floor(y + yDistort)));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[Math.max(0, si - 4) + 1]; data[i + 2] = temp[Math.min(len - 1, si + 4) + 2];
+                        }
+                    } break;
+                case '163': // Cyberpunk Pulse
+                    let pulse = Math.min(255, 100 * safeDmg);
+                    for (let i = 0; i < len; i += 4) {
+                        let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                        if (luma > 150) {
+                            data[i] = Math.min(255, temp[i] + pulse);
+                            data[i + 1] = Math.max(0, temp[i + 1] - pulse);
+                            data[i + 2] = Math.min(255, temp[i + 2] + pulse);
+                        } else {
+                            data[i] = temp[i] * 0.8; data[i + 1] = Math.min(255, temp[i + 1] + pulse * 0.5); data[i + 2] = Math.min(255, temp[i + 2] + pulse * 0.8);
+                        }
+                    } break;
+                case '164': // Dimension Slice
+                    let sH = Math.max(1, Math.floor(h / Math.max(2, Math.floor(20 / safeDmg))));
+                    for (let y = 0; y < h; y++) {
+                        let sliceIdx = Math.floor(y / sH);
+                        let offset = (sliceIdx % 2 === 0) ? Math.floor(50 * safeDmg) : Math.floor(-50 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let sx = Math.max(0, Math.min(w - 1, x + offset));
+                            let i = (y * w + x) * 4; let si = (y * w + sx) * 4;
+                            data[i] = 255 - temp[si + 1]; data[i + 1] = temp[si + 2]; data[i + 2] = temp[si];
+                        }
+                    } break;
+                case '165': { // Vortex Warp
+                    let cx = w / 2; let cy = h / 2;
+                    let maxRadius = Math.min(w, h) / 2;
+                    let strength = 2 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        let dy = y - cy;
+                        for (let x = 0; x < w; x++) {
+                            let dx = x - cx;
+                            let dist = Math.sqrt(dx * dx + dy * dy);
+                            let maxD = Math.max(1, dist);
+                            let angle = Math.atan2(dy, dx) + (strength * (Math.max(0, maxRadius - maxD)) / maxRadius);
+                            let sx = Math.max(0, Math.min(w - 1, Math.floor(cx + Math.cos(angle) * dist)));
+                            let sy = Math.max(0, Math.min(h - 1, Math.floor(cy + Math.sin(angle) * dist)));
+                            let i = (y * w + x) * 4; let si = (sy * w + sx) * 4;
+                            data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                        }
+                    }
+                    break;
+                }
+                case '166': { // Chroma Corrupt
+                    let drR = Math.floor(30 * safeDmg);
+                    let drG = Math.floor(15 * safeDmg);
+                    let drB = Math.floor(45 * safeDmg);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let sxR = Math.max(0, Math.min(w - 1, Math.floor(x + Math.sin(y * 0.05) * drR)));
+                            let syR = Math.max(0, Math.min(h - 1, Math.floor(y + Math.cos(x * 0.05) * drR)));
+                            let sxG = Math.max(0, Math.min(w - 1, Math.floor(x - Math.sin(y * 0.03) * drG)));
+                            let syG = Math.max(0, Math.min(h - 1, Math.floor(y + Math.cos(x * 0.03) * drG)));
+                            let sxB = Math.max(0, Math.min(w - 1, Math.floor(x + Math.sin(y * 0.07) * drB)));
+                            let syB = Math.max(0, Math.min(h - 1, Math.floor(y - Math.cos(x * 0.07) * drB)));
+                            let i = (y * w + x) * 4;
+                            let siR = (syR * w + sxR) * 4; let siG = (syG * w + sxG) * 4; let siB = (syB * w + sxB) * 4;
+                            data[i] = temp[siR]; data[i + 1] = temp[siG + 1]; data[i + 2] = temp[siB + 2];
+                        }
+                    }
+                    break;
+                }
+                case '167': { // Pixel Melt Down
+                    let meltLen = Math.floor(100 * safeDmg);
+                    let threshold = 50;
+                    for (let x = 0; x < w; x++) {
+                        let run = 0;
+                        for (let y = 0; y < h; y++) {
+                            let i = (y * w + x) * 4;
+                            if (run > 0) {
+                                let si = ((Math.max(0, y - run)) * w + x) * 4;
+                                data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2];
+                                run--;
+                            } else {
+                                let luma = temp[i] * 0.3 + temp[i + 1] * 0.59 + temp[i + 2] * 0.11;
+                                if (luma < threshold && Math.random() < 0.1 * safeDmg) {
+                                    run = Math.floor(Math.random() * meltLen);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                case '169': { for (let i = 0; i < len; i += 4) { if (temp[i] + temp[i + 1] + temp[i + 2] > 384) { data[i] = 255 - temp[i]; data[i + 1] = 255 - temp[i + 1]; data[i + 2] = 255 - temp[i + 2]; } } break; }
+                case '170': { let contrast = 3 * safeDmg; for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, Math.max(0, (temp[i] - 128) * contrast + 128)); data[i + 1] = Math.min(255, Math.max(0, (temp[i + 1] - 128) * contrast + 128)); data[i + 2] = Math.min(255, Math.max(0, (temp[i + 2] - 128) * contrast + 128)); } break; }
+                case '173': { for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; let si = (y * w + (w - 1 - x)) * 4; data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2]; } } break; }
+                case '174': { let shift = Math.floor(20 * safeDmg); if (shift < 1) shift = 1; for (let y = 0; y < h; y += shift) { for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; } } break; }
+                case '175': { let shift = Math.floor(20 * safeDmg); if (shift < 1) shift = 1; for (let x = 0; x < w; x += shift) { for (let y = 0; y < h; y++) { let i = (y * w + x) * 4; data[i] = 0; data[i + 1] = 0; data[i + 2] = 0; } } break; }
+                case '176': { for (let i = 0; i < len; i += 4) { let L = (temp[i] + temp[i + 1] + temp[i + 2]) / 3; data[i] = (L > 128) ? 255 : temp[i]; data[i + 1] = (L > 128) ? 255 : temp[i + 1]; data[i + 2] = (L > 128) ? 255 : temp[i + 2]; } break; }
+                case '177': { for (let i = 0; i < len; i += 4) { let L = (temp[i] + temp[i + 1] + temp[i + 2]) / 3; data[i] = (L < 128) ? 0 : temp[i]; data[i + 1] = (L < 128) ? 0 : temp[i + 1]; data[i + 2] = (L < 128) ? 0 : temp[i + 2]; } break; }
+                case '178': { for (let i = 0; i < len; i += 4) { data[i] = temp[i] & 240; data[i + 1] = temp[i + 1] & 240; data[i + 2] = temp[i + 2] & 240; } break; }
+                case '179': { for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; if (Math.random() < 0.05 * safeDmg) { data[i] = 255; data[i + 1] = 0; data[i + 2] = 0; } } } break; }
+                case '180': { for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; if (Math.random() < 0.05 * safeDmg) { data[i] = 0; data[i + 1] = 255; data[i + 2] = 0; } } } break; }
+                case '181': { for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; if (Math.random() < 0.05 * safeDmg) { data[i] = 0; data[i + 1] = 0; data[i + 2] = 255; } } } break; }
+                case '182': { for (let y = 0; y < h; y++) { let off = Math.floor(Math.sin(y * 0.1) * 50 * safeDmg); for (let x = 0; x < w; x++) { let i = (y * w + x) * 4; let sx = Math.max(0, Math.min(w - 1, x + off)); let si = (y * w + sx) * 4; data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2]; } } break; }
+                case '183': { for (let x = 0; x < w; x++) { let off = Math.floor(Math.cos(x * 0.1) * 50 * safeDmg); for (let y = 0; y < h; y++) { let i = (y * w + x) * 4; let sy = Math.max(0, Math.min(h - 1, y + off)); let si = (sy * w + x) * 4; data[i] = temp[si]; data[i + 1] = temp[si + 1]; data[i + 2] = temp[si + 2]; } } break; }
+                case '184': { for (let i = 0; i < len; i += 4) { data[i] = temp[i] * temp[i] / 255; data[i + 1] = temp[i + 1] * temp[i + 1] / 255; data[i + 2] = temp[i + 2] * temp[i + 2] / 255; } break; }
+                case '185': { for (let i = 0; i < len; i += 4) { data[i] = Math.sqrt(temp[i] / 255) * 255; data[i + 1] = Math.sqrt(temp[i + 1] / 255) * 255; data[i + 2] = Math.sqrt(temp[i + 2] / 255) * 255; } break; }
+                case '186': { let s = Math.floor(10 * Math.max(1, safeDmg)); for (let y = 0; y < h; y += s) { for (let x = 0; x < w; x += s) { if (Math.random() < 0.5) for (let dy = 0; dy < s && y + dy < h; dy++)for (let dx = 0; dx < s && x + dx < w; dx++) { let i = ((y + dy) * w + (x + dx)) * 4; data[i] = 255 - temp[i]; data[i + 1] = 255 - temp[i + 1]; data[i + 2] = 255 - temp[i + 2]; } } } break; }
+                case '187': { for (let i = 0; i < len; i += 4) { data[i] = temp[i] ^ 85; data[i + 1] = temp[i + 1] ^ 85; data[i + 2] = temp[i + 2] ^ 85; } break; }
+                case '188': { for (let i = 0; i < len; i += 4) { data[i] = temp[i] ^ 170; data[i + 1] = temp[i + 1] ^ 170; data[i + 2] = temp[i + 2] ^ 170; } break; }
+                case '189': { let amount = Math.floor(20 * safeDmg); for (let i = 0; i < len; i += 4) { data[i] = Math.min(255, temp[i] + amount); data[i + 1] = Math.max(0, temp[i + 1] - amount); data[i + 2] = Math.max(0, temp[i + 2] - amount); } break; }
+                case '190': { let amount = Math.floor(20 * safeDmg); for (let i = 0; i < len; i += 4) { data[i] = Math.max(0, temp[i] - amount); data[i + 1] = Math.max(0, temp[i + 1] - amount); data[i + 2] = Math.min(255, temp[i + 2] + amount); } break; }
+                case '191': { for (let i = 0; i < len; i += 4) { data[i] = temp[i] > 128 ? 255 : 0; data[i + 1] = temp[i + 1]; data[i + 2] = temp[i + 2]; } break; }
+                case '192': { for (let i = 0; i < len; i += 4) { data[i] = temp[i]; data[i + 1] = temp[i + 1] > 128 ? 255 : 0; data[i + 2] = temp[i + 2]; } break; }
+                case '193': { for (let i = 0; i < len; i += 4) { data[i] = temp[i]; data[i + 1] = temp[i + 1]; data[i + 2] = temp[i + 2] > 128 ? 255 : 0; } break; }
+                case '194': { for (let i = 0; i < len; i += 4) { let L = (temp[i] + temp[i + 1] + temp[i + 2]) / 3; data[i] = L; data[i + 1] = temp[i + 1]; data[i + 2] = temp[i + 2]; } break; }
+                case '195': { for (let i = 0; i < len; i += 4) { let L = (temp[i] + temp[i + 1] + temp[i + 2]) / 3; data[i] = temp[i]; data[i + 1] = L; data[i + 2] = temp[i + 2]; } break; }
+                case '196': { for (let i = 0; i < len; i += 4) { let L = (temp[i] + temp[i + 1] + temp[i + 2]) / 3; data[i] = temp[i]; data[i + 1] = temp[i + 1]; data[i + 2] = L; } break; }
+                case '197': { let s = Math.floor(w * h * 0.1 * safeDmg); for (let k = 0; k < s; k++) { let i = Math.floor(Math.random() * len / 4) * 4; data[i] = Math.random() * 255; data[i + 1] = Math.random() * 255; data[i + 2] = Math.random() * 255; } break; }
+                case '198': { // Quad Split RGB
+                    let hw = Math.floor(w / 2), hh = Math.floor(h / 2);
+                    let newData = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let srcX = Math.min(w - 1, (x % hw) * 2);
+                            let srcY = Math.min(h - 1, (y % hh) * 2);
+                            let srcI = (srcY * w + srcX) * 4;
+                            let dstI = (y * w + x) * 4;
+                            if (x < hw && y < hh) { newData[dstI] = temp[srcI]; newData[dstI + 1] = 0; newData[dstI + 2] = 0; }
+                            else if (x >= hw && y < hh) { newData[dstI] = 0; newData[dstI + 1] = temp[srcI + 1]; newData[dstI + 2] = 0; }
+                            else if (x < hw && y >= hh) { newData[dstI] = 0; newData[dstI + 1] = 0; newData[dstI + 2] = temp[srcI + 2]; }
+                            else { newData[dstI] = temp[srcI]; newData[dstI + 1] = temp[srcI + 1]; newData[dstI + 2] = temp[srcI + 2]; }
+                            newData[dstI + 3] = 255;
+                        }
+                    }
+                    data.set(newData);
+                    break;
+                }
+                case '199': { // Quad Merge RGB
+                    let hw = Math.floor(w / 2), hh = Math.floor(h / 2);
+                    let newData = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let srcX = Math.floor(x / 2);
+                            let srcY = Math.floor(y / 2);
+                            let rI = (srcY * w + srcX) * 4;
+                            let gI = (srcY * w + Math.min(w - 1, srcX + hw)) * 4;
+                            let bI = (Math.min(h - 1, srcY + hh) * w + srcX) * 4;
+                            let dstI = (y * w + x) * 4;
+                            newData[dstI] = temp[rI]; newData[dstI + 1] = temp[gI + 1]; newData[dstI + 2] = temp[bI + 2];
+                            newData[dstI + 3] = 255;
+                        }
+                    }
+                    data.set(newData);
+                    break;
+                }
+                case '200': { // Tri Split H
+                    let w3 = Math.floor(w / 3);
+                    let newData = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let srcX = Math.min(w - 1, (x % w3) * 3);
+                            let srcI = (y * w + srcX) * 4;
+                            let dstI = (y * w + x) * 4;
+                            if (x < w3) { newData[dstI] = temp[srcI]; newData[dstI + 1] = 0; newData[dstI + 2] = 0; }
+                            else if (x < w3 * 2) { newData[dstI] = 0; newData[dstI + 1] = temp[srcI + 1]; newData[dstI + 2] = 0; }
+                            else { newData[dstI] = 0; newData[dstI + 1] = 0; newData[dstI + 2] = temp[srcI + 2]; }
+                            newData[dstI + 3] = 255;
+                        }
+                    }
+                    data.set(newData);
+                    break;
+                }
+                case '201': { // Tri Merge H
+                    let w3 = Math.floor(w / 3);
+                    let newData = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let srcX = Math.floor(x / 3);
+                            let rI = (y * w + srcX) * 4;
+                            let gI = (y * w + Math.min(w - 1, srcX + w3)) * 4;
+                            let bI = (y * w + Math.min(w - 1, srcX + w3 * 2)) * 4;
+                            let dstI = (y * w + x) * 4;
+                            newData[dstI] = temp[rI]; newData[dstI + 1] = temp[gI + 1]; newData[dstI + 2] = temp[bI + 2];
+                            newData[dstI + 3] = 255;
+                        }
+                    }
+                    data.set(newData);
+                    break;
+                }
+                case '202': { // Spectral Decay
+                    let newD = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let decay = Math.pow(x / w, 2 * safeDmg);
+                            let phase = (y / h) * Math.PI * 2 * safeDmg;
+                            let rSrc = Math.max(0, Math.min(w - 1, Math.floor(x + Math.sin(phase) * 30 * safeDmg)));
+                            let gSrc = Math.max(0, Math.min(w - 1, Math.floor(x - Math.sin(phase * 1.3) * 20 * safeDmg)));
+                            let bSrc = Math.max(0, Math.min(w - 1, Math.floor(x + Math.cos(phase * 0.7) * 40 * safeDmg)));
+                            let ySrcR = Math.max(0, Math.min(h - 1, Math.floor(y + Math.cos(x * 0.03) * 15 * safeDmg)));
+                            newD[i] = Math.min(255, temp[(ySrcR * w + rSrc) * 4] * (1 - decay) + (255 * decay * Math.abs(Math.sin(y * 0.05))));
+                            newD[i + 1] = Math.min(255, temp[(y * w + gSrc) * 4 + 1] * (1 - decay * 0.5));
+                            newD[i + 2] = Math.min(255, temp[(y * w + bSrc) * 4 + 2] * (1 - decay * 0.8) + (200 * decay * Math.abs(Math.cos(x * 0.07))));
+                            newD[i + 3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '203': { // Pixel Smash
+                    let newD = new Uint8ClampedArray(len);
+                    let smash = Math.max(2, Math.floor(8 * safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let bx = Math.floor(x / smash) * smash;
+                            let by = Math.floor(y / smash) * smash;
+                            let si = (by * w + bx) * 4;
+                            let i = (y * w + x) * 4;
+                            let shiftX = Math.floor(Math.sin(by * 0.1 + bx * 0.07) * smash * safeDmg);
+                            let shiftY = Math.floor(Math.cos(bx * 0.1 + by * 0.05) * smash * safeDmg);
+                            let sx = Math.max(0, Math.min(w - 1, bx + shiftX));
+                            let sy = Math.max(0, Math.min(h - 1, by + shiftY));
+                            let ssi = (sy * w + sx) * 4;
+                            newD[i] = temp[ssi]; newD[i+1] = temp[si+1]; newD[i+2] = temp[ssi+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '204': { // Entropy Burn
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i+1], b = temp[i+2];
+                        let luma = r * 0.3 + g * 0.59 + b * 0.11;
+                        let entropy = (r ^ g ^ b);
+                        let burn = (entropy / 255) * safeDmg;
+                        data[i]   = Math.min(255, r + burn * Math.sin(luma * 0.05) * 100);
+                        data[i+1] = Math.min(255, Math.max(0, g - burn * 80));
+                        data[i+2] = Math.min(255, b + burn * Math.cos(luma * 0.03) * 120);
+                        if (entropy > 200 && Math.random() < 0.05 * safeDmg) {
+                            data[i] = 255; data[i+1] = Math.random() * 100; data[i+2] = 0;
+                        }
+                    }
+                    break;
+                }
+                case '205': { // Mirror Storm
+                    let newD = new Uint8ClampedArray(len);
+                    let bands = Math.max(2, Math.floor(6 * safeDmg));
+                    let bh = Math.floor(h / bands);
+                    for (let y = 0; y < h; y++) {
+                        let band = Math.floor(y / bh);
+                        let localY = y - band * bh;
+                        let mirY = band % 2 === 0 ? localY : bh - 1 - localY;
+                        let srcY = Math.max(0, Math.min(h - 1, band * bh + mirY));
+                        let shiftX = Math.floor(Math.sin(band * 1.3) * 30 * safeDmg);
+                        for (let x = 0; x < w; x++) {
+                            let srcX = Math.max(0, Math.min(w - 1, (band % 3 === 0 ? w - 1 - x : x) + shiftX));
+                            let i = (y * w + x) * 4;
+                            let si = (srcY * w + srcX) * 4;
+                            newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
