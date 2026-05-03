@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foto</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cossette+Texte&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #000000;
@@ -17,7 +18,7 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Cossette Texte', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0;
             overflow: hidden;
         }
@@ -392,7 +393,7 @@
         <div class="guide-header">
             <h3>Help Menu</h3>
             <p>Type numbers/binds separated by spaces & press ENTER</p>
-            <input type="text" id="help-search" placeholder="Search effects... (Press ENTER to close)"
+            <input type="text" id="help-search" placeholder="Click here to search effects..."
                 autocomplete="off">
         </div>
 
@@ -599,6 +600,18 @@
                 <div><span>198</span> Pixel Smash</div>
                 <div><span>199</span> Entropy Burn</div>
                 <div><span>200</span> Mirror Storm</div>
+                <div><span>201</span> Pixel Drift</div>
+                <div><span>202</span> Hue Rotate</div>
+                <div><span>203</span> Tunnel Zoom</div>
+                <div><span>204</span> Ripple RGB</div>
+                <div><span>205</span> Diagonal Warp</div>
+                <div><span>206</span> Color Burn</div>
+                <div><span>207</span> Kaleidoscope Spin</div>
+                <div><span>208</span> Pixel Rain</div>
+                <div><span>209</span> Retrowave</div>
+                <div><span>210</span> Ink Bleed</div>
+                <div><span>211</span> Plasma Web</div>
+                <div><span>212</span> Shatter</div>
             </div>
         </div>
 
@@ -606,11 +619,11 @@
             <div><b>Z</b> Undo Action (Requires ENTER)</div>
             <div><b>R</b> Reset Base (Requires ENTER)</div>
             <div><b>D</b> or <b>SAVE</b> Download Image</div>
-            <div><b>?</b> or <b>HELP</b> Toggle Menu</div>
-            <div><b>+</b> Zoom In (Requires ENTER)</div>
-            <div><b>-</b> Zoom Out (Requires ENTER)</div>
+            <div><b>+</b> / <b>-</b> Zoom In / Out (ENTER)</div>
             <div><b>NUKE</b> Random destruction (Requires ENTER)</div>
             <div><b>ENTER</b> Execute typed buffer</div>
+            <div><b>&#8592;&#8593;&#8594;&#8595;</b> Tile/wrap-scroll image</div>
+            <div><b>R.N</b> Reverse of filter N</div>
         </div>
     </div>
 
@@ -636,7 +649,7 @@
         let justEntered = false;
         let damageMultiplier = 1;
         let zoomLevel = 1;
-        const MAX_UNDO = 25;
+        let historyIndex = -1; // -1 = live (no navigation)
 
         function updateActiveEffects() {
             const list = document.getElementById('active-effects-list');
@@ -650,7 +663,8 @@
         function toggleGuide() {
             guideModal.classList.toggle('active');
             if (guideModal.classList.contains('active')) {
-                helpSearch.focus();
+                // Don't auto-focus search — user must click into it
+                // Typing continues to go to the effect buffer while guide is open
             } else {
                 helpSearch.blur();
                 helpSearch.value = "";
@@ -894,15 +908,44 @@
             if (key === "Backspace") {
                 buffer = buffer.slice(0, -1);
                 typeOverlay.textContent = buffer;
-                typeOverlay.style.fontSize = '14vw';
+                typeOverlay.style.fontSize = buffer.replace(/\s/g,'').length > 3 ? '7vw' : '14vw';
                 updateActiveEffects();
                 typeOverlay.style.opacity = buffer.length > 0 ? 1 : 0;
                 justEntered = false;
                 return;
             }
 
-            // Buffer Entry Check (Alphanumeric and symbols)
-            if (/^[a-zA-Z0-9 \?\+\-\=]$/.test(key)) {
+            // Arrow keys: tile/wrap-scroll the image
+            if (key === 'ArrowLeft' || key === 'ArrowRight' || key === 'ArrowUp' || key === 'ArrowDown') {
+                e.preventDefault();
+                if (!originalImageData) return;
+                const w = canvas.width, h = canvas.height;
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const src = new Uint8ClampedArray(imgData.data);
+                const stepX = Math.max(20, Math.ceil(w / 15));
+                const stepY = Math.max(20, Math.ceil(h / 15));
+                let shiftX = 0, shiftY = 0;
+                if (key === 'ArrowLeft')  shiftX = -stepX;
+                if (key === 'ArrowRight') shiftX =  stepX;
+                if (key === 'ArrowUp')    shiftY = -stepY;
+                if (key === 'ArrowDown')  shiftY =  stepY;
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        let sx = ((x - shiftX) % w + w) % w;
+                        let sy = ((y - shiftY) % h + h) % h;
+                        let i  = (y  * w + x)  * 4;
+                        let si = (sy * w + sx) * 4;
+                        imgData.data[i]   = src[si];
+                        imgData.data[i+1] = src[si+1];
+                        imgData.data[i+2] = src[si+2];
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+                return;
+            }
+
+            // Buffer Entry Check (Alphanumeric, symbols and full stop)
+            if (/^[a-zA-Z0-9 \?\+\-\=\.]$/.test(key)) {
                 if (key === ' ') e.preventDefault();
 
                 if (justEntered) {
@@ -911,17 +954,25 @@
                 }
                 buffer += key.toUpperCase();
                 typeOverlay.textContent = buffer;
-                typeOverlay.style.fontSize = '14vw';
+                // Shrink font after 3 chars
+                typeOverlay.style.fontSize = buffer.replace(/\s/g,'').length > 3 ? '7vw' : '14vw';
                 updateActiveEffects();
                 typeOverlay.style.opacity = 1;
             }
         });
 
         function saveState() {
+            // If navigating history, truncate forward states before saving
+            if (historyIndex !== -1) {
+                undoStack = undoStack.slice(0, historyIndex);
+                dmgStack = dmgStack.slice(0, historyIndex);
+                historyUndoStack = historyUndoStack.slice(0, historyIndex);
+                historyIndex = -1;
+            }
             undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
             dmgStack.push(damageMultiplier);
             historyUndoStack.push([...masterCommandHistory]);
-            if (undoStack.length > MAX_UNDO) { undoStack.shift(); dmgStack.shift(); historyUndoStack.shift(); }
+            // No limit - unlimited undo
         }
 
         function undo() {
@@ -957,14 +1008,28 @@
                 else if (cmd === 'HELP' || cmd === '?') toggleGuide();
                 else if (cmd === '+' || cmd === '=') { zoomLevel += 0.5; applyZoom(); flashMessage("ZOOM +"); }
                 else if (cmd === '-') { zoomLevel = Math.max(0.5, zoomLevel - 0.5); applyZoom(); flashMessage("ZOOM -"); }
-                else if (cmd === 'O') { zoomLevel = 1; applyZoom(); flashMessage("ZOOM RESET"); }
+                else if (cmd === 'O') {
+                    // Reset tiling: redraw original + all effects, discarding any manual tile shifts
+                    saveState();
+                    ctx.putImageData(originalImageData, 0, 0);
+                    if (masterCommandHistory.length > 0) {
+                        let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        let temp = new Uint8ClampedArray(imgData.data);
+                        for (let act of masterCommandHistory) {
+                            applyEffect(act.id, imgData.data, temp, canvas.width, canvas.height, act.dmg);
+                            temp.set(imgData.data);
+                        }
+                        ctx.putImageData(imgData, 0, 0);
+                    }
+                    flashMessage("TILE RESET");
+                }
                 else if (cmd === 'NUKE') {
                     if (i === 0 || commands[i - 1] !== 'NUKE') saveState();
                     const w = canvas.width, h = canvas.height;
                     let imgData = ctx.getImageData(0, 0, w, h);
                     let temp = new Uint8ClampedArray(imgData.data);
                     for (let j = 0; j < 15; j++) {
-                        let randCmd = Math.floor(Math.random() * 198).toString();
+                        let randCmd = Math.floor(Math.random() * 206).toString();
                         let randDmg = damageMultiplier + Math.random() * 5;
                         applyEffect(randCmd, imgData.data, temp, w, h, randDmg);
                         temp.set(imgData.data);
@@ -988,6 +1053,28 @@
                     ctx.putImageData(imgData, 0, 0);
                     damageMultiplier += 2.5;
                     flashMessage("TAJED");
+                }
+                // R.<number> = reverse/opposite of that filter
+                else if (/^R\.[0-9]+$/.test(cmd)) {
+                    const numStr = cmd.slice(2);
+                    if (i === 0 || !/^R\.[0-9]+$/.test(commands[i - 1])) saveState();
+                    const w = canvas.width, h = canvas.height;
+                    let imgData = ctx.getImageData(0, 0, w, h);
+                    let temp = new Uint8ClampedArray(imgData.data);
+                    // Apply forward effect on a scratch copy
+                    let scratch = new Uint8ClampedArray(imgData.data);
+                    let scratchTemp = new Uint8ClampedArray(imgData.data);
+                    applyEffect(numStr, scratch, scratchTemp, w, h, damageMultiplier);
+                    // Reverse: blend original back against the effect (invert the delta)
+                    for (let p = 0; p < scratch.length; p += 4) {
+                        imgData.data[p]   = Math.min(255, Math.max(0, 2 * temp[p]   - scratch[p]));
+                        imgData.data[p+1] = Math.min(255, Math.max(0, 2 * temp[p+1] - scratch[p+1]));
+                        imgData.data[p+2] = Math.min(255, Math.max(0, 2 * temp[p+2] - scratch[p+2]));
+                    }
+                    masterCommandHistory.push({ id: 'R.' + numStr, dmg: damageMultiplier });
+                    ctx.putImageData(imgData, 0, 0);
+                    damageMultiplier += 0.5;
+                    saveToStorage();
                 }
                 else if (/^[0-9]+$/.test(cmd)) {
                     if (i === 0 || !/^[0-9]+$/.test(commands[i - 1])) saveState();
@@ -1038,7 +1125,9 @@
                 '176': '179', '177': '180', '178': '181', '179': '182', '180': '183', '181': '184', '182': '185', '183': '186',
                 '184': '187', '185': '188', '186': '189', '187': '190', '188': '191', '189': '192', '190': '193', '191': '194',
                 '192': '195', '193': '196', '194': '198', '195': '199', '196': '200', '197': '201',
-                '198': '203', '199': '204', '200': '205'
+                '198': '203', '199': '204', '200': '205',
+                '201': '206', '202': '207', '203': '208', '204': '209', '205': '210', '206': '211',
+                '207': '212', '208': '213', '209': '214', '210': '215', '211': '216', '212': '217'
             };
             if (idMap[cmdId] !== undefined) cmdId = idMap[cmdId];
             const len = data.length;
@@ -2653,6 +2742,217 @@
                             let i = (y * w + x) * 4;
                             let si = (srcY * w + srcX) * 4;
                             newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '206': { // Pixel Drift
+                    let drift = Math.floor(8 * safeDmg);
+                    let newD = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let angle = (x + y) * 0.05 * safeDmg;
+                            let sx = Math.max(0, Math.min(w - 1, Math.floor(x + Math.cos(angle) * drift)));
+                            let sy = Math.max(0, Math.min(h - 1, Math.floor(y + Math.sin(angle) * drift)));
+                            let si = (sy * w + sx) * 4;
+                            newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '207': { // Hue Rotate
+                    let hueShift = (safeDmg * 60) % 360;
+                    let cos = Math.cos(hueShift * Math.PI / 180);
+                    let sin = Math.sin(hueShift * Math.PI / 180);
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i] / 255, g = temp[i+1] / 255, b = temp[i+2] / 255;
+                        let nr = r*(cos+(1-cos)/3+sin*Math.sqrt(1/3)) + g*((1-cos)/3-sin*Math.sqrt(1/3)) + b*((1-cos)/3+sin*Math.sqrt(1/3));
+                        let ng = r*((1-cos)/3+sin*Math.sqrt(1/3)) + g*(cos+(1-cos)/3) + b*((1-cos)/3-sin*Math.sqrt(1/3));
+                        let nb = r*((1-cos)/3-sin*Math.sqrt(1/3)) + g*((1-cos)/3+sin*Math.sqrt(1/3)) + b*(cos+(1-cos)/3);
+                        data[i]   = Math.min(255, Math.max(0, nr * 255));
+                        data[i+1] = Math.min(255, Math.max(0, ng * 255));
+                        data[i+2] = Math.min(255, Math.max(0, nb * 255));
+                    }
+                    break;
+                }
+                case '208': { // Tunnel Zoom
+                    let zcx = w / 2, zcy = h / 2;
+                    let zFactor = 1 + 0.3 * safeDmg;
+                    let newD = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let sx = Math.max(0, Math.min(w - 1, Math.floor(zcx + (x - zcx) / zFactor)));
+                            let sy = Math.max(0, Math.min(h - 1, Math.floor(zcy + (y - zcy) / zFactor)));
+                            let si = (sy * w + sx) * 4;
+                            newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '209': { // Ripple RGB
+                    let ripAmp = 10 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let rxR = Math.max(0, Math.min(w-1, Math.floor(x + Math.sin(y * 0.1) * ripAmp)));
+                            let rxG = Math.max(0, Math.min(w-1, Math.floor(x + Math.sin(y * 0.1 + 2) * ripAmp)));
+                            let rxB = Math.max(0, Math.min(w-1, Math.floor(x + Math.sin(y * 0.1 + 4) * ripAmp)));
+                            data[i]   = temp[(y * w + rxR) * 4];
+                            data[i+1] = temp[(y * w + rxG) * 4 + 1];
+                            data[i+2] = temp[(y * w + rxB) * 4 + 2];
+                        }
+                    }
+                    break;
+                }
+                case '210': { // Diagonal Warp
+                    let dwAmt = Math.floor(20 * safeDmg);
+                    let newD = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let sx = Math.max(0, Math.min(w-1, x + Math.floor(Math.sin((x + y) * 0.05) * dwAmt)));
+                            let sy = Math.max(0, Math.min(h-1, y + Math.floor(Math.cos((x - y) * 0.05) * dwAmt)));
+                            let si = (sy * w + sx) * 4;
+                            newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '211': { // Color Burn
+                    for (let i = 0; i < len; i += 4) {
+                        let r = temp[i], g = temp[i+1], b = temp[i+2];
+                        let amt = Math.min(1, safeDmg * 0.5);
+                        data[i]   = Math.min(255, Math.max(0, r < 128 ? Math.floor(r * r / 255 * (1 + amt)) : r + (255 - r) * amt));
+                        data[i+1] = Math.min(255, Math.max(0, g < 128 ? Math.floor(g * g / 255)              : g * (1 - amt)));
+                        data[i+2] = Math.min(255, Math.max(0, b * b / 255 + (Math.random() - 0.5) * 30 * amt));
+                    }
+                    break;
+                }
+                case '212': { // Kaleidoscope Spin
+                    let kcx = w / 2, kcy = h / 2;
+                    let segs = Math.max(4, Math.floor(4 + safeDmg * 2));
+                    let segAngle = (Math.PI * 2) / segs;
+                    let newD = new Uint8ClampedArray(len);
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let dx = x - kcx, dy = y - kcy;
+                            let angle = Math.atan2(dy, dx);
+                            let dist  = Math.sqrt(dx*dx + dy*dy);
+                            let seg   = Math.floor(((angle + Math.PI) / segAngle));
+                            let a2    = (seg % 2 === 0) ? ((angle + Math.PI) % segAngle) : segAngle - ((angle + Math.PI) % segAngle);
+                            a2 -= Math.PI;
+                            let sx = Math.max(0, Math.min(w-1, Math.floor(kcx + Math.cos(a2) * dist)));
+                            let sy = Math.max(0, Math.min(h-1, Math.floor(kcy + Math.sin(a2) * dist)));
+                            let i  = (y  * w + x)  * 4;
+                            let si = (sy * w + sx) * 4;
+                            newD[i] = temp[si]; newD[i+1] = temp[si+1]; newD[i+2] = temp[si+2]; newD[i+3] = 255;
+                        }
+                    }
+                    data.set(newD);
+                    break;
+                }
+                case '213': { // Pixel Rain
+                    let rainDensity = Math.max(0.01, 0.05 * safeDmg);
+                    let trailLen    = Math.floor(40 * safeDmg);
+                    for (let x = 0; x < w; x++) {
+                        if (Math.random() < rainDensity) {
+                            let startY = Math.floor(Math.random() * h);
+                            for (let t = 0; t < trailLen && startY + t < h; t++) {
+                                let i = ((startY + t) * w + x) * 4;
+                                let fade = 1 - t / trailLen;
+                                data[i]   = Math.min(255, temp[i]   * (1 - fade) + 0   * fade);
+                                data[i+1] = Math.min(255, temp[i+1] * (1 - fade) + 255 * fade);
+                                data[i+2] = Math.min(255, temp[i+2] * (1 - fade) + 80  * fade);
+                            }
+                        }
+                    }
+                    break;
+                }
+                case '214': { // Retrowave
+                    let bandH = Math.max(4, Math.floor(20 / safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        let band  = Math.floor(y / bandH);
+                        let phase = band * 0.7;
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let r = temp[i], g = temp[i+1], b = temp[i+2];
+                            data[i]   = Math.min(255, Math.max(0, r * Math.cos(phase)   + b * Math.sin(phase)));
+                            data[i+1] = Math.min(255, Math.max(0, g * 0.6));
+                            data[i+2] = Math.min(255, Math.max(0, b * Math.cos(phase+1) + r * Math.sin(phase+1)));
+                        }
+                    }
+                    break;
+                }
+                case '215': { // Ink Bleed
+                    let bleedRadius = Math.max(1, Math.floor(3 * safeDmg));
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let luma = temp[i]*0.3 + temp[i+1]*0.59 + temp[i+2]*0.11;
+                            if (luma < 80) {
+                                // Bleed dark pixels outward into neighbours
+                                for (let dy = -bleedRadius; dy <= bleedRadius; dy++) {
+                                    for (let dx = -bleedRadius; dx <= bleedRadius; dx++) {
+                                        let nx = Math.max(0, Math.min(w-1, x+dx));
+                                        let ny = Math.max(0, Math.min(h-1, y+dy));
+                                        let ni = (ny * w + nx) * 4;
+                                        data[ni]   = Math.max(0, data[ni]   - 40);
+                                        data[ni+1] = Math.max(0, data[ni+1] - 40);
+                                        data[ni+2] = Math.max(0, data[ni+2] - 40);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                case '216': { // Plasma Web
+                    let pFreq = 0.03 * safeDmg;
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            let i = (y * w + x) * 4;
+                            let p = Math.sin(x * pFreq) + Math.sin(y * pFreq) +
+                                    Math.sin((x + y) * pFreq * 0.7) +
+                                    Math.sin(Math.sqrt(x*x + y*y) * pFreq * 0.5);
+                            p = (p + 4) / 8; // normalise 0-1
+                            data[i]   = Math.min(255, temp[i]   * (0.5 + p));
+                            data[i+1] = Math.min(255, temp[i+1] * (0.5 + Math.sin(p * Math.PI)));
+                            data[i+2] = Math.min(255, temp[i+2] * (0.5 + Math.cos(p * Math.PI)));
+                        }
+                    }
+                    break;
+                }
+                case '217': { // Shatter
+                    let shards = Math.max(4, Math.floor(12 * safeDmg));
+                    let shardW = Math.ceil(w / shards);
+                    let shardH = Math.ceil(h / shards);
+                    let newD   = new Uint8ClampedArray(len);
+                    // Copy original first
+                    newD.set(temp);
+                    for (let sy = 0; sy < shards; sy++) {
+                        for (let sx = 0; sx < shards; sx++) {
+                            if (Math.random() < 0.5) continue; // some shards stay put
+                            let ox = Math.floor((Math.random() - 0.5) * shardW * 2);
+                            let oy = Math.floor((Math.random() - 0.5) * shardH * 2);
+                            for (let py = 0; py < shardH; py++) {
+                                for (let px = 0; px < shardW; px++) {
+                                    let srcX = sx * shardW + px;
+                                    let srcY = sy * shardH + py;
+                                    let dstX = srcX + ox;
+                                    let dstY = srcY + oy;
+                                    if (srcX >= w || srcY >= h) continue;
+                                    if (dstX < 0 || dstX >= w || dstY < 0 || dstY >= h) continue;
+                                    let si = (srcY * w + srcX) * 4;
+                                    let di = (dstY * w + dstX) * 4;
+                                    newD[di] = temp[si]; newD[di+1] = temp[si+1]; newD[di+2] = temp[si+2];
+                                }
+                            }
                         }
                     }
                     data.set(newD);
