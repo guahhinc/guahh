@@ -893,10 +893,10 @@
                 const stepX = Math.max(20, Math.ceil(w / 15));
                 const stepY = Math.max(20, Math.ceil(h / 15));
                 let shiftX = 0, shiftY = 0;
-                if (key === 'ArrowLeft')  shiftX = -stepX;
-                if (key === 'ArrowRight') shiftX =  stepX;
-                if (key === 'ArrowUp')    shiftY = -stepY;
-                if (key === 'ArrowDown')  shiftY =  stepY;
+                if (key === 'ArrowLeft')  shiftX =  stepX;
+                if (key === 'ArrowRight') shiftX = -stepX;
+                if (key === 'ArrowUp')    shiftY =  stepY;
+                if (key === 'ArrowDown')  shiftY = -stepY;
                 for (let y = 0; y < h; y++) {
                     for (let x = 0; x < w; x++) {
                         let sx = ((x - shiftX) % w + w) % w;
