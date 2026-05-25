@@ -5,103 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guahh</title>
-
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- EXTERNAL GUAHH ACCOUNTS SCRIPT (Must use https:// to prevent Mixed Content blocking) -->
+    <!-- EXTERNAL GUAHH ACCOUNTS CONNECTOR -->
     <script src="https://guahh.net/acc.js"></script>
 
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #1d1d1f;
-            --accent-color: #0071e3;
-            --accent-hover: #0077ed;
-            --glass-bg: rgba(255, 255, 255, 0.5);
-            --gray-text: #86868b;
-            --section-padding: 120px 20px;
-        }
-
+        :root { --bg-color: #ffffff; --text-color: #1d1d1f; --accent-color: #0071e3; --accent-hover: #0077ed; --glass-bg: rgba(255, 255, 255, 0.5); --gray-text: #86868b; --section-padding: 120px 20px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body {
-            font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color); color: var(--text-color);
-            line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden;
-        }
+        body { font-family: "Inter Tight", -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* NAVIGATION */
-        nav {
-            position: fixed; top: 0; width: 100%; height: 56px;
-            background-color: var(--glass-bg);
-            backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-            z-index: 9999; border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex; justify-content: center; align-items: center;
-        }
-
+        nav { position: fixed; top: 0; width: 100%; height: 56px; background-color: var(--glass-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); z-index: 9999; border-bottom: 1px solid rgba(0, 0, 0, 0.05); display: flex; justify-content: center; align-items: center; }
         .nav-content { max-width: 980px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .nav-left { display: flex; align-items: center; }
         .nav-logo-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; }
-        .nav-logo-btn img { height: 22px; width: auto; filter: invert(1); opacity: 0.9; transition: opacity 0.2s; }
+        .nav-logo-btn img { height: 22px; filter: invert(1); opacity: 0.9; transition: 0.2s; }
         .nav-logo-btn:hover img { opacity: 1; }
         .nav-links { display: flex; align-items: center; }
-        
-        .nav-links a, .nav-text-btn {
-            color: #424245; text-decoration: none; font-size: 13px; font-weight: 500;
-            margin-left: 24px; transition: color 0.3s ease; background: none; border: none;
-            font-family: inherit; cursor: pointer; padding: 0;
-        }
+        .nav-links a, .nav-text-btn { color: #424245; text-decoration: none; font-size: 13px; font-weight: 500; margin-left: 24px; transition: 0.3s; background: none; border: none; cursor: pointer; }
         .nav-links a:hover, .nav-text-btn:hover { color: #000; }
-        
         #nav-auth-btn { font-weight: 600; color: var(--accent-color); }
 
-        /* HERO SECTION */
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-            align-items: center; text-align: center; padding: 120px 20px 60px 20px;
-            background: #ffffff; animation: fadeIn 0.5s ease-out forwards;
-        }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px 20px; background: #ffffff; animation: fadeIn 0.5s ease-out forwards; }
         .hero-logo { width: 100px; margin-bottom: 40px; filter: invert(1); }
-        .hero h1, .product-title {
-            background: linear-gradient(135deg, #1d1d1f 0%, #1d1d1f 30%, #ff0055 35%, #ffdd00 45%, #00ffff 55%, #bd00ff 65%, #1d1d1f 70%, #1d1d1f 100%);
-            background-size: 800% 100%; background-position: 100% 0;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; color: transparent; line-height: 1.1;
-        }
+        .hero h1, .product-title { background: linear-gradient(135deg, #1d1d1f 0%, #1d1d1f 30%, #ff0055 35%, #ffdd00 45%, #00ffff 55%, #bd00ff 65%, #1d1d1f 70%, #1d1d1f 100%); background-size: 800% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero h1 { font-size: 68px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; animation: textShimmer 1.1s ease-out 0.5s 1 forwards; }
         .hero h2 { font-size: 28px; font-weight: 500; color: var(--gray-text); margin-bottom: 40px; }
-        
-        .cta-button {
-            background-color: var(--accent-color); color: white; padding: 14px 28px;
-            border-radius: 980px; text-decoration: none; font-size: 17px; font-weight: 500;
-            transition: all 0.3s ease; border: none; cursor: pointer; display: inline-block; font-family: inherit;
-        }
+        .cta-button { background-color: var(--accent-color); color: white; padding: 14px 28px; border-radius: 980px; text-decoration: none; font-size: 17px; font-weight: 500; transition: 0.3s; border: none; cursor: pointer; display: inline-block; }
         .cta-button:hover { background-color: var(--accent-hover); transform: scale(1.02); }
-        .cta-button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        /* PRODUCT SECTIONS */
-        .product-section { padding: var(--section-padding); text-align: center; scroll-margin-top: 70px; }
-        .product-container { max-width: 980px; margin: 0 auto; }
-        .app-icon { max-width: 140px; height: auto; margin-bottom: 30px; display: block; margin-left: auto; margin-right: auto; }
+        .product-section { padding: var(--section-padding); text-align: center; }
+        .app-icon { max-width: 140px; margin: 0 auto 30px auto; display: block; }
         .product-title { font-size: 52px; font-weight: 700; margin-bottom: 15px; }
         .product-desc { font-size: 22px; color: var(--gray-text); max-width: 600px; margin: 0 auto 30px auto; }
         .link-arrow { color: var(--accent-color); text-decoration: none; font-size: 20px; font-weight: 500; }
-        .link-arrow:hover { text-decoration: underline; }
         #webfarm { background: linear-gradient(180deg, rgba(76, 175, 80, 0.08) 0%, #ffffff 100%); }
 
-        /* BLOG SECTION */
         .blog-section { padding: 80px 20px; background: linear-gradient(180deg, #e3f9e5 0%, #ffffff 100%); }
         .blog-container { max-width: 680px; margin: 0 auto; }
-        .blog-card { background: #ffffff; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); text-align: left; transition: transform 0.3s ease; }
+        .blog-card { background: #ffffff; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: left; }
         .blog-card.hidden-post { display: none; }
         .blog-author { font-weight: 600; font-size: 16px; }
         .blog-date { color: var(--gray-text); font-size: 13px; display: block; margin-bottom: 15px; }
         .blog-content { font-size: 17px; color: #333; white-space: pre-wrap; }
-        .see-more-container { text-align: center; margin-top: 20px; }
-        .see-more-btn { background: transparent; border: 1px solid #d2d2d7; padding: 12px 24px; border-radius: 98px; font-size: 14px; font-weight: 500; color: var(--text-color); cursor: pointer; transition: all 0.2s ease; }
+        .see-more-btn { background: transparent; border: 1px solid #d2d2d7; padding: 12px 24px; border-radius: 98px; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .see-more-btn:hover { background: #e5e5ea; transform: scale(1.02); }
 
         /* ACCOUNT DASHBOARD */
@@ -112,33 +61,23 @@
         .dash-name { font-size: 28px; font-weight: 700; margin-bottom: 5px; }
         .dash-handle { font-size: 16px; color: var(--gray-text); margin-bottom: 5px; }
         .dash-email { font-size: 14px; color: var(--gray-text); margin-bottom: 25px; }
-        
-        .enterprise-badge { background: linear-gradient(135deg, #bd00ff, #00ffff); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; vertical-align: middle; margin-left: 8px; display: inline-block; }
-
+        .enterprise-badge { background: linear-gradient(135deg, #bd00ff, #00ffff); color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-left: 8px; display: inline-block; }
         .dash-input-group { margin-top: 30px; text-align: left; }
         .dash-input-group h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #333; }
-        .dash-input { width: 100%; padding: 12px 14px; border-radius: 10px; background: #F5F5F7; color: #333; border: 1px solid #E5E5EA; font-size: 15px; font-family: inherit; margin-bottom: 15px; transition: border 0.2s; }
-        .dash-input:focus { outline: none; border-color: var(--accent-color); background: #FFF; }
-        
+        .dash-input { width: 100%; padding: 12px 14px; border-radius: 10px; background: #F5F5F7; border: 1px solid #E5E5EA; font-size: 15px; margin-bottom: 15px; }
         .dash-btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
-        .btn-secondary { background-color: #86868b; }
-        .btn-secondary:hover { background-color: #6e6e73; }
-        .btn-danger { background-color: #ff3b30; }
-        .btn-danger:hover { background-color: #d70015; }
-        
+        .btn-secondary { background-color: #86868b; } .btn-danger { background-color: #ff3b30; }
         .dash-status { font-size: 13px; margin-top: 10px; font-weight: 500; min-height: 20px; }
-        .status-success { color: #34c759; }
-        .status-error { color: #ff3b30; }
+        .status-success { color: #34c759; } .status-error { color: #ff3b30; }
 
         footer { background-color: #f5f5f7; padding: 40px 20px; font-size: 12px; color: #86868b; text-align: center; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes textShimmer { 0% { background-position: 100% 0; } 100% { background-position: 0% 0; } }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 52px; }
             .product-title { font-size: 42px; }
-            .nav-links a:not(:last-child) { display: none; } /* Hide all text links except the Auth button on mobile */
+            .nav-links a:not(:last-child) { display: none; }
             .dash-btn-row { flex-direction: column; }
         }
     </style>
@@ -157,13 +96,12 @@
                 <button class="nav-text-btn" onclick="goHome()">Guahh</button>
                 <a href="#webfarm" onclick="goHome()">Web Farm</a>
                 <a href="#blog" onclick="goHome()">News</a>
-                <!-- The magic Guahh Accounts button -->
                 <button id="nav-auth-btn" class="nav-text-btn" onclick="handleNavAuthClick()">Account</button>
             </div>
         </div>
     </nav>
 
-    <!-- WRAPPER FOR PUBLIC CONTENT -->
+    <!-- PUBLIC CONTENT -->
     <div id="public-view">
         <section class="hero" id="top">
             <img src="https://raw.githubusercontent.com/guahhinc/kangaroo/main/guahh_white.png" alt="Guahh" class="hero-logo">
@@ -185,14 +123,14 @@
             <div class="blog-container">
                 <h2 style="text-align: center; margin-bottom: 40px; font-size: 32px;">Latest Updates</h2>
                 <div id="blog-feed"><p style="text-align:center; color:#86868b;">Loading news...</p></div>
-                <div id="see-more-container" class="see-more-container" style="display: none;">
+                <div id="see-more-container" style="text-align:center; display:none; margin-top:20px;">
                     <button id="see-more-btn" class="see-more-btn">See More Updates</button>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- WRAPPER FOR ACCOUNT DASHBOARD -->
+    <!-- ACCOUNT DASHBOARD -->
     <div id="account-view">
         <div class="dashboard-container">
             <h2 class="product-title" style="text-align:center; margin-bottom:30px; font-size:42px;">Your Account</h2>
@@ -215,7 +153,6 @@
             <div id="enterprise-panel" class="dash-card" style="display:none; border: 2px solid #bd00ff;">
                 <h3 style="color:#bd00ff; margin-bottom:10px; font-size:22px;">Enterprise Controls</h3>
                 <p style="color:var(--gray-text); font-size:14px; margin-bottom:20px;">Create and manage strictly controlled Mini Accounts.</p>
-                
                 <div class="dash-input-group" style="margin-top:0;">
                     <input type="text" id="mini-first" class="dash-input" placeholder="User First Name">
                     <input type="text" id="mini-user" class="dash-input" placeholder="Desired Username (Must be unique)">
@@ -237,7 +174,7 @@
         <p>Designed in Australia</p>
     </footer>
 
-    <!-- SCRIPT FOR GOOGLE SHEETS BLOG -->
+    <!-- BLOG SCRIPT -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const baseSheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS5nNm_vphbxU5Fh29LtrkR7FzsqfPhtaru4gFFkz9jIclxcPOADbLuYv12jmsYY_TxqrRNSoFrZBiO/pub";
@@ -246,43 +183,32 @@
                 .then(data => {
                     const rows = data.split('\n').slice(1).filter(r => r.trim() !== '').reverse();
                     const feed = document.getElementById('blog-feed');
-                    const seeMoreContainer = document.getElementById('see-more-container');
-                    const seeMoreBtn = document.getElementById('see-more-btn');
                     feed.innerHTML = '';
                     rows.forEach((row, index) => {
                         const cols = row.split('\t');
                         const card = document.createElement('div');
-                        card.className = 'blog-card';
-                        if (index >= 3) card.classList.add('hidden-post');
+                        card.className = 'blog-card' + (index >= 3 ? ' hidden-post' : '');
                         card.innerHTML = `<span class="blog-author">${cols[0] || 'Guahh'}</span><span class="blog-date">${cols[2] || ''}</span><div class="blog-content">${cols[1] || ''}</div>`;
                         feed.appendChild(card);
                     });
                     if (rows.length > 3) {
-                        seeMoreContainer.style.display = 'block';
-                        seeMoreBtn.addEventListener('click', () => {
-                            document.querySelectorAll('.hidden-post').forEach(post => { post.classList.remove('hidden-post'); post.style.animation = 'fadeIn 0.5s ease-out forwards'; });
-                            seeMoreContainer.style.display = 'none';
+                        document.getElementById('see-more-container').style.display = 'block';
+                        document.getElementById('see-more-btn').addEventListener('click', (e) => {
+                            document.querySelectorAll('.hidden-post').forEach(post => { post.classList.remove('hidden-post'); });
+                            e.target.parentElement.style.display = 'none';
                         });
                     }
-                    if (rows.length === 0) feed.innerHTML = '<p style="text-align:center;">No updates found.</p>';
-                })
-                .catch(err => { document.getElementById('blog-feed').innerHTML = '<p style="text-align:center; color:red;">Failed to load updates.</p>'; });
+                });
         });
     </script>
 
-    <!-- SCRIPT FOR GUAHH ACCOUNTS DASHBOARD MANAGEMENT -->
+    <!-- GUAHH ACCOUNTS DASHBOARD MANAGEMENT SCRIPT -->
     <script>
-    (() => {
-        // Obfuscated API URL to communicate securely with central Guahh Accounts server
-        const _EU = "YUhSMGNEb3ZMM05qY21sd2RDNW5iMjluYkdVdVkyOXRMMjFoWTNKdmN5OXpMMEZMWm5salluTExSV2xxZDJkTExUSjVZVlEwVFV4aVFXRTNkM2QxVlVWcVZFWlpVM1ZWYldOS1JYUldTMFpXWldGVFoyRkZkRzVCWVRscWJITnFiellXUzB4TGNVbElZbWR1Wnk5bGVHVmo=";
-        const GUAHH_API_URL = atob(atob(_EU)); 
-        const GUAHH_VERSION = "0.1";
+        const API_URL = "https://script.google.com/macros/s/AKfycbyKEijwgK2yaT4MLbAa7w7uUEjTFYSsUmcJEtUKRVeaSGa_tnAa9jlyjo4WKLKqIHbgng/exec";
         const _TK = "_guahh_tk";
         const _UID = "_guahh_uid";
-
         let activeUser = null;
 
-        // Navigation Functions
         window.goHome = () => {
             document.getElementById('account-view').style.display = 'none';
             document.getElementById('public-view').style.display = 'block';
@@ -291,78 +217,54 @@
 
         window.handleNavAuthClick = () => {
             if (activeUser) {
-                // If logged in, go to Dashboard
                 document.getElementById('public-view').style.display = 'none';
                 document.getElementById('account-view').style.display = 'block';
                 window.scrollTo({top: 0});
             } else {
-                // Trigger the acc.js Modal provided by the external script
-                if (typeof window.openGuahhModal === 'function') {
-                    window.openGuahhModal();
-                } else {
-                    console.error("Guahh Accounts script not loaded yet.");
-                }
+                if (typeof window.openGuahhModal === 'function') { window.openGuahhModal(); }
             }
         };
 
-        // Listen for successful logins from the acc.js Modal
         window.addEventListener('guahh-login-success', (e) => {
             activeUser = e.detail;
             renderDashboard();
-            handleNavAuthClick(); // Immediately show dashboard
+            handleNavAuthClick();
         });
 
         async function secureApiCall(action, payload = {}) {
-            payload.action = action;
-            payload.version = GUAHH_VERSION;
-            
+            payload.action = action; payload.version = "0.1";
             if (localStorage.getItem(_TK)) {
                 payload.token = localStorage.getItem(_TK);
                 payload.userId = localStorage.getItem(_UID);
             }
-
-            const encPayload = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-            const res = await fetch(GUAHH_API_URL, {
+            const res = await fetch(API_URL, {
                 method: 'POST', mode: 'cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: encPayload
+                body: btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
             });
-
-            const raw = await res.text();
-            let data;
-            try { data = JSON.parse(decodeURIComponent(escape(atob(raw)))); } 
-            catch(err) { throw new Error("Server communication error."); }
+            const data = JSON.parse(decodeURIComponent(escape(atob(await res.text()))));
             if (data.result === 'error') throw new Error(data.error);
             return data;
         }
 
-        // On Page Load: Silently check if the user is logged in
         async function initAuth() {
             if (localStorage.getItem(_TK) && localStorage.getItem(_UID)) {
                 try {
                     const res = await secureApiCall('verify_token');
-                    if (res && res.user) {
-                        activeUser = res.user;
-                        renderDashboard();
-                    }
+                    if (res && res.user) { activeUser = res.user; renderDashboard(); }
                 } catch (e) {
-                    // Invalid session, silent clear
-                    localStorage.removeItem(_TK);
-                    localStorage.removeItem(_UID);
-                    activeUser = null;
+                    localStorage.removeItem(_TK); localStorage.removeItem(_UID);
                 }
             }
             updateNavState();
         }
 
         function updateNavState() {
-            const btn = document.getElementById('nav-auth-btn');
-            btn.textContent = activeUser ? "My Account" : "Log In";
+            document.getElementById('nav-auth-btn').textContent = activeUser ? "My Account" : "Log In";
         }
 
         function renderDashboard() {
             if (!activeUser) return;
-            
             document.getElementById('dash-avatar').src = activeUser.profilePicUrl || `https://api.dicebear.com/9.x/thumbs/svg?seed=${activeUser.username}`;
             
             let nameHTML = activeUser.firstName;
@@ -373,23 +275,16 @@
             document.getElementById('dash-handle').textContent = `@${activeUser.username}`;
             document.getElementById('dash-email').textContent = activeUser.email || "No email attached";
             
-            if (activeUser.accountType === 'ENTERPRISE') {
-                document.getElementById('enterprise-panel').style.display = 'block';
-            } else {
-                document.getElementById('enterprise-panel').style.display = 'none';
-            }
-            
+            document.getElementById('enterprise-panel').style.display = (activeUser.accountType === 'ENTERPRISE') ? 'block' : 'none';
             updateNavState();
         }
 
         function showStatus(elementId, msg, isError) {
             const el = document.getElementById(elementId);
-            el.textContent = msg;
-            el.className = 'dash-status ' + (isError ? 'status-error' : 'status-success');
+            el.textContent = msg; el.className = 'dash-status ' + (isError ? 'status-error' : 'status-success');
             setTimeout(() => { el.textContent = ''; }, 5000);
         }
 
-        // Action: Update Profile Picture
         document.getElementById('update-pic-btn').onclick = async () => {
             const btn = document.getElementById('update-pic-btn');
             const urlInput = document.getElementById('pic-url-input').value.trim();
@@ -402,14 +297,10 @@
                 document.getElementById('dash-avatar').src = activeUser.profilePicUrl;
                 document.getElementById('pic-url-input').value = '';
                 showStatus('pic-status', "Profile picture updated successfully!", false);
-            } catch (e) {
-                showStatus('pic-status', e.message, true);
-            } finally {
-                btn.disabled = false; btn.textContent = "Save Picture";
-            }
+            } catch (e) { showStatus('pic-status', e.message, true); } 
+            finally { btn.disabled = false; btn.textContent = "Save Picture"; }
         };
 
-        // Action: Create Mini Account
         document.getElementById('create-mini-btn').onclick = async () => {
             const btn = document.getElementById('create-mini-btn');
             const first = document.getElementById('mini-first').value.trim();
@@ -420,29 +311,19 @@
             
             btn.disabled = true; btn.textContent = "Creating...";
             try {
-                const res = await secureApiCall('create_mini_account', { 
-                    miniFirstName: first, miniUsername: user, miniPassword: pass 
-                });
-                
-                document.getElementById('mini-first').value = '';
-                document.getElementById('mini-user').value = '';
-                document.getElementById('mini-pass').value = '';
+                await secureApiCall('create_mini_account', { miniFirstName: first, miniUsername: user, miniPassword: pass });
+                document.getElementById('mini-first').value = ''; document.getElementById('mini-user').value = ''; document.getElementById('mini-pass').value = '';
                 showStatus('mini-status', `Success! Created mini account @${user}`, false);
-            } catch (e) {
-                showStatus('mini-status', e.message, true);
-            } finally {
-                btn.disabled = false; btn.textContent = "Create Mini Account";
-            }
+            } catch (e) { showStatus('mini-status', e.message, true); } 
+            finally { btn.disabled = false; btn.textContent = "Create Mini Account"; }
         };
 
-        // Action: Logout
         document.getElementById('logout-btn').onclick = async () => {
             try { await secureApiCall('logout'); } catch(e) {}
             localStorage.removeItem(_TK); localStorage.removeItem(_UID);
             activeUser = null; updateNavState(); goHome();
         };
 
-        // Action: Logout All Devices
         document.getElementById('logout-all-btn').onclick = async () => {
             if(confirm("This will log you out on ALL devices. Proceed?")) {
                 try { await secureApiCall('logout_all'); } catch(e) {}
@@ -451,10 +332,7 @@
             }
         };
 
-        // Bootstrap App
         initAuth();
-    })();
     </script>
 </body>
-
 </html>
