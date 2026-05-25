@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Guahh Accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter Tight', sans-serif; overflow: hidden; }
+        .modal { background-color: #FFFFFF; padding: 30px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; text-align: center; color: #333333; animation: popUp 0.3s ease-out; }
+        @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; color: #888; cursor: pointer; }
+        .title { font-size: 1.8rem; margin: 0 0 20px 0; font-weight: 700; color: #111; }
+        .input { width: 100%; margin-bottom: 12px; padding: 12px 14px; border-radius: 8px; background: #F5F5F5; color: #333; border: 1px solid #DDDDDD; font-size: 15px; font-family: inherit; box-sizing: border-box; }
+        .input:focus { outline: none; border-color: #007bff; background: #FFFFFF; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; background-color: #007bff; color: white; transition: 0.2s; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn:active { transform: scale(0.97); }
+        .link { color: #007bff; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; display: inline-block; margin-top: 15px; }
+        .error { color: #D32F2F; font-size: 13px; margin-bottom: 10px; display: none; }
+        
+        .spinner { width: 40px; height: 40px; animation: rotate 2s linear infinite; margin: 0 auto; display: block; }
+        .spinner circle { stroke: #007bff; stroke-width: 4; stroke-dasharray: 1, 200; stroke-dashoffset: 0; animation: dash 1.5s ease-in-out infinite; stroke-linecap: round; fill: none; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        @keyframes dash { 0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; } 50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; } 100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; } }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        
+        <div id="loading-view" style="display: none; padding: 30px 0;">
+            <svg class="spinner" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20"></circle></svg>
+            <p style="color: #666; margin-top: 20px; font-weight: 500;">Connecting to Guahh...</p>
+        </div>
+
+        <div id="continue-view" style="display: none;">
+            <h2 class="title">Welcome back</h2>
+            <img id="user-avatar" src="" style="width: 84px; height: 84px; border-radius: 50%; object-fit: cover; border: 3px solid #E0E0E0; margin-bottom: 15px;">
+            <h3 id="user-name" style="margin: 0 0 5px 0; font-size: 20px; color: #111;"></h3>
+            <p id="user-handle" style="margin: 0 0 20px 0; font-size: 14px; color: #666;"></p>
+            <button id="continue-btn" class="btn">Continue</button><br>
+            <a class="link" onclick="switchView('login')">Not you? Use another account</a>
+        </div>
+
+        <div id="login-view" style="display: block;">
+            <h2 class="title">Sign In</h2>
+            <div id="login-error" class="error"></div>
+            <input type="text" id="login-id" class="input" placeholder="Email or Username">
+            <input type="password" id="login-pass" class="input" placeholder="Password">
+            <button id="login-btn" class="btn">Log In</button><br>
+            <a class="link" onclick="switchView('signup')">Create a Guahh Account</a>
+        </div>
+
+        <div id="signup-view" style="display: none;">
+            <h2 class="title">Create Account</h2>
+            <div id="signup-error" class="error"></div>
+            <input type="text" id="signup-first" class="input" placeholder="First Name">
+            <input type="text" id="signup-user" class="input" placeholder="Username (Unique)">
+            <input type="email" id="signup-email" class="input" placeholder="Email Address">
+            <input type="password" id="signup-pass" class="input" placeholder="Password (Min 6 chars)">
+            <button id="signup-btn" class="btn">Sign Up</button><br>
+            <a class="link" onclick="switchView('login')">Already have an account? Sign in</a>
+        </div>
+    </div>
+
+    <script>
+        const p1 = "https://script.google.com/macros/s/";
+        const p2 = "AKfycbyKEijwgK2yaT4MLbAa7w7uUEjTFYSsUmcJEtUKRVeaSGa_tnAa9jlyjo4WKLKqIHbgng";
+        const API_URL = p1 + p2 + "/exec";
+        let cachedUser = null;
+
+        function closeModal() {
+            window.parent.postMessage({ type: 'GUAHH_AUTH_CLOSE' }, '*');
+        }
+
+        function switchView(view) {
+            document.getElementById('login-error').style.display = 'none';
+            document.getElementById('signup-error').style.display = 'none';
+            ['loading', 'continue', 'login', 'signup'].forEach(v => {
+                document.getElementById(`${v}-view`).style.display = v === view ? 'block' : 'none';
+            });
+        }
+
+        function showError(view, msg) {
+            const el = document.getElementById(`${view}-error`);
+            el.textContent = msg; el.style.display = 'block';
+        }
+
+        async function apiCall(action, payload) {
+            payload.action = action; payload.version = "0.1";
+            const res = await fetch(API_URL, {
+                method: 'POST', mode: 'cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
+            });
+            const data = JSON.parse(decodeURIComponent(escape(atob(await res.text()))));
+            if (data.result === 'error') throw new Error(data.error);
+            return data;
+        }
+
+        // When opened, check if there's a token stored centrally on guahh.net
+        window.addEventListener('message', async (event) => {
+            if (event.data.type === 'GUAHH_AUTH_OPEN') {
+                const tk = localStorage.getItem('_g_tk');
+                const uid = localStorage.getItem('_g_uid');
+                if (tk && uid) {
+                    switchView('loading');
+                    try {
+                        const res = await apiCall('verify_token', { token: tk, userId: uid });
+                        cachedUser = res.user;
+                        document.getElementById('user-avatar').src = cachedUser.profilePicUrl || '';
+                        document.getElementById('user-name').textContent = cachedUser.firstName || 'User';
+                        document.getElementById('user-handle').textContent = `@${cachedUser.username || 'unknown'}`;
+                        switchView('continue');
+                    } catch (e) {
+                        localStorage.removeItem('_g_tk'); localStorage.removeItem('_g_uid');
+                        switchView('login');
+                    }
+                } else {
+                    switchView('login');
+                }
+            }
+        });
+
+        function sendSuccess(token, user) {
+            // Save centrally to guahh.net
+            localStorage.setItem('_g_tk', token);
+            localStorage.setItem('_g_uid', user.userId);
+            // Send payload to host website
+            window.parent.postMessage({ type: 'GUAHH_AUTH_SUCCESS', token, user }, '*');
+        }
+
+        document.getElementById('continue-btn').onclick = () => {
+            sendSuccess(localStorage.getItem('_g_tk'), cachedUser);
+        };
+
+        document.getElementById('login-btn').onclick = async () => {
+            const btn = document.getElementById('login-btn');
+            const id = document.getElementById('login-id').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            if (!id || !pass) return showError('login', 'Please fill in all fields.');
+            
+            btn.textContent = 'Logging in...'; btn.disabled = true;
+            try {
+                const res = await apiCall('login', { identifier: id, password: pass });
+                sendSuccess(res.token, res.user);
+            } catch (e) { showError('login', e.message); } 
+            finally { btn.textContent = 'Log In'; btn.disabled = false; }
+        };
+
+        document.getElementById('signup-btn').onclick = async () => {
+            const btn = document.getElementById('signup-btn');
+            const first = document.getElementById('signup-first').value.trim();
+            const user = document.getElementById('signup-user').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const pass = document.getElementById('signup-pass').value.trim();
+            if (!first || !user || !email || !pass) return showError('signup', 'All fields required.');
+            
+            btn.textContent = 'Creating...'; btn.disabled = true;
+            try {
+                const res = await apiCall('signup', { firstName: first, username: user, email: email, password: pass });
+                sendSuccess(res.token, res.user);
+            } catch (e) { showError('signup', e.message); } 
+            finally { btn.textContent = 'Sign Up'; btn.disabled = false; }
+        };
+    </script>
+</body>
+</html>
