@@ -266,10 +266,11 @@ var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
 if (isNaN(globalVolume)) globalVolume = 1.0;
 
 /* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
-var currentVersion = '1.1.1';
+var currentVersion = '1.2';
 var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
 var updateVersion = '';
 var updateCode = '';
+var updateDescription = '';
 
 /* ══════ GUAHH INTELLIGENCE: WATCH ANALYTICS & SMART AUTOFILL ══════ */
 var guahhWordTracker = JSON.parse(localStorage.getItem('guahhWordTracker') || '{}');
@@ -1428,25 +1429,33 @@ function renderSettings(preserve) {
   }
   else if (settingsPage === 'SOFTWARE_UPDATE') {
     h += '<h2 class="settings-section-title">software update</h2>';
-    h += '<div style="display:flex;flex-direction:column;align-items:center;margin:30px 0;gap:15px;text-align:center;">';
-    h += '<img src="https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_icon.png" style="width:110px;height:110px;object-fit:contain;" alt="">';
-    h += '<div style="font-size:26px;color:rgba(255,255,255,0.9);font-weight:400">viewOS ' + currentVersion + '</div>';
+    
+    var displayVer = (updateState === 'UPDATE_AVAILABLE' && updateVersion) ? updateVersion : currentVersion;
+    h += '<div style="display:flex;flex-direction:column;align-items:center;margin:30px 0;gap:20px;text-align:center;">';
+    h += '<img src="https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_icon.png" style="width:180px;height:180px;object-fit:contain;" alt="">';
+    h += '<div style="font-size:36px;color:rgba(255,255,255,0.9);font-weight:400">viewOS ' + displayVer + '</div>';
     
     if (updateState === 'CHECKING') {
-      h += '<div style="font-size:18px;color:rgba(255,255,255,0.5)">checking for updates...</div>';
+      h += '<div style="font-size:24px;color:rgba(255,255,255,0.5)">checking for updates...</div>';
     } else if (updateState === 'UP_TO_DATE') {
-      h += '<div style="font-size:18px;color:rgba(255,255,255,0.5)">your system is up to date</div>';
+      h += '<div style="font-size:24px;color:rgba(255,255,255,0.5)">your system is up to date</div>';
     } else if (updateState === 'UPDATE_AVAILABLE') {
-      h += '<div style="font-size:18px;color:#4CAF50;font-weight:400">version ' + updateVersion + ' is available!</div>';
+      h += '<div style="font-size:24px;color:#4CAF50;font-weight:400">version ' + updateVersion + ' is available!</div>';
     } else if (updateState === 'ERROR') {
-      h += '<div style="font-size:18px;color:#F44336;">failed to check for updates</div>';
+      h += '<div style="font-size:24px;color:#F44336;">failed to check for updates</div>';
     }
     h += '</div>';
 
     if (updateState === 'UPDATE_AVAILABLE') {
       h += '<button class="setting-btn" data-action="install_update"><span>Install Update (' + updateVersion + ')</span><span class="setting-val">Install</span></button>';
-    } else {
-      h += '<button class="setting-btn" data-action="check_updates"><span>Check for updates</span><span class="setting-val">' + (updateState === 'CHECKING' ? 'Checking' : 'Check') + '</span></button>';
+    }
+    h += '<button class="setting-btn" data-action="check_updates"><span>Check for updates</span><span class="setting-val">' + (updateState === 'CHECKING' ? 'Checking' : 'Check') + '</span></button>';
+
+    if (updateState === 'UPDATE_AVAILABLE' && updateDescription) {
+      h += '<div style="margin-top: 40px; padding: 25px; background: rgba(255,255,255,0.06); border-radius: 13px; font-size: 20px; line-height: 1.6; color: rgba(255,255,255,0.7); text-align: left; white-space: pre-wrap; width: 100%; border: 1px solid rgba(255,255,255,0.08); word-break: break-word;">';
+      h += '<div style="font-size: 16px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 15px; letter-spacing: 1px; font-weight: 400 !important;">Update Notes</div>';
+      h += updateDescription;
+      h += '</div>';
     }
   }
   else if (settingsPage === 'DISPLAY') {
@@ -1485,6 +1494,7 @@ function updateSettingsFocus(dir) {
 
 function checkSoftwareUpdate() {
   updateState = 'CHECKING';
+  updateDescription = '';
   renderSettings(true);
   
   fetch('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html')
@@ -1494,7 +1504,7 @@ function checkSoftwareUpdate() {
     })
     .then(function(html) {
       updateCode = html;
-      var foundVersion = '0.1';
+      var foundVersion = '1.2';
       var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
       if (match) {
         foundVersion = match[1];
@@ -1508,9 +1518,19 @@ function checkSoftwareUpdate() {
       
       if (foundVersion !== currentVersion) {
         updateState = 'UPDATE_AVAILABLE';
+        return fetch('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_description.txt')
+          .then(function(descRes) {
+            if (descRes.ok) return descRes.text();
+            return '';
+          })
+          .then(function(descText) {
+            updateDescription = descText;
+          });
       } else {
         updateState = 'UP_TO_DATE';
       }
+    })
+    .then(function() {
       renderSettings(true);
     })
     .catch(function(err) {
@@ -1548,7 +1568,6 @@ function installSoftwareUpdate() {
           });
       })
       .then(function() {
-        alert("Update installed successfully! Reloading viewOS...");
         location.reload();
       })
       .catch(function(err) {
@@ -1573,9 +1592,8 @@ function fallbackUpdateDownload() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    alert("Please replace your existing 'index.html' with the downloaded file to complete the update, then refresh!");
   } catch(e) {
-    alert("Failed to package the update file. You can download it manually from: https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html");
+    console.error("Failed to package the update file.");
   }
 }
 
