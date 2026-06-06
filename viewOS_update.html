@@ -266,7 +266,7 @@ var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
 if (isNaN(globalVolume)) globalVolume = 1.0;
 
 /* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
-var currentVersion = '1.3';
+var currentVersion = '1.4';
 var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
 var updateVersion = '';
 var updateCode = '';
@@ -1206,13 +1206,7 @@ function closeApp() {
   if (oskOpen)         { closeOSK(false); return; }
   
   if (appMode === 'SETTINGS' && settingsPage !== 'MAIN') {
-    if (settingsPage === 'SOFTWARE_UPDATE') {
-      settingsPage = 'GENERAL';
-      settingsFocusIdx = 1; // Align highlight to Software Update inside General submenu
-      renderSettings();
-      return;
-    }
-    var settingsCategories = ['GENERAL', 'DISPLAY', 'AUDIO', 'APPS'];
+    var settingsCategories = ['GENERAL', 'SOFTWARE_UPDATE', 'DISPLAY', 'AUDIO', 'APPS'];
     var prevPage = settingsPage;
     settingsPage = 'MAIN';
     settingsFocusIdx = settingsCategories.indexOf(prevPage);
@@ -1453,6 +1447,7 @@ function renderSettings(preserve) {
   
   if (settingsPage === 'MAIN') {
     h += '<button class="setting-btn" data-action="go_page" data-page="GENERAL"><span>General</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
+    h += '<button class="setting-btn" data-action="go_page" data-page="SOFTWARE_UPDATE"><span>Software Update</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
     h += '<button class="setting-btn" data-action="go_page" data-page="DISPLAY"><span>Display</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
     h += '<button class="setting-btn" data-action="go_page" data-page="AUDIO"><span>Audio</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
     h += '<button class="setting-btn" data-action="go_page" data-page="APPS"><span>Apps</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
@@ -1460,7 +1455,6 @@ function renderSettings(preserve) {
   else if (settingsPage === 'GENERAL') {
     h += '<h2 class="settings-section-title">general</h2>';
     h += '<button class="setting-btn" data-action="none"><span>Version</span><span class="setting-val">viewOS ' + currentVersion + '</span></button>';
-    h += '<button class="setting-btn" data-action="go_page" data-page="SOFTWARE_UPDATE"><span>Software Update</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
     h += '<button class="setting-btn" data-action="toggle_guahh"><span>Guahh Intelligence</span><span class="setting-val">' + (appEnabledState.guahh_assistant !== false ? 'On' : 'Off') + '</span></button>';
     h += '<button class="setting-btn" data-action="clear_guahh_cache"><span>Clear Guahh Intelligence Cache</span><span class="setting-val">Clear</span></button>';
     h += '<button class="setting-btn" data-action="reboot"><span>Reboot</span><span class="setting-val">Restart OS</span></button>';
@@ -1470,19 +1464,21 @@ function renderSettings(preserve) {
     h += '<h2 class="settings-section-title">software update</h2>';
     
     var displayVer = (updateState === 'UPDATE_AVAILABLE' && updateVersion) ? updateVersion : currentVersion;
-    h += '<div style="display:flex;flex-direction:column;align-items:center;margin:30px 0;gap:20px;text-align:center;">';
-    h += '<img src="https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_icon.png" style="width:180px;height:180px;object-fit:contain;" alt="">';
-    h += '<div style="font-size:36px;color:rgba(255,255,255,0.9);font-weight:400">viewOS ' + displayVer + '</div>';
+    h += '<div style="display:flex;flex-direction:row;align-items:center;justify-content:flex-start;margin:40px 0;gap:40px;text-align:left;width:100%;">';
+    h += '<img src="https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_icon.png" style="width:220px;height:220px;object-fit:contain;flex-shrink:0;" alt="">';
+    h += '<div style="display:flex;flex-direction:column;gap:12px;">';
+    h += '<div style="font-size:44px;color:rgba(255,255,255,0.9);font-weight:400">viewOS ' + displayVer + '</div>';
     
     if (updateState === 'CHECKING') {
-      h += '<div style="font-size:24px;color:rgba(255,255,255,0.5)">checking for updates...</div>';
+      h += '<div style="font-size:28px;color:rgba(255,255,255,0.5)">checking for updates...</div>';
     } else if (updateState === 'UP_TO_DATE') {
-      h += '<div style="font-size:24px;color:rgba(255,255,255,0.5)">your system is up to date</div>';
+      h += '<div style="font-size:28px;color:rgba(255,255,255,0.5)">your system is up to date</div>';
     } else if (updateState === 'UPDATE_AVAILABLE') {
-      h += '<div style="font-size:24px;color:#4CAF50;font-weight:400">viewOS ' + updateVersion + ' is available</div>';
+      h += '<div style="font-size:28px;color:#4CAF50;font-weight:400">viewOS ' + updateVersion + ' is available</div>';
     } else if (updateState === 'ERROR') {
-      h += '<div style="font-size:24px;color:#F44336;">failed to check for updates</div>';
+      h += '<div style="font-size:28px;color:#F44336;">failed to check for updates</div>';
     }
+    h += '</div>';
     h += '</div>';
 
     if (updateState === 'UPDATE_AVAILABLE') {
@@ -1538,7 +1534,7 @@ function checkSoftwareUpdate() {
   
   ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html', function(html) {
     updateCode = html;
-    var foundVersion = '1.3';
+    var foundVersion = '1.4';
     var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
     if (match) {
       foundVersion = match[1];
