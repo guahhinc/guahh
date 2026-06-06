@@ -265,6 +265,13 @@ try {
 var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
 if (isNaN(globalVolume)) globalVolume = 1.0;
 
+/* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
+var currentVersion = '1.4';
+var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
+var updateVersion = '';
+var updateCode = '';
+var updateDescription = '';
+
 /* ══════ GUAHH INTELLIGENCE: WATCH ANALYTICS & SMART AUTOFILL ══════ */
 var guahhWordTracker = JSON.parse(localStorage.getItem('guahhWordTracker') || '{}');
 var guahhCustomDict = JSON.parse(localStorage.getItem('guahhCustomDict') || '[]');
