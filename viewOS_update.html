@@ -1527,7 +1527,7 @@ function checkSoftwareUpdate() {
   
   ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html', function(html) {
     updateCode = html;
-    var foundVersion = '1.4.1';
+    var foundVersion = '1.4';
     var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
     if (match) {
       foundVersion = match[1];
