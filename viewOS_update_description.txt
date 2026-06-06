@@ -1,5 +1,2 @@
-Adds update description
-
-Improves Update Screen UI
-
-Bug Fixes
+- UI Changes
+- Bug Fixes
