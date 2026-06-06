@@ -1,4 +1,33 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>viewOS</title><script src="content.js"></script><style>@font-face{font-family:'Inter Tight';src:url('SystemData/InterTight-VariableFont_wght.ttf') format('truetype');font-weight:300 400;font-style:normal;font-display:swap}*{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-user-drag:none;outline:0;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}*{scrollbar-width:none!important}::-webkit-scrollbar{display:none!important}html,body,*,button,input,select,textarea,video{cursor:none!important}body{background:#000;color:#333;font-family:'Inter Tight',-apple-system,BlinkMacSystemFont,"San Francisco","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;overflow:hidden;height:100vh;width:100vw}#viewport{position:relative;width:100%;height:100%;perspective:1200px}#scroll-layer{position:absolute;top:0;left:0;width:100%;padding-top:50px;transform-style:preserve-3d;transition:transform .38s cubic-bezier(.32,.72,0,1);will-change:transform}.row-container{position:relative;margin-bottom:75px;transform-style:preserve-3d;display:flex;justify-content:center}.top-shelf-viewport{width:1344px;margin:0 auto;position:relative;overflow:visible;margin-bottom:75px;transform-style:preserve-3d}.top-shelf-row{display:flex;gap:48px;width:max-content;justify-content:flex-start;transition:transform .1s cubic-bezier(.32,.72,0,1);transform-style:preserve-3d}.top-shelf-empty{width:1344px;display:flex;align-items:center;justify-content:center;height:234px}.top-shelf-empty .boot-logo{margin:0;opacity:.5}.shelf-divider{width:1344px;margin:0 auto 38px auto;height:3px;border-radius:2px;background:rgba(255,255,255,.15)}.app-row{gap:48px;margin-bottom:85px;width:1344px;margin-left:auto;margin-right:auto;justify-content:flex-start;flex-wrap:wrap}.card-wrapper{position:relative;transform-style:preserve-3d}.card{position:relative;border-radius:20px;transform-style:preserve-3d;will-change:transform;background-color:transparent;backface-visibility:hidden;border:none;outline:0}.card-shadow-focused,.card-shadow-idle{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1}.card-shadow-idle{box-shadow:0 2px 4px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.15)}.card-shadow-focused{box-shadow:0 4px 8px rgba(0,0,0,.4),0 2px 4px rgba(0,0,0,.25);opacity:0;will-change:opacity}.card-content{position:absolute;inset:-1px;border-radius:inherit;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;border:none;outline:0}.top-shelf .card{width:416px;height:234px;border-radius:20px}.top-shelf .card-content img{width:100%;height:100%;object-fit:cover;opacity:.92;transform:scale(1.04)}.app .card{width:300px;height:180px;border-radius:20px}.app-icon-img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}.card-shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:11;mix-blend-mode:screen;opacity:0;will-change:opacity;overflow:hidden}.card-glass-border{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:12;border:1px solid rgba(255,255,255,.15);opacity:0;will-change:opacity}.app-label, .top-shelf-label{position:absolute;bottom:-52px;left:0;right:0;text-align:center;font-size:22px;font-weight:400;color:rgba(245,245,245,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;transition:color .1s,opacity .1s;opacity:0}.card-wrapper.focused .app-label,.card-wrapper.focused .top-shelf-label{opacity:1}.hero-clone{position:fixed;z-index:9999;background-size:cover;background-position:center;background-repeat:no-repeat;transition:top .65s cubic-bezier(.32,.72,0,1),left .65s cubic-bezier(.32,.72,0,1),width .65s cubic-bezier(.32,.72,0,1),height .65s cubic-bezier(.32,.72,0,1),border-radius .65s cubic-bezier(.32,.72,0,1),opacity .35s ease;pointer-events:none;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.5);will-change:top,left,width,height,opacity,border-radius}.hero-clone.expanded{top:0!important;left:0!important;width:100vw!important;height:100vh!important;border-radius:0!important}#app-overlay{position:fixed;inset:0;background:#000;z-index:9998;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .25s ease}#app-overlay.active{opacity:1;pointer-events:all}#app-content{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;opacity:0;transition:opacity .2s ease}#app-overlay.active #app-content{opacity:1}.internal-ui{padding:60px 80px 80px 80px;color:#fff;min-height:100%;max-width:1400px;margin:0 auto}.internal-ui,.internal-ui *{font-weight:400!important}.internal-ui h1{text-align:center;font-size:50px;margin-bottom:25px;font-weight:400!important}.settings-section-title{font-size:20px;font-weight:400!important;color:rgba(255,255,255,.4);margin:50px 0 20px 10px;text-transform:lowercase}.settings-section-title:first-of-type{margin-top:0}.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:30px}.photo-grid-item{position:relative;border-radius:9px;overflow:hidden;cursor:pointer;transition:box-shadow .1s ease;will-change:transform}.photo-grid-item img{width:100%;height:280px;object-fit:cover;display:block;border-radius:9px}.photo-grid-item .photo-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:#fff;font-size:14px;font-weight:400!important;padding:20px 12px 12px;border-radius:0 0 9px 9px}.photo-grid-item.focused{box-shadow:0 4px 12px rgba(0,0,0,.3)}.media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}.media-item-btn.grid-card{display:flex;flex-direction:column;align-items:flex-start;padding:0;background:rgba(255,255,255,.06);border-radius:9px;overflow:hidden;margin-bottom:0;width:100%;height:auto;text-align:left;box-shadow:none}.media-item-btn.grid-card.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.3)}.media-grid-art{width:100%;height:180px;object-fit:cover;border-radius:9px 9px 0 0;background:rgba(255,255,255,.08)}.media-grid-info{padding:16px;display:flex;flex-direction:column;gap:6px;width:100%}.media-grid-title{font-size:20px;font-weight:400!important;color:rgba(255,255,255,.9);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;text-overflow:ellipsis;width:100%;transition:color .1s;line-height:1.3}.media-item-btn.grid-card.focused .media-grid-title{color:#000}.media-grid-sub{font-size:14px;color:rgba(255,255,255,.5);transition:color .1s;margin-top:4px}.media-item-btn.grid-card.focused .media-grid-sub{color:rgba(0,0,0,.6)}.media-item-btn,.search-result-btn,.setting-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:25px 40px;margin-bottom:20px;background:rgba(255,255,255,.1);border-radius:13px;font-size:26px;font-weight:400!important;color:rgba(255,255,255,.8);transition:background .1s cubic-bezier(.32,.72,0,1),color .1s,box-shadow .1s;border:none !important;outline:0;font-family:inherit;cursor:pointer;will-change:transform;text-align:left;box-shadow:none;position:relative;overflow:hidden}.media-item-btn.focused,.search-result-btn.focused,.setting-btn.focused{background:#fff;color:#000;box-shadow:0 6px 20px rgba(0,0,0,.25)}.setting-val{font-weight:400!important;flex-shrink:0}.media-item-btn{gap:24px;padding:18px 28px;align-items:center}.media-item-art{width:80px;height:80px;border-radius:7px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.1)}.media-item-info{display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}.media-item-title{font-size:22px;font-weight:400!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-item-sub{font-size:16px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-item-dur{font-size:16px;opacity:.5;flex-shrink:0}#global-search-input{width:100%;padding:25px 30px;font-size:28px;border-radius:13px;border:none;background:rgba(255,255,255,.15);color:#fff;outline:0;margin-bottom:40px;font-family:inherit;transition:background .1s,box-shadow .1s;text-transform:lowercase}#global-search-input:focus{background:rgba(255,255,255,.25);box-shadow:0 4px 12px rgba(0,0,0,.3)}#global-search-input::placeholder{color:rgba(255,255,255,.35);text-transform:none}#video-player-overlay{position:fixed;inset:0;z-index:10000;background:#000;opacity:0;pointer-events:none;transition:opacity .1s ease}#video-player-overlay.active{opacity:1;pointer-events:all}#video-el{width:100%;height:100%;object-fit:contain;position:absolute;inset:0}#video-controls{position:absolute;bottom:0;left:0;right:0;padding:0 60px 48px 60px;background:linear-gradient(transparent,rgba(0,0,0,.9) 60%);transition:opacity .1s ease;z-index:2}#video-controls.hidden{opacity:0}#video-title-bar{font-size:24px;font-weight:400;color:#fff;margin-bottom:20px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 10px rgba(0,0,0,.6)}#video-seek-row{display:flex;align-items:center;gap:16px;margin-bottom:18px}#video-time-cur,#video-time-dur{font-size:15px;color:rgba(255,255,255,.7);font-weight:400;width:54px;flex-shrink:0}#video-time-dur{text-align:right}.seek-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative;cursor:pointer}#video-progress{height:100%;background:#fff;border-radius:2px;width:0%;transition:width .1s linear;position:relative}#video-progress::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)}#video-btn-row{display:flex;align-items:center;justify-content:flex-start;gap:16px}.vid-btn{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .1s;will-change:transform}.vid-btn .material-icons-round{font-size:22px}.vid-btn.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.vid-btn.play-pause{width:70px;height:70px}.vid-btn.play-pause .material-icons-round{font-size:30px}#video-vol-label{font-size:14px;color:rgba(255,255,255,.55);margin-left:12px}#audio-player-overlay{position:fixed;inset:0;z-index:10000;background:#0d0d0f;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .1s ease}#audio-player-overlay.active{opacity:1;pointer-events:all}#audio-bg-art{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(60px) saturate(1.4) brightness(.4);transition:background-image .1s ease}#audio-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:600px;padding:0 40px}#audio-art{width:300px;height:300px;border-radius:15px;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.6);margin-bottom:40px;background:rgba(255,255,255,.08)}#audio-track-info{text-align:center;margin-bottom:36px;width:100%}#audio-track-title{font-size:28px;font-weight:400;color:#fff;margin-bottom:8px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}#audio-track-artist{font-size:18px;color:rgba(255,255,255,.5);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.audio-seek-wrap{width:100%}#audio-seek-row{display:flex;align-items:center;gap:14px;margin-bottom:28px}#audio-time-cur,#audio-time-dur{font-size:14px;color:rgba(255,255,255,.45);width:48px;flex-shrink:0}#audio-time-dur{text-align:right}.audio-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.18);border-radius:2px;position:relative;cursor:pointer}#audio-progress{height:100%;background:#fff;border-radius:2px;width:0%;transition:width .1s linear;position:relative}#audio-progress::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%}#audio-btn-row{display:flex;align-items:center;justify-content:center;gap:20px}.aud-btn{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .1s;will-change:transform}.aud-btn .material-icons-round{font-size:22px}.aud-btn.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.aud-btn.play-pause{width:70px;height:70px}.aud-btn.play-pause .material-icons-round{font-size:30px}#photo-lightbox{position:fixed;inset:0;z-index:10002;background:rgba(0,0,0,.92);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .1s ease}#photo-lightbox.active{opacity:1;pointer-events:all}#lightbox-img{max-width:90vw;max-height:82vh;border-radius:20px;box-shadow:0 40px 100px rgba(0,0,0,.8);object-fit:contain;transform:scale(.94);transition:transform .1s cubic-bezier(.32,.72,0,1),opacity .1s ease;opacity:0}#photo-lightbox.active #lightbox-img{transform:scale(1);opacity:1}#lightbox-caption{margin-top:20px;font-size:16px;font-weight:400;color:rgba(255,255,255,.6)}#osk-overlay{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.7);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:0;opacity:0;pointer-events:none;transition:opacity .1s ease}#osk-overlay.active{opacity:1;pointer-events:all}#osk-label{color:rgba(255,255,255,.8);font-size:32px;margin-bottom:10px;width:100%;text-align:center;letter-spacing:0;text-transform:none;font-weight:400;transition:opacity .1s cubic-bezier(.32,.72,0,1), transform .1s cubic-bezier(.32,.72,0,1)}#osk-display{width:100%;max-width:1400px;background:transparent;border:none;padding:20px 28px;font-size:40px;font-weight:400;color:#fff;margin-bottom:20px;min-height:72px;font-family:'Inter Tight',sans-serif;text-align:center;white-space:pre;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;transition:opacity .1s cubic-bezier(.32,.72,0,1), transform .1s cubic-bezier(.32,.72,0,1)}#osk-display::-webkit-scrollbar{display:none}#osk-cursor{display:inline-block;width:2px;height:1.1em;background:#fff;vertical-align:text-bottom;margin-left:2px;animation:blink 1s step-end infinite}@keyframes blink{50%{opacity:0}}#osk-suggestions{width:100%;max-width:1600px;display:flex;gap:10px;justify-content:center;height:48px;margin-bottom:20px}.osk-key.sugg-btn{height:48px;min-width:auto;padding:0 24px;font-size:20px;font-weight:400;background:rgba(255,255,255,.2)}#osk-board{width:100%;max-width:1600px;display:flex;flex-direction:column;gap:10px}.osk-row{display:flex;gap:5px;justify-content:center}.osk-key{height:54px;min-width:44px;border-radius:8px;background:transparent;border:none;color:rgba(255,255,255,.8);font-size:28px;font-weight:400;font-family:'Inter Tight',sans-serif;text-transform:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;outline:0;padding:0 8px;transform-style:preserve-3d;will-change:transform}.osk-key.pill{background:rgba(255,255,255,.15);font-size:14px;text-transform:uppercase;padding:0 16px;border-radius:12px;letter-spacing:1px;min-width:70px}.osk-key.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.osk-key .material-icons-round{font-size:22px;text-transform:none}@keyframes pulse{0%{opacity:.6;transform:scale(.95)}100%{opacity:1;transform:scale(1.15)}}#boot-overlay{position:fixed;inset:0;z-index:999999999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .1s ease}#boot-overlay.hidden{opacity:0;pointer-events:none}.boot-logo{font-family:'Inter Tight',sans-serif;font-weight:300;font-size:64px;color:#fff;letter-spacing:-.02em;margin-bottom:28px}@keyframes boot-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.boot-spinner{animation:boot-spin .8s steps(12) infinite}#sleep-overlay{position:fixed;inset:0;background:#000;z-index:999999;opacity:0;pointer-events:none;transition:none}#sleep-overlay.active{opacity:1;pointer-events:all}#screensaver-overlay{position:fixed;inset:0;z-index:99999999;background:#000;opacity:0;pointer-events:none;transition:opacity .1s ease;overflow:hidden}#screensaver-overlay.active{opacity:1;pointer-events:all}#screensaver-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}#screensaver-clock{position:absolute;top:12%;left:50%;transform:translateX(-50%);font-family:'Inter Tight',sans-serif;font-size:130px;font-weight:300;color:rgba(255,255,255,.95);text-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transition:opacity .1s ease;pointer-events:none;z-index:10;text-transform:lowercase}#control-center{position:fixed;top:0;right:0;width:440px;height:100vh;background:rgba(13,13,15,.35);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-left:2px solid rgba(255,255,255,.15);padding:60px 40px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;gap:40px;z-index:100010;transform:translateX(460px);transition:transform .1s cubic-bezier(.32,.72,0,1)}#control-center.active{transform:translateX(0)}.cc-header{display:flex;flex-direction:column;align-items:flex-end;width:100%;margin-bottom:20px}#cc-time{font-family:'Inter Tight',sans-serif;font-size:80px;font-weight:300;color:#fff;line-height:1}#cc-date{font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:400;color:rgba(255,255,255,.6);margin-top:8px;letter-spacing:-.01em;text-transform:lowercase}.cc-controls-grid{display:flex;flex-direction:column;gap:16px;width:100%}.cc-row{display:flex;gap:16px;width:100%}.cc-item{width:100%;padding:24px 30px;background:rgba(255,255,255,.08);border:none !important;border-radius:13px;color:#fff;font-family:inherit;font-size:24px;font-weight:400;cursor:pointer;transition:background .1s,color .1s,box-shadow .1s;box-sizing:border-box;display:flex;align-items:center;justify-content:flex-start;outline:0;text-align:left;will-change:transform;box-shadow:none}.cc-item.half-btn{width:50%}.cc-item.focused{background:#fff!important;color:#000!important;box-shadow:0 4px 12px rgba(0,0,0,.3)!important}.cc-item.focused #cc-vol-bar{background:#000!important}.cc-item.focused #cc-vol-icon{color:#000!important}.cc-item.focused .cc-vol-track{background:rgba(0,0,0,.15)!important}.material-icons-round{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:1}.material-icons-round svg{width:1em;height:1em;fill:currentColor;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;shape-rendering:geometricPrecision}
+
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>viewOS</title><script src="content.js"></script><style>
+:root {
+  --card-border-radius: 14px;
+  --screensaver-fade-time: 0.8s;
+  --swipe-transition-time: 0.38s;
+}
+
+@font-face{font-family:'Inter Tight';src:url('SystemData/InterTight-VariableFont_wght.ttf') format('truetype');font-weight:300 400;font-style:normal;font-display:swap}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  outline: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none !important;
+  cursor: none !important;
+}
+
+::-webkit-scrollbar{display:none!important}
+
+body{background:#000;color:#333;font-family:'Inter Tight',-apple-system,BlinkMacSystemFont,"San Francisco","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;overflow:hidden;height:100vh;width:100vw}
+#viewport{position:relative;width:100%;height:100%;perspective:1200px}
+#scroll-layer{position:absolute;top:0;left:0;width:100%;padding-top:50px;transform-style:preserve-3d;transition:transform var(--swipe-transition-time) cubic-bezier(.32,.72,0,1);will-change:transform}.row-container{position:relative;margin-bottom:75px;transform-style:preserve-3d;display:flex;justify-content:center}.top-shelf-viewport{width:1344px;margin:0 auto;position:relative;overflow:visible;margin-bottom:75px;transform-style:preserve-3d}.top-shelf-row{display:flex;gap:48px;width:max-content;justify-content:flex-start;transition:transform .1s cubic-bezier(.32,.72,0,1);transform-style:preserve-3d}.top-shelf-empty{width:1344px;display:flex;align-items:center;justify-content:center;height:234px}.top-shelf-empty .boot-logo{margin:0;opacity:.5}.shelf-divider{width:1344px;margin:0 auto 38px auto;height:3px;border-radius:2px;background:rgba(255,255,255,.15)}.app-row{gap:48px;margin-bottom:85px;width:1344px;margin-left:auto;margin-right:auto;justify-content:flex-start;flex-wrap:wrap}.card-wrapper{position:relative;transform-style:preserve-3d}.card{position:relative;border-radius:var(--card-border-radius);transform-style:preserve-3d;will-change:transform;background-color:transparent;backface-visibility:hidden;border:none;outline:0}.card-shadow-focused,.card-shadow-idle{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1}.card-shadow-idle{box-shadow:0 2px 4px rgba(0,0,0,.2),0 1px 2px rgba(0,0,0,.15)}.card-shadow-focused{box-shadow:0 4px 8px rgba(0,0,0,.4),0 2px 4px rgba(0,0,0,.25);opacity:0;will-change:opacity}.card-content{position:absolute;inset:-1px;border-radius:inherit;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;border:none;outline:0}.top-shelf .card{width:416px;height:234px;border-radius:var(--card-border-radius)}.top-shelf .card-content img{width:100%;height:100%;object-fit:cover;opacity:.92;transform:scale(1.04)}.app .card{width:300px;height:180px;border-radius:var(--card-border-radius)}.app-icon-img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}.card-shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:11;mix-blend-mode:screen;opacity:0;will-change:opacity;overflow:hidden}.card-glass-border{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:12;border:1px solid rgba(255,255,255,.15);opacity:0;will-change:opacity}.app-label, .top-shelf-label{position:absolute;bottom:-52px;left:0;right:0;text-align:center;font-size:22px;font-weight:400;color:rgba(245,245,245,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px;transition:color .1s,opacity .1s;opacity:0}.card-wrapper.focused .app-label,.card-wrapper.focused .top-shelf-label{opacity:1}.hero-clone{position:fixed;z-index:9999;background-size:cover;background-position:center;background-repeat:no-repeat;transition:top .65s cubic-bezier(.32,.72,0,1),left .65s cubic-bezier(.32,.72,0,1),width .65s cubic-bezier(.32,.72,0,1),height .65s cubic-bezier(.32,.72,0,1),border-radius .65s cubic-bezier(.32,.72,0,1),opacity .35s ease;pointer-events:none;border-radius:var(--card-border-radius);box-shadow:0 20px 60px rgba(0,0,0,.5);will-change:top,left,width,height,opacity,border-radius}.hero-clone.expanded{top:0!important;left:0!important;width:100vw!important;height:100vh!important;border-radius:0!important}#app-overlay{position:fixed;inset:0;background:#000;z-index:9998;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .25s ease}#app-overlay.active{opacity:1;pointer-events:all}#app-content{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;opacity:0;transition:opacity .2s ease}#app-overlay.active #app-content{opacity:1}.internal-ui{padding:60px 80px 80px 80px;color:#fff;min-height:100%;max-width:1400px;margin:0 auto}.internal-ui,.internal-ui *{font-weight:400!important}.internal-ui h1{text-align:center;font-size:50px;margin-bottom:25px;font-weight:400!important}.settings-section-title{font-size:20px;font-weight:400!important;color:rgba(255,255,255,.4);margin:50px 0 20px 10px;text-transform:lowercase}.settings-section-title:first-of-type{margin-top:0}.media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}.media-item-btn.grid-card{display:flex;flex-direction:column;align-items:flex-start;padding:0;background:rgba(255,255,255,.06);border-radius:9px;overflow:hidden;margin-bottom:0;width:100%;height:auto;text-align:left;box-shadow:none}.media-item-btn.grid-card.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.3)}.media-grid-art{width:100%;height:180px;object-fit:cover;border-radius:9px 9px 0 0;background:rgba(255,255,255,.08)}.media-grid-info{padding:16px;display:flex;flex-direction:column;gap:6px;width:100%}.media-grid-title{font-size:20px;font-weight:400!important;color:rgba(255,255,255,.9);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;white-space:normal;overflow:hidden;text-overflow:ellipsis;width:100%;transition:color .1s;line-height:1.3}.media-item-btn.grid-card.focused .media-grid-title{color:#000}.media-grid-sub{font-size:14px;color:rgba(255,255,255,.5);transition:color .1s;margin-top:4px}.media-item-btn.grid-card.focused .media-grid-sub{color:rgba(0,0,0,.6)}.media-item-btn,.search-result-btn,.setting-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:25px 40px;margin-bottom:20px;background:rgba(255,255,255,.1);border-radius:13px;font-size:26px;font-weight:400!important;color:rgba(255,255,255,.8);transition:background .1s cubic-bezier(.32,.72,0,1),color .1s,box-shadow .1s;border:none !important;outline:0;font-family:inherit;cursor:pointer;will-change:transform;text-align:left;box-shadow:none;position:relative;overflow:hidden}.media-item-btn.focused,.search-result-btn.focused,.setting-btn.focused{background:#fff;color:#000;box-shadow:0 6px 20px rgba(0,0,0,.25)}.setting-val{font-weight:400!important;flex-shrink:0}.media-item-btn{gap:24px;padding:18px 28px;align-items:center}.media-item-art{width:80px;height:80px;border-radius:7px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.1)}.media-item-info{display:flex;flex-direction:column;gap:6px;flex:1;overflow:hidden}.media-item-title{font-size:22px;font-weight:400!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-item-sub{font-size:16px;opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.media-item-dur{font-size:16px;opacity:.5;flex-shrink:0}#global-search-input{width:100%;padding:25px 30px;font-size:28px;border-radius:13px;border:none;background:rgba(255,255,255,.15);color:#fff;outline:0;margin-bottom:40px;font-family:inherit;transition:background .1s,box-shadow .1s;text-transform:lowercase}#global-search-input:focus{background:rgba(255,255,255,.25);box-shadow:0 4px 12px rgba(0,0,0,.3)}#global-search-input::placeholder{color:rgba(255,255,255,.35);text-transform:none}#video-player-overlay{position:fixed;inset:0;z-index:10000;background:#000;opacity:0;pointer-events:none;transition:opacity .1s ease}#video-player-overlay.active{opacity:1;pointer-events:all}#video-el{width:100%;height:100%;object-fit:contain;position:absolute;inset:0}#video-controls{position:absolute;bottom:0;left:0;right:0;padding:0 60px 48px 60px;background:linear-gradient(transparent,rgba(0,0,0,.9) 60%);transition:opacity .1s ease;z-index:2}#video-controls.hidden{opacity:0}#video-title-bar{font-size:24px;font-weight:400;color:#fff;margin-bottom:20px;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 10px rgba(0,0,0,.6)}#video-seek-row{display:flex;align-items:center;gap:16px;margin-bottom:18px}#video-time-cur,#video-time-dur{font-size:15px;color:rgba(255,255,255,.7);font-weight:400;width:54px;flex-shrink:0}#video-time-dur{text-align:right}.seek-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative;cursor:pointer}#video-progress{height:100%;background:#fff;border-radius:2px;width:0%;transition:width .1s linear;position:relative}#video-progress::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)}#video-btn-row{display:flex;align-items:center;justify-content:flex-start;gap:16px}.vid-btn{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .1s;will-change:transform}.vid-btn .material-icons-round{font-size:22px}.vid-btn.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.vid-btn.play-pause{width:70px;height:70px}.vid-btn.play-pause .material-icons-round{font-size:30px}#video-vol-label{font-size:14px;color:rgba(255,255,255,.55);margin-left:12px}#audio-player-overlay{position:fixed;inset:0;z-index:10000;background:#0d0d0f;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .1s ease}#audio-player-overlay.active{opacity:1;pointer-events:all}#audio-bg-art{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(60px) saturate(1.4) brightness(.4);transition:background-image .1s ease}#audio-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:600px;padding:0 40px}#audio-art{width:300px;height:300px;border-radius:15px;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.6);margin-bottom:40px;background:rgba(255,255,255,.08)}#audio-track-info{text-align:center;margin-bottom:36px;width:100%}#audio-track-title{font-size:28px;font-weight:400;color:#fff;margin-bottom:8px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}#audio-track-artist{font-size:18px;color:rgba(255,255,255,.5);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.audio-seek-wrap{width:100%}#audio-seek-row{display:flex;align-items:center;gap:14px;margin-bottom:28px}#audio-time-cur,#audio-time-dur{font-size:14px;color:rgba(255,255,255,.45);width:48px;flex-shrink:0}#audio-time-dur{text-align:right}.audio-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.18);border-radius:2px;position:relative;cursor:pointer}#audio-progress{height:100%;background:#fff;border-radius:2px;width:0%;transition:width .1s linear;position:relative}#audio-progress::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%}#audio-btn-row{display:flex;align-items:center;justify-content:center;gap:20px}.aud-btn{background:rgba(255,255,255,.1);border:none;border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;transition:background .1s;will-change:transform}.aud-btn .material-icons-round{font-size:22px}.aud-btn.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.aud-btn.play-pause{width:70px;height:70px}.aud-btn.play-pause .material-icons-round{font-size:30px}#osk-overlay{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.7);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:0;opacity:0;pointer-events:none;transition:opacity .1s ease}#osk-overlay.active{opacity:1;pointer-events:all}#osk-label{color:rgba(255,255,255,.8);font-size:32px;margin-bottom:10px;width:100%;text-align:center;letter-spacing:0;text-transform:none;font-weight:400;transition:opacity .1s cubic-bezier(.32,.72,0,1), transform .1s cubic-bezier(.32,.72,0,1)}#osk-display{width:100%;max-width:1400px;background:transparent;border:none;padding:20px 28px;font-size:40px;font-weight:400;color:#fff;margin-bottom:20px;min-height:72px;font-family:'Inter Tight',sans-serif;text-align:center;white-space:pre;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;transition:opacity .1s cubic-bezier(.32,.72,0,1), transform .1s cubic-bezier(.32,.72,0,1)}#osk-display::-webkit-scrollbar{display:none}#osk-cursor{display:inline-block;width:2px;height:1.1em;background:#fff;vertical-align:text-bottom;margin-left:2px;animation:blink 1s step-end infinite}@keyframes blink{50%{opacity:0}}#osk-suggestions{width:100%;max-width:1600px;display:flex;gap:10px;justify-content:center;height:48px;margin-bottom:20px}.osk-key.sugg-btn{height:48px;min-width:auto;padding:0 24px;font-size:20px;font-weight:400;background:rgba(255,255,255,.2)}#osk-board{width:100%;max-width:1600px;display:flex;flex-direction:column;gap:10px}.osk-row{display:flex;gap:5px;justify-content:center}.osk-key{height:54px;min-width:44px;border-radius:8px;background:transparent;border:none;color:rgba(255,255,255,.8);font-size:28px;font-weight:400;font-family:'Inter Tight',sans-serif;text-transform:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;outline:0;padding:0 8px;transform-style:preserve-3d;will-change:transform}.osk-key.pill{background:rgba(255,255,255,.15);font-size:14px;text-transform:uppercase;padding:0 16px;border-radius:12px;letter-spacing:1px;min-width:70px}.osk-key.focused{background:#fff;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.35)}.osk-key .material-icons-round{font-size:22px;text-transform:none}@keyframes pulse{0%{opacity:.6;transform:scale(.95)}100%{opacity:1;transform:scale(1.15)}}#boot-overlay{position:fixed;inset:0;z-index:999999999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease-in-out}#boot-overlay.hidden{opacity:0;pointer-events:none}.boot-logo{font-family:'Inter Tight',sans-serif;font-weight:300;font-size:64px;color:#fff;letter-spacing:-.02em;margin-bottom:28px}@keyframes boot-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.boot-spinner{animation:boot-spin .8s steps(12) infinite}#sleep-overlay{position:fixed;inset:0;background:#000;z-index:999999;opacity:0;pointer-events:none;transition:none}#sleep-overlay.active{opacity:1;pointer-events:all}#screensaver-overlay{position:fixed;inset:0;z-index:99999999;background:#000;opacity:0;pointer-events:none;transition:opacity var(--screensaver-fade-time) ease-in-out;overflow:hidden}#screensaver-overlay.active{opacity:1;pointer-events:all}#screensaver-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}#screensaver-clock{position:absolute;top:12%;left:50%;transform:translateX(-50%);font-family:'Inter Tight',sans-serif;font-size:130px;font-weight:300;color:rgba(255,255,255,.95);text-shadow:0 4px 20px rgba(0,0,0,.4);opacity:0;transition:opacity var(--screensaver-fade-time) ease;pointer-events:none;z-index:10;text-transform:lowercase}#control-center{position:fixed;top:0;right:0;width:440px;height:100vh;background:rgba(13,13,15,.35);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-left:2px solid rgba(255,255,255,.15);padding:60px 40px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;gap:40px;z-index:100010;transform:translateX(460px);transition:transform 0.45s cubic-bezier(.25,.8,0.25,1)}#control-center.active{transform:translateX(0)}.cc-header{display:flex;flex-direction:column;align-items:flex-end;width:100%;margin-bottom:20px}#cc-time{font-family:'Inter Tight',sans-serif;font-size:80px;font-weight:300;color:#fff;line-height:1}#cc-date{font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:400;color:rgba(255,255,255,.6);margin-top:8px;letter-spacing:-.01em;text-transform:lowercase}.cc-controls-grid{display:flex;flex-direction:column;gap:16px;width:100%}.cc-row{display:flex;gap:16px;width:100%}.cc-item{width:100%;padding:24px 30px;background:rgba(255,255,255,.08);border:none !important;border-radius:13px;color:#fff;font-family:inherit;font-size:24px;font-weight:400;cursor:pointer;transition:background .1s,color .1s,box-shadow .1s;box-sizing:border-box;display:flex;align-items:center;justify-content:flex-start;outline:0;text-align:left;will-change:transform;box-shadow:none}.cc-item.half-btn{width:50%}.cc-item.focused{background:#fff!important;color:#000!important;box-shadow:0 4px 12px rgba(0,0,0,.3)!important}.cc-item.focused #cc-vol-bar{background:#000!important}.cc-item.focused #cc-vol-icon{color:#000!important}.cc-item.focused .cc-vol-track{background:rgba(0,0,0,.15)!important}.material-icons-round{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;line-height:1}.material-icons-round svg{width:1em;height:1em;fill:currentColor;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;shape-rendering:geometricPrecision}
 
 /* --- SYSTEM DIALOG CLASS SPECIFICS (DECOUPLED FOCUS STATE) --- */
 .dialog-btn {
@@ -30,67 +59,38 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
 }
 
-.card-shine {
-  position: absolute;
+#cc-scrim {
+  position: fixed;
   inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 11;
-  mix-blend-mode: screen;
+  background: rgba(0, 0, 0, 0.65);
   opacity: 0;
-  will-change: opacity;
-  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  z-index: 100005;
 }
 
-/* --- ASSISTANT MODE STYLES --- */
-@keyframes assistBg {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-#osk-overlay.assistant-mode {
-    background: linear-gradient(135deg, rgba(8,40,75,0.92), rgba(45,25,75,0.92), rgba(75,25,50,0.92), rgba(75,60,5,0.92));
-    background-size: 300% 300%;
-    animation: assistBg 8s ease infinite;
+body.cc-active #cc-scrim {
+  opacity: 1;
+  pointer-events: all;
 }
 
-#assistant-response {
-    position: absolute;
-    top: 25%;
-    left: 10%;
-    right: 10%;
-    text-align: center;
-    font-size: 40px;
-    font-weight: 300;
-    color: #fff;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all .1s cubic-bezier(.32,.72,0,1);
-    pointer-events: none;
-    text-shadow: 0 4px 20px rgba(0,0,0,.4);
+body.cc-active #viewport,
+body.cc-active #app-overlay,
+body.cc-active #video-player-overlay,
+body.cc-active #audio-player-overlay {
+  pointer-events: none !important;
 }
+</style></head><body><div id="boot-overlay"><div class="boot-logo">viewOS</div><svg class="boot-spinner" width="40" height="40" viewBox="0 0 100 100"><g transform="translate(50,50)"><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(0)" opacity="1.0" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(30)" opacity="0.08" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(60)" opacity="0.17" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(90)" opacity="0.25" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(120)" opacity="0.33" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(150)" opacity="0.42" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(180)" opacity="0.50" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(210)" opacity="0.58" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(240)" opacity="0.67" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(270)" opacity="0.75" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(300)" opacity="0.83" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(330)" opacity="0.92" fill="#fff"></rect></g></svg></div><div id="viewport"><div id="scroll-layer"></div></div><div id="app-overlay"><div id="app-content"></div></div><div id="screensaver-overlay"><video id="screensaver-video" muted playsinline></video><div id="screensaver-clock">12:00</div></div><div id="sleep-overlay"></div><div id="cc-scrim"></div><div id="control-center"><div class="cc-header"><div id="cc-time">10:09</div><div id="cc-date">saturday, may 5th</div></div><div class="cc-controls-grid"><button class="cc-item" data-action="volume" style="display:flex;align-items:center;gap:16px"><span class="material-icons-round" id="cc-vol-icon" style="flex-shrink:0;min-width:28px;text-transform:none">volume_up</span><div class="cc-vol-track" style="flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative;transition:background .25s"><div id="cc-vol-bar" style="height:100%;background:#fff;border-radius:2px;width:100%;transition:background .25s,width .15s ease"></div></div><span id="cc-vol-val" style="font-size:16px;font-weight:400!important;opacity:.85;width:45px;text-align:right;flex-shrink:0">100%</span></button><button class="cc-item" data-action="screensaver"><span>screensaver</span></button><button class="cc-item" data-action="sleep"><span>sleep</span></button><div class="cc-row"><button class="cc-item half-btn" data-action="home"><span>home</span></button><button class="cc-item half-btn" data-action="search"><span>search</span></button></div></div></div><div id="video-player-overlay"><video id="video-el" playsinline></video><div id="video-controls"><div id="video-title-bar"></div><div id="video-seek-row"><span id="video-time-cur">0:00</span><div class="seek-bar-wrap"><div id="video-progress"></div></div><span id="video-time-dur">0:00</span></div><div id="video-btn-row"><button class="vid-btn play-pause" id="vbtn-play"><span class="material-icons-round">play_arrow</span></button><button class="vid-btn" id="vbtn-back15"><span class="material-icons-round">replay_10</span></button><button class="vid-btn" id="vbtn-fwd15"><span class="material-icons-round">forward_10</span></button><button class="vid-btn" id="vbtn-vol-down"><span class="material-icons-round">volume_down</span></button><button class="vid-btn" id="vbtn-vol-up"><span class="material-icons-round">volume_up</span></button><span id="video-vol-label">100%</span></div></div></div><div id="audio-player-overlay"><div id="audio-bg-art"></div><div id="audio-inner"><img id="audio-art" src="" alt="album art"><div id="audio-track-info"><div id="audio-track-title">track title</div><div id="audio-track-artist">artist</div></div><div class="audio-seek-wrap"><div id="audio-seek-row"><span id="audio-time-cur">0:00</span><div class="audio-bar-wrap"><div id="audio-progress"></div></div><span id="audio-time-dur">0:00</span></div><div id="audio-btn-row"><button class="aud-btn" id="abtn-prev"><span class="material-icons-round">skip_previous</span></button><button class="aud-btn" id="abtn-back15"><span class="material-icons-round">replay_10</span></button><button class="aud-btn play-pause" id="abtn-play"><span class="material-icons-round">play_arrow</span></button><button class="aud-btn" id="abtn-fwd15"><span class="material-icons-round">forward_10</span></button><button class="aud-btn" id="abtn-next"><span class="material-icons-round">skip_next</span></button></div></div></div></div><div id="osk-overlay"><div id="osk-label">Keyboard</div><div id="osk-display"><span id="osk-text"></span><span id="osk-cursor"></span></div><div id="osk-suggestions"></div><div id="osk-board"></div></div><!-- SYSTEM DIALOG POP-UP TEMPLATE --><div id="system-dialog-overlay" style="position:fixed;inset:0;background:rgba(8,8,10,0.45);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);z-index:200000;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease;"><div id="system-dialog-content" style="text-align:center;max-width:850px;padding:40px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:16px;"><h1 id="system-dialog-title" style="font-size:38px;font-weight:400;margin-bottom:8px;letter-spacing:-0.01em;">Title</h1><p id="system-dialog-desc" style="font-size:18px;color:rgba(255,255,255,0.75);max-width:620px;line-height:1.45;margin-bottom:32px;">Description</p><div id="system-dialog-buttons" style="display:flex;flex-direction:column;gap:12px;width:380px;"></div></div></div><script>'use strict';
 
-#osk-overlay.assistant-responded #osk-label {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-#osk-overlay.assistant-responded #osk-display,
-#osk-overlay.assistant-responded #osk-board,
-#osk-overlay.assistant-responded #osk-suggestions {
-    transform: translateY(100vh);
-    opacity: 0;
-    pointer-events: none;
-}
-#osk-overlay.assistant-responded #assistant-response {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#osk-board, #osk-suggestions, #osk-display {
-    transition: transform .1s cubic-bezier(.32,.72,0,1), opacity .1s cubic-bezier(.32,.72,0,1);
-    will-change: transform, opacity;
-}
-* { cursor: none !important; }</style></head><body><div id="boot-overlay"><div class="boot-logo">viewOS</div><svg class="boot-spinner" width="40" height="40" viewBox="0 0 100 100"><g transform="translate(50,50)"><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(0)" opacity="1.0" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(30)" opacity="0.08" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(60)" opacity="0.17" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(90)" opacity="0.25" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(120)" opacity="0.33" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(150)" opacity="0.42" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(180)" opacity="0.50" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(210)" opacity="0.58" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(240)" opacity="0.67" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(270)" opacity="0.75" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(300)" opacity="0.83" fill="#fff"></rect><rect x="-4" y="-46" width="8" height="24" rx="4" transform="rotate(330)" opacity="0.92" fill="#fff"></rect></g></svg></div><div id="viewport"><div id="scroll-layer"></div></div><div id="app-overlay"><div id="app-content"></div></div><div id="screensaver-overlay"><video id="screensaver-video" muted playsinline></video><div id="screensaver-clock">12:00</div></div><div id="sleep-overlay"></div><div id="control-center"><div class="cc-header"><div id="cc-time">10:09</div><div id="cc-date">saturday, may 5th</div></div><div class="cc-controls-grid"><button class="cc-item" data-action="volume" style="display:flex;align-items:center;gap:16px"><span class="material-icons-round" id="cc-vol-icon" style="flex-shrink:0;min-width:28px;text-transform:none">volume_up</span><div class="cc-vol-track" style="flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative;transition:background .25s"><div id="cc-vol-bar" style="height:100%;background:#fff;border-radius:2px;width:100%;transition:background .25s,width .15s ease"></div></div><span id="cc-vol-val" style="font-size:16px;font-weight:400!important;opacity:.85;width:45px;text-align:right;flex-shrink:0">100%</span></button><button class="cc-item" data-action="screensaver"><span>screensaver</span></button><button class="cc-item" data-action="sleep"><span>sleep</span></button><div class="cc-row"><button class="cc-item half-btn" data-action="home"><span>home</span></button><button class="cc-item half-btn" data-action="search"><span>search</span></button></div></div></div><div id="video-player-overlay"><video id="video-el" playsinline></video><div id="video-controls"><div id="video-title-bar"></div><div id="video-seek-row"><span id="video-time-cur">0:00</span><div class="seek-bar-wrap"><div id="video-progress"></div></div><span id="video-time-dur">0:00</span></div><div id="video-btn-row"><button class="vid-btn play-pause" id="vbtn-play"><span class="material-icons-round">play_arrow</span></button><button class="vid-btn" id="vbtn-back15"><span class="material-icons-round">replay_10</span></button><button class="vid-btn" id="vbtn-fwd15"><span class="material-icons-round">forward_10</span></button><button class="vid-btn" id="vbtn-vol-down"><span class="material-icons-round">volume_down</span></button><button class="vid-btn" id="vbtn-vol-up"><span class="material-icons-round">volume_up</span></button><span id="video-vol-label">100%</span></div></div></div><div id="audio-player-overlay"><div id="audio-bg-art"></div><div id="audio-inner"><img id="audio-art" src="" alt="album art"><div id="audio-track-info"><div id="audio-track-title">track title</div><div id="audio-track-artist">artist</div></div><div class="audio-seek-wrap"><div id="audio-seek-row"><span id="audio-time-cur">0:00</span><div class="audio-bar-wrap"><div id="audio-progress"></div></div><span id="audio-time-dur">0:00</span></div><div id="audio-btn-row"><button class="aud-btn" id="abtn-prev"><span class="material-icons-round">skip_previous</span></button><button class="aud-btn" id="abtn-back15"><span class="material-icons-round">replay_10</span></button><button class="aud-btn play-pause" id="abtn-play"><span class="material-icons-round">play_arrow</span></button><button class="aud-btn" id="abtn-fwd15"><span class="material-icons-round">forward_10</span></button><button class="aud-btn" id="abtn-next"><span class="material-icons-round">skip_next</span></button></div></div></div></div><div id="photo-lightbox"><img id="lightbox-img" src="" alt=""><div id="lightbox-caption"></div></div><div id="osk-overlay"><div id="osk-label">Keyboard</div><div id="osk-display"><span id="osk-text"></span><span id="osk-cursor"></span></div><div id="assistant-response"></div><div id="osk-suggestions"></div><div id="osk-board"></div></div><!-- SYSTEM DIALOG POP-UP TEMPLATE --><div id="system-dialog-overlay" style="position:fixed;inset:0;background:rgba(8,8,10,0.45);backdrop-filter:blur(50px);-webkit-backdrop-filter:blur(50px);z-index:200000;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease;"><div id="system-dialog-content" style="text-align:center;max-width:850px;padding:40px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:16px;"><h1 id="system-dialog-title" style="font-size:38px;font-weight:400;margin-bottom:8px;letter-spacing:-0.01em;">Title</h1><p id="system-dialog-desc" style="font-size:18px;color:rgba(255,255,255,0.75);max-width:620px;line-height:1.45;margin-bottom:32px;">Description</p><div id="system-dialog-buttons" style="display:flex;flex-direction:column;gap:12px;width:380px;"></div></div></div><script>'use strict';
+// ══════ SYSTEM CONFIGURATION (EXPANDABLE DESIGN) ══════
+const SYSTEM_CONFIG = {
+  version: '2.0',
+  borderRadius: '14px',
+  swipeTransition: 'transform var(--swipe-transition-time) cubic-bezier(0.32, 0.72, 0, 1)',
+  screensaverFadeDuration: 800, // Duration in ms
+  selectHoldThreshold: 1600, // Hold selection timer threshold in ms
+  globalVolumeDefault: 1.0
+};
 
 // SVG icon path helper for offline usage
 function getIconSVG(name) {
@@ -149,7 +149,6 @@ var appDatabase = [
   { id:'music',    label:'Music',    src:'SystemData/Music.png' },
   { id:'podcasts', label:'Podcasts', src:'SystemData/Podcasts.png' },
   { id:'sports',   label:'Sports',   src:'SystemData/Sports.png', srcFallback:'SystemData/Movies.png' },
-  { id:'photos',   label:'Photos',   src:'SystemData/Photos.png' },
   { id:'search',   label:'Search',   src:'SystemData/Search.png' },
   { id:'settings', label:'Settings', src:'SystemData/Settings.png', required:true }
 ];
@@ -170,8 +169,7 @@ var appFolderMap = {
   movies: 'Movies',
   music: 'Music',
   podcasts: 'Podcasts',
-  sports: 'Sports',
-  photos: 'Photos'
+  sports: 'Sports'
 };
 
 // Auto-resolves path mappings, fallback titles, optional fields, and category routes
@@ -269,20 +267,20 @@ window.addEventListener('DOMContentLoaded', function() {
     
     setTimeout(loadNextBatch, 30);
 
-    // Boot complete trigger - 3 seconds
+    // Boot complete trigger - 5 seconds with a smooth 1.2s ease-in-out fade
     setTimeout(function() {
         var bo = document.getElementById('boot-overlay');
         if (bo) {
             bo.classList.add('hidden');
-            setTimeout(function(){ bo.remove(); }, 600);
+            setTimeout(function(){ bo.remove(); }, 1200);
         }
-    }, 3000);
+    }, 5000);
 });
 
 /* ══════ PERSISTED STATE ══════ */
 var defaultEnabled = { 
     tvshows:true, movies:true, sports:true, music:true, podcasts:true, 
-    photos:true, search:true, settings:true, 
+    search:true, settings:true, 
     resume_watching:true, screensaverTime:5, guahh_assistant:true
 };
 
@@ -305,10 +303,10 @@ try {
 } catch (e) {}
 
 var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
-if (isNaN(globalVolume)) globalVolume = 1.0;
+if (isNaN(globalVolume)) globalVolume = SYSTEM_CONFIG.globalVolumeDefault;
 
 /* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
-var currentVersion = '1.8';
+var currentVersion = SYSTEM_CONFIG.version;
 var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
 var updateVersion = '';
 var updateCode = '';
@@ -422,8 +420,6 @@ var activeCol = 0;
 
 var lastGP = { up: false, down: false, left: false, right: false, a: false, bPressed: false, bPressTime: 0, bTriggered: false, x: false, y: false, yPressTime: 0, yTriggered: false };
 var gpRepeat = { dir: null, startTime: 0, lastTime: 0 };
-var yKeyDownTime = 0;
-var yKeyTriggered = false;
 var keysDown = {}; // For ultra-fast keyboard repetition
 
 // Hold-to-select tracking variables
@@ -431,6 +427,10 @@ var enterKeyDown = false;
 var selectHoldActive = false;
 var selectHoldTime = 0;
 var selectHoldTriggered = false;
+
+// Input lock guards to completely eliminate release leakages
+var aPressInitiatedInNoneMode = false;
+var enterPressInitiatedInNoneMode = false;
 
 // Helper to calculate when an episode is considered "finished" (triggers next ep)
 function getEndThreshold(duration) {
@@ -498,8 +498,6 @@ var searchFocusIdx = -1;
 var dialogFocusIdx = 0; // Modal button focus idx
 
 var settingsPage = 'MAIN';
-var photoFocusIdx = 0;
-var photoItems = [];
 var internalUIItems = [];
 
 var ccOpen = false;
@@ -527,9 +525,7 @@ var audioPlaylist = [];
 var audioPlayIdx = 0;
 var audioFocusIdx = 2;
 
-var lightboxOpen = false;
 var oskOpen = false;
-var assistantOpen = false;
 var oskValue = '';
 var oskTarget = null;
 var oskRow = 1;
@@ -556,10 +552,6 @@ var audioProgress    = document.getElementById('audio-progress');
 var audioTimeCur     = document.getElementById('audio-time-cur');
 var audioTimeDur     = document.getElementById('audio-time-dur');
 var audioEl          = new Audio();
-
-var lightboxEl      = document.getElementById('photo-lightbox');
-var lightboxImg     = document.getElementById('lightbox-img');
-var lightboxCaption = document.getElementById('lightbox-caption');
 
 videoEl.volume = globalVolume;
 audioEl.volume = globalVolume;
@@ -738,7 +730,7 @@ function stopScreensaver() {
   screensaverClockVisible = false;
   setTimeout(function() { 
     if (!screensaverActive) { ssVideoEl.pause(); ssVideoEl.src = ''; } 
-  }, 400); 
+  }, SYSTEM_CONFIG.screensaverFadeDuration); 
 }
 
 function enterSleep() {
@@ -1163,7 +1155,6 @@ function openApp(skipAnim) {
       
       var id = item.data.id;
       if (id === 'settings') { appMode = 'SETTINGS'; settingsPage = 'MAIN'; renderSettings(); }
-      else if (id === 'photos') { appMode = 'PHOTOS'; renderPhotos(); }
       else if (id === 'search') { appMode = 'SEARCH'; searchFocusIdx = -1; renderSearchUI(true); }
       else if (id === 'movies' || id === 'sports' || id === 'tvshows' || id === 'music' || id === 'podcasts') {
           appMode = 'MEDIA_LIST'; currentMediaApp = id; mediaFocusIdx = 0;
@@ -1187,7 +1178,6 @@ function openApp(skipAnim) {
                 clone.style.opacity = '0';
                 var id = item.data.id;
                 if (id === 'settings') { appMode = 'SETTINGS'; settingsPage = 'MAIN'; renderSettings(); }
-                else if (id === 'photos') { appMode = 'PHOTOS'; renderPhotos(); }
                 else if (id === 'search') { appMode = 'SEARCH'; searchFocusIdx = -1; renderSearchUI(); }
                 else if (id === 'movies' || id === 'sports' || id === 'tvshows' || id === 'music' || id === 'podcasts') {
                     appMode = 'MEDIA_LIST'; currentMediaApp = id; mediaFocusIdx = 0;
@@ -1203,7 +1193,6 @@ function openApp(skipAnim) {
 }
 
 function openAppForItem(item) {
-   if (lightboxOpen) closeLightbox(); 
    if (videoPlayerOpen) closeVideoPlayer(); 
    if (audioPlayerOpen) closeAudioPlayer(); 
    forceCloseApp();
@@ -1218,14 +1207,6 @@ function openAppForItem(item) {
                mediaFocusIdx = idx;
                renderMediaList(appType);
                openAudioPlayer(item, audItems, idx); 
-           }
-       } else if (appType === 'photos') {
-           var pItems = registry.filter(function(c) { return c && c.app === 'photos'; });
-           var idx = pItems.findIndex(function(x) { return x.file === item.file; });
-           if (idx !== -1) {
-               photoFocusIdx = idx;
-               renderPhotos();
-               openLightbox(item);
            }
        } else if (appType === 'tvshows') {
            var shows = getShowsList();
@@ -1256,7 +1237,6 @@ function openAppForItem(item) {
 }
 
 function closeApp() {
-  if (lightboxOpen)    { closeLightbox(); return; }
   if (videoPlayerOpen) {
     if (!videoControls.classList.contains('hidden')) {
       videoControls.classList.add('hidden');
@@ -1267,7 +1247,7 @@ function closeApp() {
     return;
   }
   if (audioPlayerOpen) { closeAudioPlayer(); return; }
-  if (oskOpen)         { closeOSK(false); return; }
+  if (oskOpen) { closeOSK(false); return; }
   
   if (appMode === 'SETTINGS' && settingsPage !== 'MAIN') {
     var settingsCategories = ['GENERAL', 'SOFTWARE_UPDATE', 'DISPLAY', 'AUDIO', 'APPS'];
@@ -1323,7 +1303,7 @@ function closeApp() {
       clone.style.top = t.top + 'px';
       clone.style.width = t.width + 'px'; 
       clone.style.height = t.height + 'px';
-      clone.style.borderRadius = '17px';
+      clone.style.borderRadius = SYSTEM_CONFIG.borderRadius;
       clone.style.opacity = '1';
       
       item.card.style.transition = 'opacity 0.25s ease 0.2s';
@@ -1335,7 +1315,7 @@ function closeApp() {
         appContent.style.opacity = ''; 
         bindSprings(''); 
         item.card.style.transition = ''; 
-        scrollLayer.style.transition = 'transform .38s cubic-bezier(.32,.72,0,1)'; // Faster return
+        scrollLayer.style.transition = SYSTEM_CONFIG.swipeTransition; // Faster return
         if (topRowEl) topRowEl.style.transition = 'transform .18s cubic-bezier(.32,.72,0,1)';
       }, 450);
     });
@@ -1344,7 +1324,7 @@ function closeApp() {
     appContent.innerHTML = ''; 
     if (item) item.card.style.opacity = '1'; 
     bindSprings('');
-    scrollLayer.style.transition = 'transform .38s cubic-bezier(.32,.72,0,1)'; // Faster return
+    scrollLayer.style.transition = SYSTEM_CONFIG.swipeTransition; // Faster return
     if (topRowEl) topRowEl.style.transition = 'transform .18s cubic-bezier(.32,.72,0,1)';
   }
 }
@@ -1358,10 +1338,17 @@ function toggleControlCenter() {
   ccOpen = !ccOpen;
   var ccEl = document.getElementById('control-center');
   
+  document.body.classList.toggle('cc-active', ccOpen);
+  
   if (ccOpen) {
     savedAppModeBeforeCC = appMode; 
     appMode = 'CONTROL_CENTER'; 
     updateClock(); 
+    
+    // Defocus any background element natively focused by browser
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
     
     var ccVal = document.getElementById('cc-vol-val');
     if (ccVal) ccVal.textContent = Math.round(globalVolume * 100) + '%';
@@ -1387,7 +1374,6 @@ function toggleControlCenter() {
     if (appMode === 'NONE') { bindSprings(''); }
     else if (appMode === 'SETTINGS') { bindSprings('.setting-btn'); }
     else if (appMode === 'MEDIA_LIST') { bindSprings('.media-item-btn'); }
-    else if (appMode === 'PHOTOS') { bindSprings('.photo-grid-item'); }
     else if (appMode === 'SEARCH') { bindSprings('.search-result-btn'); }
     else { bindSprings(''); }
   }
@@ -1448,7 +1434,6 @@ function triggerCCAction() {
   }
   else if (action === 'home') {
     toggleControlCenter();
-    if (lightboxOpen) closeLightbox(); 
     if (videoPlayerOpen) closeVideoPlayer(); 
     if (audioPlayerOpen) closeAudioPlayer(); 
     if (oskOpen) closeOSK(false);
@@ -1458,7 +1443,6 @@ function triggerCCAction() {
   else if (action === 'search') {
     toggleControlCenter();
     if (appMode === 'SEARCH') return;
-    if (lightboxOpen) closeLightbox(); 
     if (videoPlayerOpen) closeVideoPlayer(); 
     if (audioPlayerOpen) closeAudioPlayer(); 
     if (oskOpen) closeOSK(false);
@@ -1518,7 +1502,6 @@ function closeSystemDialog() {
   if (appMode === 'NONE') { bindSprings(''); }
   else if (appMode === 'SETTINGS') { bindSprings('.setting-btn'); }
   else if (appMode === 'MEDIA_LIST') { bindSprings('.media-item-btn'); }
-  else if (appMode === 'PHOTOS') { bindSprings('.photo-grid-item'); }
   else if (appMode === 'SEARCH') { bindSprings('.search-result-btn'); }
   else { bindSprings(''); }
 }
@@ -1708,211 +1691,6 @@ function updateSettingsFocus(dir) {
     applyFocus(document.querySelectorAll('.setting-btn'), settingsFocusIdx, dir); 
 }
 
-function checkSoftwareUpdate() {
-  if (!parentPopUpDismissed) {
-    showSystemDialog(
-      "Update Installation",
-      "Please make sure you have a parent available before installing an update file",
-      [
-        {
-          label: "Continue",
-          isPrimary: true,
-          action: function() {
-            parentPopUpDismissed = true;
-            doCheckSoftwareUpdate();
-          }
-        }
-      ]
-    );
-    return;
-  }
-  doCheckSoftwareUpdate();
-}
-
-function doCheckSoftwareUpdate() {
-  updateState = 'CHECKING';
-  updateDescription = '';
-  renderSettings(true);
-  
-  ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html', function(html) {
-    updateCode = html;
-    var foundVersion = '1.4';
-    var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
-    if (match) {
-      foundVersion = match[1];
-    } else {
-      var fallbackMatch = html.match(/viewOS\s+([\d.]+)/i);
-      if (fallbackMatch) {
-        foundVersion = fallbackMatch[1];
-      }
-    }
-    updateVersion = foundVersion;
-    
-    if (foundVersion !== currentVersion) {
-      updateState = 'UPDATE_AVAILABLE';
-      ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_description.txt', function(descText) {
-        updateDescription = descText;
-        renderSettings(true);
-      }, function() {
-        updateDescription = '';
-        renderSettings(true);
-      });
-    } else {
-      updateState = 'UP_TO_DATE';
-      renderSettings(true);
-    }
-  }, function(err) {
-    console.error(err);
-    updateState = 'ERROR';
-    renderSettings(true);
-  });
-}
-
-function installSoftwareUpdate() {
-  if (!updateCode) {
-    alert("No update code available to install.");
-    return;
-  }
-  
-  if (window.showSaveFilePicker) {
-    var options = {
-      suggestedName: 'index.html',
-      types: [{
-        description: 'HTML File',
-        accept: {
-          'text/html': ['.html']
-        }
-      }]
-    };
-    
-    window.showSaveFilePicker(options)
-      .then(function(handle) {
-        return handle.createWritable();
-      })
-      .then(function(writable) {
-        return writable.write(updateCode)
-          .then(function() {
-            return writable.close();
-          });
-      })
-      .then(function() {
-        location.reload();
-      })
-      .catch(function(err) {
-        console.error("Local file system API write failed or user canceled:", err);
-        if (err.name !== 'AbortError') {
-          fallbackUpdateDownload();
-        }
-      });
-  } else {
-    fallbackUpdateDownload();
-  }
-}
-
-function fallbackUpdateDownload() {
-  try {
-    var blob = new Blob([updateCode], { type: 'text/html' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'index.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  } catch(e) {
-    console.error("Failed to package the update file.");
-  }
-}
-
-function triggerSettingsAction() {
-  var btns = document.querySelectorAll('.setting-btn');
-  var btn = btns[settingsFocusIdx]; 
-  
-  if (!btn) return;
-  var action = btn.dataset.action;
-  
-  if (action === 'none') return;
-  if (action === 'go_page') {
-    settingsPage = btn.dataset.page;
-    settingsFocusIdx = 0;
-    renderSettings();
-    if (settingsPage === 'SOFTWARE_UPDATE') {
-      checkSoftwareUpdate();
-    }
-    return;
-  }
-  if (action === 'reboot') { 
-      location.reload(); 
-      return; 
-  }
-  if (action === 'sleep') { 
-      enterSleep(); 
-      return; 
-  }
-  else if (action === 'screensaver') {
-     var cycle = [3, 5, 10, 20, 0];
-     var ssVal = appEnabledState.screensaverTime !== undefined ? appEnabledState.screensaverTime : 5;
-     appEnabledState.screensaverTime = cycle[(cycle.indexOf(ssVal) + 1) % cycle.length];
-     localStorage.setItem('appEnabledState', JSON.stringify(appEnabledState));
-  }
-  else if (action === 'preview_screensaver') { 
-      startScreensaver(); 
-  }
-  else if (action === 'volume') { 
-      setGlobalVolume(globalVolume >= 1.0 ? 0.0 : globalVolume + 0.1); 
-      return; 
-  }
-  else if (action === 'toggle_cw') { 
-      appEnabledState.resume_watching = !appEnabledState.resume_watching; 
-      localStorage.setItem('appEnabledState', JSON.stringify(appEnabledState)); 
-      buildGrid(); 
-      syncFocusToId('settings'); 
-  }
-  else if (action === 'toggle') { 
-      var id = btn.dataset.appid; 
-      appEnabledState[id] = !appEnabledState[id]; 
-      localStorage.setItem('appEnabledState', JSON.stringify(appEnabledState)); 
-      buildGrid(); 
-      syncFocusToId('settings'); 
-  }
-  else if (action === 'toggle_guahh') {
-      var isEnabled = appEnabledState.guahh_assistant !== false;
-      appEnabledState.guahh_assistant = !isEnabled;
-      localStorage.setItem('appEnabledState', JSON.stringify(appEnabledState));
-  }
-  else if (action === 'clear_guahh_cache') {
-      guahhWordTracker = {};
-      guahhCustomDict = [];
-      watchAnalytics = {};
-      localStorage.removeItem('guahhWordTracker');
-      localStorage.removeItem('guahhCustomDict');
-      localStorage.removeItem('guahhWatchAnalytics');
-      var btnSpan = btn.querySelector('.setting-val');
-      if (btnSpan) {
-          var old = btnSpan.textContent;
-          btnSpan.textContent = "Cleared!";
-          setTimeout(() => { if (btnSpan) btnSpan.textContent = old; }, 1500);
-      }
-      return; 
-  }
-  else if (action === 'clear_recently_played') {
-     playbackHistory = {};
-     localStorage.setItem('playbackHistory', '{}');
-     buildGrid();
-  }
-  else if (action === 'install_update') {
-     installSoftwareUpdate();
-     return;
-  }
-  else if (action === 'check_updates') {
-     checkSoftwareUpdate();
-     return;
-  }
-  
-  renderSettings(true);
-}
-
 function syncFocusToId(targetId) {
   for (var r = 0; r < grid.length; r++) {
     for (var c = 0; c < grid[r].length; c++) {
@@ -1922,37 +1700,6 @@ function syncFocusToId(targetId) {
       }
     }
   }
-}
-
-/* ══════ PHOTOS ══════ */
-function renderPhotos() {
-  photoItems = registry.filter(function(c) { return c && c.app === 'photos'; }); 
-  photoFocusIdx = 0;
-  var h = '<div class="internal-ui"><h1>Photos</h1>';
-  
-  if (photoItems.length === 0) { 
-      h += '<div style="font-size:20px;color:rgba(255,255,255,0.4);line-height:1.8">No photos yet.<br>Add <strong>photos</strong> entries to content.js</div>'; 
-  } else { 
-      h += '<div class="photo-grid">'; 
-      photoItems.forEach(function(item, i) { 
-          h += '<div class="photo-grid-item" data-index="' + i + '"><img src="' + item.file + '" alt="' + item.title + '" loading="lazy"><div class="photo-label">' + item.title + '</div></div>'; 
-      }); 
-      h += '</div>'; 
-  }
-  h += '</div>';
-  
-  appContent.innerHTML = h; 
-  bindSprings('.photo-grid-item');
-  
-  document.querySelectorAll('.photo-grid-item').forEach(function(el, i) { 
-      el.addEventListener('click', function(){ openLightbox(photoItems[i]); }); 
-  });
-  
-  updatePhotoFocus();
-}
-
-function updatePhotoFocus(dir) { 
-    applyFocus(document.querySelectorAll('.photo-grid-item'), photoFocusIdx, dir); 
 }
 
 /* ══════ CACHED THUMBNAIL INJECTOR ══════ */
@@ -2274,7 +2021,7 @@ function closeVideoPlayer() {
               clone.style.top = t.top + 'px';
               clone.style.width = t.width + 'px'; 
               clone.style.height = t.height + 'px';
-              clone.style.borderRadius = '17px';
+              clone.style.borderRadius = SYSTEM_CONFIG.borderRadius;
               clone.style.opacity = '1';
               
               item.card.style.transition = 'opacity 0.25s ease 0.2s';
@@ -2285,14 +2032,14 @@ function closeVideoPlayer() {
                   item.card.style.transition = ''; 
                   videoOriginItem = null;
                   buildGrid(); 
-                  scrollLayer.style.transition = 'transform .38s cubic-bezier(.32,.72,0,1)'; // Faster return
+                  scrollLayer.style.transition = SYSTEM_CONFIG.swipeTransition; // Faster return
                   if (topRowEl) topRowEl.style.transition = 'transform .18s cubic-bezier(.32,.72,0,1)';
               }, 450);
           });
       } else {
           videoOriginItem = null;
           buildGrid();
-          scrollLayer.style.transition = 'transform .38s cubic-bezier(.32,.72,0,1)'; // Faster return
+          scrollLayer.style.transition = SYSTEM_CONFIG.swipeTransition; // Faster return
           if (topRowEl) topRowEl.style.transition = 'transform .18s cubic-bezier(.32,.72,0,1)';
       }
   } else {
@@ -2447,24 +2194,9 @@ document.getElementById('abtn-play').addEventListener('click', function() {
 document.getElementById('abtn-back15').addEventListener('click', function() { audioEl.currentTime -= 15; });
 document.getElementById('abtn-fwd15').addEventListener('click', function() { audioEl.currentTime += 15; });
 document.getElementById('abtn-prev').addEventListener('click', function() { if (audioPlayIdx > 0) { audioPlayIdx--; loadAudioItem(audioPlaylist[audioPlayIdx]); } });
-document.getElementById('abtn-next').addEventListener('click', function() { if (audioPlayIdx < audioPlaylist.length - 1) { audioPlayIdx++; loadAudioItem(audioPlaylist[audioPlayIdx]); } });
+document.getElementById('abtn-next').addEventListener('click', function() { if (audioPlayIdx < openAudioPlayer.length - 1) { audioPlayIdx++; loadAudioItem(audioPlaylist[audioPlayIdx]); } });
 
-/* ─── PHOTO LIGHTBOX ─── */
-function openLightbox(item) { 
-    lightboxImg.src = item.file; 
-    lightboxCaption.textContent = item.title; 
-    lightboxEl.classList.add('active'); 
-    lightboxOpen = true; 
-}
-
-function closeLightbox() { 
-    lightboxEl.classList.remove('active'); 
-    lightboxOpen = false; 
-}
-
-lightboxEl.addEventListener('click', closeLightbox);
-
-/* ─── ON-SCREEN KEYBOARD & ASSISTANT ─── */
+/* ─── ON-SCREEN KEYBOARD ─── */
 var oskLayout = [
   [
     'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'
@@ -2480,7 +2212,7 @@ var oskLayout = [
 ];
 
 var oskUIItems = [];
-var wordDictionary = ["highlight","boys","girls","movie","viewOS","bee","shrek","minions","lorax","TV","shows","sport","music","podcasts","photos","photo","phone","video","movies","settings","search","play","pause","apple","nature","aerial","watching","system","application","open","close","restart","reboot","volume","screen","screensaver","sleep","wake","device","the","and","for","that","this","with","what","where","when","why","how","who","there","their","they","your","you","are","is","was","were","will","can","could","would","should","about","time","out","some","more","now","just","into","see","like","good","well","make","way","even","new","want","because","any","these","give","day","most","her","him","our","she","they're","you_re","i_m","i_ve","don't","can't","won't","didn't","it's","that's","there's","have","has","had","not","but","from","which","one","all","been","much","those","then","things","thing","think","thought","know","knew","take","took","find","found","look","looked","come","came","use","used","tell","told","work","worked","call","called","try","tried","need","needed","feel","felt","become","became","leave","left","put","mean","meant","keep","kept","let","begin","began","seem","seemed","help","helped","show","showed","hear","heard","run","ran","move","moved","live","lived","believe","believed","bring","brought","happen","happened","write","wrote","provide","provided","sit","sat","strong","stand","stood","lose","lost","pay","paid","meet","met","include","included","continue","continued","set","learn","learned","change","changed","lead","led","understand","understood","watch","watched","follow","followed","stop","stopped","create","created","speak","spoke","read","allow","allowed","add","added","spend","spent","grow","grew","opened","walk","walked","win","won","offer","offered","remember","remembered","love","loved","consider","considered","appear","appeared","buy","bought","wait","waited","serve","served","die","died","send","sent","expect","expected","build","built","stay","stayed","fall","fell","cut","reach","reached","kill","killed","remain","remained","hello","hi","hey","assistant","resume","louder","quieter","mute","date","weather","exit","quit","please","listen","halt","unpause","return","main","menu","turn","off","power","standby","start","preferences","options","increase","decrease","silence","shut","up","current","today's","today","greetings","sup","guahh","intelligence","clear","cache","smart","history","tracked"];
+var wordDictionary = ["highlight","boys","girls","movie","viewOS","bee","shrek","minions","lorax","TV","shows","sport","music","podcasts","phone","video","movies","settings","search","play","pause","apple","nature","aerial","watching","system","application","open","close","restart","reboot","volume","screen","screensaver","sleep","wake","device","the","and","for","that","this","with","what","where","when","why","how","who","there","their","they","your","you","are","is","was","were","will","can","could","would","should","about","time","out","some","more","now","just","into","see","like","good","well","make","way","even","new","want","because","any","these","give","day","most","her","him","our","she","they're","you_re","i_m","i_ve","don't","can't","won't","didn't","it's","that's","there's","have","has","had","not","but","from","which","one","all","been","much","those","then","things","thing","think","thought","know","knew","take","took","find","found","look","looked","come","came","use","used","tell","told","work","worked","call","called","try","tried","need","needed","feel","felt","become","became","leave","left","put","mean","meant","keep","kept","let","begin","began","seem","seemed","help","helped","show","showed","hear","heard","run","ran","move","moved","live","lived","believe","believed","bring","brought","happen","happened","write","wrote","provide","provided","sit","sat","strong","stand","stood","lose","lost","pay","paid","meet","met","include","included","continue","continued","set","learn","learned","change","changed","lead","led","understand","understood","watch","watched","follow","followed","stop","stopped","create","created","speak","spoke","read","allow","allowed","add","added","spend","spent","grow","grew","opened","walk","walked","win","won","offer","offered","remember","remembered","love","loved","consider","considered","appear","appeared","buy","bought","wait","waited","serve","served","die","died","send","sent","expect","expected","build","built","stay","stayed","fall","fell","cut","reach","reached","kill","killed","remain","remained","hello","hi","hey","assistant","resume","louder","quieter","mute","date","weather","exit","quit","please","listen","halt","unpause","return","main","menu","turn","off","power","standby","start","preferences","options","increase","decrease","silence","shut","up","current","today's","today","greetings","sup","guahh","intelligence","clear","cache","smart","history","tracked"];
 
 function buildOSK() {
   var board = document.getElementById('osk-board'); 
@@ -2582,11 +2314,9 @@ function openOSK(targetInput) {
   
   document.getElementById('osk-text').textContent = oskValue.replace(/\n/g, ' ↵ ');
   var overlay = document.getElementById('osk-overlay');
-  overlay.classList.remove('assistant-mode', 'assistant-responded');
   overlay.classList.add('active'); 
   
   oskOpen = true; 
-  assistantOpen = false;
   oskRow = 1; 
   oskCol = 0;
   
@@ -2596,37 +2326,14 @@ function openOSK(targetInput) {
   if (displayEl) displayEl.scrollLeft = displayEl.scrollWidth;
 }
 
-function openAssistant() {
-  if (oskOpen) return;
-  assistantOpen = true;
-  oskValue = '';
-  
-  document.getElementById('osk-label').textContent = 'Guahh Assistant';
-  document.getElementById('osk-text').textContent = '';
-  document.getElementById('assistant-response').textContent = '';
-  
-  var overlay = document.getElementById('osk-overlay');
-  overlay.classList.remove('assistant-responded');
-  overlay.classList.add('assistant-mode');
-  
-  oskTarget = null;
-  overlay.classList.add('active');
-  oskOpen = true;
-  oskRow = 1;
-  oskCol = 0;
-  updateSuggestions();
-}
-
 function closeOSK(commit) {
   var overlay = document.getElementById('osk-overlay');
   overlay.classList.remove('active'); 
   
   setTimeout(function() {
-      overlay.classList.remove('assistant-mode', 'assistant-responded');
       document.getElementById('osk-board').style.transform = '';
       document.getElementById('osk-suggestions').style.transform = '';
       document.getElementById('osk-display').style.transform = '';
-      assistantOpen = false;
   }, 300);
 
   oskOpen = false;
@@ -2636,199 +2343,6 @@ function closeOSK(commit) {
       oskTarget.dispatchEvent(new Event('input')); 
   }
   oskTarget = null;
-}
-
-function processAssistantCommand(cmd) {
-    var overlay = document.getElementById('osk-overlay');
-    overlay.classList.add('assistant-responded');
-    var responseText = '';
-    var actionToTake = null;
-    
-    var matchPlay = cmd.match(/^(?:play|watch|listen to|put on|start)\s+(.+)$/i);
-    var matchSearch = cmd.match(/^(?:search for|search|find|look up)\s+(.+)$/i);
-
-    if (/^(play|resume|continue|unpause)$/i.test(cmd)) {
-        responseText = "Resuming playback...";
-        actionToTake = function() {
-            if (videoPlayerOpen && videoEl) videoEl.play();
-            else if (audioPlayerOpen && audioEl) audioEl.play();
-            closeOSK(false);
-        };
-    } else if (matchPlay) {
-        var query = matchPlay[1].trim();
-        var found = null;
-        var foundShow = null;
-
-        if (/^(a show|something|tv|television|a movie)$/i.test(query)) {
-            var highestCount = -1;
-            var bestKey = null;
-            for(var k in watchAnalytics) {
-                if(watchAnalytics[k].count > highestCount) {
-                    highestCount = watchAnalytics[k].count;
-                    bestKey = k;
-                }
-            }
-            if(bestKey) query = bestKey.toLowerCase();
-        }
-
-        var shows = getShowsList();
-        shows.forEach(function(s) {
-            if(s.name.toLowerCase() === query || s.name.toLowerCase().includes(query)) {
-                foundShow = s;
-            }
-        });
-
-        if (foundShow) {
-            var epToPlay = foundShow.episodes[0]; 
-            var resumeTime = 0;
-            var latestTs = 0;
-            for(var i=0; i<foundShow.episodes.length; i++) {
-                var ep = foundShow.episodes[i];
-                if(playbackHistory[ep.file]) {
-                    var ph = playbackHistory[ep.file];
-                    if(ph.ts > latestTs) {
-                        latestTs = ph.ts;
-                        if(ph.isNextEpisode) {
-                            epToPlay = ep;
-                            resumeTime = 0;
-                        } else {
-                            var thresh = getEndThreshold(ph.duration);
-                            if(ph.duration > 0 && (ph.duration - ph.currentTime <= thresh)) {
-                                if(i + 1 < foundShow.episodes.length) {
-                                    epToPlay = foundShow.episodes[i+1];
-                                    resumeTime = 0;
-                                } else {
-                                    epToPlay = ep;
-                                    resumeTime = 0; 
-                                }
-                            } else {
-                                epToPlay = ep;
-                                resumeTime = ph.currentTime;
-                            }
-                        }
-                    }
-                }
-            }
-            found = epToPlay;
-            found._resumeTime = resumeTime;
-            responseText = "Playing " + foundShow.name + "...";
-        } else {
-            registry.forEach(function(item) {
-                if (item && item.title.toLowerCase().includes(query)) {
-                    if (!found) found = item;
-                }
-            });
-            if(found) responseText = "Playing " + found.title + "...";
-        }
-
-        if (found) {
-            actionToTake = function() {
-                closeOSK(false);
-                setTimeout(function() { openAppForItem(found); }, 50);
-            };
-        } else {
-            responseText = "I couldn't find anything matching '" + query + "'.";
-        }
-    } else if (/^(pause|stop|halt)$/i.test(cmd)) {
-        responseText = "Pausing playback...";
-        actionToTake = function() {
-            if (videoPlayerOpen && videoEl) videoEl.pause();
-            else if (audioPlayerOpen && audioEl) audioEl.pause();
-            closeOSK(false);
-        };
-    } else if (/^(home|go home|quit|exit|return home|main menu)$/i.test(cmd)) {
-        responseText = "Going home...";
-        actionToTake = function() {
-            closeOSK(false);
-            if (lightboxOpen) closeLightbox(); 
-            if (videoPlayerOpen) closeVideoPlayer(); 
-            if (audioPlayerOpen) closeAudioPlayer(); 
-            forceCloseApp();
-            buildGrid();
-        };
-    } else if (/^(sleep|go to sleep|turn off|power off|standby)$/i.test(cmd)) {
-        responseText = "Entering sleep mode...";
-        actionToTake = function() { closeOSK(false); enterSleep(); };
-    } else if (/^(screensaver|start screensaver|show screensaver)$/i.test(cmd)) {
-        responseText = "Starting screensaver...";
-        actionToTake = function() { closeOSK(false); startScreensaver(); };
-    } else if (/^(settings|open settings|preferences|options)$/i.test(cmd)) {
-        responseText = "Opening settings...";
-        actionToTake = function() {
-            closeOSK(false);
-            if (lightboxOpen) closeLightbox(); 
-            if (videoPlayerOpen) closeVideoPlayer(); 
-            if (audioPlayerOpen) closeAudioPlayer(); 
-            forceCloseApp();
-            syncFocusToId('settings'); 
-            openApp(true);
-        };
-    } else if (/^(volume up|louder|turn it up|increase volume)$/i.test(cmd)) {
-        responseText = "Turning volume up...";
-        actionToTake = function() { setGlobalVolume(globalVolume + 0.2); closeOSK(false); };
-    } else if (/^(volume down|quieter|turn it down|decrease volume)$/i.test(cmd)) {
-        responseText = "Turning volume down...";
-        actionToTake = function() { setGlobalVolume(globalVolume - 0.2); closeOSK(false); };
-    } else if (/^(mute|silence|shut up)$/i.test(cmd)) {
-        responseText = "Muting audio...";
-        actionToTake = function() { setGlobalVolume(0); closeOSK(false); };
-    } else if (/weather|temperature|forecast/i.test(cmd)) {
-        responseText = "It's currently 18°C and partly cloudy in Melbourne.";
-    } else if (/time/i.test(cmd)) {
-        var now = new Date();
-        var h = now.getHours();
-        var m = now.getMinutes();
-        var ampm = h >= 12 ? 'PM' : 'AM';
-        h = h % 12; h = h ? h : 12;
-        m = m < 10 ? '0' + m : m;
-        responseText = "It's currently " + h + ":" + m + " " + ampm + ".";
-    } else if (/date|day is it|today/i.test(cmd)) {
-        var now = new Date();
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        let dayStr = days[now.getDay()];
-        let monthStr = months[now.getMonth()];
-        let dateNum = now.getDate();
-        let suffix = 'th';
-        if (dateNum === 1 || dateNum === 21 || dateNum === 31) suffix = 'st';
-        else if (dateNum === 2 || dateNum === 22) suffix = 'nd';
-        else if (dateNum === 3 || dateNum === 23) suffix = 'rd';
-        responseText = "It's " + dayStr + ", " + monthStr + " " + dateNum + suffix + ".";
-    } else if (/^(what can you do|help|who are you|how do you work)$/i.test(cmd)) {
-        responseText = "I am Guahh Assistant. I can play media, search, and control the system.";
-    } else if (/^(hello|hi|hey|greetings|sup)$/i.test(cmd)) {
-        responseText = "Hello! How can I help you today?";
-    } else {
-        var query = cmd;
-        if (matchSearch) query = matchSearch[1].trim();
-        responseText = "Searching for '" + query + "'...";
-        actionToTake = function() {
-            closeOSK(false);
-            if (lightboxOpen) closeLightbox(); 
-            if (videoPlayerOpen) closeVideoPlayer(); 
-            if (audioPlayerOpen) closeAudioPlayer(); 
-            forceCloseApp();
-            syncFocusToId('search');
-            openApp(true);
-            setTimeout(function() {
-                var inp = document.getElementById('global-search-input');
-                if (inp) {
-                    inp.value = query;
-                    inp.dispatchEvent(new Event('input'));
-                    searchFocusIdx = 0;
-                    updateSearchFocus();
-                }
-            }, 100);
-        };
-    }
-
-    document.getElementById('assistant-response').textContent = responseText;
-
-    if (actionToTake) {
-        setTimeout(actionToTake, 2000);
-    } else {
-        setTimeout(function() { closeOSK(false); }, 3500);
-    }
 }
 
 function oskPressKey(key) {
@@ -2866,11 +2380,7 @@ function oskPressKey(key) {
   } 
   else if (key === 'DONE') { 
       trackWords(oskValue);
-      if (assistantOpen) {
-          processAssistantCommand(oskValue.trim().toLowerCase());
-      } else {
-          closeOSK(true); 
-      }
+      closeOSK(true); 
       return; 
   } 
   else { 
@@ -3039,13 +2549,6 @@ function updateSearchResults() {
   container._results = results; 
   bindSprings('.search-result-btn'); 
   
-  container.querySelectorAll('.search-result-btn').forEach(function(btn, idx) {
-      btn.addEventListener('click', function() {
-          searchFocusIdx = idx;
-          triggerSearchAction();
-      });
-  });
-  
   searchFocusIdx = results.length > 0 ? 0 : -1; 
   updateSearchFocus();
 }
@@ -3063,7 +2566,6 @@ function triggerSearchAction() {
   var r = results[searchFocusIdx];
   if (r.type === 'app') { 
       if (oskOpen) closeOSK(false);
-      if (lightboxOpen) closeLightbox(); 
       if (videoPlayerOpen) closeVideoPlayer(); 
       if (audioPlayerOpen) closeAudioPlayer();
       forceCloseApp();
@@ -3219,8 +2721,6 @@ function handleNavigation(dir) {
       return; 
   }
   
-  if (lightboxOpen) return;
-  
   if (videoPlayerOpen) {
     showVideoControls(); 
     var vmax = document.querySelectorAll('.vid-btn').length - 1;
@@ -3318,27 +2818,6 @@ function handleNavigation(dir) {
         updateSearchFocus('down'); 
     }
   } 
-  else if (appMode === 'PHOTOS') {
-    var pitems = document.querySelectorAll('.photo-grid-item'); 
-    var cols = Math.max(1, Math.floor(1400 / 380));
-    
-    if (dir === 'left' && photoFocusIdx > 0) { 
-        photoFocusIdx--; 
-        updatePhotoFocus('left'); 
-    }
-    if (dir === 'right' && photoFocusIdx < pitems.length - 1) { 
-        photoFocusIdx++; 
-        updatePhotoFocus('right'); 
-    }
-    if (dir === 'up' && photoFocusIdx >= cols) { 
-        photoFocusIdx -= cols; 
-        updatePhotoFocus('up'); 
-    }
-    if (dir === 'down' && photoFocusIdx + cols < pitems.length) { 
-        photoFocusIdx += cols; 
-        updatePhotoFocus('down'); 
-    }
-  } 
   else if (appMode === 'NONE') {
     var r = activeRow;
     var c = activeCol;
@@ -3376,40 +2855,7 @@ function handleNavigation(dir) {
   }
 }
 
-/* ══════ PHYSICAL CLICK POP EFFECT ══════ */
-function playPressPopEffect() {
-  if (appMode === 'NONE') {
-    var item = grid[activeRow] ? grid[activeRow][activeCol] : null;
-    if (item && item.springs) {
-      item.springs.scale.val = 0.88; // Instantly shrink
-      item.springs.scale.resting = false;
-    }
-  } else {
-    var focusedEl = document.querySelector('.vid-btn.focused, .aud-btn.focused, .setting-btn.focused, .media-item-btn.focused, .search-result-btn.focused, .dialog-btn.focused, .photo-grid-item.focused');
-    if (focusedEl && focusedEl.springs) {
-      focusedEl.springs.scale.val = 0.88; // Instantly shrink
-      focusedEl.springs.scale.resting = false;
-    }
-  }
-}
-
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('.vid-btn, .aud-btn, .setting-btn, .media-item-btn, .search-result-btn, .dialog-btn, .photo-grid-item');
-  if (btn && btn.springs) {
-    btn.springs.scale.val = 0.88;
-    btn.springs.scale.resting = false;
-  } else if (appMode === 'NONE') {
-    var item = grid[activeRow] ? grid[activeRow][activeCol] : null;
-    if (item && item.springs) {
-      item.springs.scale.val = 0.88;
-      item.springs.scale.resting = false;
-    }
-  }
-}, true);
-
 function handleEnter() {
-  playPressPopEffect(); // Trigger instant press compress recoil
-
   if (appMode === 'SYSTEM_DIALOG') {
       var btns = document.querySelectorAll('.dialog-btn');
       if (btns[dialogFocusIdx]) btns[dialogFocusIdx].click();
@@ -3421,10 +2867,6 @@ function handleEnter() {
   }
   if (oskOpen) { 
       pressOSKFocused(); 
-      return; 
-  }
-  if (lightboxOpen) { 
-      closeLightbox(); 
       return; 
   }
   if (videoPlayerOpen) { 
@@ -3451,8 +2893,6 @@ function handleEnter() {
           var inp = document.getElementById('global-search-input'); 
           if (inp && !oskOpen) openOSK(inp); 
       } 
-  } else if (appMode === 'PHOTOS') { 
-      if (photoItems[photoFocusIdx]) openLightbox(photoItems[photoFocusIdx]); 
   }
 }
 
@@ -3486,24 +2926,6 @@ document.addEventListener('keydown', function(e) {
       return; 
   }
 
-  // Assistant key listener override
-  if ((e.key === 'y' || e.key === 'Y') && !oskOpen && !screensaverActive && appMode !== 'CONTROL_CENTER' && !isSleeping) {
-      if (appEnabledState.guahh_assistant === false) return;
-      e.preventDefault();
-      if (!yKeyTriggered) {
-          if (yKeyDownTime === 0) {
-              yKeyDownTime = Date.now();
-              setTimeout(function() {
-                  if (yKeyDownTime !== 0 && !yKeyTriggered) {
-                      yKeyTriggered = true;
-                      openAssistant();
-                  }
-              }, 100);
-          }
-      }
-      return;
-  }
-
   var nav = ['ArrowRight','ArrowLeft','ArrowUp','ArrowDown'];
   if (nav.indexOf(e.key) !== -1) {
       e.preventDefault();
@@ -3522,8 +2944,10 @@ document.addEventListener('keydown', function(e) {
               selectHoldActive = true;
               selectHoldTime = Date.now();
               selectHoldTriggered = false;
+              enterPressInitiatedInNoneMode = true;
           }
       } else {
+          enterPressInitiatedInNoneMode = false;
           handleEnter();
       }
       return;
@@ -3578,7 +3002,7 @@ document.addEventListener('keyup', function(e) {
   }
 
   if (e.key === 'Enter') {
-      if (appMode === 'NONE') {
+      if (appMode === 'NONE' && enterPressInitiatedInNoneMode) {
           enterKeyDown = false;
           selectHoldActive = false;
           if (!selectHoldTriggered) {
@@ -3586,11 +3010,7 @@ document.addEventListener('keyup', function(e) {
           }
           selectHoldTriggered = false;
       }
-  }
-
-  if (e.key === 'y' || e.key === 'Y') {
-      yKeyDownTime = 0;
-      yKeyTriggered = false;
+      enterPressInitiatedInNoneMode = false;
   }
   
   if (e.key === 'Escape') {
@@ -3759,19 +3179,22 @@ function pollGamepad() {
               selectHoldActive = true;
               selectHoldTime = Date.now();
               selectHoldTriggered = false;
+              aPressInitiatedInNoneMode = true;
           } else {
+              aPressInitiatedInNoneMode = false;
               handleEnter();
           }
       }
   } else {
       if (lastGP.a) {
-          if (appMode === 'NONE') {
+          if (appMode === 'NONE' && aPressInitiatedInNoneMode) {
               selectHoldActive = false;
               if (!selectHoldTriggered) {
                   handleEnter();
               }
               selectHoldTriggered = false;
           }
+          aPressInitiatedInNoneMode = false;
       }
   }
   
@@ -3802,24 +3225,6 @@ function pollGamepad() {
   }
   
   if (xPressed && !lastGP.x) { if (oskOpen) oskPressKey('BKSP'); }
-  
-  // Gamepad Y button Assistant Handling
-  if (yPressed) {
-      if (!lastGP.y) {
-          if (oskOpen) {
-              oskPressKey('SPACE');
-              lastGP.yTriggered = true; 
-          } else {
-              lastGP.yPressTime = Date.now();
-              lastGP.yTriggered = false;
-          }
-      } else if (!oskOpen && !lastGP.yTriggered && (Date.now() - lastGP.yPressTime >= 100)) {
-          lastGP.yTriggered = true;
-          if (appEnabledState.guahh_assistant !== false) openAssistant();
-      }
-  } else {
-      lastGP.yTriggered = false;
-  }
   
   lastGP = { 
       up: up, 
@@ -3859,9 +3264,15 @@ function render() {
       }
   }
 
+  // Safety net: Force hold triggers and native focus states to collapse when active state switches
+  if (appMode !== 'NONE') {
+      selectHoldActive = false;
+      enterKeyDown = false;
+  }
+
   // Poll select-hold timer at exactly 1.6 seconds (1600ms)
   if (selectHoldActive && !selectHoldTriggered) {
-      if (nowTime - selectHoldTime >= 1600) { 
+      if (nowTime - selectHoldTime >= SYSTEM_CONFIG.selectHoldThreshold) { 
           selectHoldTriggered = true;
           selectHoldActive = false;
           triggerHideAppPopup();
@@ -3993,4 +3404,111 @@ function render() {
 buildOSK();
 buildGrid(); 
 bindSprings(''); 
+
+// Event blocking capturing router. Intercepts and discards all standard pointer/touch movements outside CC
+function blockBackgroundEvents(e) {
+  if (ccOpen) {
+    var ccPanel = document.getElementById('control-center');
+    if (ccPanel && !ccPanel.contains(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+}
+
+// Captured-phase global click delegation router to safely block and handle inputs
+document.addEventListener('click', function(e) {
+  if (ccOpen) {
+    var ccPanel = document.getElementById('control-center');
+    if (ccPanel && !ccPanel.contains(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.target.id === 'cc-scrim') {
+        toggleControlCenter();
+      }
+      return;
+    }
+    
+    var ccItem = e.target.closest('.cc-item');
+    if (ccItem) {
+      e.preventDefault();
+      e.stopPropagation();
+      var visibleItems = getVisibleCCItems();
+      var idx = visibleItems.indexOf(ccItem);
+      if (idx !== -1) {
+        ccFocusIdx = idx;
+        updateCCFocus();
+        triggerCCAction();
+      }
+      return;
+    }
+  }
+  
+  // Setting buttons clicks
+  var settingBtn = e.target.closest('.setting-btn');
+  if (settingBtn && appMode === 'SETTINGS') {
+    e.preventDefault();
+    e.stopPropagation();
+    var btns = Array.from(document.querySelectorAll('.setting-btn'));
+    var idx = btns.indexOf(settingBtn);
+    if (idx !== -1) {
+      settingsFocusIdx = idx;
+      updateSettingsFocus();
+      triggerSettingsAction();
+    }
+    return;
+  }
+  
+  // Media list buttons clicks
+  var mediaBtn = e.target.closest('.media-item-btn');
+  if (mediaBtn && appMode === 'MEDIA_LIST') {
+    e.preventDefault();
+    e.stopPropagation();
+    var btns = Array.from(document.querySelectorAll('.media-item-btn'));
+    var idx = btns.indexOf(mediaBtn);
+    if (idx !== -1) {
+      mediaFocusIdx = idx;
+      updateMediaFocus();
+      triggerMediaAction();
+    }
+    return;
+  }
+
+  // Search results buttons clicks
+  var searchBtn = e.target.closest('.search-result-btn');
+  if (searchBtn && appMode === 'SEARCH') {
+    e.preventDefault();
+    e.stopPropagation();
+    var btns = Array.from(document.querySelectorAll('.search-result-btn'));
+    var idx = btns.indexOf(searchBtn);
+    if (idx !== -1) {
+      searchFocusIdx = idx;
+      updateSearchFocus();
+      triggerSearchAction();
+    }
+    return;
+  }
+  
+  // Home screen cards clicks
+  var cardWrapper = e.target.closest('.card-wrapper');
+  if (cardWrapper && appMode === 'NONE') {
+    e.preventDefault();
+    e.stopPropagation();
+    for (var r = 0; r < grid.length; r++) {
+      for (var c = 0; c < grid[r].length; c++) {
+        if (grid[r][c].wrapper === cardWrapper) {
+          setFocus(r, c, 0, 0);
+          openApp(false);
+          return;
+        }
+      }
+    }
+  }
+}, true);
+
+document.addEventListener('mousedown', blockBackgroundEvents, true);
+document.addEventListener('mouseup', blockBackgroundEvents, true);
+document.addEventListener('touchstart', blockBackgroundEvents, true);
+document.addEventListener('touchend', blockBackgroundEvents, true);
+
 requestAnimationFrame(render);</script></body></html>
