@@ -266,7 +266,7 @@ var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
 if (isNaN(globalVolume)) globalVolume = 1.0;
 
 /* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
-var currentVersion = '1';
+var currentVersion = '1.1';
 var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
 var updateVersion = '';
 var updateCode = '';
@@ -1420,7 +1420,7 @@ function renderSettings(preserve) {
   else if (settingsPage === 'GENERAL') {
     h += '<h2 class="settings-section-title">general</h2>';
     h += '<button class="setting-btn" data-action="none"><span>Version</span><span class="setting-val">viewOS ' + currentVersion + '</span></button>';
-    h += '<button class="setting-btn" data-action="go_page" data-page="SOFTWARE_UPDATE"><span style="display:flex;align-items:center;gap:16px"><img src="https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_icon.png" style="width:32px;height:32px;object-fit:contain;" alt=""><span>Software Update</span></span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
+    h += '<button class="setting-btn" data-action="go_page" data-page="SOFTWARE_UPDATE"><span>Software Update</span><span class="material-icons-round">' + getIconSVG('chevron_right') + '</span></button>';
     h += '<button class="setting-btn" data-action="toggle_guahh"><span>Guahh Intelligence</span><span class="setting-val">' + (appEnabledState.guahh_assistant !== false ? 'On' : 'Off') + '</span></button>';
     h += '<button class="setting-btn" data-action="clear_guahh_cache"><span>Clear Guahh Intelligence Cache</span><span class="setting-val">Clear</span></button>';
     h += '<button class="setting-btn" data-action="reboot"><span>Reboot</span><span class="setting-val">Restart OS</span></button>';
@@ -1494,11 +1494,16 @@ function checkSoftwareUpdate() {
     })
     .then(function(html) {
       updateCode = html;
-      var match = html.match(/currentVersion\s*=\s*['"]([\d.]+)['"]/);
-      if (!match) {
-        match = html.match(/viewOS\s+([\d.]+)/);
+      var foundVersion = '0.1';
+      var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
+      if (match) {
+        foundVersion = match[1];
+      } else {
+        var fallbackMatch = html.match(/viewOS\s+([\d.]+)/i);
+        if (fallbackMatch) {
+          foundVersion = fallbackMatch[1];
+        }
       }
-      var foundVersion = match ? match[1] : '0.1';
       updateVersion = foundVersion;
       
       if (foundVersion !== currentVersion) {
