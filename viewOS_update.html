@@ -266,7 +266,7 @@ var globalVolume = parseFloat(localStorage.getItem('globalVolume'));
 if (isNaN(globalVolume)) globalVolume = 1.0;
 
 /* ══════ SYSTEM VERSION & UPDATE STATE ══════ */
-var currentVersion = '1.2.1';
+var currentVersion = '1.3';
 var updateState = 'IDLE'; // 'IDLE', 'CHECKING', 'UPDATE_AVAILABLE', 'UP_TO_DATE', 'ERROR'
 var updateVersion = '';
 var updateCode = '';
@@ -1408,6 +1408,45 @@ function triggerCCAction() {
   }
 }
 
+/* ══════ AJAX / REQUEST WRAPPER ══════ */
+function ajaxGet(url, onLoad, onError) {
+  if (window.fetch) {
+    fetch(url, { cache: 'no-cache' })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP error ' + res.status);
+        return res.text();
+      })
+      .then(onLoad)
+      .catch(function(err) {
+        xhrFallback(url, onLoad, onError);
+      });
+  } else {
+    xhrFallback(url, onLoad, onError);
+  }
+}
+
+function xhrFallback(url, onLoad, onError) {
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          onLoad(xhr.responseText);
+        } else {
+          onError(new Error('Status ' + xhr.status));
+        }
+      }
+    };
+    xhr.onerror = function() {
+      onError(new Error('Network error'));
+    };
+    xhr.send();
+  } catch (e) {
+    onError(e);
+  }
+}
+
 /* ══════ SETTINGS ══════ */
 function renderSettings(preserve) {
   var h = '<div class="internal-ui"><h1>Settings</h1>';
@@ -1440,7 +1479,7 @@ function renderSettings(preserve) {
     } else if (updateState === 'UP_TO_DATE') {
       h += '<div style="font-size:24px;color:rgba(255,255,255,0.5)">your system is up to date</div>';
     } else if (updateState === 'UPDATE_AVAILABLE') {
-      h += '<div style="font-size:24px;color:#4CAF50;font-weight:400">version ' + updateVersion + ' is available!</div>';
+      h += '<div style="font-size:24px;color:#4CAF50;font-weight:400">viewOS ' + updateVersion + ' is available</div>';
     } else if (updateState === 'ERROR') {
       h += '<div style="font-size:24px;color:#F44336;">failed to check for updates</div>';
     }
@@ -1452,8 +1491,8 @@ function renderSettings(preserve) {
     h += '<button class="setting-btn" data-action="check_updates"><span>Check for updates</span><span class="setting-val">' + (updateState === 'CHECKING' ? 'Checking' : 'Check') + '</span></button>';
 
     if (updateState === 'UPDATE_AVAILABLE' && updateDescription) {
-      h += '<div style="margin-top: 40px; padding: 25px; background: rgba(255,255,255,0.06); border-radius: 13px; font-size: 20px; line-height: 1.6; color: rgba(255,255,255,0.7); text-align: left; white-space: pre-wrap; width: 100%; border: 1px solid rgba(255,255,255,0.08); word-break: break-word;">';
-      h += '<div style="font-size: 16px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 15px; letter-spacing: 1px; font-weight: 400 !important;">Update Notes</div>';
+      h += '<div style="margin-top: 40px; padding: 25px 0; font-size: 20px; line-height: 1.6; color: rgba(255,255,255,0.7); text-align: left; white-space: pre-wrap; width: 100%; word-break: break-word;">';
+      h += '<div style="font-size: 16px; color: rgba(255,255,255,0.4); margin-bottom: 15px; letter-spacing: 1px; font-weight: 400 !important; text-transform: lowercase;">update notes</div>';
       h += updateDescription;
       h += '</div>';
     }
@@ -1497,47 +1536,38 @@ function checkSoftwareUpdate() {
   updateDescription = '';
   renderSettings(true);
   
-  fetch('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html')
-    .then(function(res) {
-      if (!res.ok) throw new Error('Failed to fetch update file');
-      return res.text();
-    })
-    .then(function(html) {
-      updateCode = html;
-      var foundVersion = '1.2';
-      var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
-      if (match) {
-        foundVersion = match[1];
-      } else {
-        var fallbackMatch = html.match(/viewOS\s+([\d.]+)/i);
-        if (fallbackMatch) {
-          foundVersion = fallbackMatch[1];
-        }
+  ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update.html', function(html) {
+    updateCode = html;
+    var foundVersion = '1.3';
+    var match = html.match(/currentVersion\s*[:=]\s*['"]([^'"]+)['"]/);
+    if (match) {
+      foundVersion = match[1];
+    } else {
+      var fallbackMatch = html.match(/viewOS\s+([\d.]+)/i);
+      if (fallbackMatch) {
+        foundVersion = fallbackMatch[1];
       }
-      updateVersion = foundVersion;
-      
-      if (foundVersion !== currentVersion) {
-        updateState = 'UPDATE_AVAILABLE';
-        return fetch('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_description.txt')
-          .then(function(descRes) {
-            if (descRes.ok) return descRes.text();
-            return '';
-          })
-          .then(function(descText) {
-            updateDescription = descText;
-          });
-      } else {
-        updateState = 'UP_TO_DATE';
-      }
-    })
-    .then(function() {
+    }
+    updateVersion = foundVersion;
+    
+    if (foundVersion !== currentVersion) {
+      updateState = 'UPDATE_AVAILABLE';
+      ajaxGet('https://raw.githubusercontent.com/guahhinc/guahh/main/viewOS_update_description.txt', function(descText) {
+        updateDescription = descText;
+        renderSettings(true);
+      }, function() {
+        updateDescription = '';
+        renderSettings(true);
+      });
+    } else {
+      updateState = 'UP_TO_DATE';
       renderSettings(true);
-    })
-    .catch(function(err) {
-      console.error(err);
-      updateState = 'ERROR';
-      renderSettings(true);
-    });
+    }
+  }, function(err) {
+    console.error(err);
+    updateState = 'ERROR';
+    renderSettings(true);
+  });
 }
 
 function installSoftwareUpdate() {
@@ -2252,7 +2282,7 @@ var oskLayout = [
 ];
 
 var oskUIItems = [];
-var wordDictionary = ["highlight","boys","girls","movie","viewOS","bee","shrek","minions","lorax","TV","shows","sport","music","podcasts","photos","photo","phone","video","movies","settings","search","play","pause","apple","nature","aerial","watching","system","application","open","close","restart","reboot","volume","screen","screensaver","sleep","wake","device","the","and","for","that","this","with","what","where","when","why","how","who","there","their","they","your","you","are","is","was","were","will","can","could","would","should","about","time","out","some","more","now","just","into","see","like","good","well","make","way","even","new","want","because","any","these","give","day","most","her","him","our","she","they're","you're","i'm","i've","don't","can't","won't","didn't","it's","that's","there's","have","has","had","not","but","from","which","one","all","been","much","those","then","things","thing","think","thought","know","knew","take","took","find","found","look","looked","come","came","use","used","tell","told","work","worked","call","called","try","tried","need","needed","feel","felt","become","became","leave","left","put","mean","meant","keep","kept","let","begin","began","seem","seemed","help","helped","show","showed","hear","heard","run","ran","move","moved","live","lived","believe","believed","bring","brought","happen","happened","write","wrote","provide","provided","sit","sat","strong","stand","stood","lose","lost","pay","paid","meet","met","include","included","continue","continued","set","learn","learned","change","changed","lead","led","understand","understood","watch","watched","follow","followed","stop","stopped","create","created","speak","spoke","read","allow","allowed","add","added","spend","spent","grow","grew","opened","walk","walked","win","won","offer","offered","remember","remembered","love","loved","consider","considered","appear","appeared","buy","bought","wait","waited","serve","served","die","died","send","sent","expect","expected","build","built","stay","stayed","fall","fell","cut","reach","reached","kill","killed","remain","remained","hello","hi","hey","assistant","resume","louder","quieter","mute","date","weather","exit","quit","please","listen","halt","unpause","return","main","menu","turn","off","power","standby","start","preferences","options","increase","decrease","silence","shut","up","current","today's","today","greetings","sup","guahh","intelligence","clear","cache","smart","history","tracked"];
+var wordDictionary = ["highlight","boys","girls","movie","viewOS","bee","shrek","minions","lorax","TV","shows","sport","music","podcasts","photos","photo","phone","video","movies","settings","search","play","pause","apple","nature","aerial","watching","system","application","open","close","restart","reboot","volume","screen","screensaver","sleep","wake","device","the","and","for","that","this","with","what","where","when","why","how","who","there","their","they","your","you","are","is","was","were","will","can","could","would","should","about","time","out","some","more","now","just","into","see","like","good","well","make","way","even","new","want","because","any","these","give","day","most","her","him","our","she","they're","you_re","i_m","i_ve","don't","can't","won't","didn't","it's","that's","there's","have","has","had","not","but","from","which","one","all","been","much","those","then","things","thing","think","thought","know","knew","take","took","find","found","look","looked","come","came","use","used","tell","told","work","worked","call","called","try","tried","need","needed","feel","felt","become","became","leave","left","put","mean","meant","keep","kept","let","begin","began","seem","seemed","help","helped","show","showed","hear","heard","run","ran","move","moved","live","lived","believe","believed","bring","brought","happen","happened","write","wrote","provide","provided","sit","sat","strong","stand","stood","lose","lost","pay","paid","meet","met","include","included","continue","continued","set","learn","learned","change","changed","lead","led","understand","understood","watch","watched","follow","followed","stop","stopped","create","created","speak","spoke","read","allow","allowed","add","added","spend","spent","grow","grew","opened","walk","walked","win","won","offer","offered","remember","remembered","love","loved","consider","considered","appear","appeared","buy","bought","wait","waited","serve","served","die","died","send","sent","expect","expected","build","built","stay","stayed","fall","fell","cut","reach","reached","kill","killed","remain","remained","hello","hi","hey","assistant","resume","louder","quieter","mute","date","weather","exit","quit","please","listen","halt","unpause","return","main","menu","turn","off","power","standby","start","preferences","options","increase","decrease","silence","shut","up","current","today's","today","greetings","sup","guahh","intelligence","clear","cache","smart","history","tracked"];
 
 function buildOSK() {
   var board = document.getElementById('osk-board'); 
