@@ -1,3 +1,0 @@
-- Big UI Overhaul
-- Bug Fixes
-Make sure you install the update in your viewOS USB / folder
